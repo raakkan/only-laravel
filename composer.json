@@ -1,0 +1,58 @@
+{
+    "name": "raakkan/only-laravel",
+    "description": "Only Laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raakkan",
+            "email": "ZiXJG@example.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "illuminate/view": "^7.0|^8.0|^9.0|^10.0|^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0|^8.0|^9.0|^10.0|^11.0",
+        "laravel/pint": "^1.10",
+        "orchestra/testbench": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Raakkan\\OnlyLaravel\\": "src"
+        },
+        "files": [
+            "helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Raakkan\\OnlyLaravel\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "Raakkan/laravel-theme-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Raakkan\\OnlyLaravel\\Providers\\OnlyLaravelServiceProvider"
+            ],
+            "aliases": {
+                "Theme": "Raakkan\\OnlyLaravel\\Facades\\ThemesManager"
+            },
+            "dont-discover": []
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test:windows": "vendor\\bin\\phpunit",
+        "check-style": "vendor/bin/phpcs --extensions=php ./src",
+        "fix-style": "vendor/bin/php-cs-fixer fix"
+    }
+}

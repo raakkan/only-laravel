@@ -1,0 +1,3 @@
+<div>
+    view widget
+</div>
