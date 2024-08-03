@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('themes-manager.settings.database_table_name', 'theme_settings'), function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key');
             $table->json('value')->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('themes-manager.settings.database_table_name', 'theme_settings'));
+        Schema::dropIfExists('settings');
     }
 };

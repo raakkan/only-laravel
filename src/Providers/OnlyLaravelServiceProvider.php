@@ -3,6 +3,7 @@
 namespace  Raakkan\OnlyLaravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Raakkan\OnlyLaravel\Theme\ThemesManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerConfigs();
+
+        $this->app->singleton('themes-manager', function () {
+            return new ThemesManager();
+        });
     }
 
     protected function getPath(string $path = '')

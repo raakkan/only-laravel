@@ -118,6 +118,6 @@ class ThemeMenuItem extends Model
 
     public function getTable(): string
     {
-        return config('themes-manager.menus.menu_items_database_table_name', 'theme_menu_items');
+        return config('only-laravel::themes.menus.menu_items_database_table_name', 'theme_menu_items');
     }
 }

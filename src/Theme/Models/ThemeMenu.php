@@ -24,6 +24,6 @@ class ThemeMenu extends Model
 
     public function getTable(): string
     {
-        return config('themes-manager.menus.database_table_name', 'theme_menus');
+        return config('only-laravel::themes.menus.database_table_name', 'theme_menus');
     }
 }

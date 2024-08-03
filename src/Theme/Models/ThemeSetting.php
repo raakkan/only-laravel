@@ -12,9 +12,9 @@ class ThemeSetting extends Model
         'value' => 'json',
     ];
 
-    public static function get(string $source = 'raakkan/laravel-themes-manager', string $key = '*', mixed $default = null): mixed
+    public static function get(string $source = 'raakkan/only-laravel', string $key = '*', mixed $default = null): mixed
     {
-        $settings = cache()->rememberForever(config('themes-manager.settings.cache_key'), function () use ($source) {
+        $settings = cache()->rememberForever(config('only-laravel::themes.settings.cache_key'), function () use ($source) {
             $settings = [];
 
             ThemeSetting::where('source', $source)->get()->each(function ($setting) use (&$settings) {
@@ -31,14 +31,14 @@ class ThemeSetting extends Model
         return data_get($settings, $key, $default);
     }
 
-    public static function set(string $key, mixed $value, string $source = 'raakkan/laravel-themes-manager'): mixed
+    public static function set(string $key, mixed $value, string $source = 'raakkan/only-laravel'): mixed
     {
         $setting = self::updateOrCreate(
             ['key' => $key, 'source' => $source],
             ['value' => $value]
         );
 
-        cache()->forget(config('themes-manager.settings.cache_key'));
+        cache()->forget(config('only-laravel::themes.settings.cache_key'));
 
         return $setting->value;
     }
@@ -50,6 +50,6 @@ class ThemeSetting extends Model
 
     public function getTable(): string
     {
-        return config('themes-manager.settings.database_table_name', 'theme_settings');
+        return config('only-laravel::themes.settings.database_table_name', 'theme_settings');
     }
 }

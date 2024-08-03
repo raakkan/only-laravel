@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('themes-manager.menus.database_table_name', 'theme_menus'), function (Blueprint $table) {
+        Schema::create('theme_menus', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('location')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unique(['name', 'source']);
         });
 
-        Schema::create(config('themes-manager.menus.menu_items_database_table_name', 'theme_menu_items'), function (Blueprint $table) {
+        Schema::create('theme_menu_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('menu_id');
             $table->string('name');
@@ -36,8 +36,8 @@ return new class extends Migration
             $table->string('source');
             $table->timestamps();
     
-            $table->foreign('menu_id')->references('id')->on(config('themes-manager.menus.database_table_name', 'theme_menus'))->onDelete('cascade');
-            $table->foreign('parent_id')->references('id')->on(config('themes-manager.menus.menu_items_database_table_name', 'theme_menu_items'))->onDelete('cascade');
+            $table->foreign('menu_id')->references('id')->on('theme_menus')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('theme_menu_items')->onDelete('cascade');
 
             $table->unique(['order', 'menu_id', 'source', 'parent_id']);
         });
@@ -48,7 +48,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('themes-manager.menus.database_table_name', 'theme_menus'));
-        Schema::dropIfExists(config('themes-manager.menus.menu_items_database_table_name', 'theme_menu_items'));
+        Schema::dropIfExists('theme_menus');
+        Schema::dropIfExists('theme_menu_items');
     }
 };

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('label');
             $table->string('source');
             $table->json('for');
+            $table->json('settings')->nullable();
             $table->timestamps();
         });
     }

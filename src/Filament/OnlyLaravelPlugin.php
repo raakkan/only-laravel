@@ -5,18 +5,17 @@ namespace Raakkan\OnlyLaravel\Filament;
 use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationGroup;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Theme\Filament\Pages\ThemesPage;
 
 class OnlyLaravelPlugin implements Plugin
 {
+    use Makable;
+    
     protected $pages = [
         ThemesPage::class,
     ];
 
-    public static function make(): static
-    {
-        return app(static::class);
-    }
     public function getId(): string
     {
         return 'only-laravel';
