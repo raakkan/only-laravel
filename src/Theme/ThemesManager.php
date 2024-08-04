@@ -7,7 +7,8 @@ namespace Raakkan\OnlyLaravel\Theme;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Raakkan\OnlyLaravel\Theme\Traits\HasCache;
+use Raakkan\OnlyLaravel\Setting\Models\Setting;
+use Raakkan\OnlyLaravel\Theme\Concerns\HasCache;
 use Raakkan\OnlyLaravel\Theme\Exceptions\ThemeNotFoundException;
 
 class ThemesManager
@@ -69,6 +70,17 @@ class ThemesManager
         $this->enable($name);
 
         return $this;
+    }
+
+    public function setByDatabase(string $name): ThemesManager
+    {
+        if (! $this->has($name)) {
+            throw new ThemeNotFoundException($name);
+        }
+
+        Setting::set('current_theme', $name);
+
+        return $this->set($name);
     }
 
     /**

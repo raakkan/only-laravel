@@ -27,12 +27,7 @@ class ThemesPage extends Page
 
     public function activateTheme($themeName, $vendor)
     {
-        ThemesManager::set($vendor . '/' . $themeName);
-
-        Setting::set('current_theme', $vendor . '/' . $themeName);
-
-        $currentTheme = ThemesManager::current();
-        $currentTheme->loadThemeDBData();
+        ThemesManager::setByDatabase($vendor . '/' . $themeName);
         
         return redirect(request()->header('Referer'));
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;

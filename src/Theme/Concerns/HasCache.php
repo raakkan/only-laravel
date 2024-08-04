@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raakkan\OnlyLaravel\Theme\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
 use Raakkan\OnlyLaravel\Theme\ThemeFinder;
 use Illuminate\Support\Collection;

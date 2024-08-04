@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
 use Raakkan\OnlyLaravel\Theme\Menu\MenuLocation;
 

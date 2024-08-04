@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Raakkan\OnlyLaravel\Theme\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
 use Illuminate\Translation\Translator;
 

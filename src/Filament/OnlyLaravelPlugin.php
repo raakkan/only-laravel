@@ -7,6 +7,7 @@ use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Theme\Filament\Pages\MenuPage;
+use Raakkan\OnlyLaravel\Theme\Filament\Pages\TemplatePage;
 use Raakkan\OnlyLaravel\Theme\Filament\Pages\ThemesPage;
 
 class OnlyLaravelPlugin implements Plugin
@@ -15,7 +16,8 @@ class OnlyLaravelPlugin implements Plugin
     
     protected $pages = [
         ThemesPage::class,
-        MenuPage::class
+        MenuPage::class,
+        TemplatePage::class
     ];
 
     public function getId(): string

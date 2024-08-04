@@ -4,6 +4,11 @@ namespace Raakkan\OnlyLaravel\Theme;
 
 abstract class BaseTheme
 {
+    public static function getTemplates(): array
+    {
+        return [];
+    }
+
     public static function getFilamentPages(): array
     {
         return [];
