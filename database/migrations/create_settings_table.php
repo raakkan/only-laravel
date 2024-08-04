@@ -1,9 +1,9 @@
 <?php
 
-use Raakkan\ThemesManager\Models\ThemeSetting;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Raakkan\OnlyLaravel\Setting\Models\Setting;
 
 return new class extends Migration
 {
@@ -14,17 +14,17 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
+            $table->string('key')->index();
             $table->json('value')->nullable();
-            $table->string('source');
+            $table->string('source')->index();
             $table->timestamps();
         
             $table->unique(['source', 'key']);
         });
 
-        ThemeSetting::create([
+        Setting::create([
             'key' => 'current_theme',
-            'source' => 'raakkan/laravel-themes-manager',
+            'source' => 'raakkan/only-laravel',
         ]);
     }
 

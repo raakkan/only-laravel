@@ -23,7 +23,7 @@
             </div>
 
             @if ($selectedMenu && $this->getSelectedMenu() !== null)
-                @livewire('theme::livewire.menu-item-manage', ['menu' => $this->getSelectedMenu()], key('menu-item-manage' . $selectedMenu))
+                @livewire('only-laravel::theme.livewire.menu-item-manage', ['menu' => $this->getSelectedMenu()], key('menu-item-manage' . $selectedMenu))
             @endif
         @else
             <div class="p-4 text-center">

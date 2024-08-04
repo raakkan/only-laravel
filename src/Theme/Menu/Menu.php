@@ -1,10 +1,10 @@
 <?php
 
-namespace Raakkan\ThemesManager\Menu;
+namespace Raakkan\OnlyLaravel\Theme\Menu;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Raakkan\ThemesManager\Support\Traits\HasLabel;
-use Raakkan\ThemesManager\Support\Traits\HasName;
+use Raakkan\OnlyLaravel\Theme\Menu\MenuItem;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 
 class Menu implements Arrayable
 {

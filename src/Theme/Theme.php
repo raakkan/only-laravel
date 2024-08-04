@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
+use Raakkan\OnlyLaravel\Theme\Traits\HasDbActions;
+use Raakkan\OnlyLaravel\Theme\Traits\HasFilamentPages;
+use Raakkan\OnlyLaravel\Theme\Traits\HasMenu;
+use Raakkan\OnlyLaravel\Theme\Traits\HasThemeClass;
 use Raakkan\OnlyLaravel\Theme\Traits\HasViews;
 use Raakkan\OnlyLaravel\Theme\Events\ThemeEnabled;
 use Raakkan\OnlyLaravel\Theme\Events\ThemeDisabled;
@@ -23,6 +27,10 @@ final class Theme
 {
     use HasTranslations;
     use HasViews;
+    use HasDbActions;
+    use HasThemeClass;
+    use HasFilamentPages;
+    use HasMenu;
 
     /**
      * The theme name.
@@ -313,6 +321,7 @@ final class Theme
             $this->enabled = true;
             $this->loadViews();
             $this->loadTranlastions();
+            $this->registerThemeClass();
 
             if ($withEvent) {
                 event(new ThemeEnabled($this));

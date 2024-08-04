@@ -24,7 +24,7 @@
     @if ($item->hasChildren())
         <ul x-sort="handle" class="ml-10 mt-2 space-y-3">
             @foreach ($item->children as $childIndex => $child)
-                <x-themes-manager::menu.menu-item-model :item="$child" :selected-item="$selectedItem" />
+                <x-only-laravel::menu.menu-item-model :item="$child" :selected-item="$selectedItem" />
             @endforeach
         </ul>
     @endif

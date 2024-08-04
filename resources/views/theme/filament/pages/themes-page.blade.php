@@ -1,11 +1,10 @@
-{{ Vite::useHotFile(storage_path('vite.hot'))->useBuildDirectory('build')->withEntryPoints(['resources/css/base.css']) }}
-<div class="mt-4">
+<x-filament-panels::page>
+    {{ Vite::useHotFile(storage_path('vite.hot'))->useBuildDirectory('build')->withEntryPoints(['resources/css/base.css']) }}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         @php
             $themes = $this->getThemes();
             $activeTheme = $this->getActiveTheme();
         @endphp
-        <button wire:click="test">test</button>
 
         @foreach ($themes as $theme)
             <div class="bg-white shadow rounded-lg p-4 relative">
@@ -43,4 +42,4 @@
     @if ($themes->isEmpty())
         <p class="text-center text-gray-500 mt-4">No themes found matching your search.</p>
     @endif
-</div>
+</x-filament-panels::page>

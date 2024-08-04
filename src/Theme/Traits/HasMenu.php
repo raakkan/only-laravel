@@ -1,8 +1,8 @@
 <?php
 
-namespace Raakkan\ThemesManager\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Traits;
 
-use Raakkan\ThemesManager\Menu\MenuLocation;
+use Raakkan\OnlyLaravel\Theme\Menu\MenuLocation;
 
 trait HasMenu
 {

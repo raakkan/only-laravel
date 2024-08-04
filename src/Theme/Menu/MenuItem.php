@@ -1,11 +1,12 @@
 <?php
 
-namespace Raakkan\ThemesManager\Menu;
+namespace Raakkan\OnlyLaravel\Theme\Menu;
+
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Support\Arrayable;
-use Raakkan\ThemesManager\Support\Traits\HasIcon;
-use Raakkan\ThemesManager\Support\Traits\HasName;
-use Raakkan\ThemesManager\Support\Traits\HasLabel;
+use Raakkan\OnlyLaravel\Support\Concerns\HasIcon;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 
 class MenuItem  implements Arrayable
 {

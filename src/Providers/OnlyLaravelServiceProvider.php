@@ -2,6 +2,7 @@
 
 namespace  Raakkan\OnlyLaravel\Providers;
 
+use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Theme\ThemesManager;
 
@@ -10,6 +11,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
+        $this->registerLivewireComponents();
     }
 
     public function register(): void
@@ -37,5 +39,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             "{$configPath}/themes.php",
             'only-laravel::themes'
         );
+    }
+
+    public function registerLivewireComponents(): void
+    {
+        Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Theme\Livewire\MenuItemManage::class);
     }
 }

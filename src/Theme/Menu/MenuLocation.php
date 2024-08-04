@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\ThemesManager\Menu;
+namespace Raakkan\OnlyLaravel\Theme\Menu;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;

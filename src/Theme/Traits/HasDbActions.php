@@ -1,31 +1,16 @@
 <?php
 
-namespace Raakkan\ThemesManager\Traits;
+namespace Raakkan\OnlyLaravel\Theme\Traits;
 
-use Raakkan\ThemesManager\Menu\Menu;
-use Raakkan\ThemesManager\Models\ThemeMenu;
-use Raakkan\ThemesManager\Menu\MenuItemGroup;
-use Raakkan\ThemesManager\Models\ThemeWidget;
-use Raakkan\ThemesManager\Models\ThemeWidgetLocation;
+use Raakkan\OnlyLaravel\Theme\Menu\Menu;
+use Raakkan\OnlyLaravel\Theme\Models\ThemeMenu;
+use Raakkan\OnlyLaravel\Theme\Menu\MenuItemGroup;
 
 trait HasDbActions
 {
     public function loadThemeDBData()
     {
         $this->loadMenus();
-        $this->loadWidgetLocations();
-    }
-
-    public function loadWidgetLocations()
-    {
-        $widgetLocations = $this->getWidgetLocations();
-        $namespace = $this->getNamespace();
-
-        $locations = [];
-        foreach ($widgetLocations as $location) {
-            $locations[] = ThemeWidgetLocation::updateOrCreate(['name' => $location->getName(), 'label' => $location->getLabel(), 'source' => $namespace]);
-        }
-        return $this;
     }
 
     public function loadMenus()

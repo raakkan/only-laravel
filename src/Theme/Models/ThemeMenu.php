@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Theme\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Raakkan\OnlyLaravel\Theme\Menu\Menu;
 
 class ThemeMenu extends Model
 {

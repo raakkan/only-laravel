@@ -3,17 +3,30 @@
 namespace Raakkan\OnlyLaravel\Http\Middleware;
 
 use Illuminate\Http\Request;
-use Raakkan\ThemesManager\Models\ThemeSetting;
+use Raakkan\OnlyLaravel\Setting\Models\Setting;
+use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 
-class OnlyLaravelMiddleware extends ThemeLoader
+class OnlyLaravelMiddleware
 {
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, \Closure $next, ?string $theme = null)
+    public function handle(Request $request, \Closure $next)
     {
-        $theme = ThemeSetting::getCurrentTheme();
+        $theme = Setting::getCurrentTheme();
 
-        return parent::handle($request, $next, $theme);
+        if ($request->expectsJson() || app()->runningInConsole()) {
+            return $next($request);
+        }
+
+        if (! is_null($theme)) {
+            ThemesManager::set($theme);
+        } else {
+            if ($theme = config('only-laravel::themes.fallback_theme')) {
+                ThemesManager::set($theme);
+            }
+        }
+
+        return $next($request);
     }
 }

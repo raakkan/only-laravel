@@ -12,7 +12,7 @@
 
     <div x-show="open" x-collapse class="space-y-2 px-3 pb-3">
         @foreach ($group->getItems() as $item)
-            <x-themes-manager::menu.menu-item :item="$item" :selected-item="$selectedItem" />
+            <x-only-laravel::menu.menu-item :item="$item" :selected-item="$selectedItem" />
         @endforeach
     </div>
 </div>

@@ -77,12 +77,12 @@ return [
     ],
 
     'settings' => [
-        'database_table_name' => 'theme_settings',
-        'cache_key' => 'themes_manager_settings_',
+        'database_table_name' => 'settings',
+        'cache_key' => 'only-laravel-settings-',
     ],
     'menus' => [
         'database_table_name' => 'theme_menus',
         'menu_items_database_table_name' => 'theme_menu_items',
-        'cache_key' => 'themes_manager_menus_',
+        'cache_key' => 'only-laravel-menus-',
     ]
 ];

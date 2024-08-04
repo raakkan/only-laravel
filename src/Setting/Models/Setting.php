@@ -1,10 +1,10 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Models;
+namespace Raakkan\OnlyLaravel\Setting\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ThemeSetting extends Model
+class Setting extends Model
 {
     protected $fillable = ['key', 'value', 'source'];
 
@@ -17,7 +17,7 @@ class ThemeSetting extends Model
         $settings = cache()->rememberForever(config('only-laravel::themes.settings.cache_key'), function () use ($source) {
             $settings = [];
 
-            ThemeSetting::where('source', $source)->get()->each(function ($setting) use (&$settings) {
+            Setting::where('source', $source)->get()->each(function ($setting) use (&$settings) {
                 data_set($settings, $setting->key, $setting->value);
             });
 
@@ -50,6 +50,6 @@ class ThemeSetting extends Model
 
     public function getTable(): string
     {
-        return config('only-laravel::themes.settings.database_table_name', 'theme_settings');
+        return 'settings';
     }
 }
