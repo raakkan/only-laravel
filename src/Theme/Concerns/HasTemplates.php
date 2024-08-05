@@ -2,12 +2,20 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
+use Raakkan\OnlyLaravel\Theme\Template\Blocks\Block;
+use Raakkan\OnlyLaravel\Theme\Template\Blocks\Components\BlockComponent;
+use Raakkan\OnlyLaravel\Theme\Template\Template;
+
 trait HasTemplates
 {
     public function getTemplates(): array
     {
         if ($this->hasThemeClass()) {
-            return $this->themeClass::getTemplates();
+            return collect($this->themeClass::getTemplates())->filter(function ($item){
+                return $item instanceof Template;
+            })->each(function ($template) {
+                $template->setSource($this->getNamespace());
+            })->all();
         }
 
         return [];
@@ -34,7 +42,11 @@ trait HasTemplates
     public function getBlockComponents(): array
     {
         if ($this->hasThemeClass()) {
-            return $this->themeClass::getBlockComponents();
+            return collect($this->themeClass::getBlockComponents())->filter(function ($item){
+                return $item instanceof BlockComponent;
+            })->each(function ($component) {
+                $component->setSource($this->getNamespace());
+            })->all();
         }
 
         return [];
@@ -43,7 +55,11 @@ trait HasTemplates
     public function getBlocks(): array
     {
         if ($this->hasThemeClass()) {
-            return $this->themeClass::getBlocks();
+            return collect($this->themeClass::getBlocks())->filter(function ($item){
+                return $item instanceof Block;
+            })->each(function ($block) {
+                $block->setSource($this->getNamespace());
+            })->all();
         }
 
         return [];

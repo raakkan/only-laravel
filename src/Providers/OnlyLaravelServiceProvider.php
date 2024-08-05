@@ -48,7 +48,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     public function registerLivewireComponents(): void
     {
         Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Theme\Livewire\MenuItemManage::class);
-        Livewire::component('only-laravel::theme.livewire.block-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockComponent::class);
+        Livewire::component('only-laravel::theme.livewire.block', \Raakkan\OnlyLaravel\Theme\Livewire\LivewireBlock::class);
         Livewire::component('only-laravel::theme.livewire.block-items-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockItemsComponent::class);
     }
 }

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ThemeTemplateBlock extends Model
 {
-    protected $fillable = ['name', 'source', 'order', 'settings', 'template_id', 'parent_id'];
+    protected $fillable = ['name', 'source', 'order', 'settings', 'template_id', 'parent_id', 'location', 'locations', 'type'];
 
     protected $casts = [
         'settings' => 'array',
+        'locations' => 'array',
     ];
 
     public function template()
@@ -27,8 +28,8 @@ class ThemeTemplateBlock extends Model
         return $this->hasMany(ThemeTemplateBlock::class, 'parent_id');
     }
 
-    public function items()
+    public function getTable(): string
     {
-        return $this->hasMany(ThemeTemplateBlockItem::class, 'block_id');
+        return 'theme_template_blocks';
     }
 }

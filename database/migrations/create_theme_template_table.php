@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index()->unique();
             $table->string('source')->index()->unique();
-            $table->json('for');
+            $table->string('for');
             $table->json('settings')->nullable();
             $table->timestamps();
+
+            $table->unique(['name', 'for', 'source']);
         });
 
         Schema::create('theme_template_blocks', function (Blueprint $table) {
@@ -26,31 +28,19 @@ return new class extends Migration
             $table->string('source')->index();
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();
-            $table->json('locations')->default(json_encode(['default']));
+            $table->json('locations');
             $table->string('location')->default('default');
-            $table->timestamps();
+            $table->enum('type', ['block', 'component']);
 
             $table->unsignedBigInteger('template_id');
             $table->foreign('template_id')->references('id')->on('theme_templates')->onDelete('cascade');
 
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('menu_id')->references('id')->on('theme_menus')->onDelete('cascade');
-        });
+            $table->foreign('parent_id')->references('id')->on('theme_template_blocks')->onDelete('cascade');
 
-        Schema::create('theme_template_block_components', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->index();
-            $table->string('source')->index();
-            $table->integer('order')->default(1);
-            $table->string('type');
-            $table->string('location')->default('default');
-            $table->json('settings')->nullable();
+            $table->unique(['order', 'template_id', 'location', 'parent_id'], 'unique_theme_template_blocks');
+
             $table->timestamps();
-
-            $table->unsignedBigInteger('block_id');
-            $table->foreign('block_id')->references('id')->on('theme_template_blocks')->onDelete('cascade');
-
-            $table->unique(['order', 'block_id', 'location']);
         });
     }
 
@@ -61,6 +51,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('theme_templates');
         Schema::dropIfExists('theme_template_blocks');
-        Schema::dropIfExists('theme_template_block_components');
     }
 };

@@ -3,12 +3,8 @@
 namespace Raakkan\OnlyLaravel\Theme\Filament\Pages;
 
 use Filament\Pages\Page;
-use Raakkan\OnlyLaravel\Theme\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\Components\ImageBlockComponent;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\FooterBlock;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\Items\ImageBlockItem;
-use Raakkan\OnlyLaravel\Theme\Template\Template;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\HeaderBlock;
+use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
+use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplate;
 
 class TemplatePage extends Page
 {
@@ -16,20 +12,23 @@ class TemplatePage extends Page
 
     protected static ?string $navigationGroup = 'Appearance';
     protected static ?string $slug = 'appearance/templates';
+    public $template;
 
     public function mount()
     {
-        // dd(TemplateManager::getBlockItems());
+        $this->getTemplate()->create();
+
+        $this->template = ThemeTemplate::first();
     }
 
     public function getTemplate()
     {
-        return Template::make('home')->blocks([
-            HeaderBlock::make()->components([
-                ImageBlockComponent::make(),
-            ]),
-            FooterBlock::make(),
-        ]);
+        return $this->getActiveTheme()->getTemplates()[0];
+    }
+
+    public function getActiveTheme()
+    {
+        return ThemesManager::current();
     }
 
     public function getTitle(): string

@@ -38,27 +38,22 @@ class TemplateManager
 
     public function collectThemeBlocksAndComponents()
     {
-        $blocks = collect($this->getActiveTheme()->getBlocks())->filter(function ($item){
-            return $item instanceof Block;
-        })->each(function ($item){
-            return $item->setSource($this->getActiveTheme()->getNamespace());
-        })->all();
+        $this->blocks = $this->getActiveTheme()->getBlocks();
 
-        $this->blocks = $blocks;
-
-        $components = collect($this->getActiveTheme()->getBlockComponents())->filter(function ($item){
-            return $item instanceof BlockComponent;
-        })->each(function ($item){
-            return $item->setSource($this->getActiveTheme()->getNamespace());
-        })->all();
-
-        $this->blockComponents = $components;
+        $this->blockComponents = $this->getActiveTheme()->getBlockComponents();
     }
 
     public function getBlockByName($name)
     {
         return collect($this->getBlocks())->first(function ($block) use ($name) {
             return $block->getName() == $name;
+        });
+    }
+
+    public function getComponentByName($name)
+    {
+        return collect($this->getBlockComponents())->first(function ($component) use ($name) {
+            return $component->getName() == $name;
         });
     }
 

@@ -24,6 +24,6 @@ trait HasLabel
 
     public function hasLabel(): bool
     {
-        return !is_null($this->label);
+        return !empty($this->label) && !is_null($this->label);
     }
 }
