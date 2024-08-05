@@ -4,7 +4,20 @@ namespace Raakkan\OnlyLaravel\Theme;
 
 abstract class BaseTheme
 {
+    public static $includeCoreBlocks = true;
+    public static $includeCoreBlockComponents = true;
+
     public static function getTemplates(): array
+    {
+        return [];
+    }
+
+    public static function getBlocks(): array
+    {
+        return [];
+    }
+
+    public static function getBlockComponents(): array
     {
         return [];
     }
@@ -30,5 +43,15 @@ abstract class BaseTheme
             'header' => 'Header',
             'footer' => 'Footer',
         ];
+    }
+
+    public static function includeCoreBlockComponents(): bool
+    {
+        return static::$includeCoreBlockComponents;
+    }
+
+    public static function includeCoreBlocks(): bool
+    {
+        return static::$includeCoreBlocks;
     }
 }

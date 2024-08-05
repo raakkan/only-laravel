@@ -2,9 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks;
 
-class FooterBlock extends Block
+class GridBlock extends Block
 {
-    protected string $name = 'footer';
+    protected string $name = 'grid';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
 

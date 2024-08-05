@@ -6,22 +6,12 @@
     @endphp
     <div class="mt-4 flex flex-wrap w-full">
         <div class="w-full md:w-1/4">
-            <div class="bg-white shadow p-4 mr-2 cursor-move h" draggable="true"
-                x-on:dragstart="event.dataTransfer.setData('text/plain', JSON.stringify({
-name: 'div',
-label: 'Div',
-type: 'block'
-}))">
-                block
-            </div>
-
+            <livewire:only-laravel::theme.livewire.block-items-component />
         </div>
 
         <div class="space-y-2 w-full md:w-3/4">
-            {{ $template->getName() }}
-
             @foreach ($template->getBlocks() as $block)
-                <livewire:only-laravel::theme.livewire.block-component :block="$block" :key="$block->getName()" />
+                <livewire:only-laravel::theme.livewire.block-component :block="$block->toArray()" :key="$block->getName()" />
             @endforeach
         </div>
     </div>

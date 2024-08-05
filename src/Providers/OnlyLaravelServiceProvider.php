@@ -5,6 +5,7 @@ namespace  Raakkan\OnlyLaravel\Providers;
 use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Theme\ThemesManager;
+use Raakkan\OnlyLaravel\Theme\Template\TemplateManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -21,11 +22,14 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         $this->app->singleton('themes-manager', function () {
             return new ThemesManager();
         });
+
+        $this->app->singleton('template-manager', function () {
+            return new TemplateManager();
+        });
     }
 
     protected function getPath(string $path = '')
     {
-        // We get the child class
         $rc = new \ReflectionClass(static::class);
 
         return dirname($rc->getFileName()) . '/../../' . $path;
@@ -45,5 +49,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     {
         Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Theme\Livewire\MenuItemManage::class);
         Livewire::component('only-laravel::theme.livewire.block-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockComponent::class);
+        Livewire::component('only-laravel::theme.livewire.block-items-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockItemsComponent::class);
     }
 }
