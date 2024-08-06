@@ -11,32 +11,17 @@ trait HasBlockComponents
         return $this->components;
     }
 
+    public function getComponentsByLocation($location)
+    {
+        return collect($this->components)->filter(function ($component) use ($location) {
+            return $component->getLocation() == $location;
+        })->all();
+    }
+
     public function components($components)
     {
         $this->components = $components;
 
-        return $this;
-    }
-
-    public function addComponent($component)
-    {
-        $this->components[] = $component;
-        
-        return $this;
-    }
-
-    public function removeComponent($component)
-    {
-        $index = array_search($component, $this->components);
-        if ($index !== false) {
-            unset($this->components[$index]);
-        }
-        return $this;
-    }
-
-    public function clearComponents()
-    {
-        $this->components = [];
         return $this;
     }
 

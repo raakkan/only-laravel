@@ -9,6 +9,7 @@ use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Theme\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasModel;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocations;
@@ -28,6 +29,7 @@ class Block implements Arrayable
     use HasOrder;
     use HasLocations;
     use HasLocation;
+    use HasModel;
     
     protected $parent;
     protected $children = [];
@@ -94,11 +96,5 @@ class Block implements Arrayable
         foreach ($this->components as $component) {
             $component->create($template, $block);
         }
-    }
-
-    public function setModelData($model)
-    {
-        // dd($model);
-        return $this;
     }
 }

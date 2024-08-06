@@ -4,10 +4,11 @@ namespace Raakkan\OnlyLaravel\Theme\Livewire;
 
 use Livewire\Component;
 use Raakkan\OnlyLaravel\Theme\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplateBlock;
 
 class LivewireBlock extends Component
 {
-    public $block;
+    public ThemeTemplateBlock $block;
 
     public function mount()
     {
@@ -16,9 +17,12 @@ class LivewireBlock extends Component
 
     public function getBlock()
     {
-        $block = TemplateManager::getBlockByName($this->block->name)->setModelData($this->block);
-
-        $block->components($this->getBlockComponents());
+        if ($this->block->type == 'block') {
+            $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block);
+            $block->components($this->getBlockComponents());
+        } else {
+            $block = TemplateManager::getComponentByName($this->block->name)->setModel($this->block);
+        };
 
         return $block;
     }
@@ -30,18 +34,18 @@ class LivewireBlock extends Component
         $blockComponents = [];
         foreach ($components as $component) {
             if ($component->type == 'block') {
-                $blockComponents[] = TemplateManager::getBlockByName($component->name)->setModelData($component);
+                $blockComponents[] = TemplateManager::getBlockByName($component->name)->setModel($component);
             } else {
-                $blockComponents[] = TemplateManager::getComponentByName($component->name)->setModelData($component);
+                $blockComponents[] = TemplateManager::getComponentByName($component->name)->setModel($component);
             }
         }
-
+        
         return $blockComponents;
     }
 
-    public function handleDrop(array $data)
+    public function handleDrop(array $data, $location)
     {
-        dd($data);
+        dd($data, $location);
     }
 
     public function render()
