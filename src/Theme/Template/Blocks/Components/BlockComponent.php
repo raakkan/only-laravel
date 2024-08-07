@@ -11,7 +11,11 @@ use Raakkan\OnlyLaravel\Theme\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasModel;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Sortable;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBackgroundSettings;
 
 abstract class BlockComponent implements Arrayable
 {
@@ -26,8 +30,10 @@ abstract class BlockComponent implements Arrayable
         getLabel as parentGetLabel;
     }
     use HasModel;
-
-    public $blockOrComponent = 'component';
+    use HasBackgroundSettings;
+    use HasSettings;
+    use Deletable;
+    use Sortable;
     protected $model;
 
     public function __construct($name)
@@ -44,24 +50,23 @@ abstract class BlockComponent implements Arrayable
     {
         return [
             'name' => $this->name,
-            'type' => $this->type,
+            'type' => $this->type ?? 'component',
             'group' => $this->group,
-            'source' => $this->source
+            'source' => $this->source,
         ];
     }
 
     public function create($template, $parent = null)
     {
-        $childCount = $template->blocks()->where('parent_id', $parent ? $parent->id : null)->count();
+        $childCount = $template->blocks()->where('parent_id', $parent ? $parent->id : null)->where('location', $this->location)->count();
 
         $block = $template->blocks()->create([
             'name' => $this->name,
             'template_id' => $template->id,
             'source' => $this->source,
             'order' => $childCount === 0 ? 0 : $childCount++,
-            'locations' => json_encode([$this->location]),
             'location' => $this->location,
-            'type' => $this->blockOrComponent,
+            'type' => 'component',
             'parent_id' => $parent ? $parent->id : null
         ]);
     }

@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('source')->index();
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();
-            $table->json('locations');
             $table->string('location')->default('default');
             $table->enum('type', ['block', 'component']);
 

@@ -1,8 +1,6 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Theme\Template\Concerns;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 
 trait HasSettings
 {
@@ -22,11 +20,10 @@ trait HasSettings
 
     public function getSettings()
     {
-        return [
-            Section::make('Backround')
-                ->schema([
-                    TextInput::make('name')->required(),
-                ])
-        ];
+        if ($this->backgroundSettingsEnabled()) {
+            return array_merge($this->getBackgroundSettings(), $this->settings);
+        }
+
+        return $this->settings;
     }
 }

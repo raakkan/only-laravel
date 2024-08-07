@@ -17,6 +17,7 @@ class TemplateManager
 
     public function getBlocks()
     {
+        $this->collectThemeBlocksAndComponents();
         $blocks = $this->blocks;
 
         if ($this->getActiveTheme()->includeCoreBlocks()) {
@@ -28,6 +29,7 @@ class TemplateManager
 
     public function getBlockComponents()
     {
+        $this->collectThemeBlocksAndComponents();
         $blockComponents = $this->blockComponents;
         if ($this->getActiveTheme()->includeCoreBlockComponents()) {
             $blockComponents = array_merge($this->getCoreBlockComponents(), $blockComponents);

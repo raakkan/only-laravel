@@ -5,15 +5,18 @@ namespace Raakkan\OnlyLaravel\Theme\Template\Blocks;
 use Illuminate\Contracts\Support\Arrayable;
 use Raakkan\OnlyLaravel\Theme\Concerns\HasOrder;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\HasType;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Theme\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasModel;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Sortable;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
-use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocations;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBlockComponents;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBackgroundSettings;
 
 class Block implements Arrayable
 {
@@ -22,19 +25,20 @@ class Block implements Arrayable
     use HasLabel {
         getLabel as parentGetLabel;
     }
+    use HasType;
     use HasGroup;
     use HasSource;
     use HasBlockComponents;
     use HasSettings;
     use HasOrder;
-    use HasLocations;
     use HasLocation;
     use HasModel;
+    use HasBackgroundSettings;
+    use Deletable;
+    use Sortable;
     
     protected $parent;
     protected $children = [];
-
-    public $blockOrComponent = 'block';
 
     public function __construct($name)
     {
@@ -71,6 +75,7 @@ class Block implements Arrayable
             'source' => $this->source,
             'group' => $this->group,
             'order' => $this->order,
+            'type' => $this->type ?? 'block',
         ];
     }
 
@@ -87,9 +92,8 @@ class Block implements Arrayable
             'template_id' => $template->id,
             'source' => $this->source,
             'order' => $order,
-            'locations' => json_encode($this->getLocations()),
             'location' => $this->location,
-            'type' => $this->blockOrComponent,
+            'type' => 'block',
             'parent_id' => $parent ? $parent->id : null
         ]);
 
