@@ -26,4 +26,9 @@ trait HasModel
             $this->location = $this->model->location;
         }
     }
+
+    public function hasModel()
+    {
+        return isset($this->model);
+    }
 }

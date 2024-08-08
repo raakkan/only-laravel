@@ -8,8 +8,11 @@ use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Theme\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplate;
+use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\Block;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBlocks;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForPage;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTheme;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
 
 class Template implements Arrayable
@@ -20,18 +23,12 @@ class Template implements Arrayable
     use HasBlocks;
     use HasSettings;
     use HasSource;
-    protected $for;
-    protected $useAllThemes = false;
+    use HasForPage;
+    use HasForTheme;
 
     public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    public function for($for)
-    {
-        $this->for = $for;
-        return $this;
     }
 
     public function toArray()
@@ -40,7 +37,8 @@ class Template implements Arrayable
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
             'source' => $this->source,
-            'for' => $this->for,
+            'forTheme' => $this->forTheme,
+            'forPage' => $this->forPage,
             'settings' => $this->settings,
             'blocks' => $this->blocks,
         ];
@@ -54,12 +52,18 @@ class Template implements Arrayable
 
         $template = ThemeTemplate::create([
             'name' => $this->name,
-            'source' => $this->source,
-            'for' => $this->for,
+            'source' => $this->getSource(),
+            'for_theme' => $this->forTheme,
+            'for_page' => $this->forPage,
         ]);
 
         foreach ($this->blocks as $block) {
             $block->create($template);
         }
+    }
+
+    public function getActiveTheme()
+    {
+        return ThemesManager::current();
     }
 }

@@ -14,6 +14,10 @@ trait HasSource
 
     public function getSource()
     {
+        if (!$this->hasSource()) {
+            $this->source = $this->getActiveTheme()->getNamespace();
+        }
+
         return $this->source;
     }
 

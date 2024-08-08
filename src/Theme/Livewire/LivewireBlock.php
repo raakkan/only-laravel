@@ -63,7 +63,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
     {
         $childCount = $this->template->blocks()->where('parent_id', $this->block->id)->where('location', $location)->count();
 
-        $block = $this->template->blocks()->create([
+        $blockModel = $this->template->blocks()->create([
             'name' => $data['name'],
             'template_id' => $this->template->id,
             'source' => $data['source'],
@@ -72,6 +72,14 @@ class LivewireBlock extends Component implements HasForms, HasActions
             'type' => $data['type'],
             'parent_id' => $this->block->id
         ]);
+
+        if ($blockModel->type == 'block') {
+            $block = TemplateManager::getBlockByName($blockModel->name)->setModel($blockModel);
+        } else {
+            $block = TemplateManager::getComponentByName($blockModel->name)->setModel($blockModel);
+        };
+
+        $block->storeDefaultSettingsToDatabase();
 
         Notification::make()
             ->title('Block created')
@@ -84,6 +92,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
         return Action::make('delete')
             ->requiresConfirmation()
             ->icon('heroicon-o-trash')
+            ->iconButton()
             ->color('danger')
             ->action(function (Component $livewire) {
                 $order = $this->block->order;
@@ -92,7 +101,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
         
                 $this->block->delete();
 
-                $livewire->dispatch('deleted');
+                $this->dispatch('deleted');
 
                 ThemeTemplateBlock::reorderSiblings($this->template, $order, $parentId, $location);
                 

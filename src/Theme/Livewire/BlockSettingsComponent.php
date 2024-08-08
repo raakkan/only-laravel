@@ -21,7 +21,7 @@ class BlockSettingsComponent extends Component implements HasForms
 
     public function mount()
     {
-        $this->form->fill();
+        $this->form->fill($this->block->settings);
     }
 
     public function form(Form $form): Form
@@ -46,7 +46,7 @@ class BlockSettingsComponent extends Component implements HasForms
 
     public function getBlockSettings()
     {
-        return $this->getBlock()->getSettings();
+        return $this->getBlock()->getSettingFields();
     }
     
     public function getBlock()

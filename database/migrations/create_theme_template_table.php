@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index()->unique();
             $table->string('source')->index()->unique();
-            $table->string('for');
+            $table->string('for_theme')->default('all');
+            $table->string('for_page')->default('all');
             $table->json('settings')->nullable();
             $table->timestamps();
 
-            $table->unique(['name', 'for', 'source']);
+            $table->unique(['name', 'source']);
         });
 
         Schema::create('theme_template_blocks', function (Blueprint $table) {

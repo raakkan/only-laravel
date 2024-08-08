@@ -178,7 +178,7 @@ final class Theme
 
     public function getNamespace(): string
     {
-        return $this->vendor . '\\' . $this->name;
+        return $this->vendor . '/' . $this->name;
     }
 
     /**

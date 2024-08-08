@@ -13,6 +13,9 @@ class FooterBlock extends Block
     protected $sortable = false;
     protected $backgroundSettings = true;
     protected $backgroundType = BackgroundType::COLOR;
+    protected $background = [
+        'color' => '#00e693',
+    ];
 
     public function __construct()
     {

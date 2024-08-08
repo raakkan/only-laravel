@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ThemeTemplate extends Model
 {
-    protected $fillable = ['name', 'source', 'for', 'settings'];
+    protected $fillable = ['name', 'source', 'for_theme', 'for_page', 'settings'];
 
     protected $casts = [
         'settings' => 'array',

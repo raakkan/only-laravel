@@ -3,7 +3,7 @@
 <div class="flex items-center justify-between p-2 {{ $block->getType() === 'block' ? 'border-b' : '' }}">
     <div class="flex items-center">
         @if ($block->isSortable())
-            <x-filament::icon icon="heroicon-m-bars-3" class="w-5 h-5 text-gray-400 mr-3" />
+            <x-filament::icon icon="heroicon-m-bars-3" class="w-5 h-5 text-gray-400 mr-3 cursor-move" />
         @endif
         <h2 class="text-md font-bold">{{ $block->getName() }}</h2>
     </div>
