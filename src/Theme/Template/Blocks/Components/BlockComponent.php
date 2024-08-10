@@ -3,9 +3,12 @@
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks\Components;
 
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\BaseBlock;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasDesignVariant;
 
 abstract class BlockComponent extends BaseBlock
 {
+    use HasDesignVariant;
+    
     public function toArray()
     {
         return [

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ThemeTemplateBlock extends Model
 {
-    protected $fillable = ['name', 'source', 'order', 'settings', 'template_id', 'parent_id', 'location', 'type'];
+    protected $fillable = ['name', 'source', 'order', 'settings', 'template_id', 'parent_id', 'location', 'type', 'design_variant'];
 
     protected $casts = [
         'settings' => 'array',

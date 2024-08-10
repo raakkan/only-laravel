@@ -2,10 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks\Components;
 
-class ImageBlockComponent extends BlockComponent
+class YieldComponent extends BlockComponent
 {
-    protected string $name = 'image';
+    protected string $name = 'yield';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
-    protected $view = 'only-laravel::templates.components.image';
+    protected $view = 'only-laravel::templates.components.yield';
 }

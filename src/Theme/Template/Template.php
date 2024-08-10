@@ -10,6 +10,7 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplate;
 use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\Block;
+use Raakkan\OnlyLaravel\Theme\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTheme;
@@ -31,6 +32,24 @@ class Template implements Arrayable
         $this->name = $name;
     }
 
+    public function setModelData(ThemeTemplate $themeTemplate)
+    {
+        $this->name = $themeTemplate->name;
+        $this->source = $themeTemplate->source;
+        $this->forTheme = $themeTemplate->for_theme;
+        $this->forPage = $themeTemplate->for_page;
+        
+        $blocks = [];
+        foreach ($themeTemplate->blocks()->with('children')->where('parent_id', null)->get() as $block) {
+            $themeBlock = TemplateManager::getBlockByName($block->name);
+            
+            $blocks[] = $themeBlock->setModel($block);
+        }
+        
+        $this->blocks = $blocks;
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -39,7 +58,6 @@ class Template implements Arrayable
             'source' => $this->source,
             'forTheme' => $this->forTheme,
             'forPage' => $this->forPage,
-            'settings' => $this->settings,
             'blocks' => $this->blocks,
         ];
     }
@@ -65,5 +83,12 @@ class Template implements Arrayable
     public function getActiveTheme()
     {
         return ThemesManager::current();
+    }
+
+    public function render()
+    {
+        return view('only-laravel::templates.template', [
+            'template' => $this
+        ]);
     }
 }

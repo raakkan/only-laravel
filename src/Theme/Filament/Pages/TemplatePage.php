@@ -3,8 +3,9 @@
 namespace Raakkan\OnlyLaravel\Theme\Filament\Pages;
 
 use Filament\Pages\Page;
-use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
+use Livewire\Attributes\On;
 use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplate;
+use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplateBlock;
 
 class TemplatePage extends Page
@@ -15,6 +16,12 @@ class TemplatePage extends Page
     protected static ?string $slug = 'appearance/templates';
     public $template;
     public $selectedBlock;
+
+    #[On('block-deleted')] 
+    public function blockDeleted()
+    {
+        $this->template->refresh();
+    }
 
     public function mount()
     {

@@ -8,6 +8,8 @@ use Filament\Forms\Components\Component;
 
 trait HasSettings
 {
+    public $settings = [];
+
     protected $settingFields = [];
 
     public function settings($settingFields)
@@ -16,13 +18,23 @@ trait HasSettings
         return $this;
     }
 
+    public function getBlockSettings()
+    {
+        return [];
+    }
+
+    public function setBlockSettings($settings)
+    {
+        $this->settings = $settings;
+    }
+
     public function getSettingFields()
     {
         if ($this->backgroundSettingsEnabled()) {
-            return array_merge($this->getBackgroundSettings(), $this->settingFields);
+            return array_merge($this->getBackgroundSettings(), $this->settingFields, $this->getBlockSettings());
         }
 
-        return $this->settingFields;
+        return array_merge($this->settingFields, $this->getBlockSettings());
     }
 
     public function storeDefaultSettingsToDatabase()

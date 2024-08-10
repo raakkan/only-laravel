@@ -2,15 +2,18 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Template;
 
+use Raakkan\OnlyLaravel\Theme\Models\ThemeTemplate;
 use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\GridBlock;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\HeaderBlock;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\Components\BlockComponent;
+use Raakkan\OnlyLaravel\Theme\Template\Blocks\ContentBlock;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\Components\ImageBlockComponent;
 
 class TemplateManager
 {
+    use TemplateHandler;
     protected $blocks = [];
 
     protected $blockComponents = [];
@@ -65,6 +68,7 @@ class TemplateManager
             HeaderBlock::make(),
             FooterBlock::make(),
             GridBlock::make(),
+            ContentBlock::make(),
         ];
     }
 

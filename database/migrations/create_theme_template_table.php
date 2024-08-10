@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('theme_templates', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index()->unique();
-            $table->string('source')->index()->unique();
-            $table->string('for_theme')->default('all');
-            $table->string('for_page')->default('all');
+            $table->string('name')->index();
+            $table->string('source')->index();
+            $table->string('for_theme', 150)->default('all');
+            $table->string('for_page', 100)->default('all');
             $table->json('settings')->nullable();
             $table->timestamps();
 
-            $table->unique(['name', 'source']);
+            $table->unique(['name', 'source', 'for_theme', 'for_page'], 'unique_theme_templates');
         });
 
         Schema::create('theme_template_blocks', function (Blueprint $table) {
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();
             $table->string('location')->default('default');
+            $table->string('design_variant')->default('default');
             $table->enum('type', ['block', 'component']);
 
             $table->unsignedBigInteger('template_id');

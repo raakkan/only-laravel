@@ -1,4 +1,4 @@
-<div class="bg-white mr-2 border border-gray-200 rounded" x-data="{ activeTab: 'blocks' }">
+<div class="bg-white border border-gray-200 rounded" x-data="{ activeTab: 'blocks' }">
     <div class="border-b">
         <div class="flex items-center bg-gray-100">
             <button @click="activeTab = 'blocks'" :class="{ 'bg-white': activeTab === 'blocks' }"

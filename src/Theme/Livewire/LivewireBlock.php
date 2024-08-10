@@ -27,6 +27,10 @@ class LivewireBlock extends Component implements HasForms, HasActions
 
     public function getBlock()
     {
+        if (!$this->block->name) {
+           return null;
+        }
+
         if ($this->block->type == 'block') {
             $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block);
             $block->components($this->getBlockComponents());
@@ -101,7 +105,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
         
                 $this->block->delete();
 
-                $this->dispatch('deleted');
+                $livewire->dispatch('block-deleted');
 
                 ThemeTemplateBlock::reorderSiblings($this->template, $order, $parentId, $location);
                 

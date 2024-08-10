@@ -3,7 +3,7 @@
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBlockComponents;
 
-class Block extends BaseBlock 
+abstract class Block extends BaseBlock 
 {
     use HasBlockComponents;
     protected $children = [];
