@@ -40,7 +40,7 @@ class Template implements Arrayable
         $this->forPage = $themeTemplate->for_page;
         
         $blocks = [];
-        foreach ($themeTemplate->blocks()->with('children')->where('parent_id', null)->get() as $block) {
+        foreach ($themeTemplate->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {
             $themeBlock = TemplateManager::getBlockByName($block->name);
             
             $blocks[] = $themeBlock->setModel($block);

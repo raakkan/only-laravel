@@ -5,6 +5,7 @@ namespace Raakkan\OnlyLaravel\Theme\Livewire;
 use Livewire\Component;
 use Filament\Actions\Action;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Support\Enums\ActionSize;
 use Filament\Notifications\Notification;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -102,6 +103,25 @@ class LivewireBlock extends Component implements HasForms, HasActions
                 
                 Notification::make()
                     ->title('Block deleted')
+                    ->success()
+                    ->send();
+            });
+    }
+
+    public function toggleDisableAction(): Action
+    {
+        return Action::make('toggleDisable')
+            ->requiresConfirmation()
+            ->label(fn () => $this->block->disabled ? 'Enable' : 'Disable')
+            ->size(ActionSize::Small)
+            ->color(fn () => $this->block->disabled ? 'gray' : 'primary')
+            ->link()
+            ->action(function () {
+                $this->block->disabled = !$this->block->disabled;
+                $this->block->save();
+                
+                Notification::make()
+                    ->title($this->block->disabled ? 'Block disabled' : 'Block enabled')
                     ->success()
                     ->send();
             });

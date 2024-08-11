@@ -19,8 +19,7 @@
             @endif
 
             <div class="w-full {{ $block->sidebarPosition->value === 'both' ? 'md:w-1/3' : 'md:w-1/2' }}">
-                <div
-                    class="p-2 text-gray-500 text-md font-semibold text-center bg-white border-b {{ $block->sidebarPosition === 'right' ? 'border-r' : 'border-l' }}">
+                <div class="p-2 text-gray-500 text-md font-semibold text-center bg-white border-b">
                     Content</div>
                 <ul x-sort="handle" class="p-2 space-y-3">
                     @forelse ($block->getChildrensByLocation('default') as $blockComponent)

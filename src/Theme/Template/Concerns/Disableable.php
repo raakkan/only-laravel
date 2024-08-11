@@ -4,15 +4,40 @@ namespace Raakkan\OnlyLaravel\Theme\Template\Concerns;
 
 trait Disableable
 {
-    protected $disable = false;
-    public function setDisable($disable)
+    protected $disableable = true;
+
+    protected $disabled = false;
+
+    public function disable()
     {
-        $this->disable = $disable;
+        $this->disabled = true;
         return $this;
     }
 
-    public function isDisable()
+    public function enable()
     {
-        return $this->disable;
+        $this->disabled = false;
+        return $this;
+    }
+
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    public function isDisableable()
+    {
+        return $this->disableable;
+    }
+
+    public function setDisableable($disableable)
+    {
+        $this->disableable = $disableable;
+        return $this;
+    }
+
+    public function disableable()
+    {
+        return $this->setDisableable(true);
     }
 }

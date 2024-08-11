@@ -26,9 +26,10 @@ trait HasModel
         if ($this->model) {
             $this->type = $this->model->type;
             $this->location = $this->model->location;
+            $this->disabled = $this->model->disabled;
             $this->setBlockSettings($this->model->settings);
 
-            foreach ($this->model->children()->with('children')->get() as $child) {
+            foreach ($this->model->children()->with('children')->where('disabled', 0)->get() as $child) {
                 // TODO: check block exists or set not found
                 $block = TemplateManager::getBlockByName($child->name)->setModel($child);
                 

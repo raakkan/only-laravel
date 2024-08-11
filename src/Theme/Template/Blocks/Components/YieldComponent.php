@@ -9,4 +9,6 @@ class YieldComponent extends BlockComponent
     protected $source = 'raakkan/only-laravel';
     protected $view = 'only-laravel::templates.components.yield';
     protected $addable = false;
+    protected $deletable = false;
+    protected $disableable = false;
 }
