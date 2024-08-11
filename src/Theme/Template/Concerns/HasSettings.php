@@ -25,16 +25,31 @@ trait HasSettings
 
     public function setBlockSettings($settings)
     {
+        if (is_array($settings) && array_key_exists('design_variant', $settings) && $this->type == 'component') {
+            $designVariant = Arr::pull($settings, 'design_variant');
+            $this->setDesignVariant($designVariant);
+        }
+
+        if (is_array($settings) && array_key_exists('background', $settings) && $this->backgroundSettingsEnabled()) {
+            $this->setBackground($settings['background']);
+        }
+
         $this->settings = $settings;
     }
 
     public function getSettingFields()
     {
+        $settingsFields = array_merge($this->settingFields, $this->getBlockSettings());
+
         if ($this->backgroundSettingsEnabled()) {
-            return array_merge($this->getBackgroundSettings(), $this->settingFields, $this->getBlockSettings());
+            $settingsFields = array_merge($settingsFields, $this->getBackgroundSettings());
         }
 
-        return array_merge($this->settingFields, $this->getBlockSettings());
+        if ($this->type == 'component' && $this->hasDesignVariants()) {
+            $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
+        }
+
+        return $settingsFields;
     }
 
     public function storeDefaultSettingsToDatabase()

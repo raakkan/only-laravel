@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <ul class="space-y-2 w-full md:w-3/4">
+        <ul class="space-y-4 w-full md:w-3/4">
             @foreach ($template->blocks->whereNull('parent_id') as $block)
                 <livewire:only-laravel::theme.livewire.block :template="$template" :block="$block" :key="$block->id . '-' . uniqid()"
                     @show-block-settings="showBlockSettings($event.detail)" />

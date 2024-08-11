@@ -21,7 +21,7 @@ use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTheme;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTemplate;
-use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBackgroundSettings;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasColorSettings;
 
 abstract class BaseBlock implements Arrayable
 {
@@ -37,7 +37,7 @@ abstract class BaseBlock implements Arrayable
     use HasOrder;
     use HasLocation;
     use HasModel;
-    use HasBackgroundSettings;
+    use HasColorSettings;
     use Deletable;
     use Sortable;
     use HasForTemplate;

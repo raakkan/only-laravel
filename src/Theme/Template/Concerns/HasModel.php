@@ -27,6 +27,7 @@ trait HasModel
             $this->type = $this->model->type;
             $this->location = $this->model->location;
             $this->disabled = $this->model->disabled;
+            $this->designVariant = $this->model->design_variant;
             $this->setBlockSettings($this->model->settings);
 
             foreach ($this->model->children()->with('children')->where('disabled', 0)->get() as $child) {

@@ -44,4 +44,18 @@ abstract class BlockComponent extends BaseBlock
             'block' => $this
         ]);
     }
+
+    public function render()
+    {
+        foreach ($this->getDesignVariants() as $key => $value) {
+            if($key === $this->getDesignVariant() && view()->exists($value['view'])) {
+                $this->view = $value['view'];
+                break;
+            }
+        }
+
+        return view($this->view, [
+            'block' => $this
+        ]);
+    }
 }
