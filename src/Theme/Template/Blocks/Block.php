@@ -1,23 +1,12 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks;
-use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasBlockComponents;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasChildren;
 
 abstract class Block extends BaseBlock 
 {
-    use HasBlockComponents;
-    protected $children = [];
-
-    public function children($children)
-    {
-        $this->children = $children;
-        return $this;
-    }
-
-    public function getChildren()
-    {
-        return $this->children;
-    }
+    use HasChildren;
+    protected $type = 'block';
 
     public function toArray()
     {
@@ -27,7 +16,7 @@ abstract class Block extends BaseBlock
             'source' => $this->source,
             'group' => $this->group,
             'order' => $this->order,
-            'type' => $this->type ?? 'block',
+            'type' => $this->type,
         ];
     }
 
@@ -52,8 +41,15 @@ abstract class Block extends BaseBlock
         $this->setModel($model);
         $this->storeDefaultSettingsToDatabase();
 
-        foreach ($this->components as $component) {
-            $component->create($template, $model);
+        foreach ($this->childrens as $child) {
+            $child->create($template, $model);
         }
+    }
+
+    public function editorRender()
+    {
+        return view('only-laravel::templates.editor.block', [
+            'block' => $this
+        ]);
     }
 }

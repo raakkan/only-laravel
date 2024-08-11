@@ -29,14 +29,10 @@ trait HasModel
             $this->setBlockSettings($this->model->settings);
 
             foreach ($this->model->children()->with('children')->get() as $child) {
+                // TODO: check block exists or set not found
+                $block = TemplateManager::getBlockByName($child->name)->setModel($child);
                 
-                if ($child->type == 'block') {
-                    $block = TemplateManager::getBlockByName($child->name)->setModel($child);
-                } else {
-                    $block = TemplateManager::getComponentByName($child->name)->setModel($child);
-                }
-                
-                $this->children[] = $block;
+                $this->childrens[] = $block;
             }
         }
 

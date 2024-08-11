@@ -55,6 +55,7 @@ trait HasSettings
                     if ($filed instanceof Field && $filed->getDefaultState() && $this->hasModel()) {
                         
                         $blockSettings = $this->model->settings ?? [];
+
                         $this->model->update([
                             'settings' => $this->setSettingValue($blockSettings, $filed->getName(), $filed->getDefaultState()),
                         ]);

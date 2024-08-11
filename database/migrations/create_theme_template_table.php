@@ -27,6 +27,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('source')->index();
+            $table->boolean('disabled')->default(false);
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();
             $table->string('location')->default('default');

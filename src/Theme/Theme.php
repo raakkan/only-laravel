@@ -324,6 +324,7 @@ final class Theme
             $this->loadViews();
             $this->loadTranlastions();
             $this->registerThemeClass();
+            $this->registerThemeBlocks();
 
             if ($withEvent) {
                 event(new ThemeEnabled($this));

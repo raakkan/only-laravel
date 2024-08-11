@@ -37,6 +37,7 @@ class BlockSettingsComponent extends Component implements HasForms
         $block->update([
             'settings' => $this->form->getState(),
         ]);
+        $this->dispatch('block-settings-saved', id: $block->id);
 
         Notification::make()
             ->title('Block settings saved')
@@ -51,14 +52,11 @@ class BlockSettingsComponent extends Component implements HasForms
     
     public function getBlock()
     {
-        if ($this->block->type == 'block') {
-            $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block);
-        } else {
-            $block = TemplateManager::getComponentByName($this->block->name)->setModel($this->block);
-        }
+        $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block);
 
         return $block;
     }
+    
     public function render()
     {
         return view('only-laravel::theme.livewire.block-settings-component');

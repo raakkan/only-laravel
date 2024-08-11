@@ -12,9 +12,11 @@ use Raakkan\OnlyLaravel\Theme\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Addable;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasModel;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\Sortable;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\Deletable;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTheme;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
@@ -40,9 +42,23 @@ abstract class BaseBlock implements Arrayable
     use Sortable;
     use HasForTemplate;
     use HasForTheme;
+    use Addable;
+    use Disableable;
 
     protected $parent;
     protected $view;
+    protected $templateModel;
+
+    public function getTemplateModel()
+    {
+        return $this->templateModel;
+    }
+
+    public function setTemplateModel($templateModel)
+    {
+        $this->templateModel = $templateModel;
+        return $this;
+    }
 
     public function getLabel()
     {

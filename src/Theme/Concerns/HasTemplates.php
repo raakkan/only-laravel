@@ -2,9 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\Block;
-use Raakkan\OnlyLaravel\Theme\Template\Blocks\Components\BlockComponent;
 use Raakkan\OnlyLaravel\Theme\Template\Template;
+use Raakkan\OnlyLaravel\Theme\Template\Blocks\Block;
+use Raakkan\OnlyLaravel\Theme\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Theme\Template\Blocks\BaseBlock;
 
 trait HasTemplates
 {
@@ -21,15 +22,6 @@ trait HasTemplates
         return [];
     }
 
-    public function includeCoreBlockComponents(): bool
-    {
-        if ($this->hasThemeClass()) {
-            return $this->themeClass::includeCoreBlockComponents();
-        }
-
-        return true;
-    }
-
     public function includeCoreBlocks(): bool
     {
         if ($this->hasThemeClass()) {
@@ -39,29 +31,23 @@ trait HasTemplates
         return true;
     }
 
-    public function getBlockComponents(): array
-    {
-        if ($this->hasThemeClass()) {
-            return collect($this->themeClass::getBlockComponents())->filter(function ($item){
-                return $item instanceof BlockComponent;
-            })->each(function ($component) {
-                $component->setSource($this->getNamespace());
-            })->all();
-        }
-
-        return [];
-    }
-
     public function getBlocks(): array
     {
         if ($this->hasThemeClass()) {
             return collect($this->themeClass::getBlocks())->filter(function ($item){
-                return $item instanceof Block;
+                return $item instanceof BaseBlock;
             })->each(function ($block) {
                 $block->setSource($this->getNamespace());
             })->all();
         }
 
         return [];
+    }
+
+    public function registerThemeBlocks()
+    {
+        if ($this->hasThemeClass()) {
+            TemplateManager::registerBlocks($this->getBlocks());
+        }
     }
 }

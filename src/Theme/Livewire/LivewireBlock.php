@@ -31,12 +31,11 @@ class LivewireBlock extends Component implements HasForms, HasActions
            return null;
         }
 
-        if ($this->block->type == 'block') {
-            $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block);
+        $block = TemplateManager::getBlockByName($this->block->name)->setModel($this->block)->setTemplateModel($this->template);
+        
+        if ($block->getType() == 'block') {
             $block->components($this->getBlockComponents());
-        } else {
-            $block = TemplateManager::getComponentByName($this->block->name)->setModel($this->block);
-        };
+        }
 
         return $block;
     }
@@ -47,11 +46,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
         
         $blockComponents = [];
         foreach ($components as $component) {
-            if ($component->type == 'block') {
-                $blockComponents[] = TemplateManager::getBlockByName($component->name)->setModel($component);
-            } else {
-                $blockComponents[] = TemplateManager::getComponentByName($component->name)->setModel($component);
-            }
+            $blockComponents[] = TemplateManager::getBlockByName($component->name)->setModel($component)->setTemplateModel($this->template);
         }
         
         return $blockComponents;
@@ -77,11 +72,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
             'parent_id' => $this->block->id
         ]);
 
-        if ($blockModel->type == 'block') {
-            $block = TemplateManager::getBlockByName($blockModel->name)->setModel($blockModel);
-        } else {
-            $block = TemplateManager::getComponentByName($blockModel->name)->setModel($blockModel);
-        };
+        $block = TemplateManager::getBlockByName($blockModel->name)->setModel($blockModel);
 
         $block->storeDefaultSettingsToDatabase();
 

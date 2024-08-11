@@ -15,4 +15,10 @@ trait HasLocation
     {
         return $this->location;
     }
+
+    public function setLocation($location)
+    {
+        $this->location = $location;
+        return $this;
+    }
 }

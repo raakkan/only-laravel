@@ -11,20 +11,19 @@ class BlockItemsComponent extends Component
 {
     public function mount()
     {
-        TemplateManager::collectThemeBlocksAndComponents();
     }
 
     public function getBlocks()
     {
         return collect(TemplateManager::getBlocks())->filter(function ($block) {
-            return !$block->hasGroup();
+            return !$block->hasGroup() && $block->getType() == 'block' && $block->isAddable();
         });
     }
 
     public function getBlockGroups()
     {
         return collect(TemplateManager::getBlocks())->filter(function ($block) {
-            return $block->hasGroup();
+            return $block->hasGroup() && $block->getType() == 'block' && $block->isAddable();
         })->map(function ($block) {
             return $block->getGroup();
         })->unique();
@@ -33,21 +32,21 @@ class BlockItemsComponent extends Component
     public function getGrouppedBlocks()
     {
         return collect(TemplateManager::getBlocks())->filter(function ($block) {
-            return $block->hasGroup();
+            return $block->hasGroup() && $block->getType() == 'block' && $block->isAddable();
         });
     }
 
     public function getComponents()
     {
-        return collect(TemplateManager::getBlockComponents())->filter(function ($item) {
-            return !$item->hasGroup();
+        return collect(TemplateManager::getBlocks())->filter(function ($item) {
+            return !$item->hasGroup() && $item->getType() == 'component' && $item->isAddable();
         });
     }
 
     public function getComponentGroups()
     {
-        return collect(TemplateManager::getBlockComponents())->filter(function ($item) {
-            return $item->hasGroup();
+        return collect(TemplateManager::getBlocks())->filter(function ($item) {
+            return $item->hasGroup() && $item->getType() == 'component' && $item->isAddable();
         })->map(function ($item) {
             return $item->getGroup();
         })->unique();
@@ -55,8 +54,8 @@ class BlockItemsComponent extends Component
 
     public function getGrouppedComponents()
     {
-        return collect(TemplateManager::getBlockComponents())->filter(function ($item) {
-            return $item->hasGroup();
+        return collect(TemplateManager::getBlocks())->filter(function ($item) {
+            return $item->hasGroup() && $item->getType() == 'component' && $item->isAddable();
         });
     }
 

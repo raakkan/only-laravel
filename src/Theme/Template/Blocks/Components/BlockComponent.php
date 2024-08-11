@@ -8,12 +8,13 @@ use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasDesignVariant;
 abstract class BlockComponent extends BaseBlock
 {
     use HasDesignVariant;
+    protected $type = 'component';
     
     public function toArray()
     {
         return [
             'name' => $this->name,
-            'type' => $this->type ?? 'component',
+            'type' => $this->type,
             'group' => $this->group,
             'source' => $this->source,
         ];
@@ -35,5 +36,12 @@ abstract class BlockComponent extends BaseBlock
         
         $this->setModel($model);
         $this->storeDefaultSettingsToDatabase();
+    }
+
+    public function editorRender()
+    {
+        return view('only-laravel::templates.editor.component', [
+            'block' => $this
+        ]);
     }
 }

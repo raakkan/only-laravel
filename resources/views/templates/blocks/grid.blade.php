@@ -1,9 +1,9 @@
 <div>
     @php
-        $children = $block->getChildren();
+        $childrens = $block->getChildrens();
     @endphp
 
-    @foreach ($children as $child)
+    @foreach ($childrens as $child)
         {{ $child->render() }}
     @endforeach
 </div>

@@ -18,7 +18,7 @@ class ContentBlock extends Block
     protected $backgroundSettings = true;
 
     public $sidebar = true;
-    public $sidebarPosition = ContentSidebar::LEFT;
+    public $sidebarPosition = ContentSidebar::RIGHT;
     protected $view = 'only-laravel::templates.blocks.content';
 
     public function sideBar($sideBar = true, $position = ContentSidebar::LEFT)
@@ -28,14 +28,41 @@ class ContentBlock extends Block
         return $this;
     }
 
-    public function leftSideBar()
+    /**
+     * @doc Add blocks to the left sidebar of the content block. Important: call this method after adding blocks to the content block.
+     */
+    public function leftSideBar($blocks = [])
     {
+        $sidebarBlocks = collect($blocks)->filter(function ($item){
+            return $item instanceof BaseBlock;
+        })->each(function ($block) {
+            $block->setLocation('left-sidebar');
+        })->all();
+
+        $this->childrens = array_merge($this->childrens, $sidebarBlocks);
+
         return $this->sideBar(true, ContentSidebar::LEFT);
     }
 
-    public function rightSideBar()
+    /**
+     * @doc Add blocks to the right sidebar of the content block. Important: call this method after adding blocks to the content block.
+     */
+    public function rightSideBar($blocks = [])
     {
+        $sidebarBlocks = collect($blocks)->filter(function ($item){
+            return $item instanceof BaseBlock;
+        })->each(function ($block) {
+            $block->setLocation('right-sidebar');
+        })->all();
+
+        $this->childrens = array_merge($this->childrens, $sidebarBlocks);
+
         return $this->sideBar(true, ContentSidebar::RIGHT);
+    }
+
+    public function sidebarBothSides()
+    {
+        return $this->sideBar(true, ContentSidebar::BOTH);
     }
 
     public function isSideBarEnabled()
@@ -53,9 +80,10 @@ class ContentBlock extends Block
         return [
             Section::make('Sidebar')->schema([
                 Toggle::make('sidebar.enabled')->label('Enabled')->default(true),
-                Select::make('sidebar.position')->label('Position')->default($this->getSideBarPosition())->options([
+                Select::make('sidebar.position')->label('Position')->default($this->getSideBarPosition()->value)->options([
                     ContentSidebar::LEFT->value => ContentSidebar::LEFT->name,
                     ContentSidebar::RIGHT->value => ContentSidebar::RIGHT->name,
+                    ContentSidebar::BOTH->value => ContentSidebar::BOTH->name,
                 ]),
             ])->compact()
         ];
@@ -63,9 +91,21 @@ class ContentBlock extends Block
 
     public function setBlockSettings($settings)
     {
-        if(array_key_exists('sidebar', $settings)) {
+        if(is_array($settings) && array_key_exists('sidebar', $settings)) {
             $this->sidebar = $settings['sidebar']['enabled'];
-            $this->sidebarPosition = $settings['sidebar']['position'];
+            $this->sidebarPosition = $this->getSidebarEnum($settings['sidebar']['position']);
         }
+    }
+
+    public function getSidebarEnum($position)
+    {
+        return ContentSidebar::from($position);
+    }
+
+    public function editorRender()
+    {
+        return view('only-laravel::templates.editor.content', [
+            'block' => $this
+        ]);
     }
 }
