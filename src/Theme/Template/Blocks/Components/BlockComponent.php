@@ -3,7 +3,7 @@
 namespace Raakkan\OnlyLaravel\Theme\Template\Blocks\Components;
 
 use Raakkan\OnlyLaravel\Theme\Template\Blocks\BaseBlock;
-use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasDesignVariant;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Design\HasDesignVariant;
 
 abstract class BlockComponent extends BaseBlock
 {

@@ -4,7 +4,7 @@
             {{ $this->form }}
         </form>
 
-        <div class="flex justify-end mt-2">
+        <div class="flex justify-end mt-5">
             <x-filament::button wire:click="save">
                 Save
             </x-filament::button>

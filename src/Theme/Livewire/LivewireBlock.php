@@ -90,16 +90,19 @@ class LivewireBlock extends Component implements HasForms, HasActions
             ->icon('heroicon-o-trash')
             ->iconButton()
             ->color('danger')
+            ->before(function (Component $livewire) {
+                $livewire->dispatch('block-going-to-be-deleted');
+            })
             ->action(function (Component $livewire) {
-                $order = $this->block->order;
-                $parentId = $this->block->parent_id;
-                $location = $this->block->location;
+                // $order = $this->block->order;
+                // $parentId = $this->block->parent_id;
+                // $location = $this->block->location;
         
-                $this->block->delete();
+                // $this->block->delete();
 
-                $livewire->dispatch('block-deleted');
+                // $livewire->dispatch('block-deleted');
 
-                ThemeTemplateBlock::reorderSiblings($this->template, $order, $parentId, $location);
+                // ThemeTemplateBlock::reorderSiblings($this->template, $order, $parentId, $location);
                 
                 Notification::make()
                     ->title('Block deleted')

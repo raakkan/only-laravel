@@ -26,12 +26,29 @@ trait HasSettings
     public function setBlockSettings($settings)
     {
         if (is_array($settings) && array_key_exists('design_variant', $settings) && $this->type == 'component') {
-            $designVariant = Arr::pull($settings, 'design_variant');
-            $this->setDesignVariant($designVariant);
+            $this->setDesignVariant(Arr::pull($settings, 'design_variant'));
         }
 
-        if (is_array($settings) && array_key_exists('background', $settings) && $this->backgroundSettingsEnabled()) {
-            $this->setBackground($settings['background']);
+        if (is_array($settings) && array_key_exists('color', $settings) && $this->hasColorSettings()) {
+            $colorSettings = Arr::pull($settings, 'color');
+            if (array_key_exists('background', $colorSettings)) {
+                $this->backgroundColor = $colorSettings['background']['color'];
+                $this->backgroundImage = $colorSettings['background']['image'] ?? null;
+            }
+
+            if (array_key_exists('text', $colorSettings)) {
+                $this->textColor = $colorSettings['text']['color'];
+            }
+        }
+
+        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasFontSettings()) {
+            $textSettings = Arr::pull($settings, 'text');
+            $this->fontFamily = $textSettings['font']['family'] ?? null;
+            $this->fontSize = $textSettings['font']['size'] ?? null;
+            $this->fontWeight = $textSettings['font']['weight'] ?? null;
+            $this->fontStyle = $textSettings['font']['style'] ?? null;
+            $this->latterSpacing = $textSettings['font']['latterSpacing'] ?? null;
+            $this->lineHeight = $textSettings['font']['lineHeight'] ?? null;
         }
 
         $this->settings = $settings;
@@ -41,12 +58,16 @@ trait HasSettings
     {
         $settingsFields = array_merge($this->settingFields, $this->getBlockSettings());
 
-        if ($this->backgroundSettingsEnabled()) {
-            $settingsFields = array_merge($settingsFields, $this->getBackgroundSettings());
-        }
-
         if ($this->type == 'component' && $this->hasDesignVariants()) {
             $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
+        }
+
+        if ($this->hasColorSettings()) {
+            $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
+        }
+
+        if ($this->hasFontSettings()) {
+            $settingsFields = array_merge($settingsFields, $this->getFontSettingFields());
         }
 
         return $settingsFields;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Template\Concerns;
+namespace Raakkan\OnlyLaravel\Theme\Template\Concerns\Design;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;

@@ -21,7 +21,8 @@ use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTheme;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasSettings;
 use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasForTemplate;
-use Raakkan\OnlyLaravel\Theme\Template\Concerns\HasColorSettings;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Design\HasTextSettings;
+use Raakkan\OnlyLaravel\Theme\Template\Concerns\Design\HasColorSettings;
 
 abstract class BaseBlock implements Arrayable
 {
@@ -44,6 +45,7 @@ abstract class BaseBlock implements Arrayable
     use HasForTheme;
     use Addable;
     use Disableable;
+    use HasTextSettings;
 
     protected $parent;
     protected $view;

@@ -23,6 +23,12 @@ class TemplatePage extends Page
         $this->template->refresh();
     }
 
+    #[On('block-going-to-be-deleted')] 
+    public function blockGoingToBeDeleted()
+    {
+        $this->selectedBlock = null;
+    }
+
     public function mount()
     {
         $this->getTemplate()->create();
