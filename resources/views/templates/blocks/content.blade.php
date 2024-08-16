@@ -1,9 +1,49 @@
 <div>
+    <style>
+        .content-container {
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .content-container {
+                max-width: 640px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .content-container {
+                max-width: 768px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .content-container {
+                max-width: 1024px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .content-container {
+                max-width: 1280px;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .content-container {
+                max-width: 1536px;
+            }
+        }
+    </style>
+
     @php
         $settings = $block->settings;
     @endphp
-    <div class="container mx-auto py-6 px-4">
-        <div class="flex flex-wrap w-full">
+    <div class="content-container">
+        <div style="display: flex; width: 100%;">
             @if ($block->sidebar)
                 @if ($block->sidebarPosition->value === 'left' || $block->sidebarPosition->value === 'both')
                     <aside style="width: 25%; background-color: #f50505">

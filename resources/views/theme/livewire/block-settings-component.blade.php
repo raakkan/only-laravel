@@ -1,5 +1,5 @@
 <div class="p-2">
-    @if (count($this->form->getComponents()) > 0)
+    @if ($this->getBlockModel && count($this->form->getComponents()) > 0)
         <form wire:submit="saveSettings">
             {{ $this->form }}
         </form>

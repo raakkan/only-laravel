@@ -5,7 +5,7 @@ namespace  Raakkan\OnlyLaravel\Providers;
 use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Theme\ThemesManager;
-use Raakkan\OnlyLaravel\Theme\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -47,9 +47,9 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
     public function registerLivewireComponents(): void
     {
-        Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Theme\Livewire\MenuItemManage::class);
-        Livewire::component('only-laravel::theme.livewire.block', \Raakkan\OnlyLaravel\Theme\Livewire\LivewireBlock::class);
-        Livewire::component('only-laravel::theme.livewire.block-items-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockItemsComponent::class);
-        Livewire::component('only-laravel::theme.livewire.block-settings-component', \Raakkan\OnlyLaravel\Theme\Livewire\BlockSettingsComponent::class);
+        Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Template\Livewire\MenuItemManage::class);
+        Livewire::component('only-laravel::theme.livewire.block', \Raakkan\OnlyLaravel\Template\Livewire\LivewireBlock::class);
+        Livewire::component('only-laravel::theme.livewire.block-items-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockItemsComponent::class);
+        Livewire::component('only-laravel::theme.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
     }
 }

@@ -18,8 +18,8 @@
 
                 <div x-show="activeTab === 'settings'">
                     @if ($selectedBlock)
-                        <livewire:only-laravel::theme.livewire.block-settings-component :block="$selectedBlock"
-                            :key="$selectedBlock->id . '-' . uniqid()" />
+                        <livewire:only-laravel::theme.livewire.block-settings-component :blockId="$selectedBlock"
+                            :key="$selectedBlock . '-' . uniqid()" />
                     @else
                         <div class="p-2 text-gray-400 text-center">No block or component selected. click settings icon
                             to select</div>

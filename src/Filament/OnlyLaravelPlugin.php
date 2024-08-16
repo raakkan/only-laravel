@@ -6,17 +6,13 @@ use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Theme\Filament\Pages\MenuPage;
-use Raakkan\OnlyLaravel\Theme\Filament\Pages\TemplatePage;
-use Raakkan\OnlyLaravel\Theme\Filament\Pages\ThemesPage;
+use Raakkan\OnlyLaravel\Filament\Pages\TemplatePage;
 
 class OnlyLaravelPlugin implements Plugin
 {
     use Makable;
     
     protected $pages = [
-        ThemesPage::class,
-        MenuPage::class,
         TemplatePage::class
     ];
 

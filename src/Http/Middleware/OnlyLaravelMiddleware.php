@@ -4,7 +4,6 @@ namespace Raakkan\OnlyLaravel\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Raakkan\OnlyLaravel\Setting\Models\Setting;
-use Raakkan\OnlyLaravel\Theme\Facades\ThemesManager;
 
 class OnlyLaravelMiddleware
 {
@@ -19,13 +18,13 @@ class OnlyLaravelMiddleware
             return $next($request);
         }
 
-        if (! is_null($theme)) {
-            ThemesManager::set($theme);
-        } else {
-            if ($theme = config('only-laravel::themes.fallback_theme')) {
-                ThemesManager::set($theme);
-            }
-        }
+        // if (! is_null($theme)) {
+        //     ThemesManager::set($theme);
+        // } else {
+        //     if ($theme = config('only-laravel::themes.fallback_theme')) {
+        //         ThemesManager::set($theme);
+        //     }
+        // }
 
         return $next($request);
     }

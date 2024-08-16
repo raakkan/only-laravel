@@ -1,6 +1,5 @@
 <div class="bg-white border border-gray-200 capitalize">
     <x-only-laravel::template.block-header :block="$block" />
-
     @if (!$block->isDisabled())
         <ul x-sort="handle" class="p-2 space-y-3">
             @forelse ($block->getChildrensByLocation('default') as $blockComponent)
