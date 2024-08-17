@@ -38,28 +38,26 @@ trait HasTextSettings
         return $this;
     }
 
-    public function getFontSettingFields()
+    public function getTextSettingFields()
     {
         $fields = [];
 
         if ($this->fontSettings) {
-            $fields[] = Select::make('text.font.family')
+            $fields[] = Select::make('fontFamily')
             ->label('Font Family')
             ->options($this->availableFontFamilies)
             ->default($this->fontFamily);
-            $fields[] = TextInput::make('text.font.size')->label('Font Size')->numeric()->default($this->fontSize) ->helperText('size in rem');
-            $fields[] = TextInput::make('text.font.weight')->label('Font Weight')->default($this->fontWeight);
-            $fields[] = Select::make('text.font.style')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle);
-            $fields[] = TextInput::make('text.font.latterSpacing')->label('Latter Spacing')->numeric()->default($this->latterSpacing)->helperText('size in rem');
-            $fields[] = TextInput::make('text.font.lineHeight')->label('Line Height')->numeric()->default($this->lineHeight)->helperText('size in rem');
+            $fields[] = TextInput::make('fontSize')->label('Font Size')->numeric()->default($this->fontSize) ->helperText('size in rem')->live(debounce: 500);
+            $fields[] = TextInput::make('fontWeight')->label('Font Weight')->default($this->fontWeight)->live(debounce: 500);
+            $fields[] = Select::make('fontStyle')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle)->live(debounce: 500);
+            $fields[] = TextInput::make('letterSpacing')->label('Latter Spacing')->numeric()->default($this->latterSpacing)->helperText('size in rem')->live(debounce: 500);
+            $fields[] = TextInput::make('lineHeight')->label('Line Height')->numeric()->default($this->lineHeight)->helperText('size in rem')->live(debounce: 500);
         }
 
-        return [
-            Section::make('Font Settings')->schema($fields)->compact()
-        ];
+        return $fields;
     }
 
-    public function hasFontSettings()
+    public function hasTextSettings()
     {
         return $this->fontSettings;
     }

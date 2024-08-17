@@ -41,7 +41,7 @@ trait HasSettings
             }
         }
 
-        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasFontSettings()) {
+        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasTextSettings()) {
             $textSettings = Arr::pull($settings, 'text');
             $this->fontFamily = $textSettings['font']['family'] ?? null;
             $this->fontSize = $textSettings['font']['size'] ?? null;
@@ -54,20 +54,22 @@ trait HasSettings
         $this->settings = $settings;
     }
 
-    public function getSettingFields()
+    public function getSettingFields($includeAll = false)
     {
-        $settingsFields = array_merge($this->settingFields, $this->getBlockSettings());
+        $settingsFields = $this->settingFields ?? $this->getBlockSettings();
 
-        if ($this->type == 'component' && $this->hasDesignVariants()) {
-            $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
-        }
-
-        if ($this->hasColorSettings()) {
-            $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
-        }
-
-        if ($this->hasFontSettings()) {
-            $settingsFields = array_merge($settingsFields, $this->getFontSettingFields());
+        if ($includeAll) {
+            if ($this->type == 'component' && $this->hasDesignVariants()) {
+                $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
+            }
+    
+            if ($this->hasColorSettings()) {
+                $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
+            }
+    
+            if ($this->hasTextSettings()) {
+                $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
+            }
         }
 
         return $settingsFields;
@@ -76,7 +78,7 @@ trait HasSettings
     public function storeDefaultSettingsToDatabase()
     {
         // dd($this->getSettingFields());
-        foreach ($this->getSettingFields() as $field) {
+        foreach ($this->getSettingFields(true) as $field) {
             if ($field instanceof Field && $field->getDefaultState() && $this->hasModel()) {
 
                 $blockSettings = $this->model->settings ?? [];

@@ -15,6 +15,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@alpinejs/anchor": "^3.14.1",
     "@alpinejs/sort": "^3.14.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "laravel-vite-plugin": "^1.0.5",

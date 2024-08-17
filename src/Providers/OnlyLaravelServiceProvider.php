@@ -51,5 +51,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         Livewire::component('only-laravel::template.livewire.block', \Raakkan\OnlyLaravel\Template\Livewire\LivewireBlock::class);
         Livewire::component('only-laravel::template.livewire.block-items-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockItemsComponent::class);
         Livewire::component('only-laravel::template.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
+        Livewire::component('only-laravel::template.livewire.block-color-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockColorSettings::class);
+        Livewire::component('only-laravel::template.livewire.block-text-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockTextSettings::class);
     }
 }

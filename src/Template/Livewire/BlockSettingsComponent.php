@@ -37,8 +37,9 @@ class BlockSettingsComponent extends Component implements HasForms
     public function save()
     {
         $block = TemplateBlockModel::find($this->blockId);
+        $settings = array_merge($block->settings, $this->form->getState());
         $block->update([
-            'settings' => $this->form->getState(),
+            'settings' => $settings,
         ]);
         $this->dispatch('block-settings-saved', id: $block->id);
 

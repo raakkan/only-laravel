@@ -37,30 +37,28 @@ trait HasColorSettings
         $fields = [];
         if ($this->backgroundType == BackgroundType::COLOR) {
             $fields = [
-                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
+                ColorPicker::make('backgroundColor')->label('Background Color')->default($this->backgroundColor)->live(debounce: 500),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::IMAGE) {
             $fields = [
-                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
+                TextInput::make('backgroundImage')->label('Background Image')->default($this->backgroundImage)->live(debounce: 500),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::BOTH) {
             $fields = [
-                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
-                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
+                ColorPicker::make('backgroundColor')->label('Background Color')->default($this->backgroundColor)->live(debounce: 500),
+                TextInput::make('backgroundImage')->label('Background Image')->default($this->backgroundImage)->live(debounce: 500),
             ];
         }
         
         if ($this->textColorSettings) {
-            $fields[] = ColorPicker::make('color.text.color')->label('Text Color')->default($this->textColor);
+            $fields[] = ColorPicker::make('textColor')->label('Text Color')->default($this->textColor)->live(debounce: 500);
         }
         
-        return [
-            Section::make('Color Settings')->schema($fields)->compact()
-        ];
+        return $fields;
     }
 
     public function hasColorSettings()

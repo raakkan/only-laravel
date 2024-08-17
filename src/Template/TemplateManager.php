@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
+use Illuminate\Support\Facades\File;
 use Raakkan\OnlyLaravel\Template\Blocks\GridBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
@@ -20,8 +21,25 @@ class TemplateManager
     {
         $blocks = $this->blocks;
 
-        $blocks = array_merge($this->getCoreBlocks(), $blocks);
-        
+        // Collect blocks from app/OnlyLaravel/Template/Blocks directory
+        // $blockClasses = collect(File::allFiles(app_path('OnlyLaravel/Template/Blocks')))
+        //     ->map(function ($file) {
+        //         $className = 'App\\OnlyLaravel\\Template\\Blocks\\' . $file->getFilenameWithoutExtension();
+        //         return new $className();
+        //     });
+
+        // Collect components from app/OnlyLaravel/Template/Components directory
+        $componentClasses = collect(File::allFiles(app_path('OnlyLaravel/Template/Components')))
+            ->map(function ($file) {
+                $className = 'App\\OnlyLaravel\\Template\\Components\\' . $file->getFilenameWithoutExtension();
+                $component = new $className();
+                $component->source('app');
+                return $component;
+            });
+
+        // Merge core blocks, custom blocks, collected blocks, and components
+        $blocks = array_merge($this->getCoreBlocks(), $blocks,  $componentClasses->all());
+
         return $blocks;
     }
 
