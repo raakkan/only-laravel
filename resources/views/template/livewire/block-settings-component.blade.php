@@ -1,5 +1,8 @@
-<div class="p-2">
-    @if ($this->getBlockModel && count($this->form->getComponents()) > 0)
+<div>
+    <div class="p-2 text-gray-400 text-center bg-gray-100 mb-2 rounded">
+        Please click save button to save settings
+    </div>
+    @if (count($this->form->getComponents()) > 0)
         <form wire:submit="saveSettings">
             {{ $this->form }}
         </form>

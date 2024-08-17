@@ -7,6 +7,8 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 
 class BlockItemsComponent extends Component
 {
+    public $search = '';
+
     public function mount()
     {
     }
@@ -15,6 +17,10 @@ class BlockItemsComponent extends Component
     {
         return collect(TemplateManager::getBlocks())->filter(function ($block) {
             return !$block->hasGroup() && $block->getType() == 'block' && $block->isAddable();
+        })->when($this->search, function ($blocks) {
+            return $blocks->filter(function ($block) {
+                return str_contains($block->getName(), $this->search);
+            });
         });
     }
 
@@ -31,6 +37,10 @@ class BlockItemsComponent extends Component
     {
         return collect(TemplateManager::getBlocks())->filter(function ($block) {
             return $block->hasGroup() && $block->getType() == 'block' && $block->isAddable();
+        })->when($this->search, function ($blocks) {
+            return $blocks->filter(function ($block) {
+                return str_contains($block->getName(), $this->search);
+            });
         });
     }
 
@@ -38,6 +48,10 @@ class BlockItemsComponent extends Component
     {
         return collect(TemplateManager::getBlocks())->filter(function ($item) {
             return !$item->hasGroup() && $item->getType() == 'component' && $item->isAddable();
+        })->when($this->search, function ($blocks) {
+            return $blocks->filter(function ($block) {
+                return str_contains($block->getName(), $this->search);
+            });
         });
     }
 
@@ -54,6 +68,10 @@ class BlockItemsComponent extends Component
     {
         return collect(TemplateManager::getBlocks())->filter(function ($item) {
             return $item->hasGroup() && $item->getType() == 'component' && $item->isAddable();
+        })->when($this->search, function ($blocks) {
+            return $blocks->filter(function ($block) {
+                return str_contains($block->getName(), $this->search);
+            });
         });
     }
 

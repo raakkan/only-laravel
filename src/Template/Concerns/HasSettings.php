@@ -56,13 +56,9 @@ trait HasSettings
 
     public function getSettingFields($includeAll = false)
     {
-        $settingsFields = $this->settingFields ?? $this->getBlockSettings();
+        $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields);
 
         if ($includeAll) {
-            if ($this->type == 'component' && $this->hasDesignVariants()) {
-                $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
-            }
-    
             if ($this->hasColorSettings()) {
                 $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
             }
@@ -70,6 +66,10 @@ trait HasSettings
             if ($this->hasTextSettings()) {
                 $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
             }
+        }
+
+        if ($this->type == 'component' && $this->hasDesignVariants()) {
+            $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
         }
 
         return $settingsFields;
@@ -83,7 +83,7 @@ trait HasSettings
 
                 $blockSettings = $this->model->settings ?? [];
                 $this->model->update([
-                    'settings' => array_merge($blockSettings, $this->setSettingValue($blockSettings, $filed->getName(), $filed->getDefaultState())),
+                    'settings' => array_merge($blockSettings, $this->setSettingValue($blockSettings, $field->getName(), $field->getDefaultState())),
                 ]);
             }
 
@@ -112,6 +112,16 @@ trait HasSettings
             $settings[$name] = $value;
         }
         return $settings;
+    }
+
+    public function hasSettings()
+    {
+        return count($this->getSettingFields()) > 0;
+    }
+
+    public function hasAnySettings()
+    {
+        return count($this->getSettingFields(true)) > 0;
     }
 
 }

@@ -6,14 +6,18 @@ use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Filament\Pages\TemplatePage;
+use Raakkan\OnlyLaravel\Filament\Resources\MenuResource;
+use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 
 class OnlyLaravelPlugin implements Plugin
 {
     use Makable;
     
     protected $pages = [
-        TemplatePage::class
+    ];
+    protected $resources = [
+        TemplateResource::class,
+        MenuResource::class
     ];
 
     public function getId(): string
@@ -22,7 +26,7 @@ class OnlyLaravelPlugin implements Plugin
     }
     public function register(Panel $panel): void
     {
-        $panel->pages($this->pages)->navigationGroups([
+        $panel->pages($this->pages)->resources($this->resources)->navigationGroups([
             NavigationGroup::make()
                  ->label('Appearance')
                  ->icon('heroicon-o-paint-brush'),

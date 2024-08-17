@@ -16,15 +16,12 @@ class BlockSettingsComponent extends Component implements HasForms
 {
     use InteractsWithForms;
     
-    #[Reactive] 
-    public $blockId;
+    public TemplateBlockModel $blockModel;
     public ?array $settings = [];
 
     public function mount()
     {
-        if ($this->blockId && $this->getBlockModel()) {
-            $this->form->fill($this->getBlockModel()->settings);
-        }
+        $this->form->fill($this->blockModel->settings);
     }
 
     public function form(Form $form): Form
@@ -36,12 +33,11 @@ class BlockSettingsComponent extends Component implements HasForms
 
     public function save()
     {
-        $block = TemplateBlockModel::find($this->blockId);
-        $settings = array_merge($block->settings, $this->form->getState());
-        $block->update([
+        $settings = array_merge($this->blockModel->settings, $this->form->getState());
+        $this->blockModel->update([
             'settings' => $settings,
         ]);
-        $this->dispatch('block-settings-saved', id: $block->id);
+        $this->dispatch('block-settings-saved', id: $this->blockModel->id);
 
         Notification::make()
             ->title('Block settings saved')
@@ -56,15 +52,9 @@ class BlockSettingsComponent extends Component implements HasForms
     
     public function getBlock()
     {
-        $block = TemplateManager::getBlockByName($this->getBlockModel()->name)->setModel($this->getBlockModel());
+        $block = TemplateManager::getBlockByName($this->blockModel->name)->setModel($this->blockModel);
 
         return $block;
-    }
-
-    #[Computed]
-    public function getBlockModel()
-    {
-        return TemplateBlockModel::find($this->blockId);
     }
     
     public function render()
