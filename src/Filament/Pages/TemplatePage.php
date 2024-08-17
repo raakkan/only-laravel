@@ -8,7 +8,7 @@ use Raakkan\OnlyLaravel\Models\TemplateModel;
 
 class TemplatePage extends Page
 {
-    protected static string $view = 'only-laravel::theme.filament.pages.template-page';
+    protected static string $view = 'only-laravel::filament.pages.template-page';
 
     protected static ?string $navigationGroup = 'Appearance';
     protected static ?string $slug = 'appearance/templates';

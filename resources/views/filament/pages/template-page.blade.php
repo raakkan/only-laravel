@@ -13,12 +13,12 @@
                     </div>
                 </div>
                 <div x-show="activeTab === 'blocks'">
-                    <livewire:only-laravel::theme.livewire.block-items-component />
+                    <livewire:only-laravel::template.livewire.block-items-component />
                 </div>
 
                 <div x-show="activeTab === 'settings'">
                     @if ($selectedBlock)
-                        <livewire:only-laravel::theme.livewire.block-settings-component :blockId="$selectedBlock"
+                        <livewire:only-laravel::template.livewire.block-settings-component :blockId="$selectedBlock"
                             :key="$selectedBlock . '-' . uniqid()" />
                     @else
                         <div class="p-2 text-gray-400 text-center">No block or component selected. click settings icon
@@ -30,7 +30,7 @@
 
         <ul class="space-y-4 w-full md:w-3/4">
             @foreach ($template->blocks->whereNull('parent_id') as $block)
-                <livewire:only-laravel::theme.livewire.block :template="$template" :block="$block" :key="$block->id . '-' . uniqid()"
+                <livewire:only-laravel::template.livewire.block :template="$template" :block="$block" :key="$block->id . '-' . uniqid()"
                     @show-block-settings="showBlockSettings($event.detail)" />
             @endforeach
         </ul>

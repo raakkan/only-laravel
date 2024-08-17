@@ -59,6 +59,6 @@ class BlockItemsComponent extends Component
 
     public function render()
     {
-        return view('only-laravel::theme.livewire.block-items-component');
+        return view('only-laravel::template.livewire.block-items-component');
     }
 }

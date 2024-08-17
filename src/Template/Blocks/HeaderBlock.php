@@ -19,5 +19,5 @@ class HeaderBlock extends Block
         'image' => 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
     ];
 
-    protected $view = 'only-laravel::templates.blocks.header';
+    protected $view = 'only-laravel::template.blocks.header';
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Livewire;
+namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
 use Filament\Forms\Form;
@@ -68,6 +68,6 @@ class BlockSettingsComponent extends Component implements HasForms
     
     public function render()
     {
-        return view('only-laravel::theme.livewire.block-settings-component');
+        return view('only-laravel::template.livewire.block-settings-component');
     }
 }

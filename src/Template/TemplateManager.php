@@ -20,9 +20,7 @@ class TemplateManager
     {
         $blocks = $this->blocks;
 
-        // if ($this->getActiveTheme()->includeCoreBlocks()) {
-        //     $blocks = array_merge($this->getCoreBlocks(), $blocks);
-        // }
+        $blocks = array_merge($this->getCoreBlocks(), $blocks);
         
         return $blocks;
     }

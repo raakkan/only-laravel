@@ -75,6 +75,6 @@ class TemplateBlockModel extends Model
 
     public function getTable(): string
     {
-        return 'theme_template_blocks';
+        return 'template_blocks';
     }
 }

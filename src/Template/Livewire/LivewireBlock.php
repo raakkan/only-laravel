@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Livewire;
+namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
 use Filament\Actions\Action;
@@ -136,6 +136,6 @@ class LivewireBlock extends Component implements HasForms, HasActions
 
     public function render()
     {
-        return view('only-laravel::theme.livewire.block');
+        return view('only-laravel::template.livewire.block');
     }
 }

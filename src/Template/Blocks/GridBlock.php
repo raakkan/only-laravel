@@ -8,5 +8,5 @@ class GridBlock extends Block
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
 
-    protected $view = 'only-laravel::templates.blocks.grid';
+    protected $view = 'only-laravel::template.blocks.grid';
 }

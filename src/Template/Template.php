@@ -11,7 +11,6 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\HasForTheme;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSettings;
 
 class Template implements Arrayable
@@ -23,7 +22,6 @@ class Template implements Arrayable
     use HasSettings;
     use HasSource;
     use HasForPage;
-    use HasForTheme;
 
     public function __construct($name)
     {
@@ -34,7 +32,6 @@ class Template implements Arrayable
     {
         $this->name = $templateModel->name;
         $this->source = $templateModel->source;
-        $this->forTheme = $templateModel->for_theme;
         $this->forPage = $templateModel->for_page;
         
         $blocks = [];
@@ -54,7 +51,6 @@ class Template implements Arrayable
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
             'source' => $this->source,
-            'forTheme' => $this->forTheme,
             'forPage' => $this->forPage,
             'blocks' => $this->blocks,
         ];
@@ -69,7 +65,6 @@ class Template implements Arrayable
         $template = TemplateModel::create([
             'name' => $this->name,
             'source' => $this->getSource(),
-            'for_theme' => $this->forTheme,
             'for_page' => $this->forPage,
         ]);
 
@@ -80,7 +75,7 @@ class Template implements Arrayable
 
     public function render()
     {
-        return view('only-laravel::templates.template', [
+        return view('only-laravel::template.template', [
             'template' => $this
         ]);
     }

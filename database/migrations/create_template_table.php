@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('theme_templates', function (Blueprint $table) {
+        Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
             $table->string('source')->index();
-            $table->string('for_theme', 150)->default('all');
-            $table->string('for_page', 100)->default('all');
+            $table->string('for_page')->default('all');
             $table->json('settings')->nullable();
             $table->timestamps();
 
-            $table->unique(['name', 'source', 'for_theme', 'for_page'], 'unique_theme_templates');
+            $table->unique(['name', 'source', 'for_page'], 'unique_templates');
         });
 
-        Schema::create('theme_template_blocks', function (Blueprint $table) {
+        Schema::create('template_blocks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
             $table->string('source')->index();
@@ -35,12 +34,12 @@ return new class extends Migration
             $table->enum('type', ['block', 'component']);
 
             $table->unsignedBigInteger('template_id');
-            $table->foreign('template_id')->references('id')->on('theme_templates')->onDelete('cascade');
+            $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
 
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('theme_template_blocks')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('template_blocks')->onDelete('cascade');
 
-            $table->unique(['order', 'template_id', 'location', 'parent_id'], 'unique_theme_template_blocks');
+            $table->unique(['order', 'template_id', 'location', 'parent_id'], 'unique_template_blocks');
 
             $table->timestamps();
         });
@@ -51,7 +50,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('theme_templates');
-        Schema::dropIfExists('theme_template_blocks');
+        Schema::dropIfExists('templates');
+        Schema::dropIfExists('template_blocks');
     }
 };

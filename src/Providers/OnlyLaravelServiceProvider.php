@@ -4,7 +4,7 @@ namespace  Raakkan\OnlyLaravel\Providers;
 
 use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
-use Raakkan\OnlyLaravel\Theme\ThemesManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
@@ -19,8 +19,8 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     {
         $this->registerConfigs();
 
-        $this->app->singleton('themes-manager', function () {
-            return new ThemesManager();
+        $this->app->singleton('only-laravel', function () {
+            return new OnlyLaravelManager();
         });
 
         $this->app->singleton('template-manager', function () {
@@ -47,9 +47,9 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
     public function registerLivewireComponents(): void
     {
-        Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Template\Livewire\MenuItemManage::class);
-        Livewire::component('only-laravel::theme.livewire.block', \Raakkan\OnlyLaravel\Template\Livewire\LivewireBlock::class);
-        Livewire::component('only-laravel::theme.livewire.block-items-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockItemsComponent::class);
-        Livewire::component('only-laravel::theme.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
+        // Livewire::component('only-laravel::theme.livewire.menu-item-manage', \Raakkan\OnlyLaravel\Template\Livewire\MenuItemManage::class);
+        Livewire::component('only-laravel::template.livewire.block', \Raakkan\OnlyLaravel\Template\Livewire\LivewireBlock::class);
+        Livewire::component('only-laravel::template.livewire.block-items-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockItemsComponent::class);
+        Livewire::component('only-laravel::template.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
     }
 }

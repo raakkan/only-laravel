@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
+use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 
 trait TemplateHandler
@@ -13,7 +14,8 @@ trait TemplateHandler
         $template = TemplateModel::where('name', $name)->first();
 
         if (!$template) {
-            return null;
+            $this->getTemplateByName($name)->create();
+            $template = TemplateModel::where('name', $name)->first();
         }
 
         return $this->getTemplateByName($name)->setModelData($template);
@@ -21,9 +23,9 @@ trait TemplateHandler
 
     public function getTemplates()
     {
-        // if (empty($this->templates)) {
-        //     $this->templates = $this->getActiveTheme()->getTemplates();
-        // }
+        if (empty($this->templates)) {
+            $this->templates = OnlyLaravel::getTemplates();
+        }
         return $this->templates;
     }
 

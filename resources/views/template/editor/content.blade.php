@@ -8,7 +8,7 @@
                     <div class="p-2 text-gray-500 text-md font-semibold text-center bg-white border-b">Left Sidebar</div>
                     <ul x-sort="handle" class="p-2 space-y-3">
                         @forelse ($block->getChildrensByLocation('left-sidebar') as $blockComponent)
-                            <livewire:only-laravel::theme.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
+                            <livewire:only-laravel::template.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
                                 :key="$blockComponent->getModel()->id . '-' . uniqid()" />
                         @empty
                             <li class="p-2 text-gray-400 text-center">No components or blocks</li>
@@ -23,7 +23,7 @@
                     Content</div>
                 <ul x-sort="handle" class="p-2 space-y-3">
                     @forelse ($block->getChildrensByLocation('default') as $blockComponent)
-                        <livewire:only-laravel::theme.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
+                        <livewire:only-laravel::template.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
                             :key="$blockComponent->getModel()->id . '-' . uniqid()" />
                     @empty
                         <li class="p-2 text-gray-400 text-center">No components or blocks</li>
@@ -38,7 +38,7 @@
                     </div>
                     <ul x-sort="handle" class="p-2 space-y-3">
                         @forelse ($block->getChildrensByLocation('right-sidebar') as $blockComponent)
-                            <livewire:only-laravel::theme.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
+                            <livewire:only-laravel::template.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
                                 :key="$blockComponent->getModel()->id . '-' . uniqid()" />
                         @empty
                             <li class="p-2 text-gray-400 text-center">No components or blocks</li>
@@ -51,7 +51,8 @@
     @else
         <ul x-sort="handle" class="p-2 space-y-3">
             @forelse ($block->getChildrensByLocation('default') as $blockComponent)
-                <livewire:only-laravel::theme.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()" :key="$blockComponent->getModel()->id . '-' . uniqid()" />
+                <livewire:only-laravel::template.livewire.block :template="$blockComponent->getTemplateModel()" :block="$blockComponent->getModel()"
+                    :key="$blockComponent->getModel()->id . '-' . uniqid()" />
             @empty
                 <div class="p-2 text-gray-400 text-center">No components or blocks</div>
             @endforelse

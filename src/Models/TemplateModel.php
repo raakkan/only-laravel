@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TemplateModel extends Model
 {
-    protected $fillable = ['name', 'source', 'for_theme', 'for_page', 'settings'];
+    protected $fillable = ['name', 'source', 'for_page', 'settings'];
 
     protected $casts = [
         'settings' => 'array',
@@ -19,6 +19,6 @@ class TemplateModel extends Model
 
     public function getTable(): string
     {
-        return 'theme_templates';
+        return 'templates';
     }
 }

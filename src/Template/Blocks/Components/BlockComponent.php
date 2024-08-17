@@ -40,7 +40,7 @@ abstract class BlockComponent extends BaseBlock
 
     public function editorRender()
     {
-        return view('only-laravel::templates.editor.component', [
+        return view('only-laravel::template.editor.component', [
             'block' => $this
         ]);
     }

@@ -20,7 +20,7 @@ class ContentBlock extends Block
 
     public $sidebar = true;
     public $sidebarPosition = ContentSidebar::RIGHT;
-    protected $view = 'only-laravel::templates.blocks.content';
+    protected $view = 'only-laravel::template.blocks.content';
 
     public function sideBar($sideBar = true, $position = ContentSidebar::LEFT)
     {
@@ -105,7 +105,7 @@ class ContentBlock extends Block
 
     public function editorRender()
     {
-        return view('only-laravel::templates.editor.content', [
+        return view('only-laravel::template.editor.content', [
             'block' => $this
         ]);
     }
