@@ -6,10 +6,10 @@ namespace Raakkan\OnlyLaravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ThemesManager extends Facade
+class PageManager extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'themes-manager';
+        return 'page-manager';
     }
 }

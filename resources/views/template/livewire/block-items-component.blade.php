@@ -1,6 +1,6 @@
 <div class="bg-white mr-2 border border-gray-200 rounded" x-data="{ activeTab: 'blocks' }">
     <div class="border-b">
-        <div class="flex items-center bg-gray-100 p-2 space-x-2">
+        <div class="flex items-center bg-gray-100 p-2 space-x-2 font-semibold">
             <button @click="activeTab = 'blocks'" :class="{ 'bg-white': activeTab === 'blocks' }"
                 class="w-1/2 py-2 rounded border">Blocks</button>
             <button @click="activeTab = 'components'" :class="{ 'bg-white': activeTab === 'components' }"

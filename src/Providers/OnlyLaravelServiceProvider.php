@@ -4,6 +4,8 @@ namespace  Raakkan\OnlyLaravel\Providers;
 
 use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
+use Raakkan\OnlyLaravel\Menu\MenuManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 
@@ -21,6 +23,14 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('only-laravel', function () {
             return new OnlyLaravelManager();
+        });
+
+        $this->app->singleton('page-manager', function () {
+            return new PageManager();
+        });
+
+        $this->app->singleton('menu-manager', function () {
+            return new MenuManager();
         });
 
         $this->app->singleton('template-manager', function () {

@@ -7,6 +7,7 @@ use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Filament\Resources\MenuResource;
+use Raakkan\OnlyLaravel\Filament\Resources\PageResource;
 use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 
 class OnlyLaravelPlugin implements Plugin
@@ -17,7 +18,8 @@ class OnlyLaravelPlugin implements Plugin
     ];
     protected $resources = [
         TemplateResource::class,
-        MenuResource::class
+        MenuResource::class,
+        PageResource::class,
     ];
 
     public function getId(): string
