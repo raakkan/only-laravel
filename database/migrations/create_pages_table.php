@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->unique(['name', 'slug']);
 
-            $table->foreign('template_id')->references('id')->on('templates')->onDelete('set null');
+            $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
         });
     }
 

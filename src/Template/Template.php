@@ -64,6 +64,7 @@ class Template implements Arrayable
 
         $template = TemplateModel::create([
             'name' => $this->name,
+            'label' => $this->label ?? $this->name,
             'source' => $this->getSource(),
             'for_page' => $this->forPage,
         ]);

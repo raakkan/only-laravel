@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
+            $table->string('label')->nullable();
             $table->string('source')->index();
             $table->string('for_page')->default('all');
             $table->json('settings')->nullable();

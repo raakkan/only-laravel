@@ -46,7 +46,7 @@ class PageResource extends Resource
                 TextColumn::make('title')->searchable()->sortable(),
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('status')->searchable()->sortable(),
-                TextColumn::make('template.name')->searchable()->sortable(),
+                TextColumn::make('template.label')->searchable()->sortable(),
             ])
             ->filters([
                 //

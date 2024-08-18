@@ -3,10 +3,11 @@
 namespace Raakkan\OnlyLaravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
 
 class TemplateModel extends Model
 {
-    protected $fillable = ['name', 'source', 'for_page', 'settings'];
+    protected $fillable = ['name', 'label', 'source', 'for_page', 'settings'];
 
     protected $casts = [
         'settings' => 'array',
@@ -20,5 +21,10 @@ class TemplateModel extends Model
     public function getTable(): string
     {
         return 'templates';
+    }
+
+    public function render()
+    {
+        return TemplateManager::getTemplate($this->name)->setModelData($this)->render();
     }
 }

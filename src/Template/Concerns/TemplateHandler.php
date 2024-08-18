@@ -11,21 +11,11 @@ trait TemplateHandler
 
     public function getTemplate($name)
     {
-        $template = TemplateModel::where('name', $name)->first();
-
-        if (!$template) {
-            $this->getTemplateByName($name)->create();
-            $template = TemplateModel::where('name', $name)->first();
-        }
-
-        return $this->getTemplateByName($name)->setModelData($template);
+        return $this->getTemplateByName($name);
     }
 
     public function getTemplates()
     {
-        if (empty($this->templates)) {
-            $this->templates = OnlyLaravel::getTemplates();
-        }
         return $this->templates;
     }
 
@@ -39,5 +29,18 @@ trait TemplateHandler
     public function findTemplate($name)
     {
         return $this->getTemplateByName($name);
+    }
+
+    public function registerTemplates($templates)
+    {
+        $this->templates = array_merge($this->templates, $templates);
+        return $this;
+    }
+
+    public function createTemplates()
+    {
+        foreach ($this->getTemplates() as $template) {
+            $template->create();
+        }
     }
 }
