@@ -17,7 +17,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
-use Raakkan\OnlyLaravel\Template\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
@@ -32,7 +32,7 @@ abstract class BaseBlock implements Arrayable
     use HasType;
     use HasGroup;
     use HasSource;
-    use HasSettings;
+    use HasBlockSettings;
     use HasOrder;
     use HasLocation;
     use HasModel;

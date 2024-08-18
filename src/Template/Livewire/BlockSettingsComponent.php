@@ -33,7 +33,7 @@ class BlockSettingsComponent extends Component implements HasForms
 
     public function save()
     {
-        $settings = array_merge($this->blockModel->settings, $this->form->getState());
+        $settings = array_merge($this->blockModel->settings ?? [], $this->form->getState());
         $this->blockModel->update([
             'settings' => $settings,
         ]);

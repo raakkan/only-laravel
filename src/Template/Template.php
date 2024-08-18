@@ -3,15 +3,16 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasTemplateSettings;
 
 class Template implements Arrayable
 {
@@ -19,23 +20,44 @@ class Template implements Arrayable
     use HasName;
     use HasLabel;
     use HasBlocks;
-    use HasSettings;
     use HasSource;
     use HasForPage;
+    use HasTemplateSettings;
 
     public function __construct($name)
     {
         $this->name = $name;
     }
 
-    public function setModelData(TemplateModel $templateModel)
+    protected $model;
+
+    public function setModel($model)
     {
-        $this->name = $templateModel->name;
-        $this->source = $templateModel->source;
-        $this->forPage = $templateModel->for_page;
+        $this->model = $model;
+        
+        $this->setModelData();
+        return $this;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function hasModel()
+    {
+        return isset($this->model);
+    }
+
+    public function setModelData()
+    {
+        $this->name = $this->model->name;
+        $this->source = $this->model->source;
+        $this->forPage = $this->model->for_page;
+        $this->setTemplateSettings($this->model->settings);
         
         $blocks = [];
-        foreach ($templateModel->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {
+        foreach ($this->model->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {
             $themeBlock = TemplateManager::getBlockByName($block->name);
             
             $blocks[] = $themeBlock->setModel($block);
@@ -68,6 +90,9 @@ class Template implements Arrayable
             'source' => $this->getSource(),
             'for_page' => $this->forPage,
         ]);
+
+        $this->setModel($template);
+        $this->storeDefaultSettingsToDatabase();
 
         foreach ($this->blocks as $block) {
             $block->create($template);

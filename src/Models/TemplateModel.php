@@ -25,6 +25,6 @@ class TemplateModel extends Model
 
     public function render()
     {
-        return TemplateManager::getTemplate($this->name)->setModelData($this)->render();
+        return TemplateManager::getTemplate($this->name)->setModel($this)->render();
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Filament\Pages;
 
+use Filament\Forms\Form;
 use Livewire\Attributes\On;
 use Filament\Resources\Pages\Page;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 

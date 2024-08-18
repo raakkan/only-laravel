@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Component;
 
-trait HasSettings
+trait HasBlockSettings
 {
     public $settings = [];
 
