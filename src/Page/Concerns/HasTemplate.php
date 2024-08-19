@@ -27,6 +27,11 @@ trait HasTemplate
 
     public function getTemplate()
     {
+        return $this->template;
+    }
+
+    public function getTemplateModel()
+    {
         return TemplateModel::where('name', $this->template)->first();
     }
 }

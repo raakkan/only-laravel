@@ -4,14 +4,15 @@ namespace Raakkan\OnlyLaravel\Page;
 
 use App\Livewire\Pages\HomePage;
 use Raakkan\OnlyLaravel\Models\PageModel;
-use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\HasSlug;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Page\Concerns\HasPageType;
+use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
 use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
-use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
+use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
 
 class BasePage
 {
@@ -23,9 +24,7 @@ class BasePage
     use HasTemplate;
     use Disableable;
     use Deletable;
-
-    protected $view = '';
-    protected $livewire = '';
+    use HasPageType;
 
     protected $model;
 
@@ -46,30 +45,6 @@ class BasePage
         return isset($this->model);
     }
 
-    public function livewire($component)
-    {
-        $this->livewire = $component;
-
-        return $this;
-    }
-
-    public function render()
-    {
-        $page = $this->getModel();
-
-        if ($page->disabled) {
-            return abort(404);
-        }
-
-        if ($this->livewire) {
-            return $this->renderLivewire($this->livewire, ['page' => $page]);
-        }
-
-        return view($this->view, [
-            'page' => PageModel::where('name', $this->getName())->with('template')->first(),
-        ]);
-    }
-
     public function create()
     {
         if (PageModel::where('name', $this->name)->exists()) {
@@ -81,7 +56,8 @@ class BasePage
             'title' => $this->title,
             'slug' => trim($this->slug, '/'),
             'disabled' => $this->disabled,
-            'template_id' => $this->getTemplate()->id ?? null,
+            'page_type' => $this->getPageType(),
+            'template_id' => $this->getTemplateModel()->id ?? null,
         ]);
     }
 }

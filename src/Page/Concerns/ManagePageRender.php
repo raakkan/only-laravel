@@ -7,6 +7,46 @@ use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
 trait ManagePageRender
 {
+    protected $view;
+
+    public function render()
+    {
+        $page = $this->getModel();
+
+        if (!$this->view) {
+            return abort(404);
+        }
+
+        if (is_subclass_of($this->view, \Livewire\Component::class)) {
+            return $this->renderLivewire($this->view, ['page' => $page]);
+        }
+
+        if (! view()->exists($this->view)) {
+            return abort(404);
+        }
+
+        return view($this->view, [
+            'page' => $page,
+        ]);
+    }
+
+    public function setView($view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    public function view($view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    public function hasView()
+    {
+        return isset($this->view);
+    }
+
     public function renderLivewire($component, $componentData = [])
     {
         $html = null;

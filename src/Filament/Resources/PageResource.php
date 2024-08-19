@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Raakkan\OnlyLaravel\Models\PageModel;
+use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\EditPage;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\ListPage;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\CreatePage;
@@ -32,11 +33,21 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->live(onBlur: true)->required()->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
-                ->disabled(fn (?Model $record) => $record->name === 'home-page')->rules('regex:/^[a-zA-Z0-9_-]+$/'),
+                TextInput::make('name')->unique()->live(onBlur: true)->required()->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                ->disabled(function (?Model $record) { 
+                    if ($record && $record->name == 'home-page') {
+                        return true;
+                    }
+                    return false;
+                 })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 TextInput::make('title')->required(),
                 RichEditor::make('content')->columnSpanFull(),
-                TextInput::make('slug')->required()->rules('regex:/^[a-zA-Z0-9_-]+$/'),
+                TextInput::make('slug')->required()->rules('regex:/^[a-zA-Z0-9_-]+$/')->disabled(function (?Model $record) { 
+                    if ($record && $record->name == 'home-page') {
+                        return true;
+                    }
+                    return false;
+                 }),
                 Select::make('template_id')->relationship(
                     name: 'template',
                     titleAttribute: 'label',
@@ -48,7 +59,13 @@ class PageResource extends Resource
                         }
                     }
                 )->required(),
-                Toggle::make('disabled')->default(false),
+                Toggle::make('disabled')->default(false)->disabled(function (?Model $record) { 
+                    if ($record && PageManager::pageIsDisableable($record->name)) {
+                        return true;
+                    }
+                    return false;
+                 }),
+                TextInput::make('page_type')->readOnly()->default('pages'),
             ]);
     }
 
@@ -58,7 +75,6 @@ class PageResource extends Resource
             ->columns([
                 TextColumn::make('title')->searchable()->sortable(),
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('status')->searchable()->sortable(),
                 TextColumn::make('template.label')->searchable()->sortable(),
             ])
             ->filters([
