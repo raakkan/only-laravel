@@ -1,95 +1,46 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Menu;
+namespace Raakkan\OnlyLaravel\Menu;
 
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Support\Arrayable;
+use Raakkan\OnlyLaravel\Menu\Concerns\HasUrl;
+use Raakkan\OnlyLaravel\Models\MenuItemModel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasIcon;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Support\Concerns\HasModel;
+use Raakkan\OnlyLaravel\Template\Concerns\HasOrder;
+use Raakkan\OnlyLaravel\Support\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuItemChildren;
 
 class MenuItem  implements Arrayable
 {
+    use Makable;
     use HasName;
     use HasLabel { getLabel as protected; }
     use HasIcon;
+    use HasGroup;
+    use HasOrder;
+    use HasUrl;
+    use HasMenuItemChildren;
+    use HasSettings;
+    use HasModel;
 
-    protected $url;
     protected $model;
 
     protected $parent;
-    protected $children = [];
 
     public function __construct($name)
     {
         $this->name = $name;
     }
 
-    public static function make($name)
-    {
-        return new static($name);
-    }
-
-    public static function makeByModel($model, $parent = null)
-    {
-        $item = new static($model->name);
-
-        $item->model = $model;
-        $item->url = $model->url;
-
-        if ($model->hasParent() && $parent) {
-            $item->parent = $parent;
-        }
-
-        if ($model->hasChildren()) {
-            foreach ($model->children as $child) {
-                $item->children[] = MenuItem::makeByModel($child, $item);
-            }
-        }
-
-        return $item;
-    }
-
-    public function getModelId()
-    {
-        return $this->model->id;
-    }
-
     public function getLabel()
     {
         return $this->label ?? Str::headline(str_replace('_', ' ', $this->name));
-    }
-
-    public function url($url)
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    public function children($children)
-    {
-        $this->children = $children;
-        return $this;
-    }
-
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    public function hasChildren()
-    {
-        return count($this->children) > 0;
-    }
-
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    public function getType()
-    {
-        return 'item';
     }
 
     public function toArray()
@@ -99,6 +50,32 @@ class MenuItem  implements Arrayable
             'label' => $this->getLabel(),
             'icon' => $this->getIcon(),
             'url' => $this->url,
+            'group' => $this->getGroup(),
         ];
+    }
+
+    public function create($menu, $parent = null)
+    {
+        $order = $this->order;
+        if ($parent) {
+            $childCount = $menu->items()->where('parent_id', $parent->id)->count();
+            $order = $childCount === 0 ? 0 : $childCount++;
+        }
+
+        $model = $menu->items()->create([
+            'name' => $this->name,
+            'menu_id' => $menu->id,
+            'order' => $order,
+            'url' => $this->url,
+            'icon' => $this->icon,
+            'parent_id' => $parent ? $parent->id : null,
+        ]);
+        
+        $this->setModel($model);
+        $this->storeDefaultSettingsToDatabase();
+
+        foreach ($this->children as $child) {
+            $child->create($menu, $model);
+        }
     }
 }

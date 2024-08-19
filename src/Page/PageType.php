@@ -23,7 +23,7 @@ class PageType
 
     public function allRequiredFieldsFilled()
     {
-        return $this->type && $this->name && $this->defaultView && $this->model;
+        return isset($this->name) && isset($this->type) && isset($this->defaultView) && isset($this->model);
     }
 
     public function getType()

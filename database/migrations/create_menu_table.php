@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('theme_menus', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique()->index();
             $table->string('location')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->string('source');
+            $table->boolean('disabled')->default(false);
             $table->json('settings')->nullable();
             $table->timestamps();
-
-            $table->unique(['name', 'source']);
         });
 
-        Schema::create('theme_menu_items', function (Blueprint $table) {
+        Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('menu_id');
             $table->string('name');
@@ -33,13 +30,12 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->json('settings')->nullable();
-            $table->string('source');
             $table->timestamps();
     
-            $table->foreign('menu_id')->references('id')->on('theme_menus')->onDelete('cascade');
-            $table->foreign('parent_id')->references('id')->on('theme_menu_items')->onDelete('cascade');
+            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('menu_items')->onDelete('cascade');
 
-            $table->unique(['order', 'menu_id', 'source', 'parent_id']);
+            $table->unique(['order', 'menu_id', 'parent_id']);
         });
     }
 
@@ -48,7 +44,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('theme_menus');
-        Schema::dropIfExists('theme_menu_items');
+        Schema::dropIfExists('menus');
+        Schema::dropIfExists('menu_items');
     }
 };

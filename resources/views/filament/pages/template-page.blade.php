@@ -24,8 +24,7 @@
 
         <ul class="space-y-4 w-full md:w-3/4">
             @foreach ($record->blocks->whereNull('parent_id') as $block)
-                <livewire:only-laravel::template.livewire.block :template="$record" :block="$block" :key="$block->id . '-' . uniqid()"
-                    @show-block-settings="showBlockSettings($event.detail)" />
+                <livewire:only-laravel::template.livewire.block :template="$record" :block="$block" :key="$block->id . '-' . uniqid()" />
             @endforeach
         </ul>
     </div>

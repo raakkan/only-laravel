@@ -1,17 +1,14 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Menu;
+use Raakkan\OnlyLaravel\Facades\PageManager;
+use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenus;
 
 class MenuManager
 {
-    protected $menus = [];
+    use HandleMenus;
     protected $locations = [];
     protected $items = [];
-
-    public function getMenus()
-    {
-        return $this->menus;
-    }
 
     public function getLocations()
     {
@@ -20,7 +17,7 @@ class MenuManager
 
     public function getItems()
     {
-        return $this->items;
+        return array_merge($this->getPageMenuItems(), $this->items);
     }
 
     public function getCoreMenuLocations()
@@ -29,5 +26,21 @@ class MenuManager
             'header',
             'footer',
         ];
+    }
+
+    public function getPageMenuItems()
+    {
+        $pageTypes = PageManager::getPageTypes();
+        
+        $items = [];
+        foreach ($pageTypes as $pageType) {
+            $pageModel = $pageType->getModel();
+
+            $pages = $pageModel::where('disabled', 0)->get();
+            foreach ($pages as $page) {
+                $items[] = MenuItem::make($page->name)->url($page->slug)->label($page->title)->group($pageType->getName());
+            }
+        }
+        return $items;
     }
 }

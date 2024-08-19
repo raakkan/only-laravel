@@ -1,67 +1,31 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Theme\Menu;
+namespace Raakkan\OnlyLaravel\Menu;
 
+use Raakkan\OnlyLaravel\Models\MenuModel;
 use Illuminate\Contracts\Support\Arrayable;
 use Raakkan\OnlyLaravel\Theme\Menu\MenuItem;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Support\Concerns\HasModel;
+use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuItems;
+use Raakkan\OnlyLaravel\Support\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuLocation;
+use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 
 class Menu implements Arrayable
 {
+    use Makable;
     use HasName;
-
-    protected $items = [];
-    protected $location;
+    use HasMenuItems;
+    use HasMenuLocation;
+    use HasSettings;
+    use HasModel;
+    use Disableable;
 
     public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    public static function make($name)
-    {
-        return new static($name);
-    }
-
-    public static function makeByModel($model)
-    {
-        $menu = new static($model->name);
-        $menu->location = $model->location;
-
-        foreach ($model->items as $item) {
-            if (!$item->hasParent()) {
-                $menu->items[] = MenuItem::makeByModel($item);
-            }
-        }
-
-        return $menu;
-    }
-
-    public function items($items)
-    {
-        $this->items = $items;
-        return $this;
-    }
-
-    public function getItems()
-    {
-        return $this->items;
-    }
-    
-    public function location($location)
-    {
-        $this->location = $location;
-        return $this;
-    }
-
-    public function hasLocation()
-    {
-        return isset($this->location);
-    }
-
-    public function getLocation()
-    {
-        return $this->location;
     }
 
     public function toArray()
@@ -70,5 +34,29 @@ class Menu implements Arrayable
             'name' => $this->name,
             'items' => $this->items,
         ];
+    }
+
+    public function allRequiredFieldsFilled()
+    {
+        return isset($this->name) && isset($this->location) && isset($this->location);
+    }
+
+    public function create()
+    {
+        if (MenuModel::where('name', $this->name)->exists()) {
+            return;
+        }
+
+        $menu = MenuModel::create([
+            'name' => $this->name,
+            'location' => $this->location,
+        ]);
+
+        $this->setModel($menu);
+        $this->storeDefaultSettingsToDatabase();
+
+        foreach ($this->items as $item) {
+            $item->create($menu);
+        }
     }
 }

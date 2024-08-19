@@ -32,7 +32,6 @@ class MenuResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('source')->searchable()->sortable(),
                 TextColumn::make('location')->searchable()->sortable(),
             ])
             ->filters([

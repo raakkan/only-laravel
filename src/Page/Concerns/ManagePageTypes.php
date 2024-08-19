@@ -49,16 +49,16 @@ trait ManagePageTypes
 
     public function getDefaultPageType()
     {
-        return PageType::make('pages', 'Default', $this->defaultPageTypeView, $this->defaultPageTypeModel);
+        return PageType::make('pages', 'Pages', $this->defaultPageTypeView, $this->defaultPageTypeModel);
     }
 
-    public function updateDefaultPageTypeView($view)
+    public function useDefaultPageTypeView($view)
     {
         $this->defaultPageTypeView = $view;
         return $this;
     }
 
-    public function updateDefaultPageTypeModel($model)
+    public function useDefaultPageTypeModel($model)
     {
         $this->defaultPageTypeModel = $model;
         return $this;

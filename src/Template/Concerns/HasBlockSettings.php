@@ -79,7 +79,7 @@ trait HasBlockSettings
     {
         // dd($this->getSettingFields());
         foreach ($this->getSettingFields(true) as $field) {
-            if ($field instanceof Field && $field->getDefaultState() && $this->hasModel()) {
+            if ($field instanceof Field && $this->hasFieldDefaultValue($field) && $this->hasModel()) {
 
                 $blockSettings = $this->model->settings ?? [];
                 $this->model->update([
@@ -91,7 +91,7 @@ trait HasBlockSettings
                 $fileds = $field->getChildComponents();
 
                 foreach ($fileds as $filed) {
-                    if ($filed instanceof Field && $filed->getDefaultState() && $this->hasModel()) {
+                    if ($filed instanceof Field && $this->hasFieldDefaultValue($filed) && $this->hasModel()) {
                         
                         $blockSettings = $this->model->settings ?? [];
 
@@ -122,6 +122,15 @@ trait HasBlockSettings
     public function hasAnySettings()
     {
         return count($this->getSettingFields(true)) > 0;
+    }
+
+    public function hasFieldDefaultValue($field)
+    {
+        try {
+            return $field->getDefaultState() && $field->getDefaultState()!== null;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
 }
