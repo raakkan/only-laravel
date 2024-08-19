@@ -45,7 +45,7 @@ class BlockTextSettings extends Component implements HasForms
     public function updated($property)
     {
         $settings = $this->blockModel->settings;
-
+        
         if ($property == 'fontFamily') {
             $settings['text']['font']['family'] = $this->fontFamily;
         }

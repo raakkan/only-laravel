@@ -7,7 +7,7 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 
 class TemplateModel extends Model
 {
-    protected $fillable = ['name', 'label', 'source', 'for_page', 'settings'];
+    protected $fillable = ['name', 'label', 'source', 'for_page', 'for_page_type', 'settings'];
 
     protected $casts = [
         'settings' => 'array',

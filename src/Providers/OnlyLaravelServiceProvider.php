@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Template\FontManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
@@ -35,6 +36,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('template-manager', function () {
             return new TemplateManager();
+        });
+
+        $this->app->singleton('font-manager', function () {
+            return new FontManager();
         });
     }
 

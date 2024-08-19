@@ -2,6 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Raakkan\OnlyLaravel\Page\Page;
+use Raakkan\OnlyLaravel\Models\PageModel;
+
 trait ManagePages
 {
     protected $pages = [];
@@ -37,6 +40,7 @@ trait ManagePages
     public function findPageBySlug($slug)
     {
         $slug = trim($slug, '/');
+
         return collect($this->getPages())->first(function ($page) use ($slug) {
             return trim($page->getSlug(), '/') == $slug;
         });

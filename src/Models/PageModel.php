@@ -7,12 +7,12 @@ use Raakkan\OnlyLaravel\Models\TemplateModel;
 
 class PageModel extends Model
 {
-    protected $fillable = ['name', 'title', 'slug', 'content', 'template_id', 'settings', 'status', 'indexable'];
+    protected $fillable = ['name', 'title', 'slug', 'content', 'template_id', 'settings', 'indexable', 'disabled'];
 
     protected $casts = [
         'settings' => 'array',
         'indexable' => 'boolean',
-        'status' => 'string',
+        'disabled' => 'boolean',
     ];
 
     public function template()

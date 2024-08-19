@@ -6,7 +6,7 @@ trait Deletable
 {
     protected $deletable = true;
 
-    public function deletable($deletable)
+    public function deletable($deletable = true)
     {
         $this->deletable = $deletable;
 

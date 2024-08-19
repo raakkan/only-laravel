@@ -16,15 +16,15 @@ return new class extends Migration
             $table->string('slug');
             $table->longText('content')->nullable();
             $table->boolean('indexable')->default(true);
-            $table->enum('status', ['draft', 'published'])->default('draft');
-            $table->unsignedBigInteger('template_id');
+            $table->boolean('disabled')->default(false);
+            $table->unsignedBigInteger('template_id')->nullable();
             $table->json('settings')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->unique(['name', 'slug']);
 
-            $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
+            $table->foreign('template_id')->references('id')->on('templates')->nullOnDelete();
         });
     }
 

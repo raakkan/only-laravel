@@ -1,11 +1,5 @@
 @php
     $blocks = $template->getBlocks();
-    $mobileMaxWidth = $template->getTemplateSetting('maxwidth.mobile') ?? 100;
-    $tabletMaxWidth = $template->getTemplateSetting('maxwidth.tablet') ?? 640;
-    $tabletWideMaxWidth = $template->getTemplateSetting('minwidth.tablet_wide') ?? 768;
-    $laptopMaxWidth = $template->getTemplateSetting('maxwidth.laptop') ?? 1024;
-    $desktopMaxWidth = $template->getTemplateSetting('maxwidth.desktop') ?? 1280;
-    $desktopWideMaxWidth = $template->getTemplateSetting('minwidth.desktop_wide') ?? 1536;
 
     $mobileSpacing = $template->getTemplateSetting('spacing.mobile') ?? 0.5;
     $tabletSpacing = $template->getTemplateSetting('spacing.tablet') ?? 1;
@@ -17,7 +11,11 @@
 
 <style>
     .template-container {
-        max-width: {{ $mobileMaxWidth }}%;
+        @if ($template->mobileMaxWidthUnit === 'percentage')
+            max-width: {{ $template->mobileMaxWidth == 0 ? 640 : $template->mobileMaxWidth }}%;
+        @else
+            max-width: {{ $template->mobileMaxWidth == 0 ? 640 : $template->mobileMaxWidth }}px;
+        @endif
         margin-left: auto;
         margin-right: auto;
         padding-left: {{ $mobileSpacing }}rem;
@@ -26,7 +24,11 @@
 
     @media (min-width: 640px) {
         .template-container {
-            max-width: {{ $tabletMaxWidth }}px;
+            @if ($template->tabletMaxWidthUnit === 'percentage')
+                max-width: {{ $template->tabletMaxWidth == 0 ? 640 : $template->tabletMaxWidth }}%;
+            @else
+                max-width: {{ $template->tabletMaxWidth == 0 ? 640 : $template->tabletMaxWidth }}px;
+            @endif
             padding-left: {{ $tabletSpacing }}rem;
             padding-right: {{ $tabletSpacing }}rem;
         }
@@ -34,7 +36,11 @@
 
     @media (min-width: 768px) {
         .template-container {
-            max-width: {{ $tabletWideMaxWidth }}px;
+            @if ($template->tabletWideMaxWidthUnit === 'percentage')
+                max-width: {{ $template->tabletWideMaxWidth == 0 ? 768 : $template->tabletWideMaxWidth }}%;
+            @else
+                max-width: {{ $template->tabletWideMaxWidth == 0 ? 768 : $template->tabletWideMaxWidth }}px;
+            @endif
             padding-left: {{ $tabletWideSpacing }}rem;
             padding-right: {{ $tabletWideSpacing }}rem;
         }
@@ -42,7 +48,11 @@
 
     @media (min-width: 1024px) {
         .template-container {
-            max-width: {{ $laptopMaxWidth }}px;
+            @if ($template->laptopMaxWidthUnit === 'percentage')
+                max-width: {{ $template->laptopMaxWidth == 0 ? 1024 : $template->laptopMaxWidth }}%;
+            @else
+                max-width: {{ $template->laptopMaxWidth == 0 ? 1024 : $template->laptopMaxWidth }}px;
+            @endif
             padding-left: {{ $laptopSpacing }}rem;
             padding-right: {{ $laptopSpacing }}rem;
         }
@@ -50,7 +60,11 @@
 
     @media (min-width: 1280px) {
         .template-container {
-            max-width: {{ $desktopMaxWidth }}px;
+            @if ($template->desktopMaxWidthUnit === 'percentage')
+                max-width: {{ $template->desktopMaxWidth == 0 ? 1280 : $template->desktopMaxWidth }}%;
+            @else
+                max-width: {{ $template->desktopMaxWidth == 0 ? 1280 : $template->desktopMaxWidth }}px;
+            @endif
             padding-left: {{ $desktopSpacing }}rem;
             padding-right: {{ $desktopSpacing }}rem;
         }
@@ -58,13 +72,21 @@
 
     @media (min-width: 1536px) {
         .template-container {
-            max-width: {{ $desktopWideMaxWidth }}px;
+            @if ($template->desktopWideMaxWidthUnit === 'percentage')
+                max-width: {{ $template->desktopWideMaxWidth == 0 ? 1536 : $template->desktopWideMaxWidth }}%;
+            @else
+                max-width: {{ $template->desktopWideMaxWidth == 0 ? 1536 : $template->desktopWideMaxWidth }}px;
+            @endif
             padding-left: {{ $desktopWideSpacing }}rem;
             padding-right: {{ $desktopWideSpacing }}rem;
         }
     }
 </style>
 
-@foreach ($blocks as $block)
-    {{ $block->render() }}
-@endforeach
+<div
+    style="width: 100%; height: 100%; background-color: {{ $template->getTemplateSetting('color.background') }}; color: {{ $template->getTemplateSetting('color.text') }};
+    font-family: {{ $template->getTemplateSetting('text.fontFamily') ?? 'Arial, Helvetica, sans-serif' }}; font-size: {{ $template->getTemplateSetting('text.fontSize') }}">
+    @foreach ($blocks as $block)
+        {{ $block->render() }}
+    @endforeach
+</div>

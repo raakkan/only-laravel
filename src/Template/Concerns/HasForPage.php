@@ -5,6 +5,25 @@ namespace Raakkan\OnlyLaravel\Template\Concerns;
 trait HasForPage
 {
     protected $forPage = 'all';
+    protected $forPageType = 'pages';
+
+    public function forPageType($forPageType)
+    {
+        $this->forPageType = $forPageType;
+        return $this;
+    }
+
+    public function getForPageType()
+    {
+        return $this->forPageType;
+    }
+
+    public function setForPageType($forPageType)
+    {
+        $this->forPageType = $forPageType;
+
+        return $this;
+    }
 
     public function forPage($forPage)
     {

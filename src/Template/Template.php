@@ -12,6 +12,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasMaxWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasTemplateSettings;
 
 class Template implements Arrayable
@@ -23,6 +24,7 @@ class Template implements Arrayable
     use HasSource;
     use HasForPage;
     use HasTemplateSettings;
+    use HasMaxWidthSettings;
 
     public function __construct($name)
     {
@@ -31,11 +33,13 @@ class Template implements Arrayable
 
     protected $model;
 
-    public function setModel($model)
+    public function setModel($model, $save = true)
     {
         $this->model = $model;
         
-        $this->setModelData();
+        if($save) {
+            $this->setModelData();
+        }
         return $this;
     }
 
@@ -74,6 +78,7 @@ class Template implements Arrayable
             'label' => $this->label ?? $this->name,
             'source' => $this->source,
             'forPage' => $this->forPage,
+            'forPageType' => $this->forPageType,
             'blocks' => $this->blocks,
         ];
     }
@@ -89,9 +94,10 @@ class Template implements Arrayable
             'label' => $this->label ?? $this->name,
             'source' => $this->getSource(),
             'for_page' => $this->forPage,
+            'for_page_type' => $this->forPageType,
         ]);
 
-        $this->setModel($template);
+        $this->setModel($template, false);
         $this->storeDefaultSettingsToDatabase();
 
         foreach ($this->blocks as $block) {

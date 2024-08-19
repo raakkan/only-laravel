@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
+use Filament\Forms\Get;
 use Illuminate\Support\Arr;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
@@ -9,6 +10,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ColorPicker;
+use Raakkan\OnlyLaravel\Facades\FontManager;
 
 trait HasTemplateSettings
 {
@@ -29,7 +31,10 @@ trait HasTemplateSettings
 
     public function setTemplateSettings($settings)
     {
-        $this->settings = $settings;
+        if (is_array($settings)) {
+            $this->settings = $settings;
+            $this->setMaxWidthSettings($settings);
+        }
         
         return $this;
     }
@@ -37,18 +42,6 @@ trait HasTemplateSettings
     public function getSettingFields()
     {
         return array_merge($this->getTemplateSettings(), $this->settingFields);
-    }
-
-    public function getMaxWidthSettingFields()
-    {
-        return [
-            TextInput::make('maxwidth.mobile')->label('Mobile')->numeric()->suffix('%'),
-            TextInput::make('maxwidth.tablet')->label('Tablet')->numeric()->suffix('px'),
-            TextInput::make('maxwidth.tablet_wide')->label('Tablet Wide')->numeric()->suffix('px'),
-            TextInput::make('maxwidth.laptop')->label('Laptop')->numeric()->suffix('px'),
-            TextInput::make('maxwidth.desktop')->label('Desktop')->numeric()->suffix('px'),
-            TextInput::make('maxwidth.desktop_wide')->label('Desktop Wide')->numeric()->suffix('px'),
-        ];
     }
 
     public function getSpaceSettingFields()
@@ -74,23 +67,21 @@ trait HasTemplateSettings
     public function getTextSettingFields()
     {
         $fields = [];
-
+        
             $fields[] = Select::make('text.fontFamily')
-            ->label('Font Family')->options(['normal' => 'Normal', 'italic' => 'Italic']);
+            ->label('Font Family')->options(collect(FontManager::getFontFamilies())->mapWithKeys(function ($value, $key) {
+                return [$value['value'] => $value['name']];
+            })->toArray());
             $fields[] = TextInput::make('text.fontSize')->label('Font Size')->numeric();
-            $fields[] = TextInput::make('text.fontWeight')->label('Font Weight');
-            $fields[] = Select::make('text.fontStyle')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic']);
-            $fields[] = TextInput::make('text.latterSpacing')->label('Latter Spacing')->numeric();
-            $fields[] = TextInput::make('text.lineHeight')->label('Line Height')->numeric();
         
         return $fields;
     }
 
     public function storeDefaultSettingsToDatabase()
     {
-        // dd($this->getSettingFields());
-        foreach ($this->getSettingFields() as $field) {
-            if ($field instanceof Field && $field->getDefaultState() && $this->hasModel()) {
+        $fields = array_merge($this->getSettingFields(), $this->getSpaceSettingFields(), $this->getColorSettingFields(), $this->getTextSettingFields(), $this->getMaxWidthSettingFields());
+        foreach ($fields as $field) {
+            if ($field instanceof Field && $this->hasFieldDefaultValue($field) && $this->hasModel()) {
 
                 $blockSettings = $this->model->settings ?? [];
                 $this->model->update([
@@ -102,7 +93,7 @@ trait HasTemplateSettings
                 $fileds = $field->getChildComponents();
 
                 foreach ($fileds as $filed) {
-                    if ($filed instanceof Field && $filed->getDefaultState() && $this->hasModel()) {
+                    if ($filed instanceof Field && $this->hasFieldDefaultValue($filed) && $this->hasModel()) {
                         
                         $blockSettings = $this->model->settings ?? [];
 
@@ -113,6 +104,7 @@ trait HasTemplateSettings
                 }
             }
         }
+        return $this;
     }
 
     public function setSettingValue(array $settings, string $name, string $value)
@@ -133,6 +125,15 @@ trait HasTemplateSettings
     public function getTemplateSetting(string $name)
     {
         return Arr::get($this->settings, $name) ?? null;
+    }
+
+    public function hasFieldDefaultValue($field)
+    {
+        try {
+            return $field->getDefaultState() && $field->getDefaultState()!== null;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
 }

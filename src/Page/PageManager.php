@@ -12,13 +12,38 @@ class PageManager
     use ManagePageRender;
     use ManagePages;
 
-    public function getPageTables()
+    public function render($slug = null, $pageType = 'pages')
     {
-        return ['pages'];
+        if ($slug) {
+            $slug = trim($slug, '/');
+        
+            $model = PageModel::where('slug', $slug)->first();
+        } else {
+            $model = PageModel::where('name', 'home-page')->first();
+        }
+
+        if (! $model) {
+            return abort(404);
+        }
+
+        $page = $this->getPageByName($model->name);
+        
+        if ($page) {
+            $page->setModel($model);
+        }else{
+            $page = new Page($model->name);
+            $page->setModel($model);
+        }
+        
+        return $page->render();
     }
 
-    public function homePage()
+    public function pageIsDeletable(string $name): bool
     {
-        return $this->getPageByName('home-page')->render();
+        $page = $this->getPageByName($name);
+        if ($page && $page->isDeletable()) {
+            return false;
+        }
+        return true;
     }
 }
