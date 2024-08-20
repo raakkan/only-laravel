@@ -6,10 +6,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Raakkan\OnlyLaravel\Models\MenuModel;
 
-// TODO: menu and menu item add and update rules pending
+/** 
+ * Mega menu plan
+ * menu item has children, categories and groups
+ * menu item > category > group
+ * menu item > category > group > group
+ * menu item > group > group
+ * menu item > group > category
+ * menu item > category
+ */
 class MenuItemModel extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'order', 'url', 'icon', 'parent_id'];
+    protected $fillable = ['menu_id', 'name', 'order', 'url', 'icon', 'parent_id', 'label'];
 
     public function menu()
     {

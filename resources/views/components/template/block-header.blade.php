@@ -36,7 +36,8 @@
     </div>
 
     @if ($block->hasAnySettings())
-        <div x-show="open" x-anchor="$refs.button" @click.away="open = false; activeTab = '{{ $defaultTab }}'"
+        <div x-show="open" x-anchor.bottom-end="$refs.button"
+            @click.away="open = false; activeTab = '{{ $defaultTab }}'"
             class="w-96 mr-10 z-10 bg-white border border-gray-200 rounded-lg shadow-2xl">
             <div class="flex border-b border-gray-200 font-semibold rounded-t-lg">
                 @if ($block->hasSettings())

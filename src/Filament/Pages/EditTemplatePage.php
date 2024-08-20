@@ -18,6 +18,7 @@ class EditTemplatePage extends Page
     #[On('block-deleted')] 
     public function blockDeleted()
     {
+        dd('block deleted');
         $this->record->refresh();
     }
 

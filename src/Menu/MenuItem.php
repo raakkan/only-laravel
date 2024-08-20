@@ -68,6 +68,7 @@ class MenuItem  implements Arrayable
             'order' => $order,
             'url' => $this->url,
             'icon' => $this->icon,
+            'label' => $this->getLabel(),
             'parent_id' => $parent ? $parent->id : null,
         ]);
         
