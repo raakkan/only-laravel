@@ -3,11 +3,14 @@
 namespace Raakkan\OnlyLaravel\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
+use Raakkan\OnlyLaravel\Facades\MenuManager;
 use Raakkan\OnlyLaravel\Models\MenuModel;
 use Raakkan\OnlyLaravel\Filament\Pages\EditMenuPage;
 use Raakkan\OnlyLaravel\Filament\Pages\ListMenuPage;
@@ -23,7 +26,8 @@ class MenuResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')->required()->label('Name')->unique(),
+                Select::make('location')->required()->label('Location')->options(MenuManager::getMenuLocationsArray()),
             ]);
     }
 

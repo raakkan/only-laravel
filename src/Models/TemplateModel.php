@@ -25,6 +25,10 @@ class TemplateModel extends Model
 
     public function render()
     {
-        return TemplateManager::getTemplate($this->name)->setModel($this)->render();
+        return TemplateManager::getTemplate($this->name)->setCachedModel($this->load('blocks'))->render();
     }
+
+    // return Cache::remember('template_' . $this->id, $this->cache_ttl, function () {
+    //     return TemplateManager::getTemplate($this->name)->setModel($this->load('blocks'))->render();
+    // });
 }

@@ -71,13 +71,6 @@ abstract class BaseBlock implements Arrayable
         return $this;
     }
 
-    public function render()
-    {
-        return view($this->view, [
-            'block' => $this
-        ]);
-    }
-
     // public function __get($key)
     // {
     //     if ('settings' === $key) {

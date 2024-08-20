@@ -68,7 +68,7 @@ trait HasBlockSettings
             }
         }
 
-        if ($this->type == 'component' && $this->hasDesignVariants()) {
+        if ($this->type == 'component' && method_exists($this, 'hasDesignVariants') && $this->hasDesignVariants()) {
             $settingsFields = array_merge($settingsFields, $this->getDesignVariantSettings());
         }
 

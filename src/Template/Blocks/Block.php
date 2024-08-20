@@ -53,4 +53,11 @@ abstract class Block extends BaseBlock
             'block' => $this
         ]);
     }
+
+    public function render()
+    {
+        return view($this->view, [
+            'block' => $this
+        ]);
+    }
 }

@@ -33,6 +33,54 @@ class Template implements Arrayable
 
     protected $model;
 
+    public function setCachedModel($model)
+    {
+        $templateBlocks = collect($model->blocks)->filter(function ($block) {
+            return $block->disabled == 0 && $block->parent_id == null;
+        });
+
+        $blocks = collect($model->blocks)->filter(function ($block) {
+            return $block->disabled == 0 && $block->parent_id;
+        });
+        
+        return $this->makeBlocks($templateBlocks, $blocks);
+    }
+
+    public function makeBlocks($templateBlocks, $blocks)
+    {
+        $bt = [];
+        foreach ($templateBlocks as $templateBlock) {
+            $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
+
+            $templateBlockChildren = collect($blocks)->where('parent_id', $templateBlock->id)->sortBy('order');
+
+            $templateBlock = $this->makeBlockChild($themeBlock, $templateBlockChildren, $blocks);
+            
+            $bt[] = $themeBlock->setModel($templateBlock);
+        }
+
+        $this->blocks = $bt;
+        return $this;
+    }
+
+    public function makeBlockChild($templateBlock, $templateBlockChildren, $blocks)
+    {
+        $childBlocks = [];
+        foreach ($templateBlockChildren as $block) {
+            $blockInstance = TemplateManager::getBlockByName($block->name);
+
+            $blockChildren = collect($blocks)->where('parent_id', $block->id)->sortBy('order');
+            if (count($blockChildren) > 0) {
+                $blockInstance = $this->makeBlockChild($blockInstance, $blockChildren, $blocks);
+            }
+
+            $childBlocks[] = $blockInstance->setModel($block);
+        }
+
+        $templateBlock->children($childBlocks);
+        return $templateBlock;
+    }
+
     public function setModel($model, $save = true)
     {
         $this->model = $model;

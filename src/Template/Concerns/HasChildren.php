@@ -4,29 +4,29 @@ namespace Raakkan\OnlyLaravel\Template\Concerns;
 
 trait HasChildren
 {
-    protected $childrens = [];
+    protected $children = [];
 
-    public function childrens($childrens)
+    public function children($childrens)
     {
-        $this->childrens = $childrens;
+        $this->children = $childrens;
         return $this;
     }
 
-    public function getChildrens()
+    public function getChildren()
     {
-        return $this->childrens;
+        return $this->children;
     }
 
-    public function getChildrensByLocation($location)
+    public function getChildrenByLocation($location)
     {
-        return collect($this->childrens)->filter(function ($children) use ($location) {
+        return collect($this->children)->filter(function ($children) use ($location) {
             return $children->getLocation() == $location;
         })->all();
     }
 
     public function components($components)
     {
-        $this->childrens = $components;
+        $this->children = $components;
 
         return $this;
     }
@@ -36,5 +36,10 @@ trait HasChildren
         $this->childrens = $blocks;
 
         return $this;
+    }
+
+    public function hasChildren()
+    {
+        return count($this->children) > 0;
     }
 }

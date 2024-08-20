@@ -1,6 +1,6 @@
 <div>
     @php
-        $childrens = $block->getChildrens();
+        $childrens = $block->getChildren();
     @endphp
 
     @foreach ($childrens as $child)
