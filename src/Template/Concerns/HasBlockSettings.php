@@ -36,15 +36,15 @@ trait HasBlockSettings
     public function setBlockSettings($settings)
     {
         if (is_array($settings) && array_key_exists('design_variant', $settings) && $this->type == 'component') {
-            $this->setDesignVariant($settings['design_variant']);
+            $this->setDesignVariant($settings);
         }
 
-        if (is_array($settings) && array_key_exists('color', $settings) && $this->hasColorSettings()) {
-            $this->setColorSettings($settings['color']);
+        if (is_array($settings) && array_key_exists('color', $settings) && $this->hasColorSettingsEnabled()) {
+            $this->setColorSettings($settings);
         }
 
-        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasTextSettings()) {
-            $this->setTextSettings($settings['text']);
+        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasTextSettingsEnabled()) {
+            $this->setTextSettings($settings);
         }
 
         $this->setBlockCustomSettings($settings);
@@ -59,11 +59,11 @@ trait HasBlockSettings
         $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields, $this->getBlockCustomSettings());
 
         if ($includeAll) {
-            if ($this->hasColorSettings()) {
+            if ($this->hasColorSettingsEnabled()) {
                 $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
             }
     
-            if ($this->hasTextSettings()) {
+            if ($this->hasTextSettingsEnabled()) {
                 $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
             }
 

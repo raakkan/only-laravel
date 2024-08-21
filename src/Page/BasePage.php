@@ -28,6 +28,11 @@ class BasePage
 
     protected $model;
 
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
     public function setModel($model, $save = true)
     {
         $this->model = $model;

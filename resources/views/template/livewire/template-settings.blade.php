@@ -39,45 +39,25 @@
     <div class="mt-6 bg-white dark:bg-gray-800 rounded p-2">
         @if ($this->getTemplate()->hasSettings())
             <div x-show="activeTab === 'settings'">
-                {{ $this->settingsForm }}
+                {{ $this->form }}
                 <div class="flex justify-end mt-5">
-                    <x-filament::button wire:click="save('settingsForm')">
+                    <x-filament::button wire:click="save">
                         Save
                     </x-filament::button>
                 </div>
             </div>
         @endif
         <div x-show="activeTab === 'maxWidth'">
-            {{ $this->maxWidthForm }}
-            <div class="flex justify-end mt-5">
-                <x-filament::button wire:click="save('maxWidthForm')">
-                    Save
-                </x-filament::button>
-            </div>
+            <livewire:only-laravel::template.livewire.max-width-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'spacing'">
-            {{ $this->spacingForm }}
-            <div class="flex justify-end mt-5">
-                <x-filament::button wire:click="save('spacingForm')">
-                    Save
-                </x-filament::button>
-            </div>
+            <livewire:only-laravel::template.livewire.spacing-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'color'">
-            {{ $this->colorForm }}
-            <div class="flex justify-end mt-5">
-                <x-filament::button wire:click="save('colorForm')">
-                    Save
-                </x-filament::button>
-            </div>
+            <livewire:only-laravel::template.livewire.block-color-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'text'">
-            {{ $this->textForm }}
-            <div class="flex justify-end mt-5">
-                <x-filament::button wire:click="save('textForm')">
-                    Save
-                </x-filament::button>
-            </div>
+            <livewire:only-laravel::template.livewire.block-text-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
         </div>
     </div>
 </div>

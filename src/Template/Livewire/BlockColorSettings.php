@@ -9,6 +9,7 @@ use Livewire\Attributes\Reactive;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
@@ -18,52 +19,48 @@ class BlockColorSettings extends Component implements HasForms
     use InteractsWithForms;
     
     public TemplateBlockModel $blockModel;
-    public ?string $backgroundColor = null;
-    public ?string $backgroundImage = null;
-    public ?string $textColor = null;
+    public TemplateModel $templateModel;
+    public ?array $settings = [];
 
     public function mount()
     {
-        $this->form->fill([
-            'backgroundColor' => $this->blockModel->settings['color']['background']['color'] ?? null,
-            'backgroundImage' => $this->blockModel->settings['color']['background']['image'] ?? null,
-            'textColor' => $this->blockModel->settings['color']['text']['color'] ?? null,
-        ]);
+        $this->form->fill($this->getModel()->settings);
     }
 
     public function form(Form $form): Form
     {
         return $form
-            ->schema($this->getColorSettingFields());
+            ->schema($this->getColorSettingFields())->statePath('settings');
     }
 
-    public function updated($property)
+    public function save()
     {
-        if ($property == 'backgroundColor') {
-            $settings = $this->blockModel->settings;
-            $settings['color']['background']['color'] = $this->backgroundColor;
-        }
+        $settings = array_merge($this->getModel()->settings ?? [], $this->form->getState());
+        
+        $this->getModel()->settings = $settings;
+        $this->getModel()->save();
 
-        if ($property == 'backgroundImage') {
-            $settings = $this->blockModel->settings;
-            $settings['color']['background']['image'] = $this->backgroundImage;
-        }
+        Notification::make()
+            ->title('Settings saved')
+            ->success()
+            ->send();
 
-        if ($property == 'textColor') {
-            $settings = $this->blockModel->settings;
-            $settings['color']['text']['color'] = $this->textColor;
-        }
+        $this->dispatch('settings-saved', id: isset($this->templateModel) ? $this->templateModel->id : $this->blockModel->id);
+    }
 
-        $this->blockModel->update([
-            'settings' => $settings,
-        ]);
-
-        $this->dispatch('block-settings-saved', id: $this->blockModel->id);
+    public function getModel()
+    {
+        return isset($this->templateModel) ? $this->templateModel : $this->blockModel;
     }
 
     public function getColorSettingFields()
     {
-        return $this->getBlock()->getColorSettingFields();
+        if (isset($this->templateModel)) {
+            return $this->getTemplate()->getColorSettingFields();
+        } else {
+            return $this->getBlock()->getColorSettingFields();
+        }
+        
     }
     
     public function getBlock()
@@ -71,6 +68,11 @@ class BlockColorSettings extends Component implements HasForms
         $block = TemplateManager::getBlockByName($this->blockModel->name)->setModel($this->blockModel);
 
         return $block;
+    }
+
+    public function getTemplate()
+    {
+        return TemplateManager::getTemplate($this->templateModel->name)->setModel($this->templateModel);
     }
     
     public function render()

@@ -8,7 +8,7 @@ use Raakkan\OnlyLaravel\Template\Enums\BackgroundType;
 class NavigationBlock extends Block
 {
     use HasNavigationBlock;
-    protected string $name = 'navigation';
+    protected string $name = 'navigation-block';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $backgroundSettings = true;

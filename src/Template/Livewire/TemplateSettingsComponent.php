@@ -16,58 +16,22 @@ class TemplateSettingsComponent extends Component implements HasForms
     
     public TemplateModel $template;
     public ?array $settings = [];
-    public ?array $maxWidthSettings = [];
-    public ?array $colorSettings = [];
-    public ?array $textSettings = [];
-    public ?array $spacingSettings = [];
 
     public function mount()
     {
-        $this->settingsForm->fill($this->template->settings);
-        $this->maxWidthForm->fill($this->template->settings);
-        $this->colorForm->fill($this->template->settings);
-        $this->textForm->fill($this->template->settings);
-        $this->spacingForm->fill($this->template->settings);
+        $this->form->fill($this->template->settings);
     }
 
-    public function settingsForm(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema($this->getTemplate()->getSettingFields())
             ->statePath('settings');
     }
 
-    public function maxWidthForm(Form $form): Form
+    public function save()
     {
-        return $form
-            ->schema($this->getTemplate()->getMaxWidthSettingFields())
-            ->statePath('maxWidthSettings');
-    }
-
-    public function colorForm(Form $form): Form
-    {
-        return $form
-            ->schema($this->getTemplate()->getColorSettingFields())
-            ->statePath('colorSettings');
-    }
-
-    public function textForm(Form $form): Form
-    {
-        return $form
-            ->schema($this->getTemplate()->getTextSettingFields())
-            ->statePath('textSettings');
-    }
-
-    public function spacingForm(Form $form): Form
-    {
-        return $form
-            ->schema($this->getTemplate()->getSpaceSettingFields())
-            ->statePath('spacingSettings');
-    }
-
-    public function save($form)
-    {
-        $settings = array_merge($this->template->settings ?? [], $this->{$form}->getState());
+        $settings = array_merge($this->template->settings ?? [], $this->form->getState());
         $this->template->update([
             'settings' => $settings,
         ]);
@@ -76,17 +40,6 @@ class TemplateSettingsComponent extends Component implements HasForms
             ->title('Template settings saved')
             ->success()
             ->send();
-    }
-
-    protected function getForms(): array
-    {
-        return [
-            'settingsForm',
-            'maxWidthForm',
-            'colorForm',
-            'textForm',
-            'spacingForm',
-        ];
     }
 
     public function getTemplate()

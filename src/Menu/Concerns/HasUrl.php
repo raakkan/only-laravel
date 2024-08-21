@@ -5,6 +5,29 @@ namespace Raakkan\OnlyLaravel\Menu\Concerns;
 trait HasUrl
 {
     protected $url;
+    protected $target;
+
+    public function target($target)
+    {
+        $this->target = $target;
+        return $this;
+    }
+
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    public function setTarget($target)
+    {
+        $this->target = $target;
+        return $this;
+    }
+
+    public function hasTarget()
+    {
+        return !empty($this->target) && !is_null($this->target);
+    }
 
     public function url($url)
     {

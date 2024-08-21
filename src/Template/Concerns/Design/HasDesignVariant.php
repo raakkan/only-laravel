@@ -17,7 +17,9 @@ trait HasDesignVariant
 
     public function setDesignVariant($designVariant)
     {
-        $this->designVariant = $designVariant;
+        if (is_array($designVariant) && in_array($designVariant, $this->designVariants)) {
+            $this->designVariant = $designVariant['design_variant'];
+        }
         return $this;
     }
 

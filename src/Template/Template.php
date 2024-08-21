@@ -11,8 +11,11 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\HasMaxWidthSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasTemplateSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
 
 // TODO: add option for setting clear
 class Template implements Arrayable
@@ -25,6 +28,9 @@ class Template implements Arrayable
     use HasForPage;
     use HasTemplateSettings;
     use HasMaxWidthSettings;
+    use HasSpacingSettings;
+    use HasColorSettings;
+    use HasTextSettings;
 
     public function __construct($name)
     {
@@ -52,37 +58,36 @@ class Template implements Arrayable
 
     public function makeBlocks($templateBlocks, $blocks)
     {
-        $bt = [];
+        $builtBlocks = [];
+
         foreach ($templateBlocks as $templateBlock) {
             $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
-
-            $templateBlockChildren = collect($blocks)->where('parent_id', $templateBlock->id)->sortBy('order');
-
-            $templateBlock = $this->makeBlockChild($themeBlock, $templateBlockChildren, $blocks);
-            
-            $bt[] = $themeBlock->setModel($templateBlock);
+            $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
+            $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
+            $builtBlocks[] = $themeBlock->setModel($templateBlock);
         }
 
-        $this->blocks = $bt;
+        $this->blocks = $builtBlocks;
         return $this;
     }
 
-    public function makeBlockChild($templateBlock, $templateBlockChildren, $blocks)
+    private function buildBlockTree($themeBlock, $templateBlockChildren, $blocks)
     {
         $childBlocks = [];
+
         foreach ($templateBlockChildren as $block) {
             $blockInstance = TemplateManager::getBlockByName($block->name);
+            $blockChildren = $blocks->where('parent_id', $block->id)->sortBy('order');
 
-            $blockChildren = collect($blocks)->where('parent_id', $block->id)->sortBy('order');
-            if (count($blockChildren) > 0) {
-                $blockInstance = $this->makeBlockChild($blockInstance, $blockChildren, $blocks);
+            if ($blockChildren->isNotEmpty()) {
+                $blockInstance = $this->buildBlockTree($blockInstance, $blockChildren, $blocks);
             }
 
             $childBlocks[] = $blockInstance->setModel($block);
         }
 
-        $templateBlock->children($childBlocks);
-        return $templateBlock;
+        $themeBlock->children($childBlocks);
+        return $themeBlock;
     }
 
     public function setModel($model, $save = true)

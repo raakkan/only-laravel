@@ -33,6 +33,7 @@ class MenuItemComponent extends Component implements HasForms, HasActions
             ->schema([
                 TextInput::make('label')->required(),
                 TextInput::make('url')->required()->url(),
+                TextInput::make('target'),
             ])
             ->statePath('settings')
             ->model($this->item);

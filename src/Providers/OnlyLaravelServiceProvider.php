@@ -71,5 +71,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         Livewire::component('only-laravel::template.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
         Livewire::component('only-laravel::template.livewire.block-color-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockColorSettings::class);
         Livewire::component('only-laravel::template.livewire.block-text-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockTextSettings::class);
+        Livewire::component('only-laravel::template.livewire.spacing-settings', \Raakkan\OnlyLaravel\Template\Livewire\SpacingSettings::class);
+        Livewire::component('only-laravel::template.livewire.max-width-settings', \Raakkan\OnlyLaravel\Template\Livewire\MaxWidthSettings::class);
     }
 }

@@ -4,18 +4,18 @@ namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
 use Filament\Forms\Form;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
 
-class BlockTextSettings extends Component implements HasForms
+class MaxWidthSettings extends Component implements HasForms
 {
     use InteractsWithForms;
+    use HasMaxWidthSettings;
     
     public TemplateBlockModel $blockModel;
     public TemplateModel $templateModel;
@@ -23,13 +23,13 @@ class BlockTextSettings extends Component implements HasForms
 
     public function mount()
     {
-        $this->form->fill($this->getModel()->settings ?? []);
+        $this->form->fill($this->getModel()->settings);
     }
 
     public function form(Form $form): Form
     {
         return $form
-            ->schema($this->getTextSettingFields())->statePath('settings');
+            ->schema($this->getMaxWidthSettingFields())->statePath('settings');
     }
 
     public function save()
@@ -50,15 +50,6 @@ class BlockTextSettings extends Component implements HasForms
     public function getModel()
     {
         return isset($this->templateModel) ? $this->templateModel : $this->blockModel;
-    }
-
-    public function getTextSettingFields()
-    {
-        if (isset($this->templateModel)) {
-            return $this->getTemplate()->getTextSettingFields();
-        } else {
-            return $this->getBlock()->getTextSettingFields();
-        }
     }
     
     public function getBlock()

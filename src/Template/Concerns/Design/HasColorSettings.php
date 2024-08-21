@@ -9,12 +9,12 @@ use Raakkan\OnlyLaravel\Template\Enums\BackgroundType;
 
 trait HasColorSettings
 {
-    protected $backgroundSettings = false;
+    protected $backgroundSettings = true;
     protected $backgroundType = BackgroundType::COLOR;
     public $backgroundColor = null;
     public $backgroundImage = null;
     
-    protected $textColorSettings = false;
+    protected $textColorSettings = true;
     public $textColor = null;
 
     public function backgroundSettings($backgroundType = BackgroundType::COLOR, $color = null, $image = null)
@@ -32,49 +32,59 @@ trait HasColorSettings
         return $this;
     }
 
+    public function textColorSettings($color = null)
+    {
+        $this->textColorSettings = true;
+        $this->textColor = $color;
+        return $this;
+    }
+
     public function getColorSettingFields()
     {
         $fields = [];
         if ($this->backgroundType == BackgroundType::COLOR) {
             $fields = [
-                ColorPicker::make('backgroundColor')->label('Background Color')->default($this->backgroundColor)->live(debounce: 500),
+                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::IMAGE) {
             $fields = [
-                TextInput::make('backgroundImage')->label('Background Image')->default($this->backgroundImage)->live(debounce: 500),
+                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::BOTH) {
             $fields = [
-                ColorPicker::make('backgroundColor')->label('Background Color')->default($this->backgroundColor)->live(debounce: 500),
-                TextInput::make('backgroundImage')->label('Background Image')->default($this->backgroundImage)->live(debounce: 500),
+                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
+                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
             ];
         }
         
         if ($this->textColorSettings) {
-            $fields[] = ColorPicker::make('textColor')->label('Text Color')->default($this->textColor)->live(debounce: 500);
+            $fields[] = ColorPicker::make('color.text.color')->label('Text Color')->default($this->textColor);
         }
         
         return $fields;
     }
 
-    public function hasColorSettings()
+    public function hasColorSettingsEnabled()
     {
         return $this->backgroundSettings || $this->textColorSettings;
     }
 
     public function setColorSettings($settings)
     {
-        if (array_key_exists('background', $settings)) {
-            $this->backgroundColor = $settings['background']['color'];
-            $this->backgroundImage = $settings['background']['image'] ?? null;
-        }
-
-        if (array_key_exists('text', $settings)) {
-            $this->textColor = $settings['text']['color'];
+        if (is_array($settings) && array_key_exists('color', $settings)) {
+            $colorSettings = $settings['color'] ?? null;
+            if (array_key_exists('background', $colorSettings)) {
+                $this->backgroundColor = $colorSettings['background']['color'];
+                $this->backgroundImage = $colorSettings['background']['image'] ?? null;
+            }
+    
+            if (array_key_exists('text', $colorSettings)) {
+                $this->textColor = $colorSettings['text']['color'];
+            }
         }
 
         return $this;

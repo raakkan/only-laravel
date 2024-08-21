@@ -34,6 +34,9 @@ trait HasTemplateSettings
         if (is_array($settings)) {
             $this->settings = $settings;
             $this->setMaxWidthSettings($settings);
+            $this->setColorSettings($settings);
+            $this->setTextSettings($settings);
+            $this->setSpacingSettings($settings);
         }
         
         return $this;
@@ -44,42 +47,9 @@ trait HasTemplateSettings
         return array_merge($this->getTemplateSettings(), $this->settingFields);
     }
 
-    public function getSpaceSettingFields()
-    {
-        return [
-            TextInput::make('spacing.mobile')->label('Mobile')->numeric()->suffix('rm'),
-            TextInput::make('spacing.tablet')->label('Tablet')->numeric()->suffix('rm'),
-            TextInput::make('spacing.tablet_wide')->label('Tablet Wide')->numeric()->suffix('rm'),
-            TextInput::make('spacing.laptop')->label('Laptop')->numeric()->suffix('rm'),
-            TextInput::make('spacing.desktop')->label('Desktop')->numeric()->suffix('rm'),
-            TextInput::make('spacing.desktop_wide')->label('Desktop Wide')->numeric()->suffix('rm'),
-        ];
-    }
-
-    public function getColorSettingFields()
-    {
-        return [
-            ColorPicker::make('color.background')->label('Background Color'),
-            ColorPicker::make('color.text')->label('Text Color'),
-        ];
-    }
-
-    public function getTextSettingFields()
-    {
-        $fields = [];
-        
-            $fields[] = Select::make('text.fontFamily')
-            ->label('Font Family')->options(collect(FontManager::getFontFamilies())->mapWithKeys(function ($value, $key) {
-                return [$value['value'] => $value['name']];
-            })->toArray());
-            $fields[] = TextInput::make('text.fontSize')->label('Font Size')->numeric();
-        
-        return $fields;
-    }
-
     public function storeDefaultSettingsToDatabase()
     {
-        $fields = array_merge($this->getSettingFields(), $this->getSpaceSettingFields(), $this->getColorSettingFields(), $this->getTextSettingFields(), $this->getMaxWidthSettingFields());
+        $fields = array_merge($this->getSettingFields(), $this->getSpacingSettingFields(), $this->getColorSettingFields(), $this->getTextSettingFields(), $this->getMaxWidthSettingFields());
         foreach ($fields as $field) {
             if ($field instanceof Field && $this->hasFieldDefaultValue($field) && $this->hasModel()) {
 

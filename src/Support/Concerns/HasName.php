@@ -4,7 +4,7 @@ namespace Raakkan\OnlyLaravel\Support\Concerns;
 
 trait HasName
 {
-    protected string $name;
+    protected string $name = '';
 
     public function getName(): string
     {

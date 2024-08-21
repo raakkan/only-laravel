@@ -33,7 +33,7 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->unique()->live(onBlur: true)->required()->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                TextInput::make('name')->unique(ignoreRecord: true)->live(onBlur: true)->required()->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                 ->disabled(function (?Model $record) { 
                     if ($record && $record->name == 'home-page') {
                         return true;
@@ -42,20 +42,20 @@ class PageResource extends Resource
                  })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 TextInput::make('title')->required(),
                 RichEditor::make('content')->columnSpanFull(),
-                TextInput::make('slug')->required()->rules('regex:/^[a-zA-Z0-9_-]+$/')->disabled(function (?Model $record) { 
+                TextInput::make('slug')->required(function (?Model $record){
                     if ($record && $record->name == 'home-page') {
-                        return true;
+                        return false;
                     }
-                    return false;
-                 }),
+                    return true;
+                })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 Select::make('template_id')->relationship(
                     name: 'template',
                     titleAttribute: 'label',
                     modifyQueryUsing: function (Builder $query, ?Model $record) {
                         if ($record) {
-                            return $query->where('for_page_type', '=', 'page')->where('for_page', '=', 'all')->orWhere('for_page', '=', $record->name);
+                            return $query->where('for_page_type', '=', 'pages')->where('for_page', '=', 'all')->orWhere('for_page', '=', $record->name);
                         }else{
-                            return $query->where('for_page_type', '=', 'page')->where('for_page', '=', 'all');
+                            return $query->where('for_page_type', '=', 'pages')->where('for_page', '=', 'all');
                         }
                     }
                 )->required(),

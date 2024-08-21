@@ -17,7 +17,7 @@ use Raakkan\OnlyLaravel\Models\MenuModel;
  */
 class MenuItemModel extends Model
 {
-    protected $fillable = ['menu_id', 'name', 'order', 'url', 'icon', 'parent_id', 'label'];
+    protected $fillable = ['menu_id', 'name', 'target', 'order', 'url', 'icon', 'parent_id', 'label'];
 
     public function menu()
     {

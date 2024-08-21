@@ -4,8 +4,6 @@ namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
 use Filament\Forms\Form;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Reactive;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
@@ -13,7 +11,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
 
-class BlockTextSettings extends Component implements HasForms
+class SpacingSettings extends Component implements HasForms
 {
     use InteractsWithForms;
     
@@ -23,13 +21,13 @@ class BlockTextSettings extends Component implements HasForms
 
     public function mount()
     {
-        $this->form->fill($this->getModel()->settings ?? []);
+        $this->form->fill($this->getModel()->settings);
     }
 
     public function form(Form $form): Form
     {
         return $form
-            ->schema($this->getTextSettingFields())->statePath('settings');
+            ->schema($this->getSpacingSettingFields())->statePath('settings');
     }
 
     public function save()
@@ -52,12 +50,12 @@ class BlockTextSettings extends Component implements HasForms
         return isset($this->templateModel) ? $this->templateModel : $this->blockModel;
     }
 
-    public function getTextSettingFields()
+    public function getSpacingSettingFields()
     {
         if (isset($this->templateModel)) {
-            return $this->getTemplate()->getTextSettingFields();
+            return $this->getTemplate()->getSpacingSettingFields();
         } else {
-            return $this->getBlock()->getTextSettingFields();
+            return $this->getBlock()->getSpacingSettingFields();
         }
     }
     

@@ -9,7 +9,7 @@ use Raakkan\OnlyLaravel\Facades\FontManager;
 
 trait HasTextSettings
 {
-    protected $fontSettings = false;
+    protected $fontSettings = true;
     public $fontFamily = null;
     public $fontSize = null;
     public $fontWeight = null;
@@ -34,35 +34,37 @@ trait HasTextSettings
         $fields = [];
 
         if ($this->fontSettings) {
-            $fields[] = Select::make('fontFamily')
+            $fields[] = Select::make('text.font.family')
             ->label('Font Family')
             ->options(collect(FontManager::getFontFamilies())->mapWithKeys(function ($value, $key) {
                 return [$value['value'] => $value['name']];
             })->toArray())
             ->default($this->fontFamily)->live(debounce: 500);
-            $fields[] = TextInput::make('fontSize')->label('Font Size')->numeric()->default($this->fontSize) ->helperText('size in rem')->live(debounce: 500);
-            $fields[] = TextInput::make('fontWeight')->label('Font Weight')->default($this->fontWeight)->live(debounce: 500);
-            $fields[] = Select::make('fontStyle')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle)->live(debounce: 500);
-            $fields[] = TextInput::make('letterSpacing')->label('Latter Spacing')->numeric()->default($this->latterSpacing)->helperText('size in rem')->live(debounce: 500);
-            $fields[] = TextInput::make('lineHeight')->label('Line Height')->numeric()->default($this->lineHeight)->helperText('size in rem')->live(debounce: 500);
+            $fields[] = TextInput::make('text.font.size')->label('Font Size')->numeric()->default($this->fontSize) ->helperText('size in rem')->live(debounce: 500);
+            $fields[] = TextInput::make('text.font.weight')->label('Font Weight')->default($this->fontWeight)->live(debounce: 500);
+            $fields[] = Select::make('text.font.style')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle)->live(debounce: 500);
+            $fields[] = TextInput::make('text.font.latterSpacing')->label('Latter Spacing')->numeric()->default($this->latterSpacing)->helperText('size in rem')->live(debounce: 500);
+            $fields[] = TextInput::make('text.font.lineHeight')->label('Line Height')->numeric()->default($this->lineHeight)->helperText('size in rem')->live(debounce: 500);
         }
 
         return $fields;
     }
 
-    public function hasTextSettings()
+    public function hasTextSettingsEnabled()
     {
         return $this->fontSettings;
     }
 
     public function setTextSettings($settings)
     {
-        $this->fontFamily = $settings['font']['family'] ?? null;
-        $this->fontSize = $settings['font']['size'] ?? null;
-        $this->fontWeight = $settings['font']['weight'] ?? null;
-        $this->fontStyle = $settings['font']['style'] ?? null;
-        $this->latterSpacing = $settings['font']['latterSpacing'] ?? null;
-        $this->lineHeight = $settings['font']['lineHeight'] ?? null;
+        if (is_array($settings) && array_key_exists('text', $settings)) {
+            $this->fontFamily = $settings['text']['font']['family'] ?? null;
+            $this->fontSize = $settings['text']['font']['size'] ?? null;
+            $this->fontWeight = $settings['text']['font']['weight'] ?? null;
+            $this->fontStyle = $settings['text']['font']['style'] ?? null;
+            $this->latterSpacing = $settings['text']['font']['latterSpacing'] ?? null;
+            $this->lineHeight = $settings['text']['font']['lineHeight'] ?? null;
+        }
         return $this;
     }
 }
