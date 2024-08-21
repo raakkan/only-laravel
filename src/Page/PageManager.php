@@ -14,7 +14,7 @@ class PageManager
     use ManagePages;
     use ManagePageTypes;
 
-    public function render($slug = null, $pageType = 'pages')
+    public function render($slug = null, mixed $pageType = 'pages')
     {
         $pageType = $this->findPageTypeByType($pageType);
         if (! $pageType) {
@@ -78,5 +78,10 @@ class PageManager
             return false;
         }
         return true;
+    }
+
+    public function generateUrl($slug, $pageType): string
+    {
+        return url($slug);
     }
 }

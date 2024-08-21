@@ -63,8 +63,19 @@ class LivewireBlock extends Component implements HasForms, HasActions
         $block->updateOrder($position);
     }
 
-    public function handleDrop(array $data, $location)
+    public function handleDrop(array $data, $location, $componentOnly = false)
     {
+        $block = TemplateManager::getBlockByName($data['name']);
+
+        if($componentOnly && $block->getType() == 'block')
+        {
+            Notification::make()
+            ->title('Block not allowed here')
+            ->warning()
+            ->send();
+            return;
+        }
+
         $childCount = $this->template->blocks()->where('parent_id', $this->block->id)->where('location', $location)->count();
 
         $blockModel = $this->template->blocks()->create([
@@ -77,7 +88,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
             'parent_id' => $this->block->id
         ]);
 
-        $block = TemplateManager::getBlockByName($blockModel->name)->setModel($blockModel);
+        $block->setModel($blockModel);
 
         $block->storeDefaultSettingsToDatabase();
 

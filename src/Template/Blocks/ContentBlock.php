@@ -6,6 +6,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
 use Raakkan\OnlyLaravel\Template\Enums\ContentSidebar;
 
 class ContentBlock extends Block
@@ -35,12 +36,12 @@ class ContentBlock extends Block
     public function leftSideBar($blocks = [])
     {
         $sidebarBlocks = collect($blocks)->filter(function ($item){
-            return $item instanceof BaseBlock;
+            return $item instanceof BaseBlock || $item instanceof BlockComponent;
         })->each(function ($block) {
             $block->setLocation('left-sidebar');
         })->all();
 
-        $this->childrens = array_merge($this->childrens, $sidebarBlocks);
+        $this->childrens = array_merge($this->children, $sidebarBlocks);
 
         return $this->sideBar(true, ContentSidebar::LEFT);
     }
@@ -51,12 +52,12 @@ class ContentBlock extends Block
     public function rightSideBar($blocks = [])
     {
         $sidebarBlocks = collect($blocks)->filter(function ($item){
-            return $item instanceof BaseBlock;
+            return $item instanceof BaseBlock || $item instanceof BlockComponent;
         })->each(function ($block) {
             $block->setLocation('right-sidebar');
         })->all();
 
-        $this->childrens = array_merge($this->childrens, $sidebarBlocks);
+        $this->childrens = array_merge($this->children, $sidebarBlocks);
 
         return $this->sideBar(true, ContentSidebar::RIGHT);
     }

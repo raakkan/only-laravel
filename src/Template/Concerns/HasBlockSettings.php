@@ -23,40 +23,40 @@ trait HasBlockSettings
         return [];
     }
 
+    public function getBlockCustomSettings()
+    {
+        return [];
+    }
+
+    public function setBlockCustomSettings($settings)
+    {
+        return $this;
+    }
+
     public function setBlockSettings($settings)
     {
         if (is_array($settings) && array_key_exists('design_variant', $settings) && $this->type == 'component') {
-            $this->setDesignVariant(Arr::pull($settings, 'design_variant'));
+            $this->setDesignVariant($settings['design_variant']);
         }
 
         if (is_array($settings) && array_key_exists('color', $settings) && $this->hasColorSettings()) {
-            $colorSettings = Arr::pull($settings, 'color');
-            if (array_key_exists('background', $colorSettings)) {
-                $this->backgroundColor = $colorSettings['background']['color'];
-                $this->backgroundImage = $colorSettings['background']['image'] ?? null;
-            }
-
-            if (array_key_exists('text', $colorSettings)) {
-                $this->textColor = $colorSettings['text']['color'];
-            }
+            $this->setColorSettings($settings['color']);
         }
 
         if (is_array($settings) && array_key_exists('text', $settings) && $this->hasTextSettings()) {
-            $textSettings = Arr::pull($settings, 'text');
-            $this->fontFamily = $textSettings['font']['family'] ?? null;
-            $this->fontSize = $textSettings['font']['size'] ?? null;
-            $this->fontWeight = $textSettings['font']['weight'] ?? null;
-            $this->fontStyle = $textSettings['font']['style'] ?? null;
-            $this->latterSpacing = $textSettings['font']['latterSpacing'] ?? null;
-            $this->lineHeight = $textSettings['font']['lineHeight'] ?? null;
+            $this->setTextSettings($settings['text']);
         }
 
+        $this->setBlockCustomSettings($settings);
+
         $this->settings = $settings;
+
+        return $this;
     }
 
     public function getSettingFields($includeAll = false)
     {
-        $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields);
+        $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields, $this->getBlockCustomSettings());
 
         if ($includeAll) {
             if ($this->hasColorSettings()) {
@@ -66,6 +66,8 @@ trait HasBlockSettings
             if ($this->hasTextSettings()) {
                 $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
             }
+
+            
         }
 
         if ($this->type == 'component' && method_exists($this, 'hasDesignVariants') && $this->hasDesignVariants()) {

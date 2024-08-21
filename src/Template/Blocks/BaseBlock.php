@@ -9,16 +9,17 @@ use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\Addable;
-use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Template\Concerns\HasModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasOrder;
 use Raakkan\OnlyLaravel\Template\Concerns\Sortable;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
+use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
-use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
 
@@ -44,9 +45,9 @@ abstract class BaseBlock implements Arrayable
     use Disableable;
     use HasTextSettings;
     use HasForPage;
+    use HasBlockView;
 
     protected $parent;
-    protected $view;
     protected $templateModel;
 
     public function getTemplateModel()

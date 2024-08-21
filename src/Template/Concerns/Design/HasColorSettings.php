@@ -65,4 +65,18 @@ trait HasColorSettings
     {
         return $this->backgroundSettings || $this->textColorSettings;
     }
+
+    public function setColorSettings($settings)
+    {
+        if (array_key_exists('background', $settings)) {
+            $this->backgroundColor = $settings['background']['color'];
+            $this->backgroundImage = $settings['background']['image'] ?? null;
+        }
+
+        if (array_key_exists('text', $settings)) {
+            $this->textColor = $settings['text']['color'];
+        }
+
+        return $this;
+    }
 }

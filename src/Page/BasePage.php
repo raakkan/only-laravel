@@ -44,7 +44,6 @@ class BasePage
     {
         return isset($this->model);
     }
-
     public function create()
     {
         if (PageModel::where('name', $this->name)->exists()) {

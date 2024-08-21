@@ -42,7 +42,7 @@ abstract class Block extends BaseBlock
         $this->setModel($model);
         $this->storeDefaultSettingsToDatabase();
 
-        foreach ($this->childrens as $child) {
+        foreach ($this->children as $child) {
             $child->create($template, $model);
         }
     }

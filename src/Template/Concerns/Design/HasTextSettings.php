@@ -54,4 +54,15 @@ trait HasTextSettings
     {
         return $this->fontSettings;
     }
+
+    public function setTextSettings($settings)
+    {
+        $this->fontFamily = $settings['font']['family'] ?? null;
+        $this->fontSize = $settings['font']['size'] ?? null;
+        $this->fontWeight = $settings['font']['weight'] ?? null;
+        $this->fontStyle = $settings['font']['style'] ?? null;
+        $this->latterSpacing = $settings['font']['latterSpacing'] ?? null;
+        $this->lineHeight = $settings['font']['lineHeight'] ?? null;
+        return $this;
+    }
 }

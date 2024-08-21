@@ -8,4 +8,5 @@ class ImageBlockComponent extends BlockComponent
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $view = 'only-laravel::template.components.image';
+    protected $backgroundSettings = true;
 }

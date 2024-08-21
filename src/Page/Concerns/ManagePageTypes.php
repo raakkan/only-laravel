@@ -27,7 +27,7 @@ trait ManagePageTypes
 
     public function registerPageType(PageType $pageType)
     {
-        if($pageType->allRequiredFieldsFilled() && ! $this->isPageTypeExist($pageType->getType())) {
+        if(! $this->isPageTypeExist($pageType->getType())) {
             $this->pageTypes[] = $pageType;
         }
         return $this;
@@ -49,7 +49,7 @@ trait ManagePageTypes
 
     public function getDefaultPageType()
     {
-        return PageType::make('pages', 'Pages', 'Pages', $this->defaultPageTypeView, $this->defaultPageTypeModel);
+        return PageType::make('pages', 'Pages', 'root', $this->defaultPageTypeView, $this->defaultPageTypeModel);
     }
 
     public function useDefaultPageTypeView($view)

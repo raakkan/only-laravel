@@ -8,8 +8,7 @@ trait HasChildren
 
     public function children($childrens)
     {
-        $this->children = $childrens;
-        return $this;
+        return $this->blocks($childrens);
     }
 
     public function getChildren()
@@ -26,14 +25,12 @@ trait HasChildren
 
     public function components($components)
     {
-        $this->children = $components;
-
-        return $this;
+        return $this->blocks($components);
     }
 
     public function blocks($blocks)
     {
-        $this->childrens = $blocks;
+        $this->children = $blocks;
 
         return $this;
     }

@@ -11,10 +11,10 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasMaxWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasTemplateSettings;
 
+// TODO: add option for setting clear
 class Template implements Arrayable
 {
     use Makable;
@@ -42,6 +42,10 @@ class Template implements Arrayable
         $blocks = collect($model->blocks)->filter(function ($block) {
             return $block->disabled == 0 && $block->parent_id;
         });
+
+        $this->model = $model;
+
+        $this->setTemplateSettings($this->model->settings);
         
         return $this->makeBlocks($templateBlocks, $blocks);
     }

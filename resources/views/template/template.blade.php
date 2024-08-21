@@ -83,10 +83,10 @@
     }
 </style>
 
-<div
+<body
     style="width: 100%; height: 100%; background-color: {{ $template->getTemplateSetting('color.background') }}; color: {{ $template->getTemplateSetting('color.text') }};
     font-family: {{ $template->getTemplateSetting('text.fontFamily') ?? 'Arial, Helvetica, sans-serif' }}; font-size: {{ $template->getTemplateSetting('text.fontSize') }}">
     @foreach ($blocks as $block)
         {{ $block->render() }}
     @endforeach
-</div>
+</body>

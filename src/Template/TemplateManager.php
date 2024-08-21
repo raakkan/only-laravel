@@ -7,6 +7,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\GridBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\YieldComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
@@ -64,7 +65,8 @@ class TemplateManager
             GridBlock::make(),
             ContentBlock::make(),
             ImageBlockComponent::make(),
-            YieldComponent::make()
+            YieldComponent::make(),
+            NavigationBlock::make(),
         ];
     }
 }
