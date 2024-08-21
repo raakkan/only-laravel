@@ -47,6 +47,14 @@ trait HasBlockSettings
             $this->setTextSettings($settings);
         }
 
+        if(is_array($settings) && array_key_exists('spacing', $settings)) {
+            $this->setSpacingSettings($settings);
+        }
+
+        if (is_array($settings) && array_key_exists('maxwidth', $settings)) {
+            $this->setMaxWidthSettings($settings);
+        }
+
         $this->setBlockCustomSettings($settings);
 
         $this->settings = $settings;

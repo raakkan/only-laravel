@@ -4,32 +4,32 @@
             @if ($this->getTemplate()->hasSettings())
                 <button class="px-4 py-2 rounded-md text-sm font-medium focus:outline-none"
                     :class="{
-                        'bg-blue-500 text-white': activeTab === 'settings',
+                        'bg-gray-500 text-white': activeTab === 'settings',
                         'text-gray-500 hover:text-gray-700 hover:bg-gray-100': activeTab !== 'settings'
                     }"
                     @click="activeTab = 'settings'">Settings</button>
             @endif
             <button class="px-4 py-2 rounded-md text-sm font-medium focus:outline-none"
                 :class="{
-                    'bg-blue-500 text-white': activeTab === 'maxWidth',
+                    'bg-gray-500 text-white': activeTab === 'maxWidth',
                     'text-gray-500 hover:text-gray-700 hover:bg-gray-100': activeTab !== 'maxWidth'
                 }"
                 @click="activeTab = 'maxWidth'">Max width</button>
             <button class="px-4 py-2 rounded-md text-sm font-medium focus:outline-none"
                 :class="{
-                    'bg-blue-500 text-white': activeTab === 'spacing',
+                    'bg-gray-500 text-white': activeTab === 'spacing',
                     'text-gray-500 hover:text-gray-700 hover:bg-gray-100': activeTab !== 'spacing'
                 }"
                 @click="activeTab = 'spacing'">Spacing</button>
             <button class="px-4 py-2 rounded-md text-sm font-medium focus:outline-none"
                 :class="{
-                    'bg-blue-500 text-white': activeTab === 'color',
+                    'bg-gray-500 text-white': activeTab === 'color',
                     'text-gray-500 hover:text-gray-700 hover:bg-gray-100': activeTab !== 'color'
                 }"
                 @click="activeTab = 'color'">Color</button>
             <button class="px-4 py-2 rounded-md text-sm font-medium focus:outline-none"
                 :class="{
-                    'bg-blue-500 text-white': activeTab === 'text',
+                    'bg-gray-500 text-white': activeTab === 'text',
                     'text-gray-500 hover:text-gray-700 hover:bg-gray-100': activeTab !== 'text'
                 }"
                 @click="activeTab = 'text'">Text</button>

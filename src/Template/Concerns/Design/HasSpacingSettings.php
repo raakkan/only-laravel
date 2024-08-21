@@ -7,90 +7,209 @@ use Filament\Forms\Components\Section;
 
 trait HasSpacingSettings
 {
-    protected $spacingSettings = true;
-    public $mobileSpacing = 0;
-    public $tabletSpacing = 0;
-    public $tabletWideSpacing = 0;
-    public $laptopSpacing = 0;
-    public $desktopSpacing = 0;
-    public $desktopWideSpacing = 0;
+    protected $paddingSettings = true;
+    protected $marginSettings = true;
+    protected $spacingResponsiveSettings = true;
+
+    public $padding = 0;
+    public $paddingSmall = 0;
+    public $paddingMedium = 0;
+    public $paddingLarge = 0;
+    public $paddingExtraLarge = 0;
+    public $padding2ExtraLarge = 0;
+
+    public $margin = 0;
+    public $marginSmall = 0;
+    public $marginMedium = 0;
+    public $marginLarge = 0;
+    public $marginExtraLarge = 0;
+    public $margin2ExtraLarge = 0;
 
     public function setSpacingSettings($settings)
     {
         if (array_key_exists('spacing', $settings)) {
-            $this->mobileSpacing = $settings['spacing']['mobile'] ?? $this->mobileSpacing;
-            $this->tabletSpacing = $settings['spacing']['tablet'] ?? $this->tabletSpacing;
-            $this->tabletWideSpacing = $settings['spacing']['tablet_wide'] ?? $this->tabletWideSpacing;
-            $this->laptopSpacing = $settings['spacing']['laptop'] ?? $this->laptopSpacing;
-            $this->desktopSpacing = $settings['spacing']['desktop'] ?? $this->desktopSpacing;
-            $this->desktopWideSpacing = $settings['spacing']['desktop_wide'] ?? $this->desktopWideSpacing;
+            $this->padding = $settings['spacing']['padding']['padding'] ?? $this->padding;
+            $this->paddingSmall = $settings['spacing']['padding']['small'] ?? $this->paddingSmall;
+            $this->paddingMedium = $settings['spacing']['padding']['medium'] ?? $this->paddingMedium;
+            $this->paddingLarge = $settings['spacing']['padding']['large'] ?? $this->paddingLarge;
+            $this->paddingExtraLarge = $settings['spacing']['padding']['extra_large'] ?? $this->paddingExtraLarge;
+            $this->padding2ExtraLarge = $settings['spacing']['padding']['2_extra_large'] ?? $this->padding2ExtraLarge;
+            $this->margin = $settings['spacing']['margin']['margin'] ?? $this->margin;
+            $this->marginSmall = $settings['spacing']['margin']['small'] ?? $this->marginSmall;
+            $this->marginMedium = $settings['spacing']['margin']['medium'] ?? $this->marginMedium;
+            $this->marginLarge = $settings['spacing']['margin']['large'] ?? $this->marginLarge;
+            $this->marginExtraLarge = $settings['spacing']['margin']['extra_large'] ?? $this->marginExtraLarge;
+            $this->margin2ExtraLarge = $settings['spacing']['margin']['2_extra_large'] ?? $this->margin2ExtraLarge;
         }
     }
 
     public function getSpacingSettingFields()
     {
-        if ($this->spacingSettings) {
-            return [
-                TextInput::make('spacing.mobile')->label('Mobile')->numeric()->suffix('rm'),
-                TextInput::make('spacing.tablet')->label('Tablet')->numeric()->suffix('rm'),
-                TextInput::make('spacing.tablet_wide')->label('Tablet Wide')->numeric()->suffix('rm'),
-                TextInput::make('spacing.laptop')->label('Laptop')->numeric()->suffix('rm'),
-                TextInput::make('spacing.desktop')->label('Desktop')->numeric()->suffix('rm'),
-                TextInput::make('spacing.desktop_wide')->label('Desktop Wide')->numeric()->suffix('rm'),
-            ];
+        $fileds = [];
+        if ($this->paddingSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fileds[] = Section::make('Padding')->schema([
+                    TextInput::make('spacing.padding.padding')->label('Padding')->numeric()->default($this->padding),
+                    TextInput::make('spacing.padding.small')->label('Padding Small')->numeric()->default($this->paddingSmall),
+                    TextInput::make('spacing.padding.medium')->label('Padding Medium')->numeric()->default($this->paddingMedium),
+                    TextInput::make('spacing.padding.large')->label('Padding Large')->numeric()->default($this->paddingLarge),
+                    TextInput::make('spacing.padding.extra_large')->label('Padding Extra Large')->numeric()->default($this->paddingExtraLarge),
+                    TextInput::make('spacing.padding.2_extra_large')->label('Padding 2 Extra Large')->numeric()->default($this->padding2ExtraLarge),
+                ])->compact();
+            } else {
+                $fileds[] = Section::make('Padding')->schema([
+                    TextInput::make('spacing.padding')->label('Padding')->numeric()->default($this->padding),
+                ])->compact();
+            }
+            
         }
+
+        if ($this->marginSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fileds[] = Section::make('Margin')->schema([
+                    TextInput::make('spacing.margin.margin')->label('Margin')->numeric()->default($this->margin),
+                    TextInput::make('spacing.margin.small')->label('Margin Small')->numeric()->default($this->marginSmall),
+                    TextInput::make('spacing.margin.medium')->label('Margin Medium')->numeric()->default($this->marginMedium),
+                    TextInput::make('spacing.margin.large')->label('Margin Large')->numeric()->default($this->marginLarge),
+                    TextInput::make('spacing.margin.extra_large')->label('Margin Extra Large')->numeric()->default($this->marginExtraLarge),
+                    TextInput::make('spacing.margin.2_extra_large')->label('Margin 2 Extra Large')->numeric()->default($this->margin2ExtraLarge),
+                ])->compact();
+            } else {
+                $fileds[] = Section::make('Margin')->schema([
+                    TextInput::make('spacing.margin')->label('Margin')->numeric()->default($this->margin),
+                ])->compact();
+            }
+        }
+
+        return $fileds;
     }
 
-    public function mobileSpacing(int $spacing)
+    public function padding($value)
     {
-        if ($spacing >= 0) {
-            $this->mobileSpacing = $spacing;
-        }
-        return $this;
-    }
-
-    public function tabletSpacing(int $spacing)
-    {
-        if ($spacing >= 0) {
-            $this->tabletSpacing = $spacing;
-        }
-        return $this;
-    }
-
-    public function tabletWideSpacing(int $spacing)
-    {
-        if ($spacing >= 0) {
-            $this->tabletWideSpacing = $spacing;
-        }
-        return $this;
-    }
-
-    public function laptopSpacing(int $spacing)
-    {
-        if ($spacing >= 0) {
-            $this->laptopSpacing = $spacing;
-        }
-        return $this;
-    }
-
-    public function desktopSpacing(int $spacing)
-    {
-        if ($spacing >= 0) {
-            $this->desktopSpacing = $spacing;
+        $this->paddingSettings = true;
+        if ($value >= 0) {
+            $this->padding = $value;
         }
         return $this;
     }
 
-    public function desktopWideSpacing(int $spacing)
+    public function margin($value)
     {
-        if ($spacing >= 0) {
-            $this->desktopWideSpacing = $spacing;
+        $this->marginSettings = true;
+        if ($value >= 0) {
+            $this->margin = $value;
+        }
+        return $this;
+    }
+
+    public function spacingResponsive()
+    {
+        $this->spacingResponsiveSettings = true;
+        return $this;
+    }
+
+    public function paddingSmall($value)
+    {
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->paddingSmall = $value;
+        }
+        return $this;
+    }
+
+    public function marginSmall($value)
+    {
+        $this->marginSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->marginSmall = $value;
+        }
+        return $this;
+    }
+
+    public function paddingMedium($value)
+    {
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->paddingMedium = $value;
+        }
+        return $this;
+    }
+
+    public function marginMedium($value)
+    {
+        $this->marginSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->marginMedium = $value;
+        }
+        return $this;
+    }
+
+    public function paddingLarge($value)
+    {
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->paddingLarge = $value;
+        }
+        return $this;
+    }
+
+    public function marginLarge($value)
+    {
+        $this->marginSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->marginLarge = $value;
+        }
+        return $this;
+    }
+
+    public function paddingExtraLarge($value)
+    {
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->paddingExtraLarge = $value;
+        }
+        return $this;
+    }
+
+    public function marginExtraLarge($value)
+    {
+        $this->marginSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->marginExtraLarge = $value;
+        }
+        return $this;
+    }
+
+    public function padding2ExtraLarge($value)
+    {
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->padding2ExtraLarge = $value;
+        }
+        return $this;
+    }
+
+    public function margin2ExtraLarge($value)
+    {
+        $this->marginSettings = true;
+        $this->spacingResponsiveSettings = true;
+        if ($value >= 0) {
+            $this->margin2ExtraLarge = $value;
         }
         return $this;
     }
 
     public function hasSpacingSettingsEnabled()
     {
-        return $this->spacingSettings;
+        return $this->paddingSettings || $this->marginSettings;
     }
 }

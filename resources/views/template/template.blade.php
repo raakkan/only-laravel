@@ -1,94 +1,87 @@
 @php
     $blocks = $template->getBlocks();
-
-    $mobileSpacing = $template->getTemplateSetting('spacing.mobile') ?? 0;
-    $tabletSpacing = $template->getTemplateSetting('spacing.tablet') ?? 0;
-    $tabletWideSpacing = $template->getTemplateSetting('spacing.tablet_wide') ?? 0;
-    $laptopSpacing = $template->getTemplateSetting('spacing.laptop') ?? 2;
-    $desktopSpacing = $template->getTemplateSetting('spacing.desktop') ?? 0;
-    $desktopWideSpacing = $template->getTemplateSetting('spacing.desktop_wide') ?? 0;
 @endphp
 
 <style>
     .template-container {
-        @if ($template->mobileMaxWidthUnit === 'percentage')
-            max-width: {{ $template->mobileMaxWidth == 0 ? 640 : $template->mobileMaxWidth }}%;
+        @if ($template->maxwidthUnit === 'percentage')
+            max-width: {{ $template->maxwidth == 0 ? 100 : $template->maxwidth }}%;
         @else
-            max-width: {{ $template->mobileMaxWidth == 0 ? 640 : $template->mobileMaxWidth }}px;
+            max-width: {{ $template->maxwidth == 0 ? 640 : $template->maxwidth }}px;
         @endif
         margin-left: auto;
         margin-right: auto;
-        padding-left: {{ $mobileSpacing }}rem;
-        padding-right: {{ $mobileSpacing }}rem;
+        padding-left: {{ $template->padding }}rem;
+        padding-right: {{ $template->padding }}rem;
     }
 
     @media (min-width: 640px) {
         .template-container {
-            @if ($template->tabletMaxWidthUnit === 'percentage')
-                max-width: {{ $template->tabletMaxWidth == 0 ? 640 : $template->tabletMaxWidth }}%;
+            @if ($template->maxwidthSmallUnit === 'percentage')
+                max-width: {{ $template->maxwidthSmall == 0 ? 100 : $template->maxwidthSmall }}%;
             @else
-                max-width: {{ $template->tabletMaxWidth == 0 ? 640 : $template->tabletMaxWidth }}px;
+                max-width: {{ $template->maxwidthSmall == 0 ? 640 : $template->maxwidthSmall }}px;
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $tabletSpacing }}rem;
-            padding-right: {{ $tabletSpacing }}rem;
+            padding-left: {{ $template->paddingSmall }}rem;
+            padding-right: {{ $template->paddingSmall }}rem;
         }
     }
 
     @media (min-width: 768px) {
         .template-container {
-            @if ($template->tabletWideMaxWidthUnit === 'percentage')
-                max-width: {{ $template->tabletWideMaxWidth == 0 ? 768 : $template->tabletWideMaxWidth }}%;
+            @if ($template->maxwidthMediumUnit === 'percentage')
+                max-width: {{ $template->maxwidthMedium == 0 ? 100 : $template->maxwidthMedium }}%;
             @else
-                max-width: {{ $template->tabletWideMaxWidth == 0 ? 768 : $template->tabletWideMaxWidth }}px;
+                max-width: {{ $template->maxwidthMedium == 0 ? 768 : $template->maxwidthMedium }}px;
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $tabletWideSpacing }}rem;
-            padding-right: {{ $tabletWideSpacing }}rem;
+            padding-left: {{ $template->paddingMedium }}rem;
+            padding-right: {{ $template->paddingMedium }}rem;
         }
     }
 
     @media (min-width: 1024px) {
         .template-container {
-            @if ($template->laptopMaxWidthUnit === 'percentage')
-                max-width: {{ $template->laptopMaxWidth == 0 ? 1024 : $template->laptopMaxWidth }}%;
+            @if ($template->maxwidthLargeUnit === 'percentage')
+                max-width: {{ $template->maxwidthLarge == 0 ? 100 : $template->maxwidthLarge }}%;
             @else
-                max-width: {{ $template->laptopMaxWidth == 0 ? 1024 : $template->laptopMaxWidth }}px;
+                max-width: {{ $template->maxwidthLarge == 0 ? 1024 : $template->maxwidthLarge }}px;
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $laptopSpacing }}rem;
-            padding-right: {{ $laptopSpacing }}rem;
+            padding-left: {{ $template->paddingLarge }}rem;
+            padding-right: {{ $template->paddingLarge }}rem;
         }
     }
 
     @media (min-width: 1280px) {
         .template-container {
-            @if ($template->desktopMaxWidthUnit === 'percentage')
-                max-width: {{ $template->desktopMaxWidth == 0 ? 1280 : $template->desktopMaxWidth }}%;
+            @if ($template->maxwidthExtraLargeUnit === 'percentage')
+                max-width: {{ $template->maxwidthExtraLarge == 0 ? 100 : $template->maxwidthExtraLarge }}%;
             @else
-                max-width: {{ $template->desktopMaxWidth == 0 ? 1280 : $template->desktopMaxWidth }}px;
+                max-width: {{ $template->maxwidthExtraLarge == 0 ? 1280 : $template->maxwidthExtraLarge }}px;
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $desktopSpacing }}rem;
-            padding-right: {{ $desktopSpacing }}rem;
+            padding-left: {{ $template->paddingExtraLarge }}rem;
+            padding-right: {{ $template->paddingExtraLarge }}rem;
         }
     }
 
     @media (min-width: 1536px) {
         .template-container {
-            @if ($template->desktopWideMaxWidthUnit === 'percentage')
-                max-width: {{ $template->desktopWideMaxWidth == 0 ? 1536 : $template->desktopWideMaxWidth }}%;
+            @if ($template->maxwidth2ExtraLargeUnit === 'percentage')
+                max-width: {{ $template->maxwidth2ExtraLarge == 0 ? 100 : $template->maxwidth2ExtraLarge }}%;
             @else
-                max-width: {{ $template->desktopWideMaxWidth == 0 ? 1536 : $template->desktopWideMaxWidth }}px;
+                max-width: {{ $template->maxwidth2ExtraLarge == 0 ? 1536 : $template->maxwidth2ExtraLarge }}px;
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $desktopWideSpacing }}rem;
-            padding-right: {{ $desktopWideSpacing }}rem;
+            padding-left: {{ $template->padding2ExtraLarge }}rem;
+            padding-right: {{ $template->padding2ExtraLarge }}rem;
         }
     }
 </style>
