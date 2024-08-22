@@ -2,210 +2,211 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
+use Illuminate\Support\Arr;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Section;
+use Raakkan\OnlyLaravel\Filament\Components\MarginField;
+use Raakkan\OnlyLaravel\Filament\Components\PaddingField;
 
 trait HasSpacingSettings
 {
-    protected $paddingSettings = true;
-    protected $marginSettings = true;
-    protected $spacingResponsiveSettings = true;
+    protected $paddingSettings = false;
+    protected $paddingLeftSettings = false;
+    protected $paddingRightSettings = false;
+    protected $paddingTopSettings = false;
+    protected $paddingBottomSettings = false;
+    protected $marginSettings = false;
+    protected $marginLeftSettings = false;
+    protected $marginRightSettings = false;
+    protected $marginTopSettings = false;
+    protected $marginBottomSettings = false;
+    protected $spacingResponsiveSettings = false;
 
-    public $padding = 0;
-    public $paddingSmall = 0;
-    public $paddingMedium = 0;
-    public $paddingLarge = 0;
-    public $paddingExtraLarge = 0;
-    public $padding2ExtraLarge = 0;
-
-    public $margin = 0;
-    public $marginSmall = 0;
-    public $marginMedium = 0;
-    public $marginLarge = 0;
-    public $marginExtraLarge = 0;
-    public $margin2ExtraLarge = 0;
+    public $spacingSettings = [
+        'padding' => [
+            'padding' => 0,
+            'small' => 0,
+            'medium' => 0,
+            'large' => 0,
+            'extra_large' => 0,
+            '2_extra_large' => 0,
+            'left' => [
+                'padding' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'right' => [
+                'padding' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'top' => [
+                'padding' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'bottom' => [
+                'padding' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+        ],
+        'margin' => [
+            'margin' => 0,
+            'small' => 0,
+            'medium' => 0,
+            'large' => 0,
+            'extra_large' => 0,
+            '2_extra_large' => 0,
+            'left' => [
+                'margin' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'right' => [
+                'margin' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'top' => [
+                'margin' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+            'bottom' => [
+                'margin' => 0,
+                'small' => 0,
+                'medium' => 0,
+                'large' => 0,
+                'extra_large' => 0,
+                '2_extra_large' => 0,
+            ],
+        ],
+    ];
 
     public function setSpacingSettings($settings)
     {
         if (array_key_exists('spacing', $settings)) {
-            $this->padding = $settings['spacing']['padding']['padding'] ?? $this->padding;
-            $this->paddingSmall = $settings['spacing']['padding']['small'] ?? $this->paddingSmall;
-            $this->paddingMedium = $settings['spacing']['padding']['medium'] ?? $this->paddingMedium;
-            $this->paddingLarge = $settings['spacing']['padding']['large'] ?? $this->paddingLarge;
-            $this->paddingExtraLarge = $settings['spacing']['padding']['extra_large'] ?? $this->paddingExtraLarge;
-            $this->padding2ExtraLarge = $settings['spacing']['padding']['2_extra_large'] ?? $this->padding2ExtraLarge;
-            $this->margin = $settings['spacing']['margin']['margin'] ?? $this->margin;
-            $this->marginSmall = $settings['spacing']['margin']['small'] ?? $this->marginSmall;
-            $this->marginMedium = $settings['spacing']['margin']['medium'] ?? $this->marginMedium;
-            $this->marginLarge = $settings['spacing']['margin']['large'] ?? $this->marginLarge;
-            $this->marginExtraLarge = $settings['spacing']['margin']['extra_large'] ?? $this->marginExtraLarge;
-            $this->margin2ExtraLarge = $settings['spacing']['margin']['2_extra_large'] ?? $this->margin2ExtraLarge;
+            Arr::set($this->spacingSettings, 'padding', $settings['spacing']['padding']);
+            Arr::set($this->spacingSettings, 'margin', $settings['spacing']['margin']);
         }
+    }
+
+    public function getPadding($name)
+    {
+        return Arr::get($this->spacingSettings, 'padding.' . $name);
+    }
+
+    public function getMargin($name)
+    {
+        return Arr::get($this->spacingSettings, 'margin.' . $name);
     }
 
     public function getSpacingSettingFields()
     {
-        $fileds = [];
+        $fields = [];
+
         if ($this->paddingSettings) {
             if ($this->spacingResponsiveSettings) {
-                $fileds[] = Section::make('Padding')->schema([
-                    TextInput::make('onlylaravel.spacing.padding.padding')->label('Padding')->numeric()->default($this->padding),
-                    TextInput::make('onlylaravel.spacing.padding.small')->label('Padding Small')->numeric()->default($this->paddingSmall),
-                    TextInput::make('onlylaravel.spacing.padding.medium')->label('Padding Medium')->numeric()->default($this->paddingMedium),
-                    TextInput::make('onlylaravel.spacing.padding.large')->label('Padding Large')->numeric()->default($this->paddingLarge),
-                    TextInput::make('onlylaravel.spacing.padding.extra_large')->label('Padding Extra Large')->numeric()->default($this->paddingExtraLarge),
-                    TextInput::make('onlylaravel.spacing.padding.2_extra_large')->label('Padding 2 Extra Large')->numeric()->default($this->padding2ExtraLarge),
-                ])->compact();
+                $fields[] = PaddingField::make('onlylaravel.spacing.padding')->label('Padding');
             } else {
-                $fileds[] = Section::make('Padding')->schema([
-                    TextInput::make('onlylaravel.spacing.padding')->label('Padding')->numeric()->default($this->padding),
-                ])->compact();
-            }
-            
+                $fields[] = TextInput::make('onlylaravel.spacing.padding.padding')->label('Padding')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
+        }
+
+        if ($this->paddingLeftSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = PaddingField::make('onlylaravel.spacing.padding.left')->label('Padding Left');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.padding.left.padding')->label('Padding Left')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
+        }
+
+        if ($this->paddingRightSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = PaddingField::make('onlylaravel.spacing.padding.right')->label('Padding Right');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.padding.right.padding')->label('Padding Right')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
+        }
+
+        if ($this->paddingTopSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = PaddingField::make('onlylaravel.spacing.padding.top')->label('Padding Top');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.padding.top.padding')->label('Padding Top')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
+        }
+
+        if ($this->paddingBottomSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = PaddingField::make('onlylaravel.spacing.padding.bottom')->label('Padding Bottom');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.padding.bottom.padding')->label('Padding Bottom')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
 
         if ($this->marginSettings) {
             if ($this->spacingResponsiveSettings) {
-                $fileds[] = Section::make('Margin')->schema([
-                    TextInput::make('onlylaravel.spacing.margin.margin')->label('Margin')->numeric()->default($this->margin),
-                    TextInput::make('onlylaravel.spacing.margin.small')->label('Margin Small')->numeric()->default($this->marginSmall),
-                    TextInput::make('onlylaravel.spacing.margin.medium')->label('Margin Medium')->numeric()->default($this->marginMedium),
-                    TextInput::make('onlylaravel.spacing.margin.large')->label('Margin Large')->numeric()->default($this->marginLarge),
-                    TextInput::make('onlylaravel.spacing.margin.extra_large')->label('Margin Extra Large')->numeric()->default($this->marginExtraLarge),
-                    TextInput::make('onlylaravel.spacing.margin.2_extra_large')->label('Margin 2 Extra Large')->numeric()->default($this->margin2ExtraLarge),
-                ])->compact();
+                $fields[] = MarginField::make('onlylaravel.spacing.margin')->label('Margin');
             } else {
-                $fileds[] = Section::make('Margin')->schema([
-                    TextInput::make('onlylaravel.spacing.margin')->label('Margin')->numeric()->default($this->margin),
-                ])->compact();
-            }
+                $fields[] = TextInput::make('onlylaravel.spacing.margin.margin')->label('Margin')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
 
-        return $fileds;
-    }
-
-    public function padding($value)
-    {
-        $this->paddingSettings = true;
-        if ($value >= 0) {
-            $this->padding = $value;
+        if ($this->marginLeftSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = MarginField::make('onlylaravel.spacing.margin.left')->label('Margin Left');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.margin.left.margin')->label('Margin Left')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
-        return $this;
-    }
 
-    public function margin($value)
-    {
-        $this->marginSettings = true;
-        if ($value >= 0) {
-            $this->margin = $value;
+        if ($this->marginRightSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = MarginField::make('onlylaravel.spacing.margin.right')->label('Margin Right');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.margin.right.margin')->label('Margin Right')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
-        return $this;
-    }
 
-    public function spacingResponsive()
-    {
-        $this->spacingResponsiveSettings = true;
-        return $this;
-    }
-
-    public function paddingSmall($value)
-    {
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->paddingSmall = $value;
+        if ($this->marginTopSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = MarginField::make('onlylaravel.spacing.margin.top')->label('Margin Top');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.margin.top.margin')->label('Margin Top')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
-        return $this;
-    }
 
-    public function marginSmall($value)
-    {
-        $this->marginSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->marginSmall = $value;
+        if ($this->marginBottomSettings) {
+            if ($this->spacingResponsiveSettings) {
+                $fields[] = MarginField::make('onlylaravel.spacing.margin.bottom')->label('Margin Bottom');
+            } else {
+                $fields[] = TextInput::make('onlylaravel.spacing.margin.bottom.margin')->label('Margin Bottom')->numeric()->extraAttributes(['style' => 'padding:0;']);
+            };
         }
-        return $this;
-    }
 
-    public function paddingMedium($value)
-    {
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->paddingMedium = $value;
-        }
-        return $this;
-    }
-
-    public function marginMedium($value)
-    {
-        $this->marginSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->marginMedium = $value;
-        }
-        return $this;
-    }
-
-    public function paddingLarge($value)
-    {
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->paddingLarge = $value;
-        }
-        return $this;
-    }
-
-    public function marginLarge($value)
-    {
-        $this->marginSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->marginLarge = $value;
-        }
-        return $this;
-    }
-
-    public function paddingExtraLarge($value)
-    {
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->paddingExtraLarge = $value;
-        }
-        return $this;
-    }
-
-    public function marginExtraLarge($value)
-    {
-        $this->marginSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->marginExtraLarge = $value;
-        }
-        return $this;
-    }
-
-    public function padding2ExtraLarge($value)
-    {
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->padding2ExtraLarge = $value;
-        }
-        return $this;
-    }
-
-    public function margin2ExtraLarge($value)
-    {
-        $this->marginSettings = true;
-        $this->spacingResponsiveSettings = true;
-        if ($value >= 0) {
-            $this->margin2ExtraLarge = $value;
-        }
-        return $this;
+        return $fields;
     }
 
     public function hasSpacingSettingsEnabled()

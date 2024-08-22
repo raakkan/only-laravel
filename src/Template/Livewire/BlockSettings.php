@@ -35,13 +35,9 @@ class BlockSettings extends Component implements HasForms
 
     public function save()
     {
-        $onlylaravel = [];
-        if (array_key_exists('only-laravel', $this->getModel()->settings)) {
-            $onlylaravel = $this->getModel()->settings['only-laravel'];
-        }
-        $settings = array_merge($onlylaravel, $this->form->getState());
+        $settings = array_replace_recursive($this->getModel()->settings ?? [], $this->form->getState());
         
-        $this->getModel()->settings['only-laravel'] = $settings;
+        $this->getModel()->settings = $settings;
         $this->getModel()->save();
 
         Notification::make()

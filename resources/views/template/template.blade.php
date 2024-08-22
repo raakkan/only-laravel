@@ -11,8 +11,8 @@
         @endif
         margin-left: auto;
         margin-right: auto;
-        padding-left: {{ $template->padding }}rem;
-        padding-right: {{ $template->padding }}rem;
+        padding-left: {{ $template->getPadding('padding') }}rem;
+        padding-right: {{ $template->getPadding('padding') }}rem;
     }
 
     @media (min-width: 640px) {
@@ -24,8 +24,8 @@
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $template->paddingSmall }}rem;
-            padding-right: {{ $template->paddingSmall }}rem;
+            padding-left: {{ $template->getPadding('small') }}rem;
+            padding-right: {{ $template->getPadding('small') }}rem;
         }
     }
 
@@ -38,8 +38,8 @@
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $template->paddingMedium }}rem;
-            padding-right: {{ $template->paddingMedium }}rem;
+            padding-left: {{ $template->getPadding('medium') }}rem;
+            padding-right: {{ $template->getPadding('medium') }}rem;
         }
     }
 
@@ -52,8 +52,8 @@
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $template->paddingLarge }}rem;
-            padding-right: {{ $template->paddingLarge }}rem;
+            padding-left: {{ $template->getPadding('large') }}rem;
+            padding-right: {{ $template->getPadding('large') }}rem;
         }
     }
 
@@ -66,8 +66,8 @@
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $template->paddingExtraLarge }}rem;
-            padding-right: {{ $template->paddingExtraLarge }}rem;
+            padding-left: {{ $template->getPadding('extra_large') }}rem;
+            padding-right: {{ $template->getPadding('extra_large') }}rem;
         }
     }
 
@@ -80,8 +80,8 @@
             @endif
             margin-left: auto;
             margin-right: auto;
-            padding-left: {{ $template->padding2ExtraLarge }}rem;
-            padding-right: {{ $template->padding2ExtraLarge }}rem;
+            padding-left: {{ $template->getPadding('2_extra_large') }}rem;
+            padding-right: {{ $template->getPadding('2_extra_large') }}rem;
         }
     }
 </style>

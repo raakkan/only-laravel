@@ -35,6 +35,8 @@ class Template implements Arrayable
     public function __construct($name)
     {
         $this->name = $name;
+        $this->paddingSettings = true;
+        $this->spacingResponsiveSettings = true;
     }
 
     protected $model;
