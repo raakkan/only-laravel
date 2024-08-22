@@ -33,10 +33,14 @@ trait HasTemplateSettings
     {
         if (is_array($settings)) {
             $this->settings = $settings;
-            $this->setMaxWidthSettings($settings);
-            $this->setColorSettings($settings);
-            $this->setTextSettings($settings);
-            $this->setSpacingSettings($settings);
+            
+            if (array_key_exists('onlylaravel', $settings ?? [])) {
+                $onlylaravel = $settings['onlylaravel'];
+                $this->setMaxWidthSettings($onlylaravel);
+                $this->setColorSettings($onlylaravel);
+                $this->setTextSettings($onlylaravel);
+                $this->setSpacingSettings($onlylaravel);
+            }
         }
         
         return $this;

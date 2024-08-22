@@ -35,27 +35,30 @@ trait HasBlockSettings
 
     public function setBlockSettings($settings)
     {
-        if (is_array($settings) && array_key_exists('design_variant', $settings) && $this->type == 'component') {
-            $this->setDesignVariant($settings);
+        if (!is_array($settings) && array_key_exists('onlylaravel', $settings ?? [])) {
+            $onlylaravel = $settings['onlylaravel'];
+            if (array_key_exists('design_variant', $onlylaravel) && $this->type == 'component') {
+                $this->setDesignVariant($onlylaravel);
+            }
+    
+            if (array_key_exists('color', $onlylaravel) && $this->hasColorSettingsEnabled()) {
+                $this->setColorSettings($onlylaravel);
+            }
+    
+            if (array_key_exists('text', $onlylaravel) && $this->hasTextSettingsEnabled()) {
+                $this->setTextSettings($onlylaravel);
+            }
+    
+            if(array_key_exists('spacing', $onlylaravel)) {
+                $this->setSpacingSettings($onlylaravel);
+            }
+    
+            if (array_key_exists('maxwidth', $onlylaravel)) {
+                $this->setMaxWidthSettings($onlylaravel);
+            }
+    
+            $this->setBlockCustomSettings($onlylaravel);
         }
-
-        if (is_array($settings) && array_key_exists('color', $settings) && $this->hasColorSettingsEnabled()) {
-            $this->setColorSettings($settings);
-        }
-
-        if (is_array($settings) && array_key_exists('text', $settings) && $this->hasTextSettingsEnabled()) {
-            $this->setTextSettings($settings);
-        }
-
-        if(is_array($settings) && array_key_exists('spacing', $settings)) {
-            $this->setSpacingSettings($settings);
-        }
-
-        if (is_array($settings) && array_key_exists('maxwidth', $settings)) {
-            $this->setMaxWidthSettings($settings);
-        }
-
-        $this->setBlockCustomSettings($settings);
 
         $this->settings = $settings;
 

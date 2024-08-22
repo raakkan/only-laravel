@@ -47,44 +47,44 @@ trait HasWidthSettings
         if ($this->widthSettings) {
             if ($this->widthResponsiveSettings) {
                 $fields[] = Section::make('Width')->schema([
-                    Select::make('width.unit')->options([
+                    Select::make('onlylaravel.width.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthUnit)->label('Width Unit'),
-                    TextInput::make('width.width')->label('Width')->numeric()->default($this->width),
-                    Select::make('width.small.unit')->options([
+                    TextInput::make('onlylaravel.width.width')->label('Width')->numeric()->default($this->width),
+                    Select::make('onlylaravel.width.small.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthSmallUnit)->label('Width Small Unit'),
-                    TextInput::make('width.small.width')->label('Width Small')->numeric()->default($this->widthSmall),
-                    Select::make('width.medium.unit')->options([
+                    TextInput::make('onlylaravel.width.small.width')->label('Width Small')->numeric()->default($this->widthSmall),
+                    Select::make('onlylaravel.width.medium.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthMediumUnit)->label('Width Medium Unit'),
-                    TextInput::make('width.medium.width')->label('Width Medium')->numeric()->default($this->widthMedium),
-                    Select::make('width.large.unit')->options([
+                    TextInput::make('onlylaravel.width.medium.width')->label('Width Medium')->numeric()->default($this->widthMedium),
+                    Select::make('onlylaravel.width.large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthLargeUnit)->label('Width Large Unit'),
-                    TextInput::make('width.large.width')->label('Width Large')->numeric()->default($this->widthLarge),
-                    Select::make('width.extra_large.unit')->options([
+                    TextInput::make('onlylaravel.width.large.width')->label('Width Large')->numeric()->default($this->widthLarge),
+                    Select::make('onlylaravel.width.extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthExtraLargeUnit)->label('Width Extra Large Unit'),
-                    TextInput::make('width.extra_large.width')->label('Width Extra Large')->numeric()->default($this->widthExtraLarge),
-                    Select::make('width.2_extra_large.unit')->options([
+                    TextInput::make('onlylaravel.width.extra_large.width')->label('Width Extra Large')->numeric()->default($this->widthExtraLarge),
+                    Select::make('onlylaravel.width.2_extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->width2ExtraLargeUnit)->label('Width 2 Extra Large Unit'),
-                    TextInput::make('width.2_extra_large.width')->label('Width 2 Extra Large')->numeric()->default($this->width2ExtraLarge),
+                    TextInput::make('onlylaravel.width.2_extra_large.width')->label('Width 2 Extra Large')->numeric()->default($this->width2ExtraLarge),
                 ])->compact();
             } else {
                 $fields[] = Section::make('Width')->schema([
-                    Select::make('width.unit')->options([
+                    Select::make('onlylaravel.width.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->widthUnit)->label('Width Unit'),
-                    TextInput::make('width.width')->label('Width')->numeric()->default($this->width),
+                    TextInput::make('onlylaravel.width.width')->label('Width')->numeric()->default($this->width),
                 ])->compact();
             }
         }

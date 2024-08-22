@@ -68,12 +68,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         Livewire::component('only-laravel::template.livewire.template-settings', \Raakkan\OnlyLaravel\Template\Livewire\TemplateSettingsComponent::class);
         Livewire::component('only-laravel::template.livewire.block', \Raakkan\OnlyLaravel\Template\Livewire\LivewireBlock::class);
         Livewire::component('only-laravel::template.livewire.block-items-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockItemsComponent::class);
-        Livewire::component('only-laravel::template.livewire.block-settings-component', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettingsComponent::class);
-        Livewire::component('only-laravel::template.livewire.block-color-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockColorSettings::class);
-        Livewire::component('only-laravel::template.livewire.block-text-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockTextSettings::class);
-        Livewire::component('only-laravel::template.livewire.spacing-settings', \Raakkan\OnlyLaravel\Template\Livewire\SpacingSettings::class);
-        Livewire::component('only-laravel::template.livewire.max-width-settings', \Raakkan\OnlyLaravel\Template\Livewire\MaxWidthSettings::class);
-        Livewire::component('only-laravel::template.livewire.height-settings', \Raakkan\OnlyLaravel\Template\Livewire\HeightSettings::class);
-        Livewire::component('only-laravel::template.livewire.width-settings', \Raakkan\OnlyLaravel\Template\Livewire\WidthSettings::class);
+        Livewire::component('only-laravel::template.livewire.block-settings', \Raakkan\OnlyLaravel\Template\Livewire\BlockSettings::class);
     }
 }

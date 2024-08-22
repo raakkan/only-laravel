@@ -47,44 +47,44 @@ trait HasHeightSettings
         if ($this->heightSettings) {
             if ($this->heightResponsiveSettings) {
                 $fields[] = Section::make('Height')->schema([
-                    Select::make('height.unit')->options([
+                    Select::make('onlylaravel.height.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightUnit)->label('Height Unit'),
-                    TextInput::make('height.height')->label('Height')->numeric()->default($this->height),
-                    Select::make('height.small.unit')->options([
+                    TextInput::make('onlylaravel.height.height')->label('Height')->numeric()->default($this->height),
+                    Select::make('onlylaravel.height.small.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightSmallUnit)->label('Height Small Unit'),
-                    TextInput::make('height.small.height')->label('Height Small')->numeric()->default($this->heightSmall),
-                    Select::make('height.medium.unit')->options([
+                    TextInput::make('onlylaravel.height.small.height')->label('Height Small')->numeric()->default($this->heightSmall),
+                    Select::make('onlylaravel.height.medium.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightMediumUnit)->label('Height Medium Unit'),
-                    TextInput::make('height.medium.height')->label('Height Medium')->numeric()->default($this->heightMedium),
-                    Select::make('height.large.unit')->options([
+                    TextInput::make('onlylaravel.height.medium.height')->label('Height Medium')->numeric()->default($this->heightMedium),
+                    Select::make('onlylaravel.height.large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightLargeUnit)->label('Height Large Unit'),
-                    TextInput::make('height.large.height')->label('Height Large')->numeric()->default($this->heightLarge),
-                    Select::make('height.extra_large.unit')->options([
+                    TextInput::make('onlylaravel.height.large.height')->label('Height Large')->numeric()->default($this->heightLarge),
+                    Select::make('onlylaravel.height.extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightExtraLargeUnit)->label('Height Extra Large Unit'),
-                    TextInput::make('height.extra_large.height')->label('Height Extra Large')->numeric()->default($this->heightExtraLarge),
-                    Select::make('height.2_extra_large.unit')->options([
+                    TextInput::make('onlylaravel.height.extra_large.height')->label('Height Extra Large')->numeric()->default($this->heightExtraLarge),
+                    Select::make('onlylaravel.height.2_extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->height2ExtraLargeUnit)->label('Height 2 Extra Large Unit'),
-                    TextInput::make('height.2_extra_large.height')->label('Height 2 Extra Large')->numeric()->default($this->height2ExtraLarge),
+                    TextInput::make('onlylaravel.height.2_extra_large.height')->label('Height 2 Extra Large')->numeric()->default($this->height2ExtraLarge),
                 ])->compact();
             } else {
                 $fields[] = Section::make('Height')->schema([
-                    Select::make('height.unit')->options([
+                    Select::make('onlylaravel.height.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->heightUnit)->label('Height Unit'),
-                    TextInput::make('height.height')->label('Height')->numeric()->default($this->height),
+                    TextInput::make('onlylaravel.height.height')->label('Height')->numeric()->default($this->height),
                 ])->compact();
             }
         }

@@ -48,16 +48,20 @@
             </div>
         @endif
         <div x-show="activeTab === 'maxWidth'">
-            <livewire:only-laravel::template.livewire.max-width-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
+            <livewire:only-laravel::template.livewire.block-settings type="max-width" :templateModel="$template"
+                :key="$template->id . '-max-width-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'spacing'">
-            <livewire:only-laravel::template.livewire.spacing-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
+            <livewire:only-laravel::template.livewire.block-settings type="spacing" :templateModel="$template"
+                :key="$template->id . '-spacing-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'color'">
-            <livewire:only-laravel::template.livewire.block-color-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
+            <livewire:only-laravel::template.livewire.block-settings type="color" :templateModel="$template"
+                :key="$template->id . '-color-' . uniqid()" />
         </div>
         <div x-show="activeTab === 'text'">
-            <livewire:only-laravel::template.livewire.block-text-settings :templateModel="$template" :key="$template->id . '-' . uniqid()" />
+            <livewire:only-laravel::template.livewire.block-settings type="text" :templateModel="$template"
+                :key="$template->id . '-text-' . uniqid()" />
         </div>
     </div>
 </div>

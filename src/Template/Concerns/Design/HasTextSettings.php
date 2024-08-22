@@ -11,7 +11,7 @@ trait HasTextSettings
 {
     protected $fontFamilySetting = true;
     public $fontFamily = null;
-    public $fontSizeSetting = true;
+    public $fontSizeSetting = true;// add responsive and all settings get methods also add all settings in onlylaravel child array
     public $fontSize = null;
     public $fontWeightSetting = false;
     public $fontWeight = null;
@@ -27,7 +27,7 @@ trait HasTextSettings
         $fields = [];
 
         if ($this->fontFamilySetting) {
-            $fields[] = Select::make('text.font.family')
+            $fields[] = Select::make('onlylaravel.text.font.family')
             ->label('Font Family')
             ->options(collect(FontManager::getFontFamilies())->mapWithKeys(function ($value, $key) {
                 return [$value['value'] => $value['name']];
@@ -36,13 +36,13 @@ trait HasTextSettings
         }
 
         if ($this->fontSizeSetting) {
-            $fields[] = TextInput::make('text.font.size')
+            $fields[] = TextInput::make('onlylaravel.text.font.size')
             ->label('Font Size')
             ->default($this->fontSize)->numeric();
         }
 
         if ($this->fontWeightSetting) {
-            $fields[] = Select::make('text.font.weight')
+            $fields[] = Select::make('onlylaravel.text.font.weight')
             ->label('Font Weight')
             ->options(collect(FontManager::getFontWeights())->mapWithKeys(function ($value, $key) {
                 return [$value['value'] => $value['name']];
@@ -51,17 +51,17 @@ trait HasTextSettings
         }
 
         if ($this->fontStyleSetting) {
-            $fields[] = $fields[] = Select::make('text.font.style')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle)->live(debounce: 500);
+            $fields[] = $fields[] = Select::make('onlylaravel.text.font.style')->label('Font Style')->options(['normal' => 'Normal', 'italic' => 'Italic'])->default($this->fontStyle)->live(debounce: 500);
         }
 
         if ($this->latterSpacingSetting) {
-            $fields[] = TextInput::make('text.font.latterSpacing')
+            $fields[] = TextInput::make('onlylaravel.text.font.latterSpacing')
             ->label('Latter Spacing')
             ->default($this->latterSpacing)->numeric();
         }
 
         if ($this->lineHeightSetting) {
-            $fields[] = TextInput::make('text.font.lineHeight')
+            $fields[] = TextInput::make('onlylaravel.text.font.lineHeight')
             ->label('Line Height')
             ->default($this->lineHeight)->numeric();
         }

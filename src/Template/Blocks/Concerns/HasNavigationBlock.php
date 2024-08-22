@@ -73,10 +73,10 @@ trait HasNavigationBlock
     {
         return [
             Section::make('Navigation')->schema([
-                Toggle::make('navigation.start_component')->label('Show Start Component')->default($this->showStartComponent()),
-                Toggle::make('navigation.center_component')->label('Show Center Component')->default($this->showCenterComponent()),
-                Toggle::make('navigation.end_component')->label('Show End Component')->default($this->showEndComponent()),
-                Select::make('navigation.content_justify')->label('Content Justify')->options([
+                Toggle::make('onlylaravel.navigation.start_component')->label('Show Start Component')->default($this->showStartComponent()),
+                Toggle::make('onlylaravel.navigation.center_component')->label('Show Center Component')->default($this->showCenterComponent()),
+                Toggle::make('onlylaravel.navigation.end_component')->label('Show End Component')->default($this->showEndComponent()),
+                Select::make('onlylaravel.navigation.content_justify')->label('Content Justify')->options([
                     'flex-start' => 'Start',
                     'center' => 'Center',
                     'flex-end' => 'End',

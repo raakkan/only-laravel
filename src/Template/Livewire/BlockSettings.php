@@ -13,13 +13,14 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
 
-class BlockTextSettings extends Component implements HasForms
+class BlockSettings extends Component implements HasForms
 {
     use InteractsWithForms;
     
     public TemplateBlockModel $blockModel;
     public TemplateModel $templateModel;
     public ?array $settings = [];
+    public $type = 'settings';
 
     public function mount()
     {
@@ -29,14 +30,18 @@ class BlockTextSettings extends Component implements HasForms
     public function form(Form $form): Form
     {
         return $form
-            ->schema($this->getTextSettingFields())->statePath('settings');
+            ->schema($this->getSettingFields())->statePath('settings');
     }
 
     public function save()
     {
-        $settings = array_merge($this->getModel()->settings ?? [], $this->form->getState());
+        $onlylaravel = [];
+        if (array_key_exists('only-laravel', $this->getModel()->settings)) {
+            $onlylaravel = $this->getModel()->settings['only-laravel'];
+        }
+        $settings = array_merge($onlylaravel, $this->form->getState());
         
-        $this->getModel()->settings = $settings;
+        $this->getModel()->settings['only-laravel'] = $settings;
         $this->getModel()->save();
 
         Notification::make()
@@ -52,12 +57,32 @@ class BlockTextSettings extends Component implements HasForms
         return isset($this->templateModel) ? $this->templateModel : $this->blockModel;
     }
 
-    public function getTextSettingFields()
+    public function getSettingFields()
     {
         if (isset($this->templateModel)) {
-            return $this->getTemplate()->getTextSettingFields();
+            $fields = match ($this->type) {
+                'settings' => $this->getTemplate()->getSettingFields(),
+                'text' => $this->getTemplate()->getTextSettingFields(),
+                'width' => $this->getTemplate()->getWidthSettingFields(),
+                'height' => $this->getTemplate()->getHeightSettingFields(),
+                'spacing' => $this->getTemplate()->getSpacingSettingFields(),
+                'max-width' => $this->getTemplate()->getMaxWidthSettingFields(),
+                'color' => $this->getTemplate()->getColorSettingFields(),
+            };
+
+            return $fields;
         } else {
-            return $this->getBlock()->getTextSettingFields();
+            $fields = match ($this->type) {
+                'settings' => $this->getBlock()->getSettingFields(),
+                'text' => $this->getBlock()->getTextSettingFields(),
+                'width' => $this->getBlock()->getWidthSettingFields(),
+                'height' => $this->getBlock()->getHeightSettingFields(),
+                'spacing' => $this->getBlock()->getSpacingSettingFields(),
+                'max-width' => $this->getBlock()->getMaxWidthSettingFields(),
+                'color' => $this->getBlock()->getColorSettingFields(),
+            };
+
+            return $fields;
         }
     }
     

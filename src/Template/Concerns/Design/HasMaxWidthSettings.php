@@ -52,44 +52,44 @@ trait HasMaxWidthSettings
         if ($this->maxWidthSettings) {
             if ($this->maxwidthResponsiveSettings) {
                 $fields[] = Section::make('Max Width')->schema([
-                    Select::make('maxwidth.unit')->options([
+                    Select::make('onlylaravel.maxwidth.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthUnit)->label('Max Width Unit'),
-                    TextInput::make('maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
-                    Select::make('maxwidth.small.unit')->options([
+                    TextInput::make('onlylaravel.maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
+                    Select::make('onlylaravel.maxwidth.small.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthSmallUnit)->label('Max Width Small Unit'),
-                    TextInput::make('maxwidth.small.width')->label('Max Width Small')->numeric()->default($this->maxwidthSmall),
-                    Select::make('maxwidth.medium.unit')->options([
+                    TextInput::make('onlylaravel.maxwidth.small.width')->label('Max Width Small')->numeric()->default($this->maxwidthSmall),
+                    Select::make('onlylaravel.maxwidth.medium.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthMediumUnit)->label('Max Width Medium Unit'),
-                    TextInput::make('maxwidth.medium.width')->label('Max Width Medium')->numeric()->default($this->maxwidthMedium),
-                    Select::make('maxwidth.large.unit')->options([
+                    TextInput::make('onlylaravel.maxwidth.medium.width')->label('Max Width Medium')->numeric()->default($this->maxwidthMedium),
+                    Select::make('onlylaravel.maxwidth.large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthLargeUnit)->label('Max Width Large Unit'),
-                    TextInput::make('maxwidth.large.width')->label('Max Width Large')->numeric()->default($this->maxwidthLarge),
-                    Select::make('maxwidth.extra_large.unit')->options([
+                    TextInput::make('onlylaravel.maxwidth.large.width')->label('Max Width Large')->numeric()->default($this->maxwidthLarge),
+                    Select::make('onlylaravel.maxwidth.extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthExtraLargeUnit)->label('Max Width Extra Large Unit'),
-                    TextInput::make('maxwidth.extra_large.width')->label('Max Width Extra Large')->numeric()->default($this->maxwidthExtraLarge),
-                    Select::make('maxwidth.2_extra_large.unit')->options([
+                    TextInput::make('onlylaravel.maxwidth.extra_large.width')->label('Max Width Extra Large')->numeric()->default($this->maxwidthExtraLarge),
+                    Select::make('onlylaravel.maxwidth.2_extra_large.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidth2ExtraLargeUnit)->label('Max Width 2 Extra Large Unit'),
-                    TextInput::make('maxwidth.2_extra_large.width')->label('Max Width 2 Extra Large')->numeric()->default($this->maxwidth2ExtraLarge),
+                    TextInput::make('onlylaravel.maxwidth.2_extra_large.width')->label('Max Width 2 Extra Large')->numeric()->default($this->maxwidth2ExtraLarge),
                 ])->compact();
             }else{
                 $fields[] = Section::make('Max Width')->schema([
-                    Select::make('maxwidth.unit')->options([
+                    Select::make('onlylaravel.maxwidth.unit')->options([
                         'pixel' => 'Pixel',
                         'percentage' => 'Percentage',
                     ])->default($this->maxwidthUnit)->label('Max Width Unit'),
-                    TextInput::make('maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
+                    TextInput::make('onlylaravel.maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
                 ])->compact();
             }
         }

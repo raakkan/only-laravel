@@ -49,16 +49,16 @@ trait HasSpacingSettings
         if ($this->paddingSettings) {
             if ($this->spacingResponsiveSettings) {
                 $fileds[] = Section::make('Padding')->schema([
-                    TextInput::make('spacing.padding.padding')->label('Padding')->numeric()->default($this->padding),
-                    TextInput::make('spacing.padding.small')->label('Padding Small')->numeric()->default($this->paddingSmall),
-                    TextInput::make('spacing.padding.medium')->label('Padding Medium')->numeric()->default($this->paddingMedium),
-                    TextInput::make('spacing.padding.large')->label('Padding Large')->numeric()->default($this->paddingLarge),
-                    TextInput::make('spacing.padding.extra_large')->label('Padding Extra Large')->numeric()->default($this->paddingExtraLarge),
-                    TextInput::make('spacing.padding.2_extra_large')->label('Padding 2 Extra Large')->numeric()->default($this->padding2ExtraLarge),
+                    TextInput::make('onlylaravel.spacing.padding.padding')->label('Padding')->numeric()->default($this->padding),
+                    TextInput::make('onlylaravel.spacing.padding.small')->label('Padding Small')->numeric()->default($this->paddingSmall),
+                    TextInput::make('onlylaravel.spacing.padding.medium')->label('Padding Medium')->numeric()->default($this->paddingMedium),
+                    TextInput::make('onlylaravel.spacing.padding.large')->label('Padding Large')->numeric()->default($this->paddingLarge),
+                    TextInput::make('onlylaravel.spacing.padding.extra_large')->label('Padding Extra Large')->numeric()->default($this->paddingExtraLarge),
+                    TextInput::make('onlylaravel.spacing.padding.2_extra_large')->label('Padding 2 Extra Large')->numeric()->default($this->padding2ExtraLarge),
                 ])->compact();
             } else {
                 $fileds[] = Section::make('Padding')->schema([
-                    TextInput::make('spacing.padding')->label('Padding')->numeric()->default($this->padding),
+                    TextInput::make('onlylaravel.spacing.padding')->label('Padding')->numeric()->default($this->padding),
                 ])->compact();
             }
             
@@ -67,16 +67,16 @@ trait HasSpacingSettings
         if ($this->marginSettings) {
             if ($this->spacingResponsiveSettings) {
                 $fileds[] = Section::make('Margin')->schema([
-                    TextInput::make('spacing.margin.margin')->label('Margin')->numeric()->default($this->margin),
-                    TextInput::make('spacing.margin.small')->label('Margin Small')->numeric()->default($this->marginSmall),
-                    TextInput::make('spacing.margin.medium')->label('Margin Medium')->numeric()->default($this->marginMedium),
-                    TextInput::make('spacing.margin.large')->label('Margin Large')->numeric()->default($this->marginLarge),
-                    TextInput::make('spacing.margin.extra_large')->label('Margin Extra Large')->numeric()->default($this->marginExtraLarge),
-                    TextInput::make('spacing.margin.2_extra_large')->label('Margin 2 Extra Large')->numeric()->default($this->margin2ExtraLarge),
+                    TextInput::make('onlylaravel.spacing.margin.margin')->label('Margin')->numeric()->default($this->margin),
+                    TextInput::make('onlylaravel.spacing.margin.small')->label('Margin Small')->numeric()->default($this->marginSmall),
+                    TextInput::make('onlylaravel.spacing.margin.medium')->label('Margin Medium')->numeric()->default($this->marginMedium),
+                    TextInput::make('onlylaravel.spacing.margin.large')->label('Margin Large')->numeric()->default($this->marginLarge),
+                    TextInput::make('onlylaravel.spacing.margin.extra_large')->label('Margin Extra Large')->numeric()->default($this->marginExtraLarge),
+                    TextInput::make('onlylaravel.spacing.margin.2_extra_large')->label('Margin 2 Extra Large')->numeric()->default($this->margin2ExtraLarge),
                 ])->compact();
             } else {
                 $fileds[] = Section::make('Margin')->schema([
-                    TextInput::make('spacing.margin')->label('Margin')->numeric()->default($this->margin),
+                    TextInput::make('onlylaravel.spacing.margin')->label('Margin')->numeric()->default($this->margin),
                 ])->compact();
             }
         }

@@ -88,40 +88,44 @@
 
             @if ($block->hasSettings())
                 <div x-show="activeTab === 'settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.block-settings-component :blockModel="$block->getModel()"
+                    <livewire:only-laravel::template.livewire.block-settings type="settings" :blockModel="$block->getModel()"
                         :key="$block->getName() . '-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasColorSettingsEnabled())
                 <div x-show="activeTab === 'color-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.block-color-settings :blockModel="$block->getModel()"
+                    <livewire:only-laravel::template.livewire.block-settings type="color" :blockModel="$block->getModel()"
                         :key="$block->getName() . '-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasTextSettingsEnabled())
                 <div x-show="activeTab === 'text-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.block-text-settings :blockModel="$block->getModel()" :key="$block->getName() . '-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="text" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-text-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasWidthSettingsEnabled())
                 <div x-show="activeTab ==='width-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.width-settings :blockModel="$block->getModel()" :key="$block->getName() . '-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="width" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-width-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasHeightSettingsEnabled())
                 <div x-show="activeTab ==='height-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.height-settings :blockModel="$block->getModel()" :key="$block->getName() . '-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="height" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-height-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasSpacingSettingsEnabled())
                 <div x-show="activeTab ==='spacing-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.spacing-settings :blockModel="$block->getModel()" :key="$block->getName() . '-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="spacing" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-spacing-' . uniqid()" />
                 </div>
             @endif
             @if ($block->hasMaxWidthSettingsEnabled())
                 <div x-show="activeTab ==='max-width-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.max-width-settings :blockModel="$block->getModel()"
-                        :key="$block->getName() . '-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="max-width" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-max-width-' . uniqid()" />
                 </div>
             @endif
         </div>

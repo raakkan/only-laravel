@@ -38,7 +38,7 @@ trait HasDesignVariant
         if ($this->hasDesignVariants()) {
             return [
                 Section::make('Design Variant')->schema([
-                    Select::make('design_variant')->label('Design Variant')->options(function () {
+                    Select::make('onlylaravel.design_variant')->label('Design Variant')->options(function () {
                         return collect($this->designVariants)->mapWithKeys(function ($value, $key) {
                             return [$key => $value['label']];
                         });

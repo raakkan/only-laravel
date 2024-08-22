@@ -44,25 +44,25 @@ trait HasColorSettings
         $fields = [];
         if ($this->backgroundType == BackgroundType::COLOR) {
             $fields = [
-                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
+                ColorPicker::make('onlylaravel.color.background.color')->label('Background Color')->default($this->backgroundColor),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::IMAGE) {
             $fields = [
-                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
+                TextInput::make('onlylaravel.color.background.image')->label('Background Image')->default($this->backgroundImage),
             ];
         }
 
         if ($this->backgroundType == BackgroundType::BOTH) {
             $fields = [
-                ColorPicker::make('color.background.color')->label('Background Color')->default($this->backgroundColor),
-                TextInput::make('color.background.image')->label('Background Image')->default($this->backgroundImage),
+                ColorPicker::make('onlylaravel.color.background.color')->label('Background Color')->default($this->backgroundColor),
+                TextInput::make('onlylaravel.color.background.image')->label('Background Image')->default($this->backgroundImage),
             ];
         }
         
         if ($this->textColorSettings) {
-            $fields[] = ColorPicker::make('color.text.color')->label('Text Color')->default($this->textColor);
+            $fields[] = ColorPicker::make('onlylaravel.color.text.color')->label('Text Color')->default($this->textColor);
         }
         
         return $fields;
