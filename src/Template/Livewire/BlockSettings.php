@@ -35,6 +35,7 @@ class BlockSettings extends Component implements HasForms
 
     public function save()
     {
+        
         $settings = array_replace_recursive($this->getModel()->settings ?? [], $this->form->getState());
         
         $this->getModel()->settings = $settings;
@@ -61,8 +62,8 @@ class BlockSettings extends Component implements HasForms
                 'text' => $this->getTemplate()->getTextSettingFields(),
                 'width' => $this->getTemplate()->getWidthSettingFields(),
                 'height' => $this->getTemplate()->getHeightSettingFields(),
-                'spacing' => $this->getTemplate()->getSpacingSettingFields(),
-                'max-width' => $this->getTemplate()->getMaxWidthSettingFields(),
+                'padding' => $this->getTemplate()->getPaddingSettingFields(),
+                'maxwidth' => $this->getTemplate()->getMaxWidthSettingFields(),
                 'color' => $this->getTemplate()->getColorSettingFields(),
             };
 
@@ -73,8 +74,8 @@ class BlockSettings extends Component implements HasForms
                 'text' => $this->getBlock()->getTextSettingFields(),
                 'width' => $this->getBlock()->getWidthSettingFields(),
                 'height' => $this->getBlock()->getHeightSettingFields(),
-                'spacing' => $this->getBlock()->getSpacingSettingFields(),
-                'max-width' => $this->getBlock()->getMaxWidthSettingFields(),
+                'padding' => $this->getTemplate()->getPaddingSettingFields(),
+                'maxwidth' => $this->getBlock()->getMaxWidthSettingFields(),
                 'color' => $this->getBlock()->getColorSettingFields(),
             };
 

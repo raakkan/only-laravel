@@ -63,7 +63,7 @@
                         :class="{ 'bg-white': activeTab === 'text-settings' }"
                         @click="activeTab = 'text-settings'">Text</button>
                 @endif
-                @if ($block->hasSpacingSettingsEnabled())
+                @if ($block->hasPaddingSettingsEnabled())
                     <button class="px-1 py-2 flex-1 focus:outline-none bg-gray-100"
                         :class="{ 'bg-white': activeTab === 'spacing-settings' }"
                         @click="activeTab = 'spacing-settings'">Spacing</button>
@@ -116,7 +116,7 @@
                         :key="$block->getName() . '-height-' . uniqid()" />
                 </div>
             @endif
-            @if ($block->hasSpacingSettingsEnabled())
+            @if ($block->hasPaddingSettingsEnabled())
                 <div x-show="activeTab ==='spacing-settings'" class="p-4">
                     <livewire:only-laravel::template.livewire.block-settings type="spacing" :blockModel="$block->getModel()"
                         :key="$block->getName() . '-spacing-' . uniqid()" />
@@ -124,8 +124,8 @@
             @endif
             @if ($block->hasMaxWidthSettingsEnabled())
                 <div x-show="activeTab ==='max-width-settings'" class="p-4">
-                    <livewire:only-laravel::template.livewire.block-settings type="max-width" :blockModel="$block->getModel()"
-                        :key="$block->getName() . '-max-width-' . uniqid()" />
+                    <livewire:only-laravel::template.livewire.block-settings type="maxwidth" :blockModel="$block->getModel()"
+                        :key="$block->getName() . '-maxwidth-' . uniqid()" />
                 </div>
             @endif
         </div>

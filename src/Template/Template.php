@@ -11,11 +11,12 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\HasTemplateSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
 
 // TODO: add option for setting clear
 class Template implements Arrayable
@@ -26,17 +27,21 @@ class Template implements Arrayable
     use HasBlocks;
     use HasSource;
     use HasForPage;
-    use HasTemplateSettings;
+    use HasBlockSettings;
     use HasMaxWidthSettings;
-    use HasSpacingSettings;
     use HasColorSettings;
     use HasTextSettings;
+    use HasPaddingSettings;
+
+    protected $type = 'template';
 
     public function __construct($name)
     {
         $this->name = $name;
-        $this->paddingSettings = true;
-        $this->spacingResponsiveSettings = true;
+        $this->paddingLeftSettings = true;
+        $this->paddingLeftResponsiveSettings = true;
+        $this->paddingRightSettings = true;
+        $this->paddingRightResponsiveSettings = true;
     }
 
     protected $model;
@@ -53,7 +58,7 @@ class Template implements Arrayable
 
         $this->model = $model;
 
-        $this->setTemplateSettings($this->model->settings);
+        $this->setBlockSettings($this->model->settings);
         
         return $this->makeBlocks($templateBlocks, $blocks);
     }
@@ -117,7 +122,7 @@ class Template implements Arrayable
         $this->name = $this->model->name;
         $this->source = $this->model->source;
         $this->forPage = $this->model->for_page;
-        $this->setTemplateSettings($this->model->settings);
+        $this->setBlockSettings($this->model->settings);
         
         $blocks = [];
         foreach ($this->model->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {
@@ -144,6 +149,7 @@ class Template implements Arrayable
 
     public function create()
     {
+        $this->storeDefaultSettingsToDatabase();
         if (TemplateModel::where('name', $this->name)->exists()) {
             return;
         }

@@ -3,173 +3,74 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
 use Filament\Forms\Get;
+use Illuminate\Support\Arr;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 
 trait HasMaxWidthSettings
 {
-    protected $maxWidthSettings = true;
+    protected $maxwidthSettings = true;
     protected $maxwidthResponsiveSettings = true;
-    public $maxwidthUnit = 'percentage';
-    public $maxwidth = 100;
-    public $maxwidthSmallUnit = 'pixel';
-    public $maxwidthSmall = 640;
 
-    public $maxwidthMediumUnit = 'pixel';
-    public $maxwidthMedium = 768;
-
-    public $maxwidthLargeUnit = 'pixel';
-    public $maxwidthLarge = 1024;
-
-    public $maxwidthExtraLargeUnit = 'pixel';
-    public $maxwidthExtraLarge = 1280;
-
-    public $maxwidth2ExtraLargeUnit = 'pixel';
-    public $maxwidth2ExtraLarge = 1536;
-
-    public function setMaxWidthSettings($settings)
+    public function getMaxWidth($name = 'maxwidth')
     {
-        if (array_key_exists('maxwidth', $settings)) {
-            $this->maxwidthUnit = $settings['maxwidth']['unit'] ?? $this->maxwidthUnit;
-            $this->maxwidth = $settings['maxwidth']['width'] ?? $this->maxwidth;
-            $this->maxwidthSmallUnit = $settings['maxwidth']['small']['unit'] ?? $this->maxwidthSmallUnit;
-            $this->maxwidthSmall = $settings['maxwidth']['small']['width'] ?? $this->maxwidthSmall;
-            $this->maxwidthMediumUnit = $settings['maxwidth']['medium']['unit'] ?? $this->maxwidthMediumUnit;
-            $this->maxwidthMedium = $settings['maxwidth']['medium']['width'] ?? $this->maxwidthMedium;
-            $this->maxwidthLargeUnit = $settings['maxwidth']['large']['unit'] ?? $this->maxwidthLargeUnit;
-            $this->maxwidthLarge = $settings['maxwidth']['large']['width'] ?? $this->maxwidthLarge;
-            $this->maxwidthExtraLargeUnit = $settings['maxwidth']['extra_large']['unit'] ?? $this->maxwidthExtraLargeUnit;
-            $this->maxwidthExtraLarge = $settings['maxwidth']['extra_large']['width'] ?? $this->maxwidthExtraLarge;
-            $this->maxwidth2ExtraLargeUnit = $settings['maxwidth']['2_extra_large']['unit'] ?? $this->maxwidth2ExtraLargeUnit;
-            $this->maxwidth2ExtraLarge = $settings['maxwidth']['2_extra_large']['width'] ?? $this->maxwidth2ExtraLarge;
-        }
+        return Arr::get($this->settings, "onlylaravel.maxwidth.$name");
     }
 
     public function getMaxWidthSettingFields()
     {
         $fields = [];
-        if ($this->maxWidthSettings) {
-            if ($this->maxwidthResponsiveSettings) {
-                $fields[] = Section::make('Max Width')->schema([
-                    Select::make('onlylaravel.maxwidth.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthUnit)->label('Max Width Unit'),
-                    TextInput::make('onlylaravel.maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
-                    Select::make('onlylaravel.maxwidth.small.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthSmallUnit)->label('Max Width Small Unit'),
-                    TextInput::make('onlylaravel.maxwidth.small.width')->label('Max Width Small')->numeric()->default($this->maxwidthSmall),
-                    Select::make('onlylaravel.maxwidth.medium.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthMediumUnit)->label('Max Width Medium Unit'),
-                    TextInput::make('onlylaravel.maxwidth.medium.width')->label('Max Width Medium')->numeric()->default($this->maxwidthMedium),
-                    Select::make('onlylaravel.maxwidth.large.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthLargeUnit)->label('Max Width Large Unit'),
-                    TextInput::make('onlylaravel.maxwidth.large.width')->label('Max Width Large')->numeric()->default($this->maxwidthLarge),
-                    Select::make('onlylaravel.maxwidth.extra_large.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthExtraLargeUnit)->label('Max Width Extra Large Unit'),
-                    TextInput::make('onlylaravel.maxwidth.extra_large.width')->label('Max Width Extra Large')->numeric()->default($this->maxwidthExtraLarge),
-                    Select::make('onlylaravel.maxwidth.2_extra_large.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidth2ExtraLargeUnit)->label('Max Width 2 Extra Large Unit'),
-                    TextInput::make('onlylaravel.maxwidth.2_extra_large.width')->label('Max Width 2 Extra Large')->numeric()->default($this->maxwidth2ExtraLarge),
-                ])->compact();
-            }else{
-                $fields[] = Section::make('Max Width')->schema([
-                    Select::make('onlylaravel.maxwidth.unit')->options([
-                        'pixel' => 'Pixel',
-                        'percentage' => 'Percentage',
-                    ])->default($this->maxwidthUnit)->label('Max Width Unit'),
-                    TextInput::make('onlylaravel.maxwidth.width')->label('Max Width')->numeric()->default($this->maxwidth),
-                ])->compact();
-            }
+        if ($this->maxwidthSettings) {
+            $fields[] = BlockWidthField::make('onlylaravel.maxwidth')->default(['unit' => $this->getMaxWidth('unit'), 'maxwidth' => $this->getMaxWidth()]);
         }
-
+        
+        if ($this->maxwidthResponsiveSettings) {
+            $fields = [
+                BlockWidthField::make('onlylaravel.maxwidth')->default(['unit' => $this->getMaxWidth('unit'), 'maxwidth' => $this->getMaxWidth()]),
+                BlockWidthField::make('onlylaravel.maxwidth.small')->default(['unit' => $this->getMaxWidth('small.unit'), 'maxwidth' => $this->getMaxWidth('small.maxwidth')]),
+                BlockWidthField::make('onlylaravel.maxwidth.medium')->default(['unit' => $this->getMaxWidth('medium.unit'), 'maxwidth' => $this->getMaxWidth('medium.maxwidth')]),
+                BlockWidthField::make('onlylaravel.maxwidth.large')->default(['unit' => $this->getMaxWidth('large.unit'), 'maxwidth' => $this->getMaxWidth('large.maxwidth')]),
+                BlockWidthField::make('onlylaravel.maxwidth.extra_large')->default(['unit' => $this->getMaxWidth('extra_large.unit'), 'maxwidth' => $this->getMaxWidth('extra_large.maxwidth')]),
+                BlockWidthField::make('onlylaravel.maxwidth.2_extra_large')->default(['unit' => $this->getMaxWidth('2_extra_large.unit'), 'maxwidth' => $this->getMaxWidth('2_extra_large.maxwidth')]),
+            ];
+        }
+        
         return $fields;
     }
-
-    public function maxWidthResponsive()
-    {
-        $this->maxwidthResponsiveSettings = true;
-        return $this;
-    }
-
-    public function maxWidth($value, $unit = 'percentage')
-    {
-        $this->maxWidthSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidth = $value;
-            $this->maxwidthUnit = $unit;
-        }
-        return $this;
-    }
-
-    public function maxWidthSmall($value, $unit = 'pixel')
-    {
-        $this->maxWidthSettings = true;
-        $this->maxwidthResponsiveSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidthSmall = $value;
-            $this->maxwidthSmallUnit = $unit;
-        }
-        return $this;
-    }
-
-    public function maxWidthMedium($value, $unit = 'pixel')
-    {
-        $this->maxWidthSettings = true;
-        $this->maxwidthResponsiveSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidthMedium = $value;
-            $this->maxwidthMediumUnit = $unit;
-        }
-        return $this;
-    }
-
-    public function maxWidthLarge($value, $unit = 'pixel')
-    {
-        $this->maxWidthSettings = true;
-        $this->maxwidthResponsiveSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidthLarge = $value;
-            $this->maxwidthLargeUnit = $unit;
-        }
-        return $this;
-    }
-
-    public function maxWidthExtraLarge($value, $unit = 'pixel')
-    {
-        $this->maxWidthSettings = true;
-        $this->maxwidthResponsiveSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidthExtraLarge = $value;
-            $this->maxwidthExtraLargeUnit = $unit;
-        }
-        return $this;
-    }
-
-    public function maxWidth2ExtraLarge($value, $unit = 'pixel')
-    {
-        $this->maxWidthSettings = true;
-        $this->maxwidthResponsiveSettings = true;
-        if ($value >= 0 && $unit == 'percentage' || $unit == 'pixel') {
-            $this->maxwidth2ExtraLarge = $value;
-            $this->maxwidth2ExtraLargeUnit = $unit;
-        }
-        return $this;
-    }
-
     public function hasMaxWidthSettingsEnabled()
     {
-        return $this->maxWidthSettings;
+        return $this->maxwidthSettings;
+    }
+
+    public function maxWidth($value = 100, $unit = 'percentage')
+    {
+        $this->maxwidthSettings = true;
+        Arr::set($this->settings, 'onlylaravel.maxwidth.maxwidth', $value);
+        Arr::set($this->settings, 'onlylaravel.maxwidth.unit', $unit);
+        return $this;
+    }
+
+    public function responsiveMaxWidth($maxwidth = [
+        'maxwidth' => 100, 
+        'small' => 640, 
+        'medium' => 768, 
+        'large' => 1024, 
+        'extra_large' => 1280, 
+        '2_extra_large' => 1536
+    ], $unit = [
+        'unit' => 'percentage',
+        'small' => 'pixels',
+        'medium' => 'pixels',
+        'large' => 'pixels',
+        'extra_large' => 'pixels',
+        '2_extra_large' => 'pixels'
+    ])
+    {
+        $this->maxwidthResponsiveSettings = true;
+        Arr::set($this->settings, 'onlylaravel.maxwidth', $maxwidth);
+        Arr::set($this->settings, 'onlylaravel.maxwidth.unit', $unit);
+        return $this;
     }
 }

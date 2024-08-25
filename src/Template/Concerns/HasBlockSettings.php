@@ -49,10 +49,6 @@ trait HasBlockSettings
                 $this->setTextSettings($onlylaravel);
             }
     
-            if(array_key_exists('spacing', $onlylaravel)) {
-                $this->setSpacingSettings($onlylaravel);
-            }
-    
             if (array_key_exists('maxwidth', $onlylaravel)) {
                 $this->setMaxWidthSettings($onlylaravel);
             }
@@ -78,7 +74,9 @@ trait HasBlockSettings
                 $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
             }
 
-            
+            if ($this->hasPaddingSettingsEnabled()) {
+                $settingsFields = array_merge($settingsFields, $this->getPaddingSettingFields());
+            }
         }
 
         if ($this->type == 'component' && method_exists($this, 'hasDesignVariants') && $this->hasDesignVariants()) {
@@ -90,7 +88,7 @@ trait HasBlockSettings
 
     public function storeDefaultSettingsToDatabase()
     {
-        // dd($this->getSettingFields());
+        // dd($this->getSettingFields(true));
         foreach ($this->getSettingFields(true) as $field) {
             if ($field instanceof Field && $this->hasFieldDefaultValue($field) && $this->hasModel()) {
 
@@ -117,7 +115,7 @@ trait HasBlockSettings
         }
     }
 
-    public function setSettingValue(array $settings, string $name, string $value)
+    public function setSettingValue(array $settings, string $name, string | array $value)
     {
         if (strpos($name, '.') !== false) {
             Arr::set($settings, $name, $value);
@@ -144,6 +142,34 @@ trait HasBlockSettings
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public function getSettingsTabsData()
+    {
+        $data = [];
+
+        if ($this->hasSettings()) {
+            $data[] = [
+                'name' => 'settings',
+                'label' => 'Settings',
+            ];
+        }
+
+        if ($this->hasPaddingSettingsEnabled()) {
+            $data[] = [
+                'name' => 'padding',
+                'label' => 'Padding',
+            ];
+        }
+
+        if ($this->hasMaxWidthSettingsEnabled()) {
+            $data[] = [
+                'name' => 'maxwidth',
+                'label' => 'Max Width',
+            ];
+        }
+
+        return $data;
     }
 
 }
