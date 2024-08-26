@@ -9,6 +9,7 @@ use Filament\Notifications\Notification;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateSettingsComponent extends Component implements HasForms
 {
@@ -44,7 +45,7 @@ class TemplateSettingsComponent extends Component implements HasForms
 
     public function getTemplate()
     {
-        return TemplateManager::getTemplate($this->template->name)->setModel($this->template);
+        return PageTemplate::make($this->template->name)->setModel($this->template);
     }
     
     public function render()

@@ -35,10 +35,11 @@ trait HasBlockSettings
 
     public function setBlockSettings($settings)
     {
-        if (!is_array($settings) && array_key_exists('onlylaravel', $settings ?? [])) {
+        if (is_array($settings) && array_key_exists('onlylaravel', $settings ?? [])) {
             $onlylaravel = $settings['onlylaravel'];
+            
             if (array_key_exists('design_variant', $onlylaravel) && $this->type == 'component') {
-                $this->setDesignVariant($onlylaravel);
+                $this->setDesignVariant($onlylaravel['design_variant']);
             }
     
             if (array_key_exists('color', $onlylaravel) && $this->hasColorSettingsEnabled()) {
@@ -47,10 +48,6 @@ trait HasBlockSettings
     
             if (array_key_exists('text', $onlylaravel) && $this->hasTextSettingsEnabled()) {
                 $this->setTextSettings($onlylaravel);
-            }
-    
-            if (array_key_exists('maxwidth', $onlylaravel)) {
-                $this->setMaxWidthSettings($onlylaravel);
             }
     
             $this->setBlockCustomSettings($onlylaravel);
@@ -168,6 +165,14 @@ trait HasBlockSettings
                 'label' => 'Max Width',
             ];
         }
+
+        if ($this->hasColorSettingsEnabled()) {
+            $data[] = [
+                'name' => 'color',
+                'label' => 'Color',
+            ];
+        }
+
 
         return $data;
     }

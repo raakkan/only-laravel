@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('title');
             $table->string('slug');
-            $table->string('page_type')->default('pages');
             $table->longText('content')->nullable();
             $table->boolean('indexable')->default(true);
             $table->boolean('disabled')->default(false);

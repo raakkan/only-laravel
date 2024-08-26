@@ -4,10 +4,11 @@ namespace Raakkan\OnlyLaravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateModel extends Model
 {
-    protected $fillable = ['name', 'label', 'source', 'for_page', 'for_page_type', 'settings'];
+    protected $fillable = ['name', 'label', 'source', 'for', 'type', 'settings'];
 
     protected $casts = [
         'settings' => 'array',
@@ -25,7 +26,9 @@ class TemplateModel extends Model
 
     public function render()
     {
-        return TemplateManager::getTemplate($this->name)->setCachedModel($this->load('blocks'))->render();
+        $template = PageTemplate::make($this->name);
+        $template->setCachedModel($this->load('blocks'));
+        return $template->render();
     }
 
     // return Cache::remember('template_' . $this->id, $this->cache_ttl, function () {

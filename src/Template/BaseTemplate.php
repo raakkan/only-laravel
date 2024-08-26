@@ -18,8 +18,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
 
-// TODO: add option for setting clear
-class Template implements Arrayable
+abstract class BaseTemplate implements Arrayable
 {
     use Makable;
     use HasName;
@@ -32,17 +31,6 @@ class Template implements Arrayable
     use HasColorSettings;
     use HasTextSettings;
     use HasPaddingSettings;
-
-    protected $type = 'template';
-
-    public function __construct($name)
-    {
-        $this->name = $name;
-        $this->paddingLeftSettings = true;
-        $this->paddingLeftResponsiveSettings = true;
-        $this->paddingRightSettings = true;
-        $this->paddingRightResponsiveSettings = true;
-    }
 
     protected $model;
 
@@ -141,39 +129,8 @@ class Template implements Arrayable
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
             'source' => $this->source,
-            'forPage' => $this->forPage,
-            'forPageType' => $this->forPageType,
+            'for' => $this->forPage,
             'blocks' => $this->blocks,
         ];
-    }
-
-    public function create()
-    {
-        $this->storeDefaultSettingsToDatabase();
-        if (TemplateModel::where('name', $this->name)->exists()) {
-            return;
-        }
-
-        $template = TemplateModel::create([
-            'name' => $this->name,
-            'label' => $this->label ?? $this->name,
-            'source' => $this->getSource(),
-            'for_page' => $this->forPage,
-            'for_page_type' => $this->forPageType,
-        ]);
-
-        $this->setModel($template, false);
-        $this->storeDefaultSettingsToDatabase();
-
-        foreach ($this->blocks as $block) {
-            $block->create($template);
-        }
-    }
-
-    public function render()
-    {
-        return view('only-laravel::template.template', [
-            'template' => $this
-        ]);
     }
 }

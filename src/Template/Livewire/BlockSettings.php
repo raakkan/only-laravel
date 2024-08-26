@@ -9,6 +9,7 @@ use Livewire\Attributes\Reactive;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
@@ -40,7 +41,7 @@ class BlockSettings extends Component implements HasForms
         
         $this->getModel()->settings = $settings;
         $this->getModel()->save();
-
+        
         Notification::make()
             ->title('Settings saved')
             ->success()
@@ -92,7 +93,7 @@ class BlockSettings extends Component implements HasForms
 
     public function getTemplate()
     {
-        return TemplateManager::getTemplate($this->templateModel->name)->setModel($this->templateModel);
+        return PageTemplate::make($this->templateModel->name)->setModel($this->templateModel);
     }
     
     public function render()

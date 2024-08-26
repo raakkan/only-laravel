@@ -15,9 +15,7 @@ trait HasModel
         $this->type = $this->model->type;
         $this->location = $this->model->location;
         $this->disabled = $this->model->disabled;
-        if ($this->type == 'component') {
-            $this->designVariant = $this->model->design_variant;
-        }
+        
         $this->setBlockSettings($this->model->settings);
         return $this;
     }

@@ -53,7 +53,6 @@ abstract class BlockComponent extends BaseBlock
                 break;
             }
         }
-
         return view($this->view, [
             'block' => $this
         ]);

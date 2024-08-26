@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('label')->nullable();
             $table->string('source')->index();
-            $table->string('for_page', 100)->default('all');
-            $table->string('for_page_type', 100)->default('page');
+            $table->string('for', 100)->default('all');
             $table->json('settings')->nullable();
+            $table->string('type')->default('page');
             $table->timestamps();
 
-            $table->unique(['name', 'source', 'for_page', 'for_page_type'], 'unique_templates');
+            $table->unique(['name', 'source', 'for'], 'unique_templates');
         });
 
         Schema::create('template_blocks', function (Blueprint $table) {
@@ -32,7 +32,6 @@ return new class extends Migration
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();
             $table->string('location')->default('default');
-            $table->string('design_variant')->default('default');
             $table->enum('type', ['block', 'component']);
 
             $table->unsignedBigInteger('template_id');

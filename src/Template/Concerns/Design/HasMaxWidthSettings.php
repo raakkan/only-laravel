@@ -41,7 +41,7 @@ trait HasMaxWidthSettings
     }
     public function hasMaxWidthSettingsEnabled()
     {
-        return $this->maxwidthSettings;
+        return $this->maxwidthSettings || $this->maxwidthResponsiveSettings;
     }
 
     public function maxWidth($value = 100, $unit = 'percentage')

@@ -33,7 +33,7 @@ class TemplateResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('source')->searchable()->sortable(),
-                TextColumn::make('for_page')->searchable()->sortable(),
+                TextColumn::make('for')->searchable()->sortable(),
             ])
             ->filters([
                 //

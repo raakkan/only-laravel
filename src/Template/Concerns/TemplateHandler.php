@@ -9,26 +9,9 @@ trait TemplateHandler
 {
     protected $templates = [];
 
-    public function getTemplate($name)
-    {
-        return $this->getTemplateByName($name);
-    }
-
     public function getTemplates()
     {
         return $this->templates;
-    }
-
-    public function getTemplateByName($name)
-    {
-        return collect($this->getTemplates())->first(function ($template) use ($name) {
-            return $template->getName() == $name;
-        });
-    }
-
-    public function findTemplate($name)
-    {
-        return $this->getTemplateByName($name);
     }
 
     public function registerTemplates($templates)

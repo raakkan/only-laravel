@@ -53,9 +53,9 @@ class PageResource extends Resource
                     titleAttribute: 'label',
                     modifyQueryUsing: function (Builder $query, ?Model $record) {
                         if ($record) {
-                            return $query->where('for_page_type', '=', 'pages')->where('for_page', '=', 'all')->orWhere('for_page', '=', $record->name);
+                            return $query->where('type', '=', 'page')->where('for', '=', 'all')->orWhere('for', '=', $record->name);
                         }else{
-                            return $query->where('for_page_type', '=', 'pages')->where('for_page', '=', 'all');
+                            return $query->where('type', '=', 'page')->where('for', '=', 'all');
                         }
                     }
                 )->required(),
@@ -65,7 +65,6 @@ class PageResource extends Resource
                     }
                     return false;
                  }),
-                TextInput::make('page_type')->readOnly()->default('pages'),
             ]);
     }
 
