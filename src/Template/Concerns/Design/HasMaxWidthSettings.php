@@ -11,8 +11,8 @@ use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 
 trait HasMaxWidthSettings
 {
-    protected $maxwidthSettings = true;
-    protected $maxwidthResponsiveSettings = true;
+    protected $maxwidthSettings = false;
+    protected $maxwidthResponsiveSettings = false;
 
     public function getMaxWidth($name = 'maxwidth')
     {

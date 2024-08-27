@@ -88,16 +88,12 @@
     }
 </style>
 
-<body
-    style="
+<body style="
     width: 100%; 
     height: 100%; 
-    background-color: {{ $template->backgroundColor }}; 
-    color: {{ $template->textColor }};
-    font-family: {{ $template->fontFamily ?? 'Arial, Helvetica, sans-serif' }}; 
-    font-size: {{ $template->fontSize }}rem; 
-    line-height: {{ $template->lineHeight }}rem;
-    ">
+    {{ $template->getCustomStyle() }}
+    "
+    class="{{ $template->getCustomCss() }}">
     @foreach ($blocks as $block)
         {{ $block->render() }}
     @endforeach

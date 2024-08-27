@@ -27,6 +27,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasHeightSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 abstract class BaseBlock implements Arrayable
 {
@@ -55,6 +56,7 @@ abstract class BaseBlock implements Arrayable
     use HasPaddingSettings;
     use HasWidthSettings;
     use HasHeightSettings;
+    use HasCustomStyleSettings;
 
     protected $parent;
     protected $templateModel;

@@ -17,6 +17,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 abstract class BaseTemplate implements Arrayable
 {
@@ -31,6 +32,7 @@ abstract class BaseTemplate implements Arrayable
     use HasColorSettings;
     use HasTextSettings;
     use HasPaddingSettings;
+    use HasCustomStyleSettings;
 
     protected $model;
 

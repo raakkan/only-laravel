@@ -66,6 +66,7 @@ class BlockSettings extends Component implements HasForms
                 'padding' => $this->getTemplate()->getPaddingSettingFields(),
                 'maxwidth' => $this->getTemplate()->getMaxWidthSettingFields(),
                 'color' => $this->getTemplate()->getColorSettingFields(),
+                'customstyle' => $this->getTemplate()->getCustomStyleSettingFields(),
             };
 
             return $fields;
@@ -78,6 +79,7 @@ class BlockSettings extends Component implements HasForms
                 'padding' => $this->getTemplate()->getPaddingSettingFields(),
                 'maxwidth' => $this->getBlock()->getMaxWidthSettingFields(),
                 'color' => $this->getBlock()->getColorSettingFields(),
+                'customstyle' => $this->getBlock()->getCustomStyleSettingFields(),
             };
 
             return $fields;

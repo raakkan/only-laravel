@@ -5,10 +5,17 @@ namespace Raakkan\OnlyLaravel\Template;
 use Illuminate\Contracts\Support\Arrayable;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasHeightSettings;
 
 class PageTemplate extends BaseTemplate
 {
+    use HasHeightSettings;
     protected $type = 'template';
+    protected $customCssFilesSettings = true;
+    protected $customJsFilesSettings = true;
+    protected $customScript = true;
+    protected $coreFileSettings = true;
+    protected $includeCoreFiles = true;
 
     public function __construct($name)
     {
@@ -17,6 +24,8 @@ class PageTemplate extends BaseTemplate
         $this->paddingLeftResponsiveSettings = true;
         $this->paddingRightSettings = true;
         $this->paddingRightResponsiveSettings = true;
+        $this->maxwidthResponsiveSettings = true;
+        $this->heightResponsiveSettings = true;
     }
 
     public function create()

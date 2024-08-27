@@ -42,14 +42,6 @@ trait HasBlockSettings
                 $this->setDesignVariant($onlylaravel['design_variant']);
             }
     
-            if (array_key_exists('color', $onlylaravel) && $this->hasColorSettingsEnabled()) {
-                $this->setColorSettings($onlylaravel);
-            }
-    
-            if (array_key_exists('text', $onlylaravel) && $this->hasTextSettingsEnabled()) {
-                $this->setTextSettings($onlylaravel);
-            }
-    
             $this->setBlockCustomSettings($onlylaravel);
         }
 
@@ -73,6 +65,10 @@ trait HasBlockSettings
 
             if ($this->hasPaddingSettingsEnabled()) {
                 $settingsFields = array_merge($settingsFields, $this->getPaddingSettingFields());
+            }
+
+            if ($this->hasCustomStyleSettingsEnabled()) {
+                $settingsFields = array_merge($settingsFields, $this->getCustomStyleSettingFields());
             }
         }
 
@@ -152,6 +148,13 @@ trait HasBlockSettings
             ];
         }
 
+        if ($this->hasCustomStyleSettingsEnabled()) {
+            $data[] = [
+                'name' => 'customstyle',
+                'label' => 'Custom Style',
+            ];
+        }
+
         if ($this->hasPaddingSettingsEnabled()) {
             $data[] = [
                 'name' => 'padding',
@@ -159,17 +162,45 @@ trait HasBlockSettings
             ];
         }
 
-        if ($this->hasMaxWidthSettingsEnabled()) {
+        if ($this->hasTextSettingsEnabled()) {
+            $data[] = [
+                'name' => 'text',
+                'label' => 'Text',
+            ];
+        }
+
+        if (method_exists($this, 'hasMarginSettingsEnabled') && $this->hasMarginSettingsEnabled()) {
+            $data[] = [
+                'name' => 'margin',
+                'label' => 'Margin',
+            ];
+        }
+
+        if (method_exists($this, 'hasMaxWidthSettingsEnabled') && $this->hasMaxWidthSettingsEnabled()) {
             $data[] = [
                 'name' => 'maxwidth',
                 'label' => 'Max Width',
             ];
         }
 
-        if ($this->hasColorSettingsEnabled()) {
+        if (method_exists($this, 'hasColorSettingsEnabled') && $this->hasColorSettingsEnabled()) {
             $data[] = [
                 'name' => 'color',
                 'label' => 'Color',
+            ];
+        }
+
+        if (method_exists($this, 'hasHeightSettingsEnabled') && $this->hasHeightSettingsEnabled()) {
+            $data[] = [
+                'name' => 'height',
+                'label' => 'Height',
+            ];
+        }
+
+        if (method_exists($this, 'hasWidthSettingsEnabled') && $this->hasWidthSettingsEnabled()) {
+            $data[] = [
+                'name' => 'width',
+                'label' => 'Width',
             ];
         }
 

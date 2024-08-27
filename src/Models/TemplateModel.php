@@ -24,11 +24,11 @@ class TemplateModel extends Model
         return 'templates';
     }
 
-    public function render()
+    public function getPageTemplate()
     {
         $template = PageTemplate::make($this->name);
         $template->setCachedModel($this->load('blocks'));
-        return $template->render();
+        return $template;
     }
 
     // return Cache::remember('template_' . $this->id, $this->cache_ttl, function () {
