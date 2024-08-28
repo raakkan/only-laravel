@@ -88,9 +88,14 @@
     }
 </style>
 
-<body style="
+<body
+    style="
     width: 100%; 
-    height: 100%; 
+    height: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    {{ $template->getBackgroundStyle() }}
     {{ $template->getCustomStyle() }}
     "
     class="{{ $template->getCustomCss() }}">

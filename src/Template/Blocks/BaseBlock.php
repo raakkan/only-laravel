@@ -21,12 +21,11 @@ use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasColorSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasHeightSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasSpacingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 abstract class BaseBlock implements Arrayable
@@ -43,7 +42,7 @@ abstract class BaseBlock implements Arrayable
     use HasOrder;
     use HasLocation;
     use HasModel;
-    use HasColorSettings;
+    use HasBackgroundSettings;
     use Deletable;
     use Sortable;
     use HasForTemplate;

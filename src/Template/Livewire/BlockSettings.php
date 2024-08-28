@@ -61,11 +61,10 @@ class BlockSettings extends Component implements HasForms
             $fields = match ($this->type) {
                 'settings' => $this->getTemplate()->getSettingFields(),
                 'text' => $this->getTemplate()->getTextSettingFields(),
-                'width' => $this->getTemplate()->getWidthSettingFields(),
                 'height' => $this->getTemplate()->getHeightSettingFields(),
                 'padding' => $this->getTemplate()->getPaddingSettingFields(),
                 'maxwidth' => $this->getTemplate()->getMaxWidthSettingFields(),
-                'color' => $this->getTemplate()->getColorSettingFields(),
+                'background' => $this->getTemplate()->getBackgroundSettingFields(),
                 'customstyle' => $this->getTemplate()->getCustomStyleSettingFields(),
             };
 
@@ -78,7 +77,7 @@ class BlockSettings extends Component implements HasForms
                 'height' => $this->getBlock()->getHeightSettingFields(),
                 'padding' => $this->getTemplate()->getPaddingSettingFields(),
                 'maxwidth' => $this->getBlock()->getMaxWidthSettingFields(),
-                'color' => $this->getBlock()->getColorSettingFields(),
+                'background' => $this->getBlock()->getBackgroundSettingFields(),
                 'customstyle' => $this->getBlock()->getCustomStyleSettingFields(),
             };
 

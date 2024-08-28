@@ -25,7 +25,6 @@ class PageTemplate extends BaseTemplate
         $this->paddingRightSettings = true;
         $this->paddingRightResponsiveSettings = true;
         $this->maxwidthResponsiveSettings = true;
-        $this->heightResponsiveSettings = true;
     }
 
     public function create()

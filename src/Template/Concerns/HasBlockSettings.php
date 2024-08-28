@@ -55,8 +55,8 @@ trait HasBlockSettings
         $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields, $this->getBlockCustomSettings());
 
         if ($includeAll) {
-            if ($this->hasColorSettingsEnabled()) {
-                $settingsFields = array_merge($settingsFields, $this->getColorSettingFields());
+            if ($this->hasBackgroundSettingsEnabled()) {
+                $settingsFields = array_merge($settingsFields, $this->getBackgroundSettingFields());
             }
     
             if ($this->hasTextSettingsEnabled()) {
@@ -183,10 +183,10 @@ trait HasBlockSettings
             ];
         }
 
-        if (method_exists($this, 'hasColorSettingsEnabled') && $this->hasColorSettingsEnabled()) {
+        if (method_exists($this, 'hasBackgroundSettingsEnabled') && $this->hasBackgroundSettingsEnabled()) {
             $data[] = [
-                'name' => 'color',
-                'label' => 'Color',
+                'name' => 'background',
+                'label' => 'Background',
             ];
         }
 
