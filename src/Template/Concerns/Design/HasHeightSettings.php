@@ -8,7 +8,7 @@ use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 trait HasHeightSettings
 {
     protected $heightSettings = false;
-    protected $heightResponsiveSettings = false;
+    protected $heightResponsiveSettings = true;
 
     public function getHeight($name = 'height')
     {
@@ -19,18 +19,18 @@ trait HasHeightSettings
     {
         $fields = [];
         if ($this->heightSettings) {
-            $fields[] = BlockWidthField::make('onlylaravel.height')->default(['unit' => $this->getHeight('unit'), 'height' => $this->getHeight()]);
-        }
-        
-        if ($this->heightResponsiveSettings) {
-            $fields = [
-                BlockWidthField::make('onlylaravel.height')->default(['unit' => $this->getHeight('unit'), 'height' => $this->getHeight()]),
-                BlockWidthField::make('onlylaravel.height.small')->default(['unit' => $this->getHeight('small.unit'), 'height' => $this->getHeight('small.height')]),
-                BlockWidthField::make('onlylaravel.height.medium')->default(['unit' => $this->getHeight('medium.unit'), 'height' => $this->getHeight('medium.height')]),
-                BlockWidthField::make('onlylaravel.height.large')->default(['unit' => $this->getHeight('large.unit'), 'height' => $this->getHeight('large.height')]),
-                BlockWidthField::make('onlylaravel.height.extra_large')->default(['unit' => $this->getHeight('extra_large.unit'), 'height' => $this->getHeight('extra_large.height')]),
-                BlockWidthField::make('onlylaravel.height.2_extra_large')->default(['unit' => $this->getHeight('2_extra_large.unit'), 'height' => $this->getHeight('2_extra_large.height')]),
-            ];
+            if ($this->heightResponsiveSettings) {
+                $fields = [
+                    BlockWidthField::make('onlylaravel.height')->default(['unit' => $this->getHeight('unit'), 'height' => $this->getHeight()]),
+                    BlockWidthField::make('onlylaravel.height.small')->default(['unit' => $this->getHeight('small.unit'), 'height' => $this->getHeight('small.height')]),
+                    BlockWidthField::make('onlylaravel.height.medium')->default(['unit' => $this->getHeight('medium.unit'), 'height' => $this->getHeight('medium.height')]),
+                    BlockWidthField::make('onlylaravel.height.large')->default(['unit' => $this->getHeight('large.unit'), 'height' => $this->getHeight('large.height')]),
+                    BlockWidthField::make('onlylaravel.height.extra_large')->default(['unit' => $this->getHeight('extra_large.unit'), 'height' => $this->getHeight('extra_large.height')]),
+                    BlockWidthField::make('onlylaravel.height.2_extra_large')->default(['unit' => $this->getHeight('2_extra_large.unit'), 'height' => $this->getHeight('2_extra_large.height')]),
+                ];
+            }else{
+                $fields[] = BlockWidthField::make('onlylaravel.height')->default(['unit' => $this->getHeight('unit'), 'height' => $this->getHeight()]);
+            }
         }
         
         return $fields;

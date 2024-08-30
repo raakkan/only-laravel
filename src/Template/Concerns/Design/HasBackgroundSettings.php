@@ -32,7 +32,7 @@ trait HasBackgroundSettings
 
         if ($this->backgroundType == BackgroundType::BOTH) {
             $fields = [
-                ColorPicker::make('onlylaravel.background.color')->label('Background Color')->default($this->getBackgroundColor()),
+                ColorPicker::make('onlylaravel.background.color')->label('Background Color')->default($this->getBackgroundColor())->rgba(),
                 FileUpload::make('onlylaravel.background.image')->label('Background Image')->image()->storeFileNamesIn('attachment_file_names')->directory('templates/backgrounds')->default($this->getBackgroundImage()),
             ];
         }

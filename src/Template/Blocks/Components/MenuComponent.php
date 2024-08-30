@@ -15,7 +15,7 @@ class MenuComponent extends BlockComponent
     protected $view = 'only-laravel::template.components.menu';
     protected $selectedMenu = null;
 
-    public function getBlockCustomSettings()
+    public function getBlockSettings()
     {
         return [
             Section::make('Menu Settings')->schema([
@@ -27,7 +27,7 @@ class MenuComponent extends BlockComponent
         ];
     }
 
-    public function setBlockCustomSettings($settings)
+    public function setBlockSettings($settings)
     {
         if (is_array($settings) && array_key_exists('menu', $settings)) {
             $this->selectedMenu = $settings['menu'];

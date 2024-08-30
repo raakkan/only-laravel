@@ -6,7 +6,7 @@
         @if ($block->isSortable())
             <x-filament::icon icon="heroicon-m-bars-3" class="w-5 h-5 text-gray-400 mr-3 cursor-move" x-sort:handle />
         @endif
-        <h2 class="text-md font-bold {{ $block->isDisabled() ? 'text-gray-400' : '' }}">{{ $block->getName() }}</h2>
+        <h2 class="text-md font-bold {{ $block->isDisabled() ? 'text-gray-400' : '' }}">{{ $block->getLabel() }}</h2>
     </div>
     <div class="flex items-center space-x-2">
         @if ($block->isDisableable())

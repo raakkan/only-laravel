@@ -10,8 +10,8 @@ use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 
 trait HasWidthSettings
 {
-    protected $widthSettings = false;
-    protected $widthResponsiveSettings = false;
+    protected $widthSettings = true;
+    protected $widthResponsiveSettings = true;
 
     public function getWidth($name = 'width')
     {
@@ -22,18 +22,18 @@ trait HasWidthSettings
     {
         $fields = [];
         if ($this->widthSettings) {
-            $fields[] = BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]);
-        }
-        
-        if ($this->widthResponsiveSettings) {
-            $fields = [
-                BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
-                BlockWidthField::make('onlylaravel.width.small')->default(['unit' => $this->getWidth('small.unit'), 'width' => $this->getWidth('small.width')]),
-                BlockWidthField::make('onlylaravel.width.medium')->default(['unit' => $this->getWidth('medium.unit'), 'width' => $this->getWidth('medium.width')]),
-                BlockWidthField::make('onlylaravel.width.large')->default(['unit' => $this->getWidth('large.unit'), 'width' => $this->getWidth('large.width')]),
-                BlockWidthField::make('onlylaravel.width.extra_large')->default(['unit' => $this->getWidth('extra_large.unit'), 'width' => $this->getWidth('extra_large.width')]),
-                BlockWidthField::make('onlylaravel.width.2_extra_large')->default(['unit' => $this->getWidth('2_extra_large.unit'), 'width' => $this->getWidth('2_extra_large.width')]),
-            ];
+            if ($this->widthResponsiveSettings) {
+                $fields = [
+                    BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
+                    BlockWidthField::make('onlylaravel.width.small')->default(['unit' => $this->getWidth('small.unit'), 'width' => $this->getWidth('small.width')]),
+                    BlockWidthField::make('onlylaravel.width.medium')->default(['unit' => $this->getWidth('medium.unit'), 'width' => $this->getWidth('medium.width')]),
+                    BlockWidthField::make('onlylaravel.width.large')->default(['unit' => $this->getWidth('large.unit'), 'width' => $this->getWidth('large.width')]),
+                    BlockWidthField::make('onlylaravel.width.extra_large')->default(['unit' => $this->getWidth('extra_large.unit'), 'width' => $this->getWidth('extra_large.width')]),
+                    BlockWidthField::make('onlylaravel.width.2_extra_large')->default(['unit' => $this->getWidth('2_extra_large.unit'), 'width' => $this->getWidth('2_extra_large.width')]),
+                ];
+            }else{
+                $fields[] = BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]);
+            }
         }
         
         return $fields;

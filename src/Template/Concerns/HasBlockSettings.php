@@ -23,17 +23,12 @@ trait HasBlockSettings
         return [];
     }
 
-    public function getBlockCustomSettings()
-    {
-        return [];
-    }
-
-    public function setBlockCustomSettings($settings)
+    public function setBlockSettings($settings)
     {
         return $this;
     }
 
-    public function setBlockSettings($settings)
+    public function setSettings($settings)
     {
         if (is_array($settings) && array_key_exists('onlylaravel', $settings ?? [])) {
             $onlylaravel = $settings['onlylaravel'];
@@ -42,7 +37,7 @@ trait HasBlockSettings
                 $this->setDesignVariant($onlylaravel['design_variant']);
             }
     
-            $this->setBlockCustomSettings($onlylaravel);
+            $this->setBlockSettings($onlylaravel);
         }
 
         $this->settings = $settings;
@@ -52,22 +47,22 @@ trait HasBlockSettings
 
     public function getSettingFields($includeAll = false)
     {
-        $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields, $this->getBlockCustomSettings());
+        $settingsFields = array_merge($this->getBlockSettings(), $this->settingFields);
 
         if ($includeAll) {
-            if ($this->hasBackgroundSettingsEnabled()) {
+            if ($this->checkSettingsEnabled('background')) {
                 $settingsFields = array_merge($settingsFields, $this->getBackgroundSettingFields());
             }
     
-            if ($this->hasTextSettingsEnabled()) {
+            if ($this->checkSettingsEnabled('text')) {
                 $settingsFields = array_merge($settingsFields, $this->getTextSettingFields());
             }
 
-            if ($this->hasPaddingSettingsEnabled()) {
+            if ($this->checkSettingsEnabled('padding')) {
                 $settingsFields = array_merge($settingsFields, $this->getPaddingSettingFields());
             }
 
-            if ($this->hasCustomStyleSettingsEnabled()) {
+            if ($this->checkSettingsEnabled('customStyle')) {
                 $settingsFields = array_merge($settingsFields, $this->getCustomStyleSettingFields());
             }
         }
@@ -148,56 +143,56 @@ trait HasBlockSettings
             ];
         }
 
-        if ($this->hasCustomStyleSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('customStyle')) {
             $data[] = [
                 'name' => 'customstyle',
                 'label' => 'Custom Style',
             ];
         }
 
-        if ($this->hasPaddingSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('padding')) {
             $data[] = [
                 'name' => 'padding',
                 'label' => 'Padding',
             ];
         }
 
-        if ($this->hasTextSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('text')) {
             $data[] = [
                 'name' => 'text',
                 'label' => 'Text',
             ];
         }
 
-        if (method_exists($this, 'hasMarginSettingsEnabled') && $this->hasMarginSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('margin')) {
             $data[] = [
                 'name' => 'margin',
                 'label' => 'Margin',
             ];
         }
 
-        if (method_exists($this, 'hasMaxWidthSettingsEnabled') && $this->hasMaxWidthSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('maxwidth')) {
             $data[] = [
                 'name' => 'maxwidth',
                 'label' => 'Max Width',
             ];
         }
 
-        if (method_exists($this, 'hasBackgroundSettingsEnabled') && $this->hasBackgroundSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('background')) {
             $data[] = [
                 'name' => 'background',
                 'label' => 'Background',
             ];
         }
 
-        if (method_exists($this, 'hasHeightSettingsEnabled') && $this->hasHeightSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('height')) {
             $data[] = [
                 'name' => 'height',
                 'label' => 'Height',
             ];
         }
 
-        if (method_exists($this, 'hasWidthSettingsEnabled') && $this->hasWidthSettingsEnabled()) {
+        if ($this->checkSettingsEnabled('width')) {
             $data[] = [
                 'name' => 'width',
                 'label' => 'Width',
@@ -206,6 +201,14 @@ trait HasBlockSettings
 
 
         return $data;
+    }
+
+    public function checkSettingsEnabled($name)
+    {
+        if (method_exists($this, 'has'.ucfirst($name).'SettingsEnabled') && $this->{'has'.ucfirst($name).'SettingsEnabled'}()) {
+            return true;
+        }
+        return false;
     }
 
 }

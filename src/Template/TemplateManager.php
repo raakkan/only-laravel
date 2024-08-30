@@ -11,6 +11,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\YieldComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
 
 
@@ -69,6 +70,7 @@ class TemplateManager
             YieldComponent::make(),
             NavigationBlock::make(),
             MenuComponent::make(),
+            PageDataComponent::make()
         ];
     }
 }

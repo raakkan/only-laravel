@@ -16,7 +16,7 @@ trait HasModel
         $this->location = $this->model->location;
         $this->disabled = $this->model->disabled;
         
-        $this->setBlockSettings($this->model->settings);
+        $this->setSettings($this->model->settings);
         return $this;
     }
 

@@ -6,21 +6,21 @@
         @if ($block->sidebarPosition->value === 'left' || $block->sidebarPosition->value === 'both')
             <aside style="width: 25%;">
                 @foreach ($block->getChildrenByLocation('left-sidebar') as $blockComponent)
-                    {{ $blockComponent->render() }}
+                    {!! $blockComponent->render() !!}
                 @endforeach
             </aside>
         @endif
 
         <main style="{{ $block->sidebarPosition->value === 'both' ? 'width: 50%' : 'width: 75%' }}">
             @foreach ($block->getChildrenByLocation('default') as $blockComponent)
-                {{ $blockComponent->render() }}
+                {!! $blockComponent->render() !!}
             @endforeach
         </main>
 
         @if ($block->sidebarPosition->value === 'right' || $block->sidebarPosition->value === 'both')
             <aside style="width: 25%;">
                 @foreach ($block->getChildrenByLocation('right-sidebar') as $blockComponent)
-                    {{ $blockComponent->render() }}
+                    {!! $blockComponent->render() !!}
                 @endforeach
             </aside>
         @endif

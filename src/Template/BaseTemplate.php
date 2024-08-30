@@ -47,7 +47,7 @@ abstract class BaseTemplate implements Arrayable
 
         $this->model = $model;
 
-        $this->setBlockSettings($this->model->settings);
+        $this->setSettings($this->model->settings);
         
         return $this->makeBlocks($templateBlocks, $blocks);
     }
@@ -111,7 +111,7 @@ abstract class BaseTemplate implements Arrayable
         $this->name = $this->model->name;
         $this->source = $this->model->source;
         $this->forPage = $this->model->for_page;
-        $this->setBlockSettings($this->model->settings);
+        $this->setSettings($this->model->settings);
         
         $blocks = [];
         foreach ($this->model->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {

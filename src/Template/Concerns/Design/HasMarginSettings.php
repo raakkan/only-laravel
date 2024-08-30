@@ -8,16 +8,16 @@ use Raakkan\OnlyLaravel\Filament\Components\BlockResponsiveNumberField;
 
 trait HasMarginSettings
 {
-    protected $marginSettings = false;
-    protected $marginResponsiveSettings = false;
-    protected $marginLeftSettings = false;
-    protected $marginLeftResponsiveSettings = false;
-    protected $marginRightSettings = false;
-    protected $marginRightResponsiveSettings = false;
-    protected $marginTopSettings = false;
-    protected $marginTopResponsiveSettings = false;
-    protected $marginBottomSettings = false;
-    protected $marginBottomResponsiveSettings = false;
+    protected $marginSettings = true;
+    protected $marginResponsiveSettings = true;
+    protected $marginLeftSettings = true;
+    protected $marginLeftResponsiveSettings = true;
+    protected $marginRightSettings = true;
+    protected $marginRightResponsiveSettings = true;
+    protected $marginTopSettings = true;
+    protected $marginTopResponsiveSettings = true;
+    protected $marginBottomSettings = true;
+    protected $marginBottomResponsiveSettings = true;
 
     public function getPadding($name = 'margin')
     {

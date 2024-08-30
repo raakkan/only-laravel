@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
@@ -41,7 +42,7 @@ class PageResource extends Resource
                     return false;
                  })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 TextInput::make('title')->required(),
-                RichEditor::make('content')->columnSpanFull(),
+                TiptapEditor::make('content')->columnSpanFull(),
                 TextInput::make('slug')->required(function (?Model $record){
                     if ($record && $record->name == 'home-page') {
                         return false;
