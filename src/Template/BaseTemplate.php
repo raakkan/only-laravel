@@ -11,6 +11,7 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
+use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
@@ -32,6 +33,7 @@ abstract class BaseTemplate implements Arrayable
     use HasTextSettings;
     use HasPaddingSettings;
     use HasCustomStyleSettings;
+    use HasPageModel;
 
     protected $model;
 
@@ -60,7 +62,7 @@ abstract class BaseTemplate implements Arrayable
             $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
             $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
             $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
-            $builtBlocks[] = $themeBlock->setModel($templateBlock);
+            $builtBlocks[] = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel());
         }
 
         $this->blocks = $builtBlocks;
@@ -79,7 +81,7 @@ abstract class BaseTemplate implements Arrayable
                 $blockInstance = $this->buildBlockTree($blockInstance, $blockChildren, $blocks);
             }
 
-            $childBlocks[] = $blockInstance->setModel($block);
+            $childBlocks[] = $blockInstance->setModel($block)->setPageModel($this->getPageModel());
         }
 
         $themeBlock->children($childBlocks);

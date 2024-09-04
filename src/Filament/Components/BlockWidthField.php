@@ -23,11 +23,11 @@ class BlockWidthField extends Field
                     Select::make('unit')
                         ->label('Unit')
                         ->options([
-                            'percentage' => 'Percentage',
-                            'pixels' => 'Pixels'
+                            '%' => 'Percentage',
+                            'px' => 'Pixels'
                         ])->extraAttributes(['style' => 'padding:0;']),
-                    TextInput::make($name)->label('Max Width')->numeric()->extraAttributes(['style' => 'padding:0;']),
-                ])->columns(2)->compact()
+                    TextInput::make($name)->label('Width')->numeric()->extraAttributes(['style' => 'padding:0;']),
+                ])->columns(2)->compact()->extraAttributes(['style' => 'padding:0;']),
         ]);
     }
 }

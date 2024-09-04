@@ -36,9 +36,9 @@ trait HasBlockSettings
             if (array_key_exists('design_variant', $onlylaravel) && $this->type == 'component') {
                 $this->setDesignVariant($onlylaravel['design_variant']);
             }
-    
-            $this->setBlockSettings($onlylaravel);
         }
+
+        $this->setBlockSettings($settings);
 
         $this->settings = $settings;
 
@@ -196,6 +196,13 @@ trait HasBlockSettings
             $data[] = [
                 'name' => 'width',
                 'label' => 'Width',
+            ];
+        }
+
+        if($this->checkSettingsEnabled('customAttribute')) {
+            $data[] = [
+                'name' => 'customattribute',
+                'label' => 'Custom Attribute',
             ];
         }
 

@@ -3,6 +3,8 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
 use Illuminate\Support\Arr;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Raakkan\OnlyLaravel\Filament\Components\BlockResponsiveNumberField;
 
@@ -30,53 +32,84 @@ trait HasPaddingSettings
 
     public function getPaddingSettingFields()
     {
-        $fields = [];
-        
+        return [
+            Tabs::make('Padding')
+                ->tabs($this->getPaddingFieldsTabs()),
+        ];
+    }
+
+    public function getPaddingFieldsTabs()
+    {
+        $tabs = [];
+
         if ($this->paddingSettings) {
-            if ($this->paddingResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.padding')->label('Padding')->default($this->getPadding('paddingAll'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.padding.padding')->label('Padding')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding());
-            };
+            $tabs[] = Tab::make('Padding')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.padding')->label('Padding')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding()),
+                ]);
+        } elseif ($this->paddingResponsiveSettings) {
+            $tabs[] = Tab::make('Padding')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding')->label('Padding')->default($this->getPadding('paddingAll')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->paddingLeftSettings) {
-            if ($this->paddingLeftResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.padding.left')->label('Padding Left')->default($this->getPadding('left'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.padding.left.padding')->label('Padding Left')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('left.padding'));
-            };
+            $tabs[] = Tab::make('Left')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.left.padding')->label('Padding Left')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('left.padding')),
+                ]);
+        } elseif ($this->paddingLeftResponsiveSettings) {
+            $tabs[] = Tab::make('Left')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.left')->label('Padding Left')->default($this->getPadding('left')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->paddingRightSettings) {
-            if ($this->paddingRightResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.padding.right')->label('Padding Right')->default($this->getPadding('right'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.padding.right.padding')->label('Padding Right')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('right.padding'));
-            };
+            $tabs[] = Tab::make('Right')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.right.padding')->label('Padding Right')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('right.padding')),
+                ]);
+        } elseif ($this->paddingRightResponsiveSettings) {
+            $tabs[] = Tab::make('Right')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.right')->label('Padding Right')->default($this->getPadding('right')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->paddingTopSettings) {
-            if ($this->paddingTopResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.padding.top')->label('Padding Top');
-            } else {
-                $fields[] = TextInput::make('onlylaravel.padding.top.padding')->label('Padding Top')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('top.padding'));
-            };
+            $tabs[] = Tab::make('Top')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.top.padding')->label('Padding Top')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('top.padding')),
+                ]);
+        } elseif ($this->paddingTopResponsiveSettings) {
+            $tabs[] = Tab::make('Top')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.top')->label('Padding Top')->default($this->getPadding('top')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->paddingBottomSettings) {
-            if ($this->paddingBottomResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.padding.bottom')->label('Padding Bottom')->default($this->getPadding('bottom'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.padding.bottom.padding')->label('Padding Bottom')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('bottom.padding'));
-            };
+            $tabs[] = Tab::make('Bottom')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.bottom.padding')->label('Padding Bottom')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('bottom.padding')),
+                ]);
+        } elseif ($this->paddingBottomResponsiveSettings) {
+            $tabs[] = Tab::make('Bottom')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.bottom')->label('Padding Bottom')->default($this->getPadding('bottom')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
-        return $fields;
+
+        return $tabs;
     }
 
     public function hasPaddingSettingsEnabled()
     {
-        return $this->paddingSettings || $this->paddingLeftSettings || $this->paddingRightSettings || $this->paddingTopSettings || $this->paddingBottomSettings;
+        return $this->paddingSettings || $this->paddingResponsiveSettings || $this->paddingLeftSettings || $this->paddingLeftResponsiveSettings
+            || $this->paddingRightSettings || $this->paddingRightResponsiveSettings || $this->paddingTopSettings || $this->paddingTopResponsiveSettings
+            || $this->paddingBottomSettings || $this->paddingBottomResponsiveSettings;
     }
 
     public function padding($padding = 0)
@@ -184,4 +217,107 @@ trait HasPaddingSettings
         ]);
         return $this;
     }
+
+    public function enablePaddingSettingOnly(array | string  $setting = 'paddingSettings')
+    {
+        $this->paddingSettings = false;
+        $this->paddingResponsiveSettings = false;
+        $this->paddingLeftSettings = false;
+        $this->paddingLeftResponsiveSettings = false;
+        $this->paddingRightSettings = false;
+        $this->paddingRightResponsiveSettings = false;
+        $this->paddingTopSettings = false;
+        $this->paddingTopResponsiveSettings = false;
+        $this->paddingBottomSettings = false;
+        $this->paddingBottomResponsiveSettings = false;
+
+        if (is_array($setting)) {
+            foreach ($setting as $s) {
+                $this->{$s} = true;
+            }
+            return;
+        }
+
+        $this->{$setting} = true;
+    }
+
+    public function getResponsivePaddingStyles($className, $setting = 'paddingAll')
+    {
+        $responsivePadding = $this->getPadding($setting);
+
+        if (is_array($responsivePadding) && array_key_exists('padding', $responsivePadding)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePadding, 'padding');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingLeftStyles($className, $setting = 'left')
+    {
+        $responsivePaddingLeft = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingLeft) && array_key_exists('padding', $responsivePaddingLeft)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingLeft, 'padding-left');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingRightStyles($className, $setting = 'right')
+    {
+        $responsivePaddingRight = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingRight) && array_key_exists('padding', $responsivePaddingRight)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingRight, 'padding-right');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingTopStyles($className, $setting = 'top')
+    {
+        $responsivePaddingTop = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingTop) && array_key_exists('padding', $responsivePaddingTop)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingTop, 'padding-top');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingBottomStyles($className, $setting = 'bottom')
+    {
+        $responsivePaddingBottom = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingBottom) && array_key_exists('padding', $responsivePaddingBottom)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingBottom, 'padding-bottom');
+            return $styles;
+        }
+    }
+
+    private function generatePaddingStyles($className, $responsivePadding, $property)
+    {
+        $breakpoints = [
+            'small' => '@media (min-width: 640px)',
+            'medium' => '@media (min-width: 768px)',
+            'large' => '@media (min-width: 1024px)',
+            'extra_large' => '@media (min-width: 1280px)',
+            '2_extra_large' => '@media (min-width: 1536px)',
+        ];
+
+        $styles = [];
+
+        $styles[] = ".$className {";
+        $styles[] = "$property: " . ($responsivePadding['padding'] ?? '0') . 'rem;';
+        $styles[] = '} ';
+
+        foreach ($breakpoints as $size => $media) {
+            if (isset($responsivePadding[$size])) {
+                $styles[] = $media ? "$media {" : '';
+                $styles[] = ".$className {";
+                $styles[] = "$property: " . $responsivePadding[$size] . 'rem;';
+                $styles[] = '} ';
+                $styles[] = $media ? '} ' : '';
+            }
+        }
+
+        return implode('', $styles);
+    }   
+
 }

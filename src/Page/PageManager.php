@@ -24,9 +24,9 @@ class PageManager
         if ($slug) {
             $slug = trim($slug, '/');
         
-            $model = $pageType->getModel()::where('slug', $slug)->with('template')->first();
+            $model = $pageType->getModel()::where('slug', $slug)->with('template.blocks')->first();
         } else {
-            $model = $pageType->getModel()::where('name', 'home-page')->with('template')->first();
+            $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first();
         }
 
         if (! $model) {

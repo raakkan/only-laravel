@@ -3,6 +3,8 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
 use Illuminate\Support\Arr;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Raakkan\OnlyLaravel\Filament\Components\BlockResponsiveNumberField;
 
@@ -19,7 +21,7 @@ trait HasMarginSettings
     protected $marginBottomSettings = true;
     protected $marginBottomResponsiveSettings = true;
 
-    public function getPadding($name = 'margin')
+    public function getMargin($name = 'margin')
     {
         if ($name == 'marginAll') {
             return Arr::get($this->settings, 'onlylaravel.margin', []);
@@ -30,53 +32,84 @@ trait HasMarginSettings
 
     public function getMarginSettingFields()
     {
-        $fields = [];
-        
+        return [
+            Tabs::make('Margin')
+                ->tabs($this->getMarginFieldsTabs()),
+        ];
+    }
+
+    public function getMarginFieldsTabs()
+    {
+        $tabs = [];
+
         if ($this->marginSettings) {
-            if ($this->marginResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.margin')->label('Margin')->default($this->getMargin('marginAll'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.margin.margin')->label('Margin')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin());
-            };
+            $tabs[] = Tab::make('Margin')
+                ->schema([
+                    TextInput::make('onlylaravel.margin.margin')->label('Margin')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin()),
+                ]);
+        } elseif ($this->marginResponsiveSettings) {
+            $tabs[] = Tab::make('Margin')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.margin')->label('Margin')->default($this->getMargin('marginAll')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->marginLeftSettings) {
-            if ($this->marginLeftResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.margin.left')->label('Margin Left')->default($this->getMargin('left'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.margin.left.margin')->label('Margin Left')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('left.margin'));
-            };
+            $tabs[] = Tab::make('Left')
+                ->schema([
+                    TextInput::make('onlylaravel.margin.left.margin')->label('Margin Left')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('left.margin')),
+                ]);
+        } elseif ($this->marginLeftResponsiveSettings) {
+            $tabs[] = Tab::make('Left')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.margin.left')->label('Margin Left')->default($this->getMargin('left')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->marginRightSettings) {
-            if ($this->marginRightResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.margin.right')->label('Margin Right')->default($this->getMargin('right'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.margin.right.margin')->label('Margin Right')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('right.margin'));
-            };
+            $tabs[] = Tab::make('Right')
+                ->schema([
+                    TextInput::make('onlylaravel.margin.right.margin')->label('Margin Right')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('right.margin')),
+                ]);
+        } elseif ($this->marginRightResponsiveSettings) {
+            $tabs[] = Tab::make('Right')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.margin.right')->label('Margin Right')->default($this->getMargin('right')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->marginTopSettings) {
-            if ($this->marginTopResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.margin.top')->label('Margin Top')->default($this->getMargin('top'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.margin.top.margin')->label('Margin Top')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('top.margin'));
-            };
+            $tabs[] = Tab::make('Top')
+                ->schema([
+                    TextInput::make('onlylaravel.margin.top.margin')->label('Margin Top')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('top.margin')),
+                ]);
+        } elseif ($this->marginTopResponsiveSettings) {
+            $tabs[] = Tab::make('Top')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.margin.top')->label('Margin Top')->default($this->getMargin('top')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
         if ($this->marginBottomSettings) {
-            if ($this->marginBottomResponsiveSettings) {
-                $fields[] = BlockResponsiveNumberField::make('onlylaravel.margin.bottom')->label('Margin Bottom')->default($this->getMargin('bottom'));
-            } else {
-                $fields[] = TextInput::make('onlylaravel.margin.bottom.margin')->label('Margin Bottom')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('bottom.margin'));
-            };
+            $tabs[] = Tab::make('Bottom')
+                ->schema([
+                    TextInput::make('onlylaravel.margin.bottom.margin')->label('Margin Bottom')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getMargin('bottom.margin')),
+                ]);
+        } elseif ($this->marginBottomResponsiveSettings) {
+            $tabs[] = Tab::make('Bottom')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.margin.bottom')->label('Margin Bottom')->default($this->getMargin('bottom')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
         }
-        return $fields;
+
+        return $tabs;
     }
 
     public function hasMarginSettingsEnabled()
     {
-        return $this->marginSettings || $this->marginLeftSettings || $this->marginRightSettings || $this->marginTopSettings || $this->marginBottomSettings;
+        return $this->marginSettings || $this->marginResponsiveSettings || $this->marginLeftSettings || $this->marginLeftResponsiveSettings
+            || $this->marginRightSettings || $this->marginRightResponsiveSettings || $this->marginTopSettings || $this->marginTopResponsiveSettings
+            || $this->marginBottomSettings || $this->marginBottomResponsiveSettings;
     }
 
     public function margin($margin = 0)
@@ -184,4 +217,107 @@ trait HasMarginSettings
         ]);
         return $this;
     }
+
+    public function enableMarginSettingOnly(array | string  $setting = 'marginSettings')
+    {
+        $this->marginSettings = false;
+        $this->marginResponsiveSettings = false;
+        $this->marginLeftSettings = false;
+        $this->marginLeftResponsiveSettings = false;
+        $this->marginRightSettings = false;
+        $this->marginRightResponsiveSettings = false;
+        $this->marginTopSettings = false;
+        $this->marginTopResponsiveSettings = false;
+        $this->marginBottomSettings = false;
+        $this->marginBottomResponsiveSettings = false;
+
+        if (is_array($setting)) {
+            foreach ($setting as $s) {
+                $this->{$s} = true;
+            }
+            return;
+        }
+
+        $this->{$setting} = true;
+    }
+
+    public function getResponsiveMarginStyles($className, $setting = 'marginAll')
+    {
+        $responsiveMargin = $this->getMargin($setting);
+
+        if (is_array($responsiveMargin) && array_key_exists('margin', $responsiveMargin)) {
+            $styles = $this->generateMarginStyles($className, $responsiveMargin, 'margin');
+            return $styles;
+        }
+    }
+
+    public function getResponsiveMarginLeftStyles($className, $setting = 'left')
+    {
+        $responsiveMarginLeft = $this->getMargin($setting);
+
+        if (is_array($responsiveMarginLeft) && array_key_exists('margin', $responsiveMarginLeft)) {
+            $styles = $this->generateMarginStyles($className, $responsiveMarginLeft, 'margin-left');
+            return $styles;
+        }
+    }
+
+    public function getResponsiveMarginRightStyles($className, $setting = 'right')
+    {
+        $responsiveMarginRight = $this->getMargin($setting);
+
+        if (is_array($responsiveMarginRight) && array_key_exists('margin', $responsiveMarginRight)) {
+            $styles = $this->generateMarginStyles($className, $responsiveMarginRight, 'margin-right');
+            return $styles;
+        }
+    }
+
+    public function getResponsiveMarginTopStyles($className, $setting = 'top')
+    {
+        $responsiveMarginTop = $this->getMargin($setting);
+
+        if (is_array($responsiveMarginTop) && array_key_exists('margin', $responsiveMarginTop)) {
+            $styles = $this->generateMarginStyles($className, $responsiveMarginTop, 'margin-top');
+            return $styles;
+        }
+    }
+
+    public function getResponsiveMarginBottomStyles($className, $setting = 'bottom')
+    {
+        $responsiveMarginBottom = $this->getMargin($setting);
+
+        if (is_array($responsiveMarginBottom) && array_key_exists('margin', $responsiveMarginBottom)) {
+            $styles = $this->generateMarginStyles($className, $responsiveMarginBottom, 'margin-bottom');
+            return $styles;
+        }
+    }
+
+    private function generateMarginStyles($className, $responsiveMargin, $property)
+    {
+        $breakpoints = [
+            'small' => '@media (min-width: 640px)',
+            'medium' => '@media (min-width: 768px)',
+            'large' => '@media (min-width: 1024px)',
+            'extra_large' => '@media (min-width: 1280px)',
+            '2_extra_large' => '@media (min-width: 1536px)',
+        ];
+
+        $styles = [];
+
+        $styles[] = ".$className {";
+        $styles[] = "$property: " . ($responsiveMargin['margin'] ?? '0') . 'rem;';
+        $styles[] = '} ';
+
+        foreach ($breakpoints as $size => $media) {
+            if (isset($responsiveMargin[$size])) {
+                $styles[] = $media ? "$media {" : '';
+                $styles[] = ".$className {";
+                $styles[] = "$property: " . $responsiveMargin[$size] . 'rem;';
+                $styles[] = '} ';
+                $styles[] = $media ? '} ' : '';
+            }
+        }
+
+        return implode('', $styles);
+    }   
+
 }

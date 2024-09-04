@@ -21,11 +21,6 @@ return new class extends Migration
         
             $table->unique(['source', 'key']);
         });
-
-        Setting::create([
-            'key' => 'current_theme',
-            'source' => 'raakkan/only-laravel',
-        ]);
     }
 
     /**

@@ -15,6 +15,13 @@ trait ManagePageTypes
         return array_merge($this->pageTypes, [$this->getDefaultPageType()]);
     }
 
+    public function getPageTypeModels()
+    {
+        return collect($this->getPageTypes())->flatMap(function ($pageType) {
+            return [$pageType->getModel() => basename($pageType->getModel())];
+        })->toArray();
+    }
+
     public function registerPageTypes($pageTypes)
     {
         foreach ($pageTypes as $pageType) {

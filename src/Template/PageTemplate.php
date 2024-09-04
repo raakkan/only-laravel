@@ -15,13 +15,11 @@ class PageTemplate extends BaseTemplate
     protected $customJsFilesSettings = true;
     protected $customScript = true;
     protected $coreFileSettings = true;
-    protected $paddingTopSettings = false;
-    protected $paddingSettings = false;
-    protected $paddingBottomSettings = false;
 
     public function __construct($name)
     {
         $this->name = $name;
+        $this->enablePaddingSettingOnly(['paddingLeftResponsiveSettings', 'paddingRightResponsiveSettings']);
     }
 
     public function create()

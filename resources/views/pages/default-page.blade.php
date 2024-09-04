@@ -11,7 +11,7 @@
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
     @php
-        $pageTemplate = $page->template->getPageTemplate();
+        $pageTemplate = $page->getPageTemplate();
     @endphp
 
     {{-- @if ($pageTemplate->getIncludeCoreFiles())

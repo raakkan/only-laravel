@@ -17,6 +17,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
+use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
@@ -44,6 +45,7 @@ abstract class BaseBlock implements Arrayable
     use Disableable;
     use HasForPage;
     use HasBlockView;
+    use HasPageModel;
 
     protected $parent;
     protected $templateModel;
