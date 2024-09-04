@@ -18,6 +18,7 @@ trait HasWidthSettings
     protected $minWidthResponsiveSettings = true;
     protected $maxWidthSettings = true;
     protected $maxWidthResponsiveSettings = true;
+    protected $widthSettingsTabColumn = 2;
 
     public function getWidth($name = 'width')
     {
@@ -47,7 +48,7 @@ trait HasWidthSettings
     {
         return [
             Tabs::make('Width')
-                ->tabs($this->getWidthFieldsTabs())->columns(2),
+                ->tabs($this->getWidthFieldsTabs())->columns($this->widthSettingsTabColumn),
         ];
     }
 
@@ -110,7 +111,8 @@ trait HasWidthSettings
 
     public function hasWidthSettingsEnabled()
     {
-        return $this->widthSettings || $this->widthResponsiveSettings;
+        return $this->widthSettings || $this->widthResponsiveSettings || $this->minWidthSettings || $this->minWidthResponsiveSettings
+            || $this->maxWidthSettings || $this->maxWidthResponsiveSettings;
     }
 
     public function width($value = 100, $unit = 'percentage')

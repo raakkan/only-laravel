@@ -171,13 +171,6 @@ trait HasBlockSettings
             ];
         }
 
-        if ($this->checkSettingsEnabled('maxwidth')) {
-            $data[] = [
-                'name' => 'maxwidth',
-                'label' => 'Max Width',
-            ];
-        }
-
         if ($this->checkSettingsEnabled('background')) {
             $data[] = [
                 'name' => 'background',
@@ -196,6 +189,13 @@ trait HasBlockSettings
             $data[] = [
                 'name' => 'width',
                 'label' => 'Width',
+            ];
+        }
+
+        if ($this->checkSettingsEnabled('border')) {
+            $data[] = [
+                'name' => 'border',
+                'label' => 'Border',
             ];
         }
 

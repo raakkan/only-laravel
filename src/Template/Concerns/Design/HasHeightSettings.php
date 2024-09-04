@@ -15,6 +15,7 @@ trait HasHeightSettings
     protected $minHeightResponsiveSettings = true;
     protected $maxHeightSettings = true;
     protected $maxHeightResponsiveSettings = true;
+    protected $heightSettingsTabColumn = 2;
 
     public function getHeight($name = 'height')
     {
@@ -44,7 +45,7 @@ trait HasHeightSettings
     {
         return [
             Tabs::make('Height')
-                ->tabs($this->getHeightFieldsTabs())->columns(2),
+                ->tabs($this->getHeightFieldsTabs())->columns($this->heightSettingsTabColumn),
         ];
     }
 
@@ -107,7 +108,8 @@ trait HasHeightSettings
 
     public function hasHeightSettingsEnabled()
     {
-        return $this->heightSettings || $this->heightResponsiveSettings;
+        return $this->heightSettings || $this->heightResponsiveSettings || $this->minHeightSettings || $this->minHeightResponsiveSettings
+            || $this->maxHeightSettings || $this->maxHeightResponsiveSettings;
     }
 
     public function height($value = 100, $unit = 'percentage')

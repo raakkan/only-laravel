@@ -8,6 +8,7 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
@@ -15,7 +16,6 @@ use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMaxWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
@@ -28,12 +28,12 @@ abstract class BaseTemplate implements Arrayable
     use HasSource;
     use HasForPage;
     use HasBlockSettings;
-    use HasMaxWidthSettings;
     use HasBackgroundSettings;
     use HasTextSettings;
     use HasPaddingSettings;
     use HasCustomStyleSettings;
     use HasPageModel;
+    use HasWidthSettings;
 
     protected $model;
 

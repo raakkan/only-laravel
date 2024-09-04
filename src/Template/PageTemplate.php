@@ -2,14 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasHeightSettings;
 
 class PageTemplate extends BaseTemplate
 {
-    use HasHeightSettings;
     protected $type = 'template';
     protected $customCssFilesSettings = true;
     protected $customJsFilesSettings = true;
@@ -20,6 +16,8 @@ class PageTemplate extends BaseTemplate
     {
         $this->name = $name;
         $this->enablePaddingSettingOnly(['paddingLeftResponsiveSettings', 'paddingRightResponsiveSettings']);
+        $this->enableWidthSettingOnly(['maxWidthResponsiveSettings']);
+        $this->widthSettingsTabColumn = 1;
     }
 
     public function create()

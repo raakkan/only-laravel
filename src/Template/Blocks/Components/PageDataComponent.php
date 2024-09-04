@@ -2,12 +2,13 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Components\Section;
 use Filament\Forms\Get;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Section;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBorderSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMarginSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
@@ -19,7 +20,7 @@ class PageDataComponent extends BlockComponent
     use HasCustomAttributeSettings;
     use HasPaddingSettings;
     use HasMarginSettings;
-    use HasWidthSettings;
+    use HasBorderSettings;
     
     protected string $name = 'page-data';
     protected string $label = 'Page data';
@@ -35,9 +36,9 @@ class PageDataComponent extends BlockComponent
 
     public function __construct()
     {
-        $this->enableMarginSettingOnly(['marginResponsiveSettings', 'marginTopResponsiveSettings', 'marginRightResponsiveSettings', 'marginBottomResponsiveSettings', 'marginLeftResponsiveSettings']);
-        $this->enablePaddingSettingOnly(['paddingResponsiveSettings', 'paddingTopResponsiveSettings', 'paddingRightResponsiveSettings', 'paddingBottomResponsiveSettings', 'paddingLeftResponsiveSettings']);
-        $this->enableWidthSettingOnly(['widthResponsiveSettings', 'minWidthResponsiveSettings', 'maxWidthResponsiveSettings']);
+        $this->enableMarginSettingOnly('marginResponsiveSettings');
+        $this->enablePaddingSettingOnly('paddingResponsiveSettings');
+        $this->enableBorderSettingOnly(['borderRadiusSettings', 'borderWidthSettings', 'borderColorSettings', 'borderStyleSettings']);
     }
 
     public function getBlockSettings()
@@ -77,19 +78,15 @@ class PageDataComponent extends BlockComponent
             if ($data) {
                 $paddingStyles = $this->getResponsivePaddingStyles('padding-'. $this->getModel()->id);
                 $marginStyles = $this->getResponsiveMarginStyles('margin-'. $this->getModel()->id);
-                $widthStyles = $this->getResponsiveWidthStyles('width-'. $this->getModel()->id);
-                $maxWidthStyles = $this->getResponsiveMaxWidthStyles('max-width-'. $this->getModel()->id);
-                $minWidthStyles = $this->getResponsiveMinWidthStyles('min-width-'. $this->getModel()->id);
+                $borderStyles = $this->getBorderStyles('border-'. $this->getModel()->id);
                 
                 return Blade::render(<<<EOT
                 <style>
                 {$paddingStyles}
                 {$marginStyles}
-                {$widthStyles}
-                {$maxWidthStyles}
-                {$minWidthStyles}
+                {$borderStyles}
                 </style>
-                <{$this->getTag()} style="{$this->getCustomStyle()}" class="{$this->getCustomCss()} padding-left-{$this->getModel()->id} margin-{$this->getModel()->id} width-{$this->getModel()->id} max-width-{$this->getModel()->id} min-width-{$this->getModel()->id}" {$this->getCustomAttributes()}>
+                <{$this->getTag()} style="{$this->getCustomStyle()} {$this->getBackgroundStyle()}" class="{$this->getCustomCss()} padding-{$this->getModel()->id} margin-{$this->getModel()->id} border-{$this->getModel()->id}" {$this->getCustomAttributes()}>
                     {$data}
                 </{$this->getTag()}>
                 EOT);
