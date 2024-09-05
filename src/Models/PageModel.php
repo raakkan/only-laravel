@@ -29,7 +29,7 @@ class PageModel extends Model
     public function getPageTemplate()
     {
         $template = PageTemplate::make($this->template->name);
-        $template->setPageModel($this)->setCachedModel($this->template);
+        $template->setPageModel($this)->initializeFromCachedModel($this->template);
         return $template;
     }
 

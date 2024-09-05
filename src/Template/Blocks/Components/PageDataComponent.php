@@ -7,20 +7,13 @@ use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
 use Raakkan\OnlyLaravel\Facades\PageManager;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBorderSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasMarginSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomAttributeSettings;
-
+use csstidy;
 class PageDataComponent extends BlockComponent
 {
     use HasCustomStyleSettings;
     use HasCustomAttributeSettings;
-    use HasPaddingSettings;
-    use HasMarginSettings;
-    use HasBorderSettings;
     
     protected string $name = 'page-data';
     protected string $label = 'Page data';
@@ -33,13 +26,6 @@ class PageDataComponent extends BlockComponent
         'p' => 'P',
     ];
     protected $tag = 'div';
-
-    public function __construct()
-    {
-        $this->enableMarginSettingOnly('marginResponsiveSettings');
-        $this->enablePaddingSettingOnly('paddingResponsiveSettings');
-        $this->enableBorderSettingOnly(['borderRadiusSettings', 'borderWidthSettings', 'borderColorSettings', 'borderStyleSettings']);
-    }
 
     public function getBlockSettings()
     {
@@ -72,21 +58,24 @@ class PageDataComponent extends BlockComponent
 
     public function render()
     {
+
+// $csstidy = new csstidy();
+
+// $csstidy->set_cfg('optimise_shorthands', 2);
+
+// $csstidy->parse(file_get_contents(public_path('css/minimal.css')));
+// $csstidy->parse(file_get_contents(public_path('css/normal.css')));
+
+// $optimizedCSS = $csstidy->print->plain();
+
+// file_put_contents(public_path('css/op.css'), $optimizedCSS);
+
         if ($this->hasPageModel() && $this->pageDataAttribute) {
             $data = $this->getPageModel()->{$this->pageDataAttribute};
 
             if ($data) {
-                $paddingStyles = $this->getResponsivePaddingStyles('padding-'. $this->getModel()->id);
-                $marginStyles = $this->getResponsiveMarginStyles('margin-'. $this->getModel()->id);
-                $borderStyles = $this->getBorderStyles('border-'. $this->getModel()->id);
-                
                 return Blade::render(<<<EOT
-                <style>
-                {$paddingStyles}
-                {$marginStyles}
-                {$borderStyles}
-                </style>
-                <{$this->getTag()} style="{$this->getCustomStyle()} {$this->getBackgroundStyle()}" class="{$this->getCustomCss()} padding-{$this->getModel()->id} margin-{$this->getModel()->id} border-{$this->getModel()->id}" {$this->getCustomAttributes()}>
+                <{$this->getTag()} style="{$this->getCustomStyle()} {$this->getBackgroundStyle()}" class="{$this->generateCssClassNames()} {$this->getCustomCss()}" {$this->getCustomAttributes()}>
                     {$data}
                 </{$this->getTag()}>
                 EOT);
@@ -97,5 +86,11 @@ class PageDataComponent extends BlockComponent
     public function getTag()
     {
         return $this->tag;
+    }
+
+    public function generateCssClassNames()
+    {
+        return 'data-component data-component-' . $this->pageDataAttribute . ' data-component-' . $this->getTag() . '-' . $this->pageDataAttribute  . ' data-component-' . $this->getTag() 
+        . ' dark-data-component dark-data-component-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . '-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . ' ';
     }
 }

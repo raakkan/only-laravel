@@ -49,4 +49,12 @@ trait HasDesignVariant
 
         return [];
     }
+
+    public function getDesignVariantAssets()
+    {
+        if ($this->hasDesignVariants()) {
+            return $this->designVariants[$this->designVariant]['assets'] ?? [];
+        }
+        return [];
+    }
 }

@@ -8,13 +8,15 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
 use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
@@ -34,10 +36,12 @@ abstract class BaseTemplate implements Arrayable
     use HasCustomStyleSettings;
     use HasPageModel;
     use HasWidthSettings;
+    use HasBlockBuilding;
+    use HasBlockAssets;
 
     protected $model;
 
-    public function setCachedModel($model)
+    public function initializeFromCachedModel($model)
     {
         $templateBlocks = collect($model->blocks)->filter(function ($block) {
             return $block->disabled == 0 && $block->parent_id == null;
@@ -50,42 +54,7 @@ abstract class BaseTemplate implements Arrayable
         $this->model = $model;
 
         $this->setSettings($this->model->settings);
-        
         return $this->makeBlocks($templateBlocks, $blocks);
-    }
-
-    public function makeBlocks($templateBlocks, $blocks)
-    {
-        $builtBlocks = [];
-
-        foreach ($templateBlocks as $templateBlock) {
-            $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
-            $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
-            $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
-            $builtBlocks[] = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel());
-        }
-
-        $this->blocks = $builtBlocks;
-        return $this;
-    }
-
-    private function buildBlockTree($themeBlock, $templateBlockChildren, $blocks)
-    {
-        $childBlocks = [];
-
-        foreach ($templateBlockChildren as $block) {
-            $blockInstance = TemplateManager::getBlockByName($block->name);
-            $blockChildren = $blocks->where('parent_id', $block->id)->sortBy('order');
-
-            if ($blockChildren->isNotEmpty()) {
-                $blockInstance = $this->buildBlockTree($blockInstance, $blockChildren, $blocks);
-            }
-
-            $childBlocks[] = $blockInstance->setModel($block)->setPageModel($this->getPageModel());
-        }
-
-        $themeBlock->children($childBlocks);
-        return $themeBlock;
     }
 
     public function setModel($model, $save = true)
