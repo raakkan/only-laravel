@@ -12,21 +12,24 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('title');
-            $table->string('slug');
-            $table->longText('content')->nullable();
+            $table->json('title');
+            $table->json('slug');
+            $table->json('content')->nullable();
             $table->boolean('indexable')->default(true);
             $table->boolean('disabled')->default(false);
-            $table->json('seo')->nullable();
+            $table->json('seo_title')->nullable();
+            $table->json('seo_description')->nullable();
+            $table->json('seo_keywords')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
             $table->json('settings')->nullable();
+            $table->json('featured_image')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['name', 'slug']);
-
             $table->foreign('template_id')->references('id')->on('templates')->nullOnDelete();
         });
+
+        DB::statement('CREATE UNIQUE INDEX pages_name_slug_en_unique ON pages (name, (CAST(JSON_EXTRACT(slug, "$.en") AS CHAR(255))))');
     }
 
     public function down(): void

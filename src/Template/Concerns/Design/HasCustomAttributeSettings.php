@@ -11,7 +11,7 @@ trait HasCustomAttributeSettings
 
     public function getCustomAttributes()
     {
-        return Arr::get($this->settings, 'onlylaravel.custom_attributes', []);
+        return Arr::get($this->settings, 'onlylaravel.custom_attributes');
     }
 
     public function getCustomAttributeSettingFields()

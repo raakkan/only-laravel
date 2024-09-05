@@ -11,11 +11,13 @@ use Raakkan\OnlyLaravel\Filament\Resources\PageResource;
 
 class EditPage extends EditRecord
 {
+    use EditRecord\Concerns\Translatable;
     protected static string $resource = PageResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
+            Actions\LocaleSwitcher::make(),
             Actions\DeleteAction::make()->action(function (?Model $record) {
                 if (PageManager::pageIsDeletable($record->name)) {
                     Notification::make()

@@ -56,7 +56,18 @@ trait ManagePageTypes
 
     public function getDefaultPageType()
     {
-        return PageType::make('pages', 'Pages', 'root', $this->defaultPageTypeView, $this->defaultPageTypeModel);
+        return PageType::make('pages', 'Pages', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
+            $schema->setType('WebPage');
+            $schema->setProperty('@id', 'string');
+            $schema->setProperty('name', 'string');
+            $schema->setProperty('description', 'string');
+            $schema->setProperty('url', 'string');
+            $schema->setProperty('image', 'string');
+            $schema->setProperty('author', 'string');
+            $schema->setProperty('datePublished', 'string');
+            $schema->setProperty('dateModified', 'string');
+            $schema->setProperty('inLanguage', 'string');
+        });
     }
 
     public function useDefaultPageTypeView($view)
@@ -69,6 +80,13 @@ trait ManagePageTypes
     {
         $this->defaultPageTypeModel = $model;
         return $this;
+    }
+
+    public function getPageTypesByLevel($level)
+    {
+        return collect($this->getPageTypes())->filter(function ($pageType) use ($level) {
+            return $pageType->getLevel() == $level;
+        })->toArray();
     }
 
 }

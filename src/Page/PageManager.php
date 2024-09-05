@@ -14,19 +14,26 @@ class PageManager
     use ManagePages;
     use ManagePageTypes;
 
-    public function render($slug = null, mixed $pageType = 'pages')
+    public function render($slug = null, $level = 'root')
     {
-        $pageType = $this->findPageTypeByType($pageType);
-        if (! $pageType) {
+        $model = null;
+        $pageTypes = $this->getPageTypesByLevel($level);
+        if (count($pageTypes) == 0) {
             return abort(404);
         }
         
-        if ($slug) {
-            $slug = trim($slug, '/');
-        
-            $model = $pageType->getModel()::where('slug', $slug)->with('template.blocks')->first();
-        } else {
-            $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first();
+        foreach ($pageTypes as $pageType) {
+            if ($slug) {
+                $slug = trim($slug, '/');
+            
+                $model = $pageType->getModel()::where('slug', $slug)->with('template.blocks')->first();
+            } else {
+                $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first();
+            }
+
+            if ($model) {
+                break;
+            }
         }
 
         if (! $model) {

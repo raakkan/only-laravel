@@ -35,7 +35,7 @@ class PageDataComponent extends BlockComponent
                 ->schema([
                     Select::make('page_data.page_model')->label('Page')->options(PageManager::getPageTypeModels())->live()->default($this->pageDataPageModel),
                     Select::make('page_data.attribute')->label('Data')->options(function (Get $get) {
-                        $pageModel = $get('page_model');
+                        $pageModel = $get('page_data.page_model');
 
                         if ($pageModel) {
                             return $pageModel::getAccessebleAttributes();
@@ -74,7 +74,7 @@ class PageDataComponent extends BlockComponent
 
         if ($this->hasPageModel() && $this->pageDataAttribute) {
             $data = $this->getPageModel()->{$this->pageDataAttribute};
-
+            
             if ($data) {
                 return Blade::render(<<<EOT
                 <{$this->getTag()} style="{$this->getCustomStyle()} {$this->getBackgroundStyle()}" class="{$this->generateCssClassNames()} {$this->getCustomCss()}" {$this->getCustomAttributes()}>
@@ -94,24 +94,6 @@ class PageDataComponent extends BlockComponent
     {
         return 'data-component data-component-' . $this->pageDataAttribute . ' data-component-' . $this->getTag() . '-' . $this->pageDataAttribute  . ' data-component-' . $this->getTag() 
         . ' dark-data-component dark-data-component-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . '-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . ' ';
-    }
-
-    public function setPageModel($pageModel)
-    {
-        $this->pageDataPageModel = $pageModel;
-        return $this;
-    }
-
-    public function setTag($tag)
-    {
-        $this->tag = $tag;
-        return $this;
-    }
-
-    public function setPageAttribute($attribute)
-    {
-        $this->pageDataAttribute = $attribute;
-        return $this;
     }
 
     public function setPageData($pageModel, $tag, $attribute)

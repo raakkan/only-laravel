@@ -10,14 +10,18 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
 use FilamentTiptapEditor\TiptapEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Raakkan\OnlyLaravel\Models\PageModel;
 use Raakkan\OnlyLaravel\Facades\PageManager;
+use Filament\Resources\Concerns\Translatable;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\EditPage;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\ListPage;
 use Raakkan\OnlyLaravel\Filament\Pages\Page\CreatePage;
@@ -25,6 +29,7 @@ use Raakkan\OnlyLaravel\Support\Validation\Rules\UniqueSlug;
 
 class PageResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = PageModel::class;
 
     protected static ?string $slug = 'pages';
@@ -66,6 +71,28 @@ class PageResource extends Resource
                     }
                     return false;
                  }),
+                 Section::make('Featured Media')
+                    ->schema([
+                        FileUpload::make('featured_image.image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('pages/featured-images')
+                            ->label('Featured Image')
+                            ->columnSpanFull(),
+                        TextInput::make('featured_image.alt')
+                            ->label('Featured Image Alt Text'),
+                        Textarea::make('featured_image.caption')
+                            ->label('Featured Image Caption'),
+                    ])
+                    ->collapsible()
+                    ->columns(2),
+                 Section::make('SEO')
+                    ->schema([
+                        TextInput::make('seo_title')->label('SEO Title'),
+                        TextInput::make('seo_keywords')->label('SEO Keywords'),
+                        Textarea::make('seo_description')->label('SEO Description')->columnSpanFull()->rows(7),
+                    ])
+                    ->collapsible()->columns(2)->compact(),
             ]);
     }
 

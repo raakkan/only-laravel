@@ -14,14 +14,17 @@ class PageType
     public $defaultView;
     public $model;
     public $level;
+    public $jsonSchema;
+    public $parentSlug;
 
-    public function __construct($type, $name, $level, $defaultView, $model)
+    public function __construct($type, $name, $level, $parentSlug, $defaultView, $model)
     {
         $this->type = $type;
         $this->name = $name;
         $this->defaultView = $defaultView;
         $this->model = $model;
         $this->level = $level;
+        $this->parentSlug = $parentSlug;
     }
 
     public function getType()
@@ -37,5 +40,28 @@ class PageType
     public function getModel()
     {
         return $this->model;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function registerJsonSchema(callable $callback)
+    {
+        $jsonSchema = new JsonPageSchema();
+        $callback($jsonSchema);
+        $this->jsonSchema = $jsonSchema;
+        return $this;
+    }
+
+    public function generateUrl($slug)
+    {
+        return $this->parentSlug ? url($this->parentSlug . '/' . $slug) : url($slug);
+    }
+
+    public function generateJsonLd($page)
+    {
+        $jsonLd = $this->jsonSchema->getSchema();
     }
 }
