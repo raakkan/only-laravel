@@ -8,12 +8,13 @@ use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class PageModel extends Model
 {
-    protected $fillable = ['name', 'title', 'slug', 'content', 'template_id', 'settings', 'indexable', 'disabled'];
+    protected $fillable = ['name', 'title', 'slug', 'content', 'template_id', 'settings', 'indexable', 'disabled', 'seo'];
 
     protected $casts = [
         'settings' => 'array',
         'indexable' => 'boolean',
         'disabled' => 'boolean',
+        'seo' => 'array',
     ];
 
     public function template()

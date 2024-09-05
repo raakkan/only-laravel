@@ -24,10 +24,10 @@ class LivewireBlock extends Component implements HasForms, HasActions
     public function mount()
     {
         // $this->getBlockComponents();
-        if($this->block->name == 'navigation') {
-            $block = $this->getBlock();
-            $block->storeDefaultSettingsToDatabase();
-        }
+        // if($this->block->name == 'navigation') {
+        //     $block = $this->getBlock();
+        //     $block->storeDefaultSettingsToDatabase();
+        // }
     }
 
     public function getBlock()

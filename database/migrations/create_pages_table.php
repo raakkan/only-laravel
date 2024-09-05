@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->boolean('indexable')->default(true);
             $table->boolean('disabled')->default(false);
+            $table->json('seo')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
             $table->json('settings')->nullable();
             $table->timestamps();

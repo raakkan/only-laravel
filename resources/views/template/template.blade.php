@@ -4,26 +4,16 @@
 
 <style>
     .template-container {
-        @if ($template->getMaxWidth('unit') == 'percentage')
-            max-width: {{ $template->getMaxWidth() == 0 ? 100 : $template->getMaxWidth() }}%;
-        @else
-            max-width: {{ $template->getMaxWidth() == 0 ? 640 : $template->getMaxWidth() }}px;
-        @endif
+        max-width: {{ $template->getMaxWidth() == 0 ? 640 : $template->getMaxWidth() }}{{ $template->getMaxWidth('unit') ? $template->getMaxWidth('unit') : '%' }};
         margin-left: auto;
         margin-right: auto;
         padding-left: {{ $template->getPadding('left.padding') }}rem;
         padding-right: {{ $template->getPadding('right.padding') }}rem;
     }
 
-
-
     @media (min-width: 640px) {
         .template-container {
-            @if ($template->getMaxWidth('small.unit') === 'percentage')
-                max-width: {{ $template->getMaxWidth('small.maxwidth') == 0 ? 100 : $template->getMaxWidth('small.maxwidth') }}%;
-            @else
-                max-width: {{ $template->getMaxWidth('small.maxwidth') == 0 ? 640 : $template->getMaxWidth('small.maxwidth') }}px;
-            @endif
+            max-width: {{ $template->getMaxWidth('small.maxwidth') == 0 ? 640 : $template->getMaxWidth('small.maxwidth') }}{{ $template->getMaxWidth('small.unit') ? $template->getMaxWidth('small.unit') : 'px' }};
             margin-left: auto;
             margin-right: auto;
             padding-left: {{ $template->getPadding('left.small') }}rem;
@@ -33,11 +23,7 @@
 
     @media (min-width: 768px) {
         .template-container {
-            @if ($template->getMaxWidth('medium.unit') === 'percentage')
-                max-width: {{ $template->getMaxWidth('medium.maxwidth') == 0 ? 100 : $template->getMaxWidth('medium.maxwidth') }}%;
-            @else
-                max-width: {{ $template->getMaxWidth('medium.maxwidth') == 0 ? 768 : $template->getMaxWidth('medium.maxwidth') }}px;
-            @endif
+            max-width: {{ $template->getMaxWidth('medium.maxwidth') == 0 ? 768 : $template->getMaxWidth('medium.maxwidth') }}{{ $template->getMaxWidth('medium.unit') ? $template->getMaxWidth('medium.unit') : 'px' }};
             margin-left: auto;
             margin-right: auto;
             padding-left: {{ $template->getPadding('left.medium') }}rem;
@@ -47,11 +33,7 @@
 
     @media (min-width: 1024px) {
         .template-container {
-            @if ($template->getMaxWidth('large.unit') === 'percentage')
-                max-width: {{ $template->getMaxWidth('large.maxwidth') == 0 ? 100 : $template->getMaxWidth('large.maxwidth') }}%;
-            @else
-                max-width: {{ $template->getMaxWidth('large.maxwidth') == 0 ? 1024 : $template->getMaxWidth('large.maxwidth') }}px;
-            @endif
+            max-width: {{ $template->getMaxWidth('large.maxwidth') == 0 ? 1024 : $template->getMaxWidth('large.maxwidth') }}{{ $template->getMaxWidth('large.unit') ? $template->getMaxWidth('large.unit') : 'px' }};
             margin-left: auto;
             margin-right: auto;
             padding-left: {{ $template->getPadding('left.large') }}rem;
@@ -61,11 +43,7 @@
 
     @media (min-width: 1280px) {
         .template-container {
-            @if ($template->getMaxWidth('extra_large.unit') === 'percentage')
-                max-width: {{ $template->getMaxWidth('extra_large.maxwidth') == 0 ? 100 : $template->getMaxWidth('extra_large.maxwidth') }}%;
-            @else
-                max-width: {{ $template->getMaxWidth('extra_large.maxwidth') == 0 ? 1280 : $template->getMaxWidth('extra_large.maxwidth') }}px;
-            @endif
+            max-width: {{ $template->getMaxWidth('extra_large.maxwidth') == 0 ? 1280 : $template->getMaxWidth('extra_large.maxwidth') }}{{ $template->getMaxWidth('extra_large.unit') ? $template->getMaxWidth('extra_large.unit') : 'px' }};
             margin-left: auto;
             margin-right: auto;
             padding-left: {{ $template->getPadding('left.extra_large') }}rem;
@@ -75,11 +53,7 @@
 
     @media (min-width: 1536px) {
         .template-container {
-            @if ($template->getMaxWidth('2_extra_large.unit') === 'percentage')
-                max-width: {{ $template->getMaxWidth('2_extra_large.maxwidth') == 0 ? 100 : $template->getMaxWidth('2_extra_large.maxwidth') }}%;
-            @else
-                max-width: {{ $template->getMaxWidth('2_extra_large.maxwidth') == 0 ? 1536 : $template->getMaxWidth('2_extra_large.maxwidth') }}px;
-            @endif
+            max-width: {{ $template->getMaxWidth('2_extra_large.maxwidth') == 0 ? 1536 : $template->getMaxWidth('2_extra_large.maxwidth') }}{{ $template->getMaxWidth('2_extra_large.unit') ? $template->getMaxWidth('2_extra_large.unit') : 'px' }};
             margin-left: auto;
             margin-right: auto;
             padding-left: {{ $template->getPadding('left.2_extra_large') }}rem;

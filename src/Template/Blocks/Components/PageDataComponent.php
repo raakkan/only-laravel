@@ -20,6 +20,7 @@ class PageDataComponent extends BlockComponent
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $pageDataAttribute = null;
+    protected $pageDataPageModel = null;
     protected $tags = [
         'div' => 'Div',
         'span' => 'Span',
@@ -32,15 +33,15 @@ class PageDataComponent extends BlockComponent
         return [
             Section::make('Page data')
                 ->schema([
-                    Select::make('page_data.page_model')->label('Page')->options(PageManager::getPageTypeModels())->live(),
+                    Select::make('page_data.page_model')->label('Page')->options(PageManager::getPageTypeModels())->live()->default($this->pageDataPageModel),
                     Select::make('page_data.attribute')->label('Data')->options(function (Get $get) {
                         $pageModel = $get('page_model');
 
                         if ($pageModel) {
                             return $pageModel::getAccessebleAttributes();
                         }
-                    }),
-                    Select::make('page_data.tag')->label('Tag')->options($this->tags),
+                    })->default($this->pageDataAttribute),
+                    Select::make('page_data.tag')->label('Tag')->options($this->tags)->default($this->tag),
                 ])->columns(2)->compact()
         ];
     }
@@ -52,6 +53,7 @@ class PageDataComponent extends BlockComponent
             if (array_key_exists('tag', $settings['page_data'])) {
                 $this->tag = $settings['page_data']['tag'];
             }
+            $this->pageDataPageModel = $settings['page_data']['page_model'];
         }
         return $this;
     }
@@ -92,5 +94,31 @@ class PageDataComponent extends BlockComponent
     {
         return 'data-component data-component-' . $this->pageDataAttribute . ' data-component-' . $this->getTag() . '-' . $this->pageDataAttribute  . ' data-component-' . $this->getTag() 
         . ' dark-data-component dark-data-component-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . '-' . $this->pageDataAttribute . ' dark-data-component-' . $this->getTag() . ' ';
+    }
+
+    public function setPageModel($pageModel)
+    {
+        $this->pageDataPageModel = $pageModel;
+        return $this;
+    }
+
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+        return $this;
+    }
+
+    public function setPageAttribute($attribute)
+    {
+        $this->pageDataAttribute = $attribute;
+        return $this;
+    }
+
+    public function setPageData($pageModel, $tag, $attribute)
+    {
+        $this->pageDataPageModel = $pageModel;
+        $this->tag = $tag;
+        $this->pageDataAttribute = $attribute;
+        return $this;
     }
 }

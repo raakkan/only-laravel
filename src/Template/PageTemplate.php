@@ -22,7 +22,6 @@ class PageTemplate extends BaseTemplate
 
     public function create()
     {
-        $this->storeDefaultSettingsToDatabase();
         if (TemplateModel::where('name', $this->name)->exists()) {
             return;
         }
