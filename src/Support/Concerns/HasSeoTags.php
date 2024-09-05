@@ -8,9 +8,11 @@ trait HasSeoTags
     public function getSeoTags()
     {
         $pageType = PageManager::findPageTypeByType($this->pageType);
+        
         $seoTags = '';
 
-        $seoTags .= '<title>' . ($this->seo_title ?? $this->title) . '</title>';
+        $title = isset($this->seo_title) && $this->seo_title != '' ? $this->seo_title : $this->title;
+        $seoTags .= '<title>' . $title . '</title>';
         $seoTags .= '<meta name="description" content="' . $this->seo_description . '">';
         $seoTags .= '<meta name="keywords" content="' . $this->seo_keywords . '">';
         
@@ -22,43 +24,25 @@ trait HasSeoTags
         
         $seoTags .= '<link rel="canonical" href="' . $slugUrl . '">';
         $seoTags .= '<meta property="og:locale" content="' . app()->getLocale() . '">';
-        $seoTags .= '<script type="application/ld+json">' . $this->generateJsonLd() . '</script>';
+        $seoTags .= $pageType->generateJsonLd($this)->toScriptTag();
         
-        foreach ($this->generateOpenGraphTags() as $tag => $content) {
+        foreach ($this->generateOpenGraphTags($slugUrl) as $tag => $content) {
             $seoTags .= '<meta property="' . $tag . '" content="' . $content . '">';
         }
         
-        foreach ($this->generateTwitterTags() as $tag => $content) {
+        foreach ($this->generateTwitterTags($slugUrl) as $tag => $content) {
             $seoTags .= '<meta name="' . $tag . '" content="' . $content . '">';
         }
 
         return $seoTags;
     }
 
-    private function generateJsonLd()
-    {
-        $jsonLd = [
-            '@context' => 'https://schema.org',
-            '@type' => 'WebPage',
-            '@id' => url($this->slug),
-            'name' => $this->seo_title ?? $this->title,
-            'description' => $this->seo_description,
-            'url' => url($this->slug),
-        ];
-
-        if ($this->featured_image) {
-            $jsonLd['image'] = $this->getFeaturedImageUrl();
-        }
-
-        return json_encode($jsonLd);
-    }
-
-    private function generateOpenGraphTags()
+    private function generateOpenGraphTags($slugUrl)
     {
         $openGraph = [
             'og:title' => $this->seo_title ?? $this->title,
             'og:description' => $this->seo_description,
-            'og:url' => url($this->slug),
+            'og:url' => $slugUrl,
             'og:type' => 'website',
             'og:locale' => app()->getLocale(),
         ];
@@ -70,13 +54,13 @@ trait HasSeoTags
         return $openGraph;
     }
 
-    private function generateTwitterTags()
+    private function generateTwitterTags($slugUrl)
     {
         $twitter = [
             'twitter:card' => 'summary_large_image',
             'twitter:title' => $this->seo_title ?? $this->title,
             'twitter:description' => $this->seo_description,
-            'twitter:url' => url($this->slug),
+            'twitter:url' => $slugUrl,
         ];
 
         if ($this->featured_image) {

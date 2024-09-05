@@ -58,15 +58,35 @@ trait ManagePageTypes
     {
         return PageType::make('pages', 'Pages', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
             $schema->setType('WebPage');
-            $schema->setProperty('@id', 'string');
-            $schema->setProperty('name', 'string');
-            $schema->setProperty('description', 'string');
-            $schema->setProperty('url', 'string');
-            $schema->setProperty('image', 'string');
-            $schema->setProperty('author', 'string');
-            $schema->setProperty('datePublished', 'string');
-            $schema->setProperty('dateModified', 'string');
-            $schema->setProperty('inLanguage', 'string');
+            $schema->setProperty('@id', 'string', ['instruction' => function ($page, $pageType) {
+                return $pageType->generateUrl($page->slug);
+            }]);
+            $schema->setProperty('url', 'string', ['instruction' => function ($page, $pageType) {
+                return $pageType->generateUrl($page->slug);
+            }]);
+            $schema->setProperty('name', 'string', ['instruction' => function ($page) {
+                if (isset($page->seo_title) && $page->seo_title != '') {
+                    return $page->seo_title;
+                } else {
+                    return $page->title;
+                }
+                
+            }]);
+            $schema->setProperty('description', 'string', ['instruction' => function ($page) {
+                return $page->seo_description;
+            }]);
+            $schema->setProperty('image', 'string', ['instruction' => function ($page) {
+                return $page->getFeaturedImageUrl();
+            }]);
+            $schema->setProperty('datePublished', 'string', ['instruction' => function ($page) {
+                return $page->created_at->toIso8601String();
+            }]);
+            $schema->setProperty('dateModified', 'string', ['instruction' => function ($page) {
+                return $page->updated_at->toIso8601String();
+            }]);
+            $schema->setProperty('inLanguage', 'string', ['instruction' => function () {
+                return app()->getLocale();
+            }]);
         });
     }
 
@@ -88,5 +108,4 @@ trait ManagePageTypes
             return $pageType->getLevel() == $level;
         })->toArray();
     }
-
 }

@@ -62,6 +62,6 @@ class PageType
 
     public function generateJsonLd($page)
     {
-        $jsonLd = $this->jsonSchema->getSchema();
+        return $this->jsonSchema->generateJsonLd($page, $this);
     }
 }
