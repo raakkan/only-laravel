@@ -70,7 +70,6 @@ trait ManagePageTypes
                 } else {
                     return $page->title;
                 }
-                
             }]);
             $schema->setProperty('description', 'string', ['instruction' => function ($page) {
                 return $page->seo_description;

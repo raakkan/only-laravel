@@ -12,7 +12,7 @@ trait HasSeoTags
         $seoTags = '';
 
         $title = isset($this->seo_title) && $this->seo_title != '' ? $this->seo_title : $this->title;
-        $seoTags .= '<title>' . $title . '</title>';
+        $seoTags .= '<title>' . $title . ' ' . setting('general.title_separator', '-') . ' ' . setting('general.site_name', 'Tools') . '</title>';
         $seoTags .= '<meta name="description" content="' . $this->seo_description . '">';
         $seoTags .= '<meta name="keywords" content="' . $this->seo_keywords . '">';
         

@@ -41,6 +41,8 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         $this->app->singleton('font-manager', function () {
             return new FontManager();
         });
+
+        app('only-laravel')->loadSettingsPagesFromApp();
     }
 
     protected function getPath(string $path = '')

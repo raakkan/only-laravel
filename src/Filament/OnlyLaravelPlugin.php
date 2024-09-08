@@ -28,10 +28,15 @@ class OnlyLaravelPlugin implements Plugin
     }
     public function register(Panel $panel): void
     {
-        $panel->pages($this->pages)->resources($this->resources)->navigationGroups([
+        $settingsPages = app('only-laravel')->getSettingsPages();
+
+        $panel->pages(array_merge($this->pages, $settingsPages))->resources($this->resources)->navigationGroups([
             NavigationGroup::make()
                  ->label('Appearance')
                  ->icon('heroicon-o-paint-brush'),
+            NavigationGroup::make()
+                 ->label('Settings')
+                 ->icon('heroicon-o-cog'),
         ]);
     }
     public function boot(Panel $panel): void

@@ -6,24 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    protected $fillable = ['key', 'value', 'source'];
+    protected $fillable = ['key', 'value'];
 
     protected $casts = [
         'value' => 'json',
     ];
 
-    public static function get(string $source = 'raakkan/only-laravel', string $key = '*', mixed $default = null): mixed
+    public static function get(string $key = '*', mixed $default = null): mixed
     {
-        $settings = cache()->rememberForever(config('only-laravel::themes.settings.cache_key'), function () use ($source) {
+        $settings = cache()->rememberForever('onlylaravel.settings', function () {
             $settings = [];
 
-            Setting::where('source', $source)->get()->each(function ($setting) use (&$settings) {
+            Setting::all()->each(function ($setting) use (&$settings) {
                 data_set($settings, $setting->key, $setting->value);
             });
 
             return $settings;
         });
-
+        
         if ($key === '*') {
             return $settings;
         }
@@ -31,21 +31,16 @@ class Setting extends Model
         return data_get($settings, $key, $default);
     }
 
-    public static function set(string $key, mixed $value, string $source = 'raakkan/only-laravel'): mixed
+    public static function set(string $key, mixed $value): mixed
     {
         $setting = self::updateOrCreate(
-            ['key' => $key, 'source' => $source],
+            ['key' => $key],
             ['value' => $value]
         );
 
-        cache()->forget(config('only-laravel::themes.settings.cache_key'));
+        cache()->forget('onlylaravel.settings');
 
         return $setting->value;
-    }
-
-    public static function getCurrentTheme()
-    {
-        return self::where('key', 'current_theme')->value('value');
     }
 
     public function getTable(): string

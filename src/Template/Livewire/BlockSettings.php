@@ -30,6 +30,9 @@ class BlockSettings extends Component implements HasForms
 
     public function form(Form $form): Form
     {
+        if (isset($this->blockModel) && !$this->blockModel->name) {
+            return $form;
+         }
         return $form
             ->schema($this->getSettingFields())->statePath('settings');
     }
