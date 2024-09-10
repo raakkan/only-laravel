@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Template\FontManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 
@@ -26,6 +27,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             return new OnlyLaravelManager();
         });
 
+        $this->app->singleton('plugin-manager', function () {
+            return new PluginManager();
+        });
+
         $this->app->singleton('page-manager', function () {
             return new PageManager();
         });
@@ -43,6 +48,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         });
 
         app('only-laravel')->loadSettingsPagesFromApp();
+        app('plugin-manager')->registerActivatedPlugins();
     }
 
     protected function getPath(string $path = '')

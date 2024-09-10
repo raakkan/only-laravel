@@ -61,7 +61,7 @@ class PageResource extends Resource
                         if ($record) {
                             return $query->where('type', '=', 'page')->where('for', '=', 'all')->orWhere('for', '=', $record->name);
                         }else{
-                            return $query->where('type', '=', 'page')->where('for', '=', 'all');
+                            return $query->where('type', '=', 'page')->orWhere('for', '=', 'all');
                         }
                     }
                 )->required(),

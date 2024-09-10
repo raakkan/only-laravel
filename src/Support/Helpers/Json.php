@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Raakkan\OnlyLaravel\Support\Exceptions\InvalidJsonException;
 
-final class Json
+class Json
 {
     /**
      * The file path.
