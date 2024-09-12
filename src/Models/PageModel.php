@@ -5,12 +5,14 @@ namespace Raakkan\OnlyLaravel\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
 use Raakkan\OnlyLaravel\Support\Concerns\HasSeoTags;
 
 class PageModel extends Model
 {
+    use SoftDeletes;
     use HasTranslations;
     use HasSeoTags;
     protected $pageType = 'pages';

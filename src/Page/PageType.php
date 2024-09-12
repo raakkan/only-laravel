@@ -16,6 +16,7 @@ class PageType
     public $level;
     public $jsonSchema;
     public $parentSlug;
+    public $externalModelPages = [];
 
     public function __construct($type, $name, $level, $parentSlug, $defaultView, $model)
     {
@@ -63,5 +64,22 @@ class PageType
     public function generateJsonLd($page)
     {
         return $this->jsonSchema->generateJsonLd($page, $this);
+    }
+
+    public function registerExternalModelPages(array $externalModelPages = [])
+    {
+        $this->externalModelPages = array_merge($this->externalModelPages, $externalModelPages);
+        return $this;
+    }
+
+    public function isExternalModelPage($slug )
+    {
+        $this->externalModelPages = array_merge($this->externalModelPages, app('plugin-manager')->getPageTypeExternalModelPages());
+        return array_key_exists($slug, $this->externalModelPages);
+    }
+
+    public function getExternalModelPage($slug)
+    {
+        return $this->externalModelPages[$slug];
     }
 }

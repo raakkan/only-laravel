@@ -13,4 +13,24 @@ abstract class BasePlugin
     {
         return [];
     }
+
+    public function filamentNavigationGroups(): array
+    {
+        return [];
+    }
+
+    public function getRoutes(): array
+    {
+        return [];
+    }
+
+    public function getPageTypes(): array
+    {
+        return [];
+    }
+
+    public function getPageTypeExternalModelPages(): array
+    {
+        return [];
+    }
 }

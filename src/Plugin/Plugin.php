@@ -5,6 +5,7 @@ namespace Raakkan\OnlyLaravel\Plugin;
 use Illuminate\Support\Str;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\File;
+use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
@@ -63,6 +64,11 @@ class Plugin
     public function register()
     {
         $this->autoload();
+
+        $viewPath = $this->path . '/resources/views';
+        if (is_dir($viewPath)) {
+            app('view')->addNamespace($this->name, $viewPath);
+        }
     }
 
     protected function autoload(): void
@@ -85,6 +91,41 @@ class Plugin
         $pluginClass = $this->getPluginClass();
 
         return $pluginClass->filamentResources();
+    }
+
+    public function getFilamentPages()
+    {
+        $pluginClass = $this->getPluginClass();
+
+        return $pluginClass->filamentPages();
+    }
+
+    public function getFilamentNavigationGroups()
+    {
+        $pluginClass = $this->getPluginClass();
+
+        return $pluginClass->filamentNavigationGroups();
+    }
+
+    public function getRoutes()
+    {
+        $pluginClass = $this->getPluginClass();
+
+        return $pluginClass->getRoutes();
+    }
+
+    public function getPageTypes()
+    {
+        $pluginClass = $this->getPluginClass();
+
+        return $pluginClass->getPageTypes();
+    }
+
+    public function getPageTypeExternalModelPages()
+    {
+        $pluginClass = $this->getPluginClass();
+
+        return $pluginClass->getPageTypeExternalModelPages();
     }
 
     protected function getPluginClass()

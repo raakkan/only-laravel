@@ -92,7 +92,7 @@ class PageResource extends Resource
                         TextInput::make('seo_keywords')->label('SEO Keywords'),
                         Textarea::make('seo_description')->label('SEO Description')->columnSpanFull()->rows(7),
                     ])
-                    ->collapsible()->columns(2)->compact(),
+                    ->collapsed()->columns(2)->compact(),
             ]);
     }
 

@@ -3,9 +3,11 @@
 namespace Raakkan\OnlyLaravel\Plugin;
 
 use Illuminate\Support\Facades\File;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasFilamentResources;
 
 class PluginManager
 {
+    use HasFilamentResources;
     protected $plugins = [];
     protected $pluginJsonManager;
 
@@ -55,19 +57,6 @@ class PluginManager
         return $this;
     }
 
-    public function getFilamentResources()
-    {
-        return collect($this->plugins)
-            ->filter(function ($plugin) {
-                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
-            })
-            ->map(function ($plugin) {
-                return $plugin->getFilamentResources();
-            })
-            ->flatten()
-            ->toArray();
-    }
-
     public function activatePlugin(string $name)
     {
         $this->pluginJsonManager->activatePlugin($name);
@@ -88,5 +77,43 @@ class PluginManager
     public function getPlugin(string $name)
     {
         return $this->plugins[$name];
+    }
+
+    public function getPluginsRoutes()
+    {
+        return collect($this->plugins)
+            ->filter(function ($plugin) {
+                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
+            })
+            ->map(function ($plugin) {
+                return $plugin->getRoutes();
+            })
+            ->flatten()
+            ->toArray();
+    }
+
+    public function getPageTypes()
+    {
+        return collect($this->plugins)
+            ->filter(function ($plugin) {
+                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
+            })
+            ->map(function ($plugin) {
+                return $plugin->getPageTypes();
+            })
+            ->flatten()
+            ->toArray();
+    }
+
+    public function getPageTypeExternalModelPages()
+    {
+        return collect($this->plugins)
+            ->filter(function ($plugin) {
+                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
+            })
+            ->map(function ($plugin) {
+                return $plugin->getPageTypeExternalModelPages();
+            })
+            ->toArray();
     }
 }

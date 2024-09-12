@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Illuminate\Support\Facades\Blade;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
@@ -24,7 +25,7 @@ trait ManagePageRender
         if (! view()->exists($this->view)) {
             return abort(404);
         }
-
+        
         return view($this->view, [
             'page' => $page,
         ]);

@@ -31,15 +31,16 @@ class OnlyLaravelPlugin implements Plugin
     {
         $settingsPages = app('only-laravel')->getSettingsPages();
         $resources = app('plugin-manager')->getFilamentResources();
+        $navigationGroups = app('plugin-manager')->getFilamentNavigationGroups();
         
-        $panel->pages(array_merge($this->pages, $settingsPages))->resources(array_merge($this->resources, $resources))->navigationGroups([
+        $panel->pages(array_merge($this->pages, $settingsPages))->resources(array_merge($this->resources, $resources))->navigationGroups(array_merge([
             NavigationGroup::make()
                  ->label('Appearance')
                  ->icon('heroicon-o-paint-brush'),
             NavigationGroup::make()
                  ->label('Settings')
                  ->icon('heroicon-o-cog'),
-        ]);
+        ], $navigationGroups));
     }
     public function boot(Panel $panel): void
     {

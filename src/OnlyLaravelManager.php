@@ -6,6 +6,7 @@ class OnlyLaravelManager
 {
     protected $templates = [];
     protected $settingsPages = [];
+    protected $routes = [];
 
     public function registerTemplates($templates)
     {
@@ -47,5 +48,26 @@ class OnlyLaravelManager
         }
         
         return $this;
+    }
+
+    public function registerRoutes($routes)
+    {
+        $this->routes = array_merge($this->routes, $routes);
+        return $this;
+    }
+
+    public function getRoutes()
+    {
+        $routes = array_merge($this->routes, $this->getPluginsRoutes());
+        if (count($routes) > 0) {
+            return $routes;
+        }
+
+        return null;
+    }
+
+    public function getPluginsRoutes()
+    {
+        return app('plugin-manager')->getPluginsRoutes();
     }
 }
