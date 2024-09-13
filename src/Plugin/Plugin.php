@@ -9,8 +9,10 @@ use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginPages;
 use Raakkan\OnlyLaravel\Plugin\Concerns\PluginActivation;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginMigration;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginTemplates;
 
 class Plugin
 {
@@ -20,7 +22,9 @@ class Plugin
     use HasLabel {
         getLabel as getPluginLabel;
     }
-    
+    use HasPluginPages;
+    use HasPluginTemplates;
+
     protected $description;
     protected $version;
     protected $path;
@@ -121,11 +125,11 @@ class Plugin
         return $pluginClass->getPageTypes();
     }
 
-    public function getPageTypeExternalModelPages()
+    public function getPageTypeExternalPages()
     {
         $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->getPageTypeExternalModelPages();
+        
+        return $pluginClass->getPageTypeExternalPages();
     }
 
     protected function getPluginClass()

@@ -27,6 +27,7 @@ class BasePage
     use HasPageType;
 
     protected $model;
+    protected $modelClass = PageModel::class;
 
     public function __construct($name)
     {
@@ -49,13 +50,27 @@ class BasePage
     {
         return isset($this->model);
     }
+
+    public function getModelClass()
+    {
+        return $this->modelClass;
+    }
+
+    public function setModelClass($modelClass)
+    {
+        $this->modelClass = $modelClass;
+        return $this;
+    }
+
     public function create()
     {
-        if (PageModel::where('name', $this->name)->exists()) {
+        $modelClass = $this->getModelClass();
+
+        if ($modelClass::where('name', $this->name)->exists()) {
             return;
         }
 
-        $page = PageModel::create([
+        $page = $modelClass::create([
             'name' => $this->name,
             'title' => $this->title,
             'slug' => trim($this->slug, '/'),
@@ -63,5 +78,9 @@ class BasePage
             'page_type' => $this->getPageType(),
             'template_id' => $this->getTemplateModel()->id ?? null,
         ]);
+
+        $this->setModel($page);
+
+        return $page;
     }
 }

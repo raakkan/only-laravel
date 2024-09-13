@@ -105,15 +105,37 @@ class PluginManager
             ->toArray();
     }
 
-    public function getPageTypeExternalModelPages()
+    public function getPageTypeExternalPages($pageType = null)
+    {
+        $pageTypeExternalPages = collect($this->plugins)
+            ->filter(function ($plugin) {
+                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
+            })
+            ->map(function ($plugin) {
+                return $plugin->getPageTypeExternalPages();
+            })
+            ->flatten()
+            ->toArray();
+
+        if ($pageType) {
+            return collect($pageTypeExternalPages)->filter(function ($pageTypeExternalPage) use ($pageType) {
+                return $pageTypeExternalPage->getParentPageType() == $pageType;
+            })->toArray();
+        }
+
+        return $pageTypeExternalPages;
+    }
+
+    public function getPages()
     {
         return collect($this->plugins)
             ->filter(function ($plugin) {
                 return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
             })
             ->map(function ($plugin) {
-                return $plugin->getPageTypeExternalModelPages();
+                return $plugin->getPages();
             })
+            ->flatten()
             ->toArray();
     }
 }

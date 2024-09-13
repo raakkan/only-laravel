@@ -31,7 +31,7 @@ trait HasPluginMigration
             $migrationFiles = glob($migrationPath . '/*.php');
             foreach ($migrationFiles as $file) {
                 if (File::exists($file)) {
-                    if ($this->migrationTableExists($file)) {
+                    if (!$this->migrationTableExists($file)) {
                         $this->runMigrationDown($file);
                     }
                 }
@@ -42,6 +42,7 @@ trait HasPluginMigration
     protected function migrationTableExists($migrationFile)
     {
         $tableName = $this->getTableNameFromMigrationFile($migrationFile);
+        
         return Schema::hasTable($tableName);
     }
 
@@ -51,8 +52,9 @@ trait HasPluginMigration
         $parts = explode('_', $fileName);
         $tableName = '';
 
+        // Remove numeric prefixes and skip 'create' or 'update'
         foreach ($parts as $part) {
-            if (str_contains($part, 'create') || str_contains($part, 'update')) {
+            if (is_numeric($part) || str_contains($part, 'create') || str_contains($part, 'update')) {
                 continue;
             }
 

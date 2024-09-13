@@ -30,7 +30,18 @@ class PageManager
                 $slug = trim($slug, '/');
 
                 if ($pageType->isExternalModelPage($slug)) {
-                    return $pageType->getExternalModelPage($slug);
+                    $externalPageType = $pageType->getExternalPageType($slug);
+                    
+                    if($externalPageType){
+                        $pageType = $externalPageType;
+                        match($driver){
+                            'mysql' => $model = $externalPageType->getModel()::where('slug->'. app()->getLocale(), $slug)->with('template.blocks')->first(),
+                            'mariadb' => $model = $externalPageType->getModel()::whereRaw("JSON_EXTRACT(slug, '$.'". app()->getLocale() .") = '".$slug."'")->with('template.blocks')->first(),
+                        };
+                    }else{
+                        return abort(404);
+                    }
+                    
                 }else{
                     match($driver){
                         'mysql' => $model = $pageType->getModel()::where('slug->'. app()->getLocale(), $slug)->with('template.blocks')->first(),
@@ -63,7 +74,7 @@ class PageManager
             $page->setModel($model);
             
             if (!$page->hasView()) {
-                $page->setView($pageType->getDefaultView());
+                $page->setView($pageType->getDefaultView() ?? $this->getDefaultPageTypeView());
             }
         }else{
             $page = new Page($model->name);
@@ -77,15 +88,15 @@ class PageManager
     public function pageIsDeletable(string $name): bool
     {
         $page = $this->getPageByName($name);
-
+        
         if(! $page) {
-            return false;
+            return true;
         }
 
         if ($page && $page->isDeletable()) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public function pageIsDisableable(string $name): bool

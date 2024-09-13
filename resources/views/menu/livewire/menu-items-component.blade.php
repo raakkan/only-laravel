@@ -7,7 +7,7 @@
         $itemGroups = $this->getItemGroups();
         $groupedItems = $this->getGroupedItems();
     @endphp
-    <div class="p-2 capitalize">
+    <div class="p-2 capitalize space-y-2">
         <div class="relative">
             <input type="text" name="search" id="search" wire:model.live.debounce.350ms="search"
                 class="w-full px-2 py-1 @if ($search) pr-8 @endif rounded border border-gray-200 focus:outline-none mb-3"

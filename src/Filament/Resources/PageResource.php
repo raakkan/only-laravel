@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Raakkan\OnlyLaravel\Models\PageModel;
 use Raakkan\OnlyLaravel\Facades\PageManager;
@@ -103,6 +104,12 @@ class PageResource extends Resource
                 TextColumn::make('title')->searchable()->sortable(),
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('template.label')->searchable()->sortable(),
+                ToggleColumn::make('disabled')->disabled(function (?Model $record) { 
+                    if ($record && PageManager::pageIsDisableable($record->name)) {
+                        return true;
+                    }
+                    return false;
+                 }),
             ])
             ->filters([
                 //

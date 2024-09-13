@@ -14,29 +14,14 @@ class EditPage extends EditRecord
     use EditRecord\Concerns\Translatable;
     protected static string $resource = PageResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getActions(): array
     {
-        return [
+        $actions = [];
+        if (PageManager::pageIsDeletable($this->record->name)) {
+            $actions[] = Actions\DeleteAction::make();
+        }
+        return array_merge($actions, [
             Actions\LocaleSwitcher::make(),
-            Actions\DeleteAction::make()->action(function (?Model $record) {
-                if (PageManager::pageIsDeletable($record->name)) {
-                    Notification::make()
-                    ->title('This page cannot be deleted you can disable.')
-                    ->warning()
-                    ->send();
-                    return;
-                }
-
-                $result = $this->process(static fn (Model $record) => $record->delete());
-
-                if (! $result) {
-                    $this->failure();
-
-                    return;
-                }
-
-                $this->success();
-            }),
-        ];
+        ]);
     }
 }

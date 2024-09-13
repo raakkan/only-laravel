@@ -72,14 +72,19 @@ class PageType
         return $this;
     }
 
-    public function isExternalModelPage($slug )
+    public function isExternalModelPage($slug)
     {
-        $this->externalModelPages = array_merge($this->externalModelPages, app('plugin-manager')->getPageTypeExternalModelPages());
-        return array_key_exists($slug, $this->externalModelPages);
+        $this->externalModelPages = array_merge($this->externalModelPages, app('plugin-manager')->getPageTypeExternalPages($this->type));
+        
+        return collect($this->externalModelPages)->contains(function ($externalModelPage) use ($slug) {
+            return $externalModelPage->getSlug() == $slug;
+        });
     }
 
-    public function getExternalModelPage($slug)
+    public function getExternalPageType($slug)
     {
-        return $this->externalModelPages[$slug];
+        return collect($this->externalModelPages)->first(function ($externalModelPage) use ($slug) {
+            return $externalModelPage->getSlug() == $slug;
+        })?->getPageType();
     }
 }

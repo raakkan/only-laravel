@@ -29,7 +29,17 @@ abstract class BasePlugin
         return [];
     }
 
-    public function getPageTypeExternalModelPages(): array
+    public function getPageTypeExternalPages(): array
+    {
+        return [];
+    }
+
+    public function getPages(): array
+    {
+        return [];
+    }
+
+    public function getTemplates(): array
     {
         return [];
     }
