@@ -85,7 +85,7 @@ class Menu implements Arrayable
             $themeItem = $this->makeMenuItem($menuItem);
             $menuItemChildren = $items->where('parent_id', $menuItem->id)->sortBy('order');
             $themeItem = $this->buildItemTree($themeItem, $menuItemChildren, $items);
-            $builtItems[] = $themeItem->setModel($menuItem);
+            $builtItems[] = $themeItem;
         }
 
         $this->items = $builtItems;
@@ -104,7 +104,7 @@ class Menu implements Arrayable
                 $itemInstance = $this->buildItemTree($itemInstance, $itemChildren, $items);
             }
 
-            $childItems[] = $itemInstance->setModel($item);
+            $childItems[] = $itemInstance;
         }
 
         $themeItem->children($childItems);
@@ -113,6 +113,6 @@ class Menu implements Arrayable
 
     public function makeMenuItem($item)
     {
-        return MenuItem::make($item->name)->setUrl($item->url)->setModel($item);
+        return MenuItem::make($item->name)->setUrl($item->url)->setLabel($item->label)->setTarget($item->target)->setModel($item);
     }
 }

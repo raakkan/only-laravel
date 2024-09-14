@@ -10,6 +10,7 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginPages;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginBlocks;
 use Raakkan\OnlyLaravel\Plugin\Concerns\PluginActivation;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginMigration;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginTemplates;
@@ -24,7 +25,7 @@ class Plugin
     }
     use HasPluginPages;
     use HasPluginTemplates;
-
+    
     protected $description;
     protected $version;
     protected $path;
@@ -68,10 +69,29 @@ class Plugin
     public function register()
     {
         $this->autoload();
-
+        
         $viewPath = $this->path . '/resources/views';
         if (is_dir($viewPath)) {
             app('view')->addNamespace($this->name, $viewPath);
+        }
+
+        $this->registerLivewireComponents();
+    }
+
+    public function registerLivewireComponents()
+    {
+        $livewirePath = $this->path . '/src/Livewire';
+        if (is_dir($livewirePath)) {
+            $namespace = $this->namespace . '\\Livewire';
+            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($livewirePath)) as $file) {
+                if ($file->isFile() && $file->getExtension() === 'php') {
+                    $className = $namespace . '\\' . str_replace('/', '\\', substr($file->getPathname(), strlen($livewirePath) + 1, -4));
+                    if (is_subclass_of($className, \Livewire\Component::class)) {
+                        $componentName = (new \ReflectionClass($className))->getShortName();
+                        \Livewire\Livewire::component($this->name . '::' . Str::kebab($componentName), $className);
+                    }
+                }
+            }
         }
     }
 

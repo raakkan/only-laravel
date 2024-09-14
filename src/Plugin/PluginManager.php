@@ -63,6 +63,18 @@ class PluginManager
         return $this;
     }
 
+    public function getActivatedPlugins()
+    {
+        return collect($this->loadPlugins())
+            ->map(function ($plugin) {
+                $plugin->setActivated(PluginManager::pluginIsActivated($plugin->getName()));
+                return $plugin;
+            })
+            ->filter(function ($plugin) {
+                return $plugin->isActivated();
+            })->toArray();
+    }
+
     public function deactivatePlugin(string $name)
     {
         $this->pluginJsonManager->deactivatePlugin($name);

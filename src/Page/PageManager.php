@@ -22,7 +22,7 @@ class PageManager
         if (count($pageTypes) == 0) {
             return abort(404);
         }
-
+        
         $driver = \DB::getDriverName();
 
         foreach ($pageTypes as $pageType) {
@@ -35,8 +35,22 @@ class PageManager
                     if($externalPageType){
                         $pageType = $externalPageType;
                         match($driver){
-                            'mysql' => $model = $externalPageType->getModel()::where('slug->'. app()->getLocale(), $slug)->with('template.blocks')->first(),
-                            'mariadb' => $model = $externalPageType->getModel()::whereRaw("JSON_EXTRACT(slug, '$.'". app()->getLocale() .") = '".$slug."'")->with('template.blocks')->first(),
+                            'mysql' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
+                                $query->where('slug->'. app()->getLocale(), $slug)
+                                      ->orWhere('slug->en', $slug);
+                            })->with('template.blocks')->first(),
+                            'mariadb' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
+                                $query->whereRaw("JSON_EXTRACT(slug, '$." . app()->getLocale() . "') = ?", [$slug])
+                                      ->orWhereRaw("JSON_EXTRACT(slug, '$.en') = ?", [$slug]);
+                            })->with('template.blocks')->first(),
+                            'pgsql' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
+                                $query->where("slug->>'" . app()->getLocale() . "'", $slug)
+                                      ->orWhere("slug->>'en'", $slug);
+                            })->with('template.blocks')->first(),
+                            'sqlsrv' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
+                                $query->where("JSON_VALUE(slug, '$." . app()->getLocale() . "')", $slug)
+                                      ->orWhere("JSON_VALUE(slug, '$.en')", $slug);
+                            })->with('template.blocks')->first(),
                         };
                     }else{
                         return abort(404);
@@ -44,22 +58,33 @@ class PageManager
                     
                 }else{
                     match($driver){
-                        'mysql' => $model = $pageType->getModel()::where('slug->'. app()->getLocale(), $slug)->with('template.blocks')->first(),
-                        'mariadb' => $model = $pageType->getModel()::whereRaw("JSON_EXTRACT(slug, '$.'". app()->getLocale() .") = '".$slug."'")->with('template.blocks')->first(),
+                        'mysql' => $model = $pageType->getModel()::where(function($query) use ($slug) {
+                            $query->where('slug->'. app()->getLocale(), $slug)
+                                  ->orWhere('slug->en', $slug);
+                        })->with('template.blocks')->first(),
+                        'mariadb' => $model = $pageType->getModel()::where(function($query) use ($slug) {
+                            $query->whereRaw("JSON_EXTRACT(slug, '$." . app()->getLocale() . "') = ?", [$slug])
+                                  ->orWhereRaw("JSON_EXTRACT(slug, '$.en') = ?", [$slug]);
+                        })->with('template.blocks')->first(),
+                        'pgsql' => $model = $pageType->getModel()::where(function($query) use ($slug) {
+                            $query->where("slug->>'" . app()->getLocale() . "'", $slug)
+                                  ->orWhere("slug->>'en'", $slug);
+                        })->with('template.blocks')->first(),
+                        'sqlsrv' => $model = $pageType->getModel()::where(function($query) use ($slug) {
+                            $query->where("JSON_VALUE(slug, '$." . app()->getLocale() . "')", $slug)
+                                  ->orWhere("JSON_VALUE(slug, '$.en')", $slug);
+                        })->with('template.blocks')->first(),
                     };
                 }
             } else {
-                match($driver){
-                    'mysql' => $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first(),
-                    'mariadb' => $model = $pageType->getModel()::whereRaw("JSON_EXTRACT(name, '$.'". app()->getLocale() .") = '".$slug."'")->with('template.blocks')->first(),
-                };
+                $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first();
             }
 
             if ($model) {
                 break;
             }
         }
-
+        
         if (! $model) {
             return abort(404);
         }
@@ -68,7 +93,7 @@ class PageManager
             return abort(404);
         }
 
-        $page = $this->getPageByName($model->name);
+        $page = $this->getPageByName($model->getName());
         
         if ($page) {
             $page->setModel($model);
@@ -77,7 +102,7 @@ class PageManager
                 $page->setView($pageType->getDefaultView() ?? $this->getDefaultPageTypeView());
             }
         }else{
-            $page = new Page($model->name);
+            $page = new Page($model->getName());
             $page->setView($pageType->getDefaultView() ?? $this->getDefaultPageTypeView());
             $page->setModel($model);
         }

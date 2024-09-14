@@ -66,4 +66,9 @@ class PageModel extends Model
     {
         return 'pages';
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

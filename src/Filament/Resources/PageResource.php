@@ -60,9 +60,10 @@ class PageResource extends Resource
                     titleAttribute: 'label',
                     modifyQueryUsing: function (Builder $query, ?Model $record) {
                         if ($record) {
-                            return $query->where('type', '=', 'page')->where('for', '=', 'all')->orWhere('for', '=', $record->name);
+                            return $query->where('type', '=', 'page')
+                                         ->whereIn('for', ['all', 'page', $record->name]);
                         }else{
-                            return $query->where('type', '=', 'page')->orWhere('for', '=', 'all');
+                            return $query->where('type', '=', 'page')->whereIn('for', ['all', 'page']);
                         }
                     }
                 )->required(),

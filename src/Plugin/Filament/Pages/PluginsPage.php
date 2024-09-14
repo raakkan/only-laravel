@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
@@ -39,14 +40,28 @@ class PluginsPage extends Page implements HasForms
         });
         $plugin->register();
         $plugin->migrate();
-        $plugin->createPages();
         $plugin->createTemplates();
+        $plugin->createPages();
         PluginManager::activatePlugin($name);
+
+        Notification::make()
+            ->title('Plugin Activated')
+            ->body('The plugin ' . $plugin->getName() . ' has been activated.')
+            ->success()
+            ->send();
     }
 
     public function deactivatePlugin(string $name): void
     {
+        $plugin = collect($this->getPlugins())->first(function ($plugin) use ($name) {
+            return $plugin->getName() === $name;
+        });
         PluginManager::deactivatePlugin($name);
+        Notification::make()
+            ->title('Plugin Deactivated')
+            ->body('The plugin ' . $plugin->getName() . ' has been deactivated.')
+            ->success()
+            ->send();
     }
 
     public function getTitle(): string

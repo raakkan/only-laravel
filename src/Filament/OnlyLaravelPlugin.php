@@ -10,12 +10,14 @@ use Raakkan\OnlyLaravel\Filament\Resources\MenuResource;
 use Raakkan\OnlyLaravel\Filament\Resources\PageResource;
 use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 use Raakkan\OnlyLaravel\Plugin\Filament\Pages\PluginsPage;
+use Raakkan\OnlyLaravel\Setting\Filament\Pages\AiSettingsPage;
 class OnlyLaravelPlugin implements Plugin
 {
     use Makable;
     
     protected $pages = [
         PluginsPage::class,
+        AiSettingsPage::class,
     ];
     protected $resources = [
         TemplateResource::class,
@@ -31,9 +33,10 @@ class OnlyLaravelPlugin implements Plugin
     {
         $settingsPages = app('only-laravel')->getSettingsPages();
         $resources = app('plugin-manager')->getFilamentResources();
+        $pages = app('plugin-manager')->getFilamentPages();
         $navigationGroups = app('plugin-manager')->getFilamentNavigationGroups();
         
-        $panel->pages(array_merge($this->pages, $settingsPages))->resources(array_merge($this->resources, $resources))->navigationGroups(array_merge([
+        $panel->pages(array_merge($this->pages, $settingsPages, $pages))->resources(array_merge($this->resources, $resources))->navigationGroups(array_merge([
             NavigationGroup::make()
                  ->label('Appearance')
                  ->icon('heroicon-o-paint-brush'),
