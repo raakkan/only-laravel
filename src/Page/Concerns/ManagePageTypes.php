@@ -12,7 +12,17 @@ trait ManagePageTypes
 
     public function getPageTypes()
     {
-        return array_merge($this->pageTypes, [$this->getDefaultPageType()], app('plugin-manager')->getPageTypes());
+        return array_merge($this->pageTypes, [$this->getDefaultPageType()], $this->getPluginsPageTypes());
+    }
+
+    public function getPluginsPageTypes()
+    {
+        return collect(app('plugin-manager')->getPageTypes())
+            ->filter(function ($pageType) {
+                return $pageType instanceof PageType;
+            })
+            ->values()
+            ->toArray();
     }
 
     public function getPageTypeModels()
@@ -105,6 +115,13 @@ trait ManagePageTypes
     {
         return collect($this->getPageTypes())->filter(function ($pageType) use ($level) {
             return $pageType->getLevel() == $level;
+        })->toArray();
+    }
+
+    public function getPageTypesByType($type)
+    {
+        return collect($this->getPageTypes())->filter(function ($pageType) use ($type) {
+            return $pageType->getType() == $type;
         })->toArray();
     }
 

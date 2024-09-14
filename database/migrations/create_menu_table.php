@@ -24,7 +24,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('menu_id');
             $table->string('name');
-            $table->string('label')->nullable();
+            $table->json('label')->nullable();
             $table->string('target')->nullable();
             $table->integer('order')->default(1);
             $table->string('url')->nullable();

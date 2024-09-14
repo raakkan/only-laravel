@@ -26,9 +26,10 @@ class MenuManager
 
             $pages = $pageModel::where('disabled', 0)->get();
             foreach ($pages as $page) {
-                $items[] = MenuItem::make($page->name)->url($pageType->generateUrl($page->slug))->label($page->title)->group($pageType->getName());
+                $items[] = MenuItem::make($page->getName())->url($pageType->generateUrl($page->slug))->label($page->title)->group($pageType->getName());
             }
         }
+        
         return $items;
     }
 }

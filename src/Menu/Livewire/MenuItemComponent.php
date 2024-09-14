@@ -2,17 +2,20 @@
 
 namespace Raakkan\OnlyLaravel\Menu\Livewire;
 
-use Filament\Forms\Components\TextInput;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Actions\Action;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Raakkan\OnlyLaravel\Models\MenuModel;
 use Filament\Actions\Contracts\HasActions;
 use Raakkan\OnlyLaravel\Models\MenuItemModel;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Forms\Components\Actions\Action as FormAction;
+use Raakkan\OnlyLaravel\Support\Concerns\HasTranslateAction;
 
 class MenuItemComponent extends Component implements HasForms, HasActions
 {
@@ -24,14 +27,46 @@ class MenuItemComponent extends Component implements HasForms, HasActions
 
     public function mount()
     {
-        $this->form->fill($this->item->toArray());
+        $this->form->fill([
+            'label' => $this->item->label,
+            'url' => $this->item->url,
+            'target' => $this->item->target,
+        ]);
     }
 
     public function form(Form $form): Form
     {
+        $availableLanguages = ['en', 'ta'];
+        $translationFields = [];
+        
+        foreach ($availableLanguages as $lang) {
+            $translationFields[] = TextInput::make("label_{$lang}")
+                ->label("Label ({$lang})")
+                ->default($this->item->getTranslation('label', $lang, false))
+                ->hintActions($this->getFieldTranslateActions($lang, "label_{$lang}"));
+        }
         return $form
             ->schema([
-                TextInput::make('label')->required(),
+                TextInput::make('label')
+                    ->required()
+                    ->hintAction(
+                        FormAction::make('editTranslations')
+                            ->icon('heroicon-m-language')
+                            ->label('Edit translations')
+                            ->action(function ($data) {
+                                foreach ($data as $key => $value) {
+                                    if (strpos($key, 'label_') === 0) {
+                                        $lang = substr($key, 6);
+                                        $this->item->setTranslation('label', $lang, $value);
+                                    }
+                                }
+                                $this->item->save();
+                                Notification::make()->success()->title('Translations updated')->send();
+                            })
+                            ->form(function () use ($translationFields) {
+                                return $translationFields;
+                            })
+                    ),
                 TextInput::make('url')->required()->url(),
                 TextInput::make('target'),
             ])
@@ -94,5 +129,36 @@ class MenuItemComponent extends Component implements HasForms, HasActions
     public function render()
     {
         return view('only-laravel::menu.livewire.menu-item-component');
+    }
+
+    public function getFieldTranslateActions($lang, $field)
+    {
+        if($lang == 'en'){
+            return [];
+        }
+        return [
+            FormAction::make('translate')
+                ->label('Translate')
+                ->action(function ($data) use ($lang, $field) {
+                $text = $this->item->getTranslation('label', 'en', false);
+                if(!empty($text)){
+                    try {
+                        $translator = new GoogleTranslate();
+                        $translatedText = $translator->setSource('en')->setTarget($lang)->translate($text);
+                        $this->mountedFormComponentActionsData[0][$field] = $translatedText;
+                        $this->item->setTranslation('label', $lang, $translatedText);
+                        $this->item->save();
+                    } catch (\Exception $e) {
+                        \Log::error('Translation error: ' . $e->getMessage());
+                        \Log::error('Stack trace: ' . $e->getTraceAsString());
+                        Notification::make()
+                            ->title('Translation Error')
+                            ->body('An error occurred while translating the text. Please try again.')
+                            ->danger()
+                            ->send();
+                    }
+                    }
+                })
+        ];
     }
 }

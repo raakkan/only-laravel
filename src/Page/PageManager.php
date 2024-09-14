@@ -2,12 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 
-use App\Livewire\Pages\HomePage;
-use Raakkan\Blog\Models\Post;
-use Raakkan\OnlyLaravel\Models\PageModel;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePages;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePageTypes;
-use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
 
 class PageManager
 {
@@ -20,10 +16,12 @@ class PageManager
         $pageTypes = $this->getPageTypesByLevel($level);
         
         if (count($pageTypes) == 0) {
-            return abort(404);
+            $pageTypes = $this->getPageTypesByType($level);
+
+            if (count($pageTypes) == 0) {
+                return abort(404);
+            }
         }
-        
-        $driver = \DB::getDriverName();
 
         foreach ($pageTypes as $pageType) {
             if ($slug) {
@@ -34,57 +32,21 @@ class PageManager
                     
                     if($externalPageType){
                         $pageType = $externalPageType;
-                        match($driver){
-                            'mysql' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
-                                $query->where('slug->'. app()->getLocale(), $slug)
-                                      ->orWhere('slug->en', $slug);
-                            })->with('template.blocks')->first(),
-                            'mariadb' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
-                                $query->whereRaw("JSON_EXTRACT(slug, '$." . app()->getLocale() . "') = ?", [$slug])
-                                      ->orWhereRaw("JSON_EXTRACT(slug, '$.en') = ?", [$slug]);
-                            })->with('template.blocks')->first(),
-                            'pgsql' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
-                                $query->where("slug->>'" . app()->getLocale() . "'", $slug)
-                                      ->orWhere("slug->>'en'", $slug);
-                            })->with('template.blocks')->first(),
-                            'sqlsrv' => $model = $externalPageType->getModel()::where(function($query) use ($slug) {
-                                $query->where("JSON_VALUE(slug, '$." . app()->getLocale() . "')", $slug)
-                                      ->orWhere("JSON_VALUE(slug, '$.en')", $slug);
-                            })->with('template.blocks')->first(),
-                        };
+                        $model = $pageType->getModel($slug);
                     }else{
                         return abort(404);
                     }
-                    
                 }else{
-                    match($driver){
-                        'mysql' => $model = $pageType->getModel()::where(function($query) use ($slug) {
-                            $query->where('slug->'. app()->getLocale(), $slug)
-                                  ->orWhere('slug->en', $slug);
-                        })->with('template.blocks')->first(),
-                        'mariadb' => $model = $pageType->getModel()::where(function($query) use ($slug) {
-                            $query->whereRaw("JSON_EXTRACT(slug, '$." . app()->getLocale() . "') = ?", [$slug])
-                                  ->orWhereRaw("JSON_EXTRACT(slug, '$.en') = ?", [$slug]);
-                        })->with('template.blocks')->first(),
-                        'pgsql' => $model = $pageType->getModel()::where(function($query) use ($slug) {
-                            $query->where("slug->>'" . app()->getLocale() . "'", $slug)
-                                  ->orWhere("slug->>'en'", $slug);
-                        })->with('template.blocks')->first(),
-                        'sqlsrv' => $model = $pageType->getModel()::where(function($query) use ($slug) {
-                            $query->where("JSON_VALUE(slug, '$." . app()->getLocale() . "')", $slug)
-                                  ->orWhere("JSON_VALUE(slug, '$.en')", $slug);
-                        })->with('template.blocks')->first(),
-                    };
+                    $model = $pageType->getModel($slug);
                 }
             } else {
-                $model = $pageType->getModel()::where('name', 'home-page')->with('template.blocks')->first();
+                $model = $pageType->getHomeModel();
             }
 
             if ($model) {
                 break;
             }
         }
-        
         if (! $model) {
             return abort(404);
         }

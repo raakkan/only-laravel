@@ -17,8 +17,9 @@ class PageType
     public $jsonSchema;
     public $parentSlug;
     public $externalModelPages = [];
+    public $skipParentSlugForSlugs = [];
 
-    public function __construct($type, $name, $level, $parentSlug, $defaultView, $model)
+    public function __construct($type, $name, $level, $parentSlug, $defaultView, string | callable $model)
     {
         $this->type = $type;
         $this->name = $name;
@@ -38,9 +39,25 @@ class PageType
         return $this->defaultView;
     }
 
-    public function getModel()
+    public function getHomeModel()
     {
-        return $this->model;
+        return $this->model::where('name', 'home-page')->with('template.blocks')->first();
+    }
+
+    public function getModel($slug)
+    {
+        if (is_string($this->model)) {
+            if (is_subclass_of($this->model, \Illuminate\Database\Eloquent\Model::class)) {
+                return $this->model::findBySlug($slug);
+            }
+        } elseif (is_callable($this->model)) {
+            $model = call_user_func($this->model, $slug, $this);
+            if ($model instanceof \Illuminate\Database\Eloquent\Model) {
+                return $model;
+            }
+        }
+        
+        abort(404, 'Page type model not found');
     }
 
     public function getLevel()
@@ -58,7 +75,7 @@ class PageType
 
     public function generateUrl($slug)
     {
-        return $this->parentSlug ? url($this->parentSlug . '/' . $slug) : url($slug);
+        return $this->parentSlug && !$this->shouldSkipParentSlugForSlug($slug) ? url($this->parentSlug . '/' . $slug) : url($slug);
     }
 
     public function generateJsonLd($page)
@@ -86,5 +103,22 @@ class PageType
         return collect($this->externalModelPages)->first(function ($externalModelPage) use ($slug) {
             return $externalModelPage->getSlug() == $slug;
         })?->getPageType();
+    }
+
+    public function skipParentSlugForSlugs($slugs)
+    {
+        $this->skipParentSlugForSlugs = array_merge($this->skipParentSlugForSlugs, $slugs);
+        return $this;
+    }
+
+    public function skipParentSlugForSlug($slug)
+    {
+        $this->skipParentSlugForSlugs[] = $slug;
+        return $this;
+    }
+
+    public function shouldSkipParentSlugForSlug($slug)
+    {
+        return in_array($slug, $this->skipParentSlugForSlugs);
     }
 }
