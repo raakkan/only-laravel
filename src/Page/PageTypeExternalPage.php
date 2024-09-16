@@ -9,13 +9,14 @@ class PageTypeExternalPage
     protected $parentPageType;
     protected $slug;
     protected $pageType;
+    protected $redirectToUrl;
 
-    public static function make($parentPageType, $slug, $pageType)
+    public static function make($parentPageType, $slug, $pageType = null)
     {
         return new static($parentPageType, $slug, $pageType);
     }
 
-    public function __construct($parentPageType, $slug, $pageType)
+    public function __construct($parentPageType, $slug, $pageType = null)
     {
         $this->parentPageType = $parentPageType;
         $this->slug = $slug;
@@ -24,7 +25,13 @@ class PageTypeExternalPage
 
     public function getPageType()  
     {
-        return app('page-manager')->findPageTypeByType($this->pageType);
+        return $this->pageType;
+    }
+
+    public function setPageType($pageType)
+    {
+        $this->pageType = $pageType;
+        return $this;
     }
 
     public function getSlug(): string
@@ -35,5 +42,21 @@ class PageTypeExternalPage
     public function getParentPageType()
     {
         return $this->parentPageType;
+    }
+
+    public function redirectTo($url)
+    {
+        $this->redirectToUrl = $url;
+        return $this;
+    }
+
+    public function isRedirectable()
+    {
+        return $this->redirectToUrl ? true : false;
+    }
+
+    public function redirect()
+    {
+        return redirect($this->redirectToUrl);
     }
 }

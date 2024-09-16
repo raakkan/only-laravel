@@ -38,10 +38,11 @@ class PluginsPage extends Page implements HasForms
         $plugin = collect($this->getPlugins())->first(function ($plugin) use ($name) {
             return $plugin->getName() === $name;
         });
-        $plugin->register();
+        $plugin->autoload();
         $plugin->migrate();
         $plugin->createTemplates();
         $plugin->createPages();
+        $plugin->createMenus();
         PluginManager::activatePlugin($name);
 
         Notification::make()

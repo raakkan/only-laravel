@@ -3,16 +3,28 @@
 namespace Raakkan\OnlyLaravel\Plugin;
 
 use Illuminate\Support\Facades\File;
+use Raakkan\OnlyLaravel\Plugin\Concerns\ManageModels;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasFilamentResources;
 
 class PluginManager
 {
-    use HasFilamentResources;
+    use ManageModels;
     protected $plugins = [];
     protected $pluginJsonManager;
+    protected $onlyLaravel;
+    protected $pageManager;
+    protected $menuManager;
+    protected $templateManager;
+    protected $fontManager;
 
-    public function __construct()
+    public function __construct($onlyLaravel, $pageManager, $menuManager, $templateManager, $fontManager)
     {
+        $this->onlyLaravel = $onlyLaravel;
+        $this->pageManager = $pageManager;
+        $this->menuManager = $menuManager;
+        $this->templateManager = $templateManager;
+        $this->fontManager = $fontManager;
+
         $plugins = $this->loadPlugins();
         $this->pluginJsonManager = new PluginJsonManager($plugins);
         $this->plugins = $plugins;
@@ -52,7 +64,17 @@ class PluginManager
         $activatedPlugins = $this->pluginJsonManager->getActivatedPlugins();
         foreach ($activatedPlugins as $name => $activatedPlugin) {
             $plugin = $this->getPlugin($name);
-            $plugin->register();
+            $plugin->register($this);
+        }
+        return $this;
+    }
+
+    public function bootActivatedPlugins()
+    {
+        $activatedPlugins = $this->pluginJsonManager->getActivatedPlugins();
+        foreach ($activatedPlugins as $name => $activatedPlugin) {
+            $plugin = $this->getPlugin($name);
+            $plugin->boot($this);
         }
         return $this;
     }
@@ -91,53 +113,6 @@ class PluginManager
         return $this->plugins[$name];
     }
 
-    public function getPluginsRoutes()
-    {
-        return collect($this->plugins)
-            ->filter(function ($plugin) {
-                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
-            })
-            ->map(function ($plugin) {
-                return $plugin->getRoutes();
-            })
-            ->flatten()
-            ->toArray();
-    }
-
-    public function getPageTypes()
-    {
-        return collect($this->plugins)
-            ->filter(function ($plugin) {
-                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
-            })
-            ->map(function ($plugin) {
-                return $plugin->getPageTypes();
-            })
-            ->flatten()
-            ->toArray();
-    }
-
-    public function getPageTypeExternalPages($pageType = null)
-    {
-        $pageTypeExternalPages = collect($this->plugins)
-            ->filter(function ($plugin) {
-                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
-            })
-            ->map(function ($plugin) {
-                return $plugin->getPageTypeExternalPages();
-            })
-            ->flatten()
-            ->toArray();
-
-        if ($pageType) {
-            return collect($pageTypeExternalPages)->filter(function ($pageTypeExternalPage) use ($pageType) {
-                return $pageTypeExternalPage->getParentPageType() == $pageType;
-            })->toArray();
-        }
-
-        return $pageTypeExternalPages;
-    }
-
     public function getPages()
     {
         return collect($this->plugins)
@@ -149,5 +124,30 @@ class PluginManager
             })
             ->flatten()
             ->toArray();
+    }
+
+    public function getOnlyLaravel()
+    {
+        return $this->onlyLaravel;
+    }
+
+    public function getPageManager()
+    {
+        return $this->pageManager;
+    }
+
+    public function getMenuManager()
+    {
+        return $this->menuManager;
+    }
+
+    public function getTemplateManager()
+    {
+        return $this->templateManager;
+    }
+
+    public function getFontManager()
+    {
+        return $this->fontManager;
     }
 }

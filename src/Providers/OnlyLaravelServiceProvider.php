@@ -17,6 +17,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
+        app('plugin-manager')->bootActivatedPlugins();
     }
 
     public function register(): void
@@ -25,10 +26,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('only-laravel', function () {
             return new OnlyLaravelManager();
-        });
-
-        $this->app->singleton('plugin-manager', function () {
-            return new PluginManager();
         });
 
         $this->app->singleton('page-manager', function () {
@@ -45,6 +42,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('font-manager', function () {
             return new FontManager();
+        });
+
+        $this->app->singleton('plugin-manager', function () {
+            return new PluginManager(app('only-laravel'), app('page-manager'), app('menu-manager'), app('template-manager'), app('font-manager'));
         });
 
         app('only-laravel')->loadSettingsPagesFromApp();

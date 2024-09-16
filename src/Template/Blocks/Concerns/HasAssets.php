@@ -34,7 +34,9 @@ trait HasAssets
     public function getAssets(): array
     {
         if ($this->type == 'component') {
-            return array_merge($this->assets, $this->getDesignVariantAssets());
+            $designCss = $this->getActiveDesignVariantCss() ? [$this->getActiveDesignVariantCss()] : [];
+            $mergedCss = array_merge($this->assets['css'], $designCss);
+            return array_merge($this->assets, ['css' => $mergedCss]);
         } else {
             return $this->assets;
         }

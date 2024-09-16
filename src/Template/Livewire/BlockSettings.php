@@ -74,10 +74,6 @@ class BlockSettings extends Component implements HasForms
         } else {
             $fields = match ($this->type) {
                 'settings' => $this->getBlock()->getSettingFields(),
-                'width' => $this->getBlock()->getWidthSettingFields(),
-                'border' => $this->getBlock()->getBorderSettingFields(),
-                'padding' => $this->getBlock()->getPaddingSettingFields(),
-                'margin' => $this->getBlock()->getMarginSettingFields(),
                 'background' => $this->getBlock()->getBackgroundSettingFields(),
                 'customstyle' => $this->getBlock()->getCustomStyleSettingFields(),
                 'customattribute' => $this->getBlock()->getCustomAttributeSettingFields(),

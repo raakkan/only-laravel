@@ -9,6 +9,7 @@ use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginMenus;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginPages;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginBlocks;
 use Raakkan\OnlyLaravel\Plugin\Concerns\PluginActivation;
@@ -25,6 +26,7 @@ class Plugin
     }
     use HasPluginPages;
     use HasPluginTemplates;
+    use HasPluginMenus;
     
     protected $description;
     protected $version;
@@ -66,16 +68,30 @@ class Plugin
         return $this->namespace;
     }
 
-    public function register()
+    public function register(PluginManager $pluginManager)
     {
         $this->autoload();
+        $pluginClass = $this->getPluginClass();
         
+        $pluginClass->register($pluginManager);
+        $pluginClass->onlyLaravel($pluginManager->getOnlyLaravel());
+        $pluginClass->pages($pluginManager->getPageManager());
+        $pluginClass->menus($pluginManager->getMenuManager());
+        $pluginClass->templates($pluginManager->getTemplateManager());
+        $pluginClass->fonts($pluginManager->getFontManager());
+    }
+
+    public function boot(PluginManager $pluginManager)
+    {
         $viewPath = $this->path . '/resources/views';
         if (is_dir($viewPath)) {
             app('view')->addNamespace($this->name, $viewPath);
         }
-
+        
         $this->registerLivewireComponents();
+
+        $pluginClass = $this->getPluginClass();
+        $pluginClass->boot($pluginManager);
     }
 
     public function registerLivewireComponents()
@@ -88,14 +104,14 @@ class Plugin
                     $className = $namespace . '\\' . str_replace('/', '\\', substr($file->getPathname(), strlen($livewirePath) + 1, -4));
                     if (is_subclass_of($className, \Livewire\Component::class)) {
                         $componentName = (new \ReflectionClass($className))->getShortName();
-                        \Livewire\Livewire::component($this->name . '::' . Str::kebab($componentName), $className);
+                        \Livewire\Livewire::component($this->name . '::' . $className::getComponentName(), $className);
                     }
                 }
             }
         }
     }
 
-    protected function autoload(): void
+    public function autoload(): void
     {
         $path = $this->path . '/src';
 
@@ -108,48 +124,6 @@ class Plugin
                 }
             }
         }
-    }
-
-    public function getFilamentResources()
-    {
-        $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->filamentResources();
-    }
-
-    public function getFilamentPages()
-    {
-        $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->filamentPages();
-    }
-
-    public function getFilamentNavigationGroups()
-    {
-        $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->filamentNavigationGroups();
-    }
-
-    public function getRoutes()
-    {
-        $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->getRoutes();
-    }
-
-    public function getPageTypes()
-    {
-        $pluginClass = $this->getPluginClass();
-
-        return $pluginClass->getPageTypes();
-    }
-
-    public function getPageTypeExternalPages()
-    {
-        $pluginClass = $this->getPluginClass();
-        
-        return $pluginClass->getPageTypeExternalPages();
     }
 
     protected function getPluginClass()

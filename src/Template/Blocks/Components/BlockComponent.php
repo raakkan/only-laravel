@@ -47,12 +47,22 @@ abstract class BlockComponent extends BaseBlock
 
     public function render()
     {
-        foreach ($this->getDesignVariants() as $key => $value) {
-            if($key === $this->getDesignVariant() && view()->exists($value['view'])) {
-                $this->view = $value['view'];
-                break;
+        $designVariantView = $this->getActiveDesignVariantView();
+        
+        
+        if($designVariantView && view()->exists($designVariantView)) {
+            $this->view = $designVariantView;
+        }
+
+        if (!view()->exists($this->view)) {
+            if (app()->environment('local')) {
+                throw new \Exception("View '{$this->view}' does not exist.");
+            } else {
+                \Log::error("View '{$this->view}' does not exist.");
+                return '';
             }
         }
+
         return view($this->view, [
             'block' => $this
         ]);

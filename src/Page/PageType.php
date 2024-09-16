@@ -2,13 +2,12 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
-use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 
 class PageType
 {
     use Makable;
-    use HasName;
+    use HasGroup;
 
     public $type;
     public $defaultView;
@@ -19,14 +18,14 @@ class PageType
     public $externalModelPages = [];
     public $skipParentSlugForSlugs = [];
 
-    public function __construct($type, $name, $level, $parentSlug, $defaultView, string | callable $model)
+    public function __construct($type, $level, $parentSlug, $defaultView, string | callable $model, $group = null)
     {
         $this->type = $type;
-        $this->name = $name;
         $this->defaultView = $defaultView;
         $this->model = $model;
         $this->level = $level;
         $this->parentSlug = $parentSlug;
+        $this->group = $group;
     }
 
     public function getType()
@@ -60,6 +59,11 @@ class PageType
         abort(404, 'Page type model not found');
     }
 
+    public function getModelClass()
+    {
+        return $this->model;
+    }
+
     public function getLevel()
     {
         return $this->level;
@@ -85,15 +89,28 @@ class PageType
 
     public function registerExternalModelPages(array $externalModelPages = [])
     {
-        $this->externalModelPages = array_merge($this->externalModelPages, $externalModelPages);
+        foreach ($externalModelPages as $externalModelPage) {
+            $this->registerExternalModelPage($externalModelPage);
+        }
+        return $this;
+    }
+
+    public function registerExternalModelPage(PageTypeExternalPage $externalModelPage)
+    {
+        $this->externalModelPages[] = $externalModelPage;
         return $this;
     }
 
     public function isExternalModelPage($slug)
     {
-        $this->externalModelPages = array_merge($this->externalModelPages, app('plugin-manager')->getPageTypeExternalPages($this->type));
-        
         return collect($this->externalModelPages)->contains(function ($externalModelPage) use ($slug) {
+            return $externalModelPage->getSlug() == $slug;
+        });
+    }
+
+    public function getExternalModelPage($slug)
+    {
+        return collect($this->externalModelPages)->first(function ($externalModelPage) use ($slug) {
             return $externalModelPage->getSlug() == $slug;
         });
     }

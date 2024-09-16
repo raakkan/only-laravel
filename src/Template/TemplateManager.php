@@ -10,6 +10,7 @@ use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
+use Raakkan\OnlyLaravel\Template\Concerns\ManagesDesignVariants;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
@@ -18,6 +19,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
 class TemplateManager
 {
     use TemplateHandler;
+    use ManagesDesignVariants;
     protected $blocks = [];
 
     public function getBlocks()

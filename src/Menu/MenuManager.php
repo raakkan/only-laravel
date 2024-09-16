@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Menu;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenus;
+use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenuLocations;
 
 class MenuManager
@@ -18,15 +19,17 @@ class MenuManager
 
     public function getPageMenuItems()
     {
-        $pageTypes = PageManager::getPageTypes();
+        $models = array_filter(PageManager::getAllModels(), 'is_string');
         
         $items = [];
-        foreach ($pageTypes as $pageType) {
-            $pageModel = $pageType->getModel();
-
-            $pages = $pageModel::where('disabled', 0)->get();
-            foreach ($pages as $page) {
-                $items[] = MenuItem::make($page->getName())->url($pageType->generateUrl($page->slug))->label($page->title)->group($pageType->getName());
+        foreach ($models as $model) {
+            $data = $model::get();
+            foreach ($data as $item) {
+                $pageType = PageManager::findPageTypeByType($item->getPageType());
+                if ($pageType->isExternalModelPage($item->slug)) {
+                    continue;
+                }
+                $items[] = MenuItem::make($item->getName())->url($pageType->generateUrl($item->slug))->label($item->title ?? $item->getName())->group($pageType->getGroup());
             }
         }
         

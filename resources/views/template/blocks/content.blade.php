@@ -3,29 +3,31 @@
         $settings = $block->settings;
     @endphp
     @if ($block->sidebar)
-        @if ($block->sidebarPosition->value === 'left' || $block->sidebarPosition->value === 'both')
-            <aside style="width: 25%;">
-                @foreach ($block->getChildrenByLocation('left-sidebar') as $blockComponent)
+        <div class="content-container">
+            @if ($block->sidebarPosition->value === 'left' || $block->sidebarPosition->value === 'both')
+                <aside class="left-sidebar">
+                    @foreach ($block->getChildrenByLocation('left-sidebar') as $blockComponent)
+                        {!! $blockComponent->render() !!}
+                    @endforeach
+                </aside>
+            @endif
+
+            <main class="{{ $block->sidebarPosition->value === 'both' ? 'main-content-both' : 'main-content-sidebar' }}">
+                @foreach ($block->getChildrenByLocation('default') as $blockComponent)
                     {!! $blockComponent->render() !!}
                 @endforeach
-            </aside>
-        @endif
+            </main>
 
-        <main style="{{ $block->sidebarPosition->value === 'both' ? 'width: 50%' : 'width: 75%' }}">
-            @foreach ($block->getChildrenByLocation('default') as $blockComponent)
-                {!! $blockComponent->render() !!}
-            @endforeach
-        </main>
-
-        @if ($block->sidebarPosition->value === 'right' || $block->sidebarPosition->value === 'both')
-            <aside style="width: 25%;">
-                @foreach ($block->getChildrenByLocation('right-sidebar') as $blockComponent)
-                    {!! $blockComponent->render() !!}
-                @endforeach
-            </aside>
-        @endif
+            @if ($block->sidebarPosition->value === 'right' || $block->sidebarPosition->value === 'both')
+                <aside class="right-sidebar">
+                    @foreach ($block->getChildrenByLocation('right-sidebar') as $blockComponent)
+                        {!! $blockComponent->render() !!}
+                    @endforeach
+                </aside>
+            @endif
+        </div>
     @else
-        <main style="width: 100%">
+        <main class="w-full">
             @yield('content')
         </main>
     @endif

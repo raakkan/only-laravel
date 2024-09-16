@@ -40,7 +40,7 @@
                 <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
                     x-on:dragstart="event.dataTransfer.setData('text/plain', JSON.stringify(@js($item->toArray())))">
                     <div class="flex items-center justify-between py-1 px-2">
-                        <span>{{ $item->getName() }}</span>
+                        <span>{{ $item->getLabel() }}</span>
                         <x-filament::icon icon="heroicon-m-hand-raised" class="w-5 h-5 text-gray-400 rounded" />
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                                     <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
                                         x-on:dragstart="event.dataTransfer.setData('text/plain', JSON.stringify(@js($item->toArray())))">
                                         <div class="flex items-center justify-between py-1 px-2">
-                                            <span>{{ $item->getName() }}</span>
+                                            <span>{{ $item->getLabel() }}</span>
                                             <x-filament::icon icon="heroicon-m-hand-raised"
                                                 class="w-5 h-5 text-gray-400 rounded" />
                                         </div>
@@ -77,7 +77,7 @@
                 <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
                     x-on:dragstart="event.dataTransfer.setData('text/plain', JSON.stringify(@js($item->toArray())))">
                     <div class="flex items-center justify-between py-1 px-2">
-                        <span>{{ $item->getName() }}</span>
+                        <span>{{ $item->getLabel() }}</span>
                         <x-filament::icon icon="heroicon-m-hand-raised" class="w-5 h-5 text-gray-400 rounded" />
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                                     <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
                                         x-on:dragstart="event.dataTransfer.setData('text/plain', JSON.stringify(@js($item->toArray())))">
                                         <div class="flex items-center justify-between py-1 px-2">
-                                            <span>{{ $item->getName() }}</span>
+                                            <span>{{ $item->getLabel() }}</span>
                                             <x-filament::icon icon="heroicon-m-hand-raised"
                                                 class="w-5 h-5 text-gray-400 rounded" />
                                         </div>

@@ -23,6 +23,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 abstract class BaseBlock implements Arrayable
 {
@@ -38,7 +39,6 @@ abstract class BaseBlock implements Arrayable
     use HasOrder;
     use HasLocation;
     use HasModel;
-    use HasBackgroundSettings;
     use Deletable;
     use Sortable;
     use HasForTemplate;
@@ -48,6 +48,7 @@ abstract class BaseBlock implements Arrayable
     use HasBlockView;
     use HasPageModel;
     use HasAssets;
+    use HasCustomStyleSettings;
 
     protected $parent;
     protected $templateModel;

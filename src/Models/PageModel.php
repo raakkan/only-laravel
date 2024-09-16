@@ -127,4 +127,29 @@ class PageModel extends Model
         $this->pageTypeLevel = $pageTypeLevel;
         return $this;
     }
+
+    public function getPageType()
+    {
+        return $this->pageType;
+    }
+
+    public function getPageTypeLevel()
+    {
+        return $this->pageTypeLevel;
+    }
+
+    public function getSlugUrl()
+    {
+        $pageType = app('page-manager')->findPageTypeByType($this->pageType);
+        
+        if ($this->name == 'home-page') {
+            return url('/');
+        }
+
+        if ($pageType) {
+            return $pageType->generateUrl($this->slug);
+        }
+
+        return url($this->slug);
+    }
 }

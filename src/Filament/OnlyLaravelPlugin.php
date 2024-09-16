@@ -31,12 +31,11 @@ class OnlyLaravelPlugin implements Plugin
     }
     public function register(Panel $panel): void
     {
-        $settingsPages = app('only-laravel')->getSettingsPages();
-        $resources = app('plugin-manager')->getFilamentResources();
-        $pages = app('plugin-manager')->getFilamentPages();
-        $navigationGroups = app('plugin-manager')->getFilamentNavigationGroups();
+        $resources = app('only-laravel')->getFilamentResources();
+        $pages = app('only-laravel')->getFilamentPages();
+        $navigationGroups = app('only-laravel')->getFilamentNavigationGroups();
         
-        $panel->pages(array_merge($this->pages, $settingsPages, $pages))->resources(array_merge($this->resources, $resources))->navigationGroups(array_merge([
+        $panel->pages(array_merge($this->pages, $pages))->resources(array_merge($this->resources, $resources))->navigationGroups(array_merge([
             NavigationGroup::make()
                  ->label('Appearance')
                  ->icon('heroicon-o-paint-brush'),

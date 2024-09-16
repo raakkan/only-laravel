@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 use Raakkan\OnlyLaravel\Page\PageType;
 use Raakkan\OnlyLaravel\Models\PageModel;
+use Raakkan\OnlyLaravel\Page\PageTypeExternalPage;
 
 trait ManagePageTypes
 {
@@ -10,26 +11,23 @@ trait ManagePageTypes
     protected $defaultPageTypeView = 'only-laravel::pages.default-page';
     protected $defaultPageTypeModel = PageModel::class;
 
+    protected $otherModels = [];
+
     public function getPageTypes()
     {
-        return array_merge($this->pageTypes, [$this->getDefaultPageType()], $this->getPluginsPageTypes());
-    }
-
-    public function getPluginsPageTypes()
-    {
-        return collect(app('plugin-manager')->getPageTypes())
-            ->filter(function ($pageType) {
-                return $pageType instanceof PageType;
-            })
-            ->values()
-            ->toArray();
+        $this->pageTypes = array_merge($this->pageTypes, [$this->getDefaultPageType()]);
+        return $this->pageTypes;
     }
 
     public function getPageTypeModels()
     {
-        return collect($this->getPageTypes())->flatMap(function ($pageType) {
-            return [$pageType->getModel() => basename($pageType->getModel())];
-        })->toArray();
+        return collect($this->getPageTypes())
+            ->map(function ($pageType) {
+                return $pageType->getModelClass();
+            })
+            ->unique()
+            ->values()
+            ->toArray();
     }
 
     public function registerPageTypes($pageTypes)
@@ -66,7 +64,7 @@ trait ManagePageTypes
 
     public function getDefaultPageType()
     {
-        return PageType::make('pages', 'Pages', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
+        return PageType::make('pages', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
             $schema->setType('WebPage');
             $schema->setProperty('@id', 'string', ['instruction' => function ($page, $pageType) {
                 return $pageType->generateUrl($page->slug);
@@ -96,7 +94,7 @@ trait ManagePageTypes
             $schema->setProperty('inLanguage', 'string', ['instruction' => function () {
                 return app()->getLocale();
             }]);
-        });
+        })->group('Pages');
     }
 
     public function useDefaultPageTypeView($view)
@@ -133,5 +131,63 @@ trait ManagePageTypes
     public function getDefaultPageTypeModel()
     {
         return $this->defaultPageTypeModel;
+    }
+
+    public function registerExternalModelPages(array $externalModelPages = [])
+    {
+        foreach ($externalModelPages as $externalModelPage) {
+            $parentPageType = $externalModelPage->getParentPageType();
+            if ($parentPageType) {
+                $pageType = $this->findPageTypeByType($parentPageType);
+                if ($pageType && $externalModelPage instanceof PageTypeExternalPage) {
+                    if($externalModelPage->getPageType()){
+                        $externalModelPage = $externalModelPage->setPageType($this->findPageTypeByType($externalModelPage->getPageType()));
+                    }
+                    $pageType->registerExternalModelPage($externalModelPage);
+                    $this->updatePageType($pageType);
+                }
+            }
+        }
+        return $this;
+    }
+
+    public function updatePageType(PageType $pageType)
+    {
+        $this->pageTypes = collect($this->pageTypes)->map(function ($item) use ($pageType) {
+            if ($item->getType() == $pageType->getType()) {
+                return $pageType;
+            }
+            return $item;
+        })->toArray();
+        return $this;
+    }
+
+    public function registerOtherModels($models)
+    {
+        foreach ($models as $model) {
+            $this->registerOtherModel($model);
+        }
+        return $this;
+    }
+
+    public function registerOtherModel($model)
+    {
+        if (is_subclass_of($model, \Illuminate\Database\Eloquent\Model::class) && $this->isModelHasSlug($model)) {
+            $this->otherModels[] = $model;
+        } else {
+            throw new \InvalidArgumentException('The provided model must be a child of Eloquent Model and have a slug property.');
+        }
+        return $this;
+    }
+
+    public function isModelHasSlug($model)
+    {
+        $model = new $model();
+        return $model->isFillable('slug');
+    }
+
+    public function getAllModels()
+    {
+        return array_merge($this->getPageTypeModels(), $this->otherModels);
     }
 }

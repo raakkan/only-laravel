@@ -16,18 +16,20 @@ class PageManager
         $pageTypes = $this->getPageTypesByLevel($level);
         
         if (count($pageTypes) == 0) {
-            $pageTypes = $this->getPageTypesByType($level);
-
-            if (count($pageTypes) == 0) {
-                return abort(404);
-            }
+            return abort(404);
         }
 
         foreach ($pageTypes as $pageType) {
             if ($slug) {
                 $slug = trim($slug, '/');
-
+                
                 if ($pageType->isExternalModelPage($slug)) {
+                    $externalModelPage = $pageType->getExternalModelPage($slug);
+
+                    if($externalModelPage->isRedirectable()){
+                        return $externalModelPage->redirect();
+                    }
+
                     $externalPageType = $pageType->getExternalPageType($slug);
                     
                     if($externalPageType){

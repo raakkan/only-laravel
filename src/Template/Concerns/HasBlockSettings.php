@@ -34,7 +34,7 @@ trait HasBlockSettings
             $onlylaravel = $settings['onlylaravel'];
             
             if (array_key_exists('design_variant', $onlylaravel) && $this->type == 'component') {
-                $this->setDesignVariant($onlylaravel['design_variant']);
+               $this->designVariant = $onlylaravel['design_variant'];
             }
         }
 

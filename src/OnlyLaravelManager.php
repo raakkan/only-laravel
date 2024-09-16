@@ -4,30 +4,42 @@ namespace Raakkan\OnlyLaravel;
 
 class OnlyLaravelManager
 {
-    protected $templates = [];
-    protected $settingsPages = [];
+    protected $filamentPages = [];
+    protected $filamentResources = [];
+    protected $filamentNavigationGroups = [];
     protected $routes = [];
 
-    public function registerTemplates($templates)
+    public function registerFilamentPages($pages)
     {
-        $this->templates = array_merge($this->templates, $templates);
+        $this->filamentPages = array_merge($this->filamentPages, $pages);
         return $this;
     }
 
-    public function getTemplates()
+    public function registerFilamentResources($resources)
     {
-        return $this->templates;
+        $this->filamentResources = array_merge($this->filamentResources, $resources);
+        return $this;
     }
-
-    public function registerSettingsPages($pages)
+    
+    public function registerFilamentNavigationGroups($navigationGroups)
     {
-        $this->settingsPages = array_merge($this->settingsPages, $pages);
+        $this->filamentNavigationGroups = array_merge($this->filamentNavigationGroups, $navigationGroups);
         return $this;
     }
 
-    public function getSettingsPages()
+    public function getFilamentPages()
     {
-        return $this->settingsPages;
+        return $this->filamentPages;
+    }
+
+    public function getFilamentResources()
+    {
+        return $this->filamentResources;
+    }
+
+    public function getFilamentNavigationGroups()
+    {
+        return $this->filamentNavigationGroups;
     }
 
     public function loadSettingsPagesFromApp()
@@ -42,7 +54,7 @@ class OnlyLaravelManager
                 $class = 'App\\OnlyLaravel\\Settings\\' . $className;
                 
                 if (class_exists($class)) {
-                    $this->registerSettingsPages([$class]);
+                    $this->registerFilamentPages([$class]);
                 }
             }
         }
@@ -58,16 +70,10 @@ class OnlyLaravelManager
 
     public function getRoutes()
     {
-        $routes = array_merge($this->routes, $this->getPluginsRoutes());
-        if (count($routes) > 0) {
-            return $routes;
+        if (count($this->routes) > 0) {
+            return $this->routes;
         }
 
         return null;
-    }
-
-    public function getPluginsRoutes()
-    {
-        return app('plugin-manager')->getPluginsRoutes();
     }
 }

@@ -7,10 +7,6 @@ use Raakkan\OnlyLaravel\Models\TemplateModel;
 class PageTemplate extends BaseTemplate
 {
     protected $type = 'template';
-    protected $customCssFilesSettings = true;
-    protected $customJsFilesSettings = true;
-    protected $customScript = true;
-    protected $coreFileSettings = true;
 
     public function __construct($name)
     {

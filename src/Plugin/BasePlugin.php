@@ -2,36 +2,48 @@
 
 namespace Raakkan\OnlyLaravel\Plugin;
 
+use Raakkan\OnlyLaravel\Menu\MenuManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Template\FontManager;
+use Raakkan\OnlyLaravel\Template\TemplateManager;
+
 abstract class BasePlugin
 {
-    public function filamentResources(): array
+    public function register(PluginManager $pluginManager)
     {
-        return [];
+        //
     }
 
-    public function filamentPages(): array
+    public function boot(PluginManager $pluginManager)
     {
-        return [];
+        //
     }
 
-    public function filamentNavigationGroups(): array
+    public function onlyLaravel(OnlyLaravelManager $onlyLaravelManager)
     {
-        return [];
+        //
     }
 
-    public function getRoutes(): array
+    public function pages(PageManager $pageManager)
     {
-        return [];
+        //
     }
 
-    public function getPageTypes(): array
+    public function menus(MenuManager $menuManager)
     {
-        return [];
+        //
     }
 
-    public function getPageTypeExternalPages(): array
+    public function templates(TemplateManager $templateManager)
     {
-        return [];
+        //
+    }
+
+    public function fonts(FontManager $fontManager)
+    {
+        //
     }
 
     public function getPages(): array
@@ -40,6 +52,11 @@ abstract class BasePlugin
     }
 
     public function getTemplates(): array
+    {
+        return [];
+    }
+
+    public function getMenus(): array
     {
         return [];
     }
