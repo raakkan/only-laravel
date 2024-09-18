@@ -27,8 +27,10 @@
             @endif
         </div>
     @else
-        <main class="w-full">
-            @yield('content')
+        <main class="main-content-no-sidebar">
+            @foreach ($block->getChildrenByLocation('default') as $blockComponent)
+                {!! $blockComponent->render() !!}
+            @endforeach
         </main>
     @endif
 </div>

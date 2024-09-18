@@ -11,9 +11,13 @@ use Raakkan\OnlyLaravel\Page\Concerns\HasPageType;
 use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
 use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
+use Raakkan\OnlyLaravel\Page\Concerns\HasPageEditable;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
 
+// add option for disable some translation pages ex: en, ta 
+// for example, if we have a page with name "Home" and we want to disable it for some languages, we can do it by 
+// adding the language code to the page model settings
 class BasePage
 {
     use Makable;
@@ -25,6 +29,7 @@ class BasePage
     use Disableable;
     use Deletable;
     use HasPageType;
+    use HasPageEditable;
 
     protected $model;
     protected $modelClass = PageModel::class;

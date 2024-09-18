@@ -18,6 +18,7 @@ class ContentBlock extends Block
     protected $sortable = false;
     protected $backgroundSettings = true;
     protected $disableable = false;
+    protected $addable = false;
 
     public $sidebar = true;
     public $sidebarPosition = ContentSidebar::RIGHT;

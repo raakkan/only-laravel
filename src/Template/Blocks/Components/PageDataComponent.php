@@ -33,7 +33,7 @@ class PageDataComponent extends BlockComponent
         return [
             Section::make('Page data')
                 ->schema([
-                    Select::make('page_data.page_model')->label('Page')->options(PageManager::getPageTypeModels())->live()->default($this->pageDataPageModel),
+                    // Select::make('page_data.page_model')->label('Page')->options(PageManager::getPageTypeModels())->live()->default($this->pageDataPageModel),
                     Select::make('page_data.attribute')->label('Data')->options(function (Get $get) {
                         $pageModel = $get('page_data.page_model');
 
@@ -77,7 +77,7 @@ class PageDataComponent extends BlockComponent
             
             if ($data) {
                 return Blade::render(<<<EOT
-                <{$this->getTag()} style="{$this->getCustomStyle()} {$this->getBackgroundStyle()}" class="{$this->generateCssClassNames()} {$this->getCustomCss()}" {$this->getCustomAttributes()}>
+                <{$this->getTag()} style="{$this->getCustomStyle()}" class="{$this->generateCssClassNames()} {$this->getCustomCss()}" {$this->getCustomAttributes()}>
                     {$data}
                 </{$this->getTag()}>
                 EOT);

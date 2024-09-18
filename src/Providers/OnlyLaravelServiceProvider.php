@@ -3,18 +3,24 @@
 namespace  Raakkan\OnlyLaravel\Providers;
 
 use Livewire\Livewire;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Filament\Forms\Components\BaseFileUpload;
 use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Template\FontManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Filament\Components\BaseFileUpload as CustomBaseFileUpload;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        AliasLoader::getInstance()->alias(BaseFileUpload::class, CustomBaseFileUpload::class);
+        
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
         app('plugin-manager')->bootActivatedPlugins();

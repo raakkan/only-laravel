@@ -3,7 +3,7 @@
         $wire.updateBlockOrder(item, position)
     }
 }" x-sort:item="{{ $block->id }}"
-    x-on:block-settings-saved.window="if (event.detail.id === {{ $block->id }}) { $wire.$refresh(); }">
+    x-on:settings-saved.window="if (event.detail.id === {{ $block->id }}) { $wire.$refresh(); }">
     @php
         $blockComponent = $this->getBlock();
     @endphp

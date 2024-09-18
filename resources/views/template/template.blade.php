@@ -60,19 +60,18 @@
             padding-right: {{ $template->getPadding('right.2_extra_large') ?? 0 }}rem;
         }
     }
+
+    {{ $template->getBackgroundStyles() }} {{ $template->getTextColorStyles() }}
 </style>
 
 <body
     style="
     width: 100%; 
     height: 100%;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    {{ $template->getBackgroundStyle() }}
     {{ $template->getCustomStyle() }}
+     {{ $template->getTextFontFamilyStyles() }}
     "
-    class="{{ $template->getCustomCss() }}">
+    class="{{ $template->getCustomCss() }} {{ $template->getBackgroundClasses() }} {{ $template->getTextColorClasses() }}">
     @foreach ($blocks as $block)
         {{ $block->render() }}
     @endforeach

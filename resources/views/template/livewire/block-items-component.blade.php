@@ -1,10 +1,10 @@
-<div class="rounded" x-data="{ activeTab: 'blocks' }">
+<div class="rounded" x-data="{ activeTab: 'components' }">
     <div class="border-b">
         <div class="flex items-center bg-gray-100 font-semibold">
-            <button @click="activeTab = 'blocks'" :class="{ 'bg-white': activeTab === 'blocks' }"
-                class="w-1/2 py-1.5">Blocks</button>
             <button @click="activeTab = 'components'" :class="{ 'bg-white': activeTab === 'components' }"
                 class="w-1/2 py-1.5">Components</button>
+            <button @click="activeTab = 'blocks'" :class="{ 'bg-white': activeTab === 'blocks' }"
+                class="w-1/2 py-1.5">Blocks</button>
         </div>
     </div>
 

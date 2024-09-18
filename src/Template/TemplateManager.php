@@ -88,8 +88,7 @@ class TemplateManager
             GridBlock::make(),
             ContentBlock::make(),
             ImageBlockComponent::make(),
-            MenuComponent::make(),
-            PageDataComponent::make()
+            MenuComponent::make()
         ];
     }
 }

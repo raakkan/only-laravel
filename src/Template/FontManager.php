@@ -7,11 +7,11 @@ class FontManager
     protected $fontFamilies = [
         [
             'name' => 'Arial',
-            'value' => 'Arial, Helvetica, sans-serif'
+            'value' => 'Arial, sans-serif'
         ],
         [
-            'name' => 'Arial Black',
-            'value' => 'Arial Black, Gadget, sans-serif'
+            'name' => 'Helvetica',
+            'value' => 'Helvetica, Arial, sans-serif'
         ],
         [
             'name' => 'Verdana',
@@ -20,10 +20,6 @@ class FontManager
         [
             'name' => 'Tahoma',
             'value' => 'Tahoma, Geneva, sans-serif'
-        ],
-        [
-            'name' => 'Trebuchet MS',
-            'value' => '"Trebuchet MS", Helvetica, sans-serif'
         ],
         [
             'name' => 'Times New Roman',
@@ -37,10 +33,34 @@ class FontManager
             'name' => 'Courier New',
             'value' => '"Courier New", Courier, monospace'
         ],
+        [
+            'name' => 'Roboto',
+            'value' => 'Roboto, Arial, sans-serif'
+        ],
     ];
 
-    public function getFontFamilies()
+    public function getLocalFontFamilies()
     {
         return $this->fontFamilies;
+    }
+
+    public function getGoogleFontFamilies()
+    {
+        return [
+            'Inter',
+            'Roboto',
+            'Open Sans',
+            'Lato',
+        ];
+    }
+
+    public function getBunnyFontFamilies()
+    {
+        return [
+            'Inter',
+            'Roboto',
+            'Open Sans',
+            'Lato',
+        ];
     }
 }

@@ -7,7 +7,6 @@ class OnlyLaravelManager
     protected $filamentPages = [];
     protected $filamentResources = [];
     protected $filamentNavigationGroups = [];
-    protected $routes = [];
 
     public function registerFilamentPages($pages)
     {
@@ -60,20 +59,5 @@ class OnlyLaravelManager
         }
         
         return $this;
-    }
-
-    public function registerRoutes($routes)
-    {
-        $this->routes = array_merge($this->routes, $routes);
-        return $this;
-    }
-
-    public function getRoutes()
-    {
-        if (count($this->routes) > 0) {
-            return $this->routes;
-        }
-
-        return null;
     }
 }

@@ -18,4 +18,5 @@ class FooterBlock extends Block
         'color' => '#00e693',
     ];
     protected $view = 'only-laravel::template.blocks.footer';
+    protected $addable = false;
 }

@@ -1,3 +1,3 @@
-<div style="{{ $block->getBackgroundStyle() }}">
+<div style="background-color:blueviolet;">
     image
 </div>

@@ -5,6 +5,8 @@ namespace Raakkan\OnlyLaravel\Plugin;
 use Illuminate\Support\Str;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
@@ -73,12 +75,14 @@ class Plugin
         $this->autoload();
         $pluginClass = $this->getPluginClass();
         
-        $pluginClass->register($pluginManager);
-        $pluginClass->onlyLaravel($pluginManager->getOnlyLaravel());
-        $pluginClass->pages($pluginManager->getPageManager());
-        $pluginClass->menus($pluginManager->getMenuManager());
-        $pluginClass->templates($pluginManager->getTemplateManager());
-        $pluginClass->fonts($pluginManager->getFontManager());
+        if($pluginClass){
+            $pluginClass->register($pluginManager);
+            $pluginClass->onlyLaravel($pluginManager->getOnlyLaravel());
+            $pluginClass->pages($pluginManager->getPageManager());
+            $pluginClass->menus($pluginManager->getMenuManager());
+            $pluginClass->templates($pluginManager->getTemplateManager());
+            $pluginClass->fonts($pluginManager->getFontManager());
+        }
     }
 
     public function boot(PluginManager $pluginManager)
@@ -89,9 +93,34 @@ class Plugin
         }
         
         $this->registerLivewireComponents();
-
+        $this->loadBladeComponents();
+        $this->loadRoutes();
         $pluginClass = $this->getPluginClass();
         $pluginClass->boot($pluginManager);
+    }
+
+    protected function loadRoutes()
+    {
+        $webRoutesPath = $this->path . '/routes/web.php';
+        $apiRoutesPath = $this->path . '/routes/api.php';
+
+        if (file_exists($webRoutesPath)) {
+            Route::middleware('web')->group(function () use ($webRoutesPath) {
+                include $webRoutesPath;
+            });
+        }
+
+        if (file_exists($apiRoutesPath)) {
+            Route::middleware('api')->prefix('api')->group(function () use ($apiRoutesPath) {
+                include $apiRoutesPath;
+            });
+        }
+    }
+
+    protected function loadBladeComponents()
+    {
+        $componentsPath = $this->path . '/resources/views/components';
+        Blade::anonymousComponentNamespace($componentsPath, $this->name);
     }
 
     public function registerLivewireComponents()

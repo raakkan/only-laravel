@@ -20,4 +20,5 @@ class HeaderBlock extends Block
     ];
 
     protected $view = 'only-laravel::template.blocks.header';
+    protected $addable = false;
 }

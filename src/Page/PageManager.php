@@ -82,10 +82,7 @@ class PageManager
             return true;
         }
 
-        if ($page && $page->isDeletable()) {
-            return true;
-        }
-        return false;
+        return $page->isDeletable();
     }
 
     public function pageIsDisableable(string $name): bool
@@ -95,9 +92,27 @@ class PageManager
         if(! $page) {
             return false;
         }
-        if ($page && $page->isDisableable()) {
+       
+        return $page->isDisableable();
+    }
+
+    public function getPageNameIsEditable(string $name): bool
+    {
+        $page = $this->getPageByName($name);
+
+        if(! $page) {
             return false;
         }
-        return true;
+        return $page->isNameEditable();
+    }
+
+    public function getPageSlugIsEditable(string $name): bool
+    {
+        $page = $this->getPageByName($name);
+
+        if(! $page) {
+            return false;
+        }
+        return $page->isSlugEditable();
     }
 }
