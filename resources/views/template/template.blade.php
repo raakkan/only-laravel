@@ -70,6 +70,7 @@
     height: 100%;
     {{ $template->getCustomStyle() }}
      {{ $template->getTextFontFamilyStyles() }}
+     {{ $template->getBackgroundImageStyles() }}
     "
     class="{{ $template->getCustomCss() }} {{ $template->getBackgroundClasses() }} {{ $template->getTextColorClasses() }}">
     @foreach ($blocks as $block)

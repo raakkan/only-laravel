@@ -11,6 +11,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Template\Concerns\ManagesDesignVariants;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\HeroComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
@@ -85,10 +86,9 @@ class TemplateManager
         return [
             HeaderBlock::make(),
             FooterBlock::make(),
-            GridBlock::make(),
             ContentBlock::make(),
             ImageBlockComponent::make(),
-            MenuComponent::make()
+            HeroComponent::make()
         ];
     }
 }

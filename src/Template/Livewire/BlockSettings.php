@@ -4,6 +4,7 @@ namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
 use Filament\Forms\Form;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
 use Filament\Forms\Contracts\HasForms;
@@ -61,26 +62,25 @@ class BlockSettings extends Component implements HasForms
     public function getSettingFields()
     {
         if (isset($this->templateModel)) {
-            $fields = match ($this->type) {
-                'settings' => $this->getTemplate()->getSettingFields(),
-                'text' => $this->getTemplate()->getTextSettingFields(),
-                'padding' => $this->getTemplate()->getPaddingSettingFields(),
-                'width' => $this->getTemplate()->getWidthSettingFields(),
-                'background' => $this->getTemplate()->getBackgroundSettingFields(),
-                'customstyle' => $this->getTemplate()->getCustomStyleSettingFields(),
-            };
-
-            return $fields;
+           return $this->getFieldsByType($this->getTemplate(), $this->type);
         } else {
-            $fields = match ($this->type) {
-                'settings' => $this->getBlock()->getSettingFields(),
-                'background' => $this->getBlock()->getBackgroundSettingFields(),
-                'customstyle' => $this->getBlock()->getCustomStyleSettingFields(),
-                'customattribute' => $this->getBlock()->getCustomAttributeSettingFields(),
-            };
-
-            return $fields;
+            return $this->getFieldsByType($this->getBlock(), $this->type);
         }
+    }
+
+    public function getFieldsByType($component, $type)
+    {
+        if ($type == 'settings') {
+            $methodName = 'getSettingFields';
+        }else{
+            $methodName = 'get' . Str::studly($type) . 'SettingFields';
+        }
+        
+        if (method_exists($component, $methodName)) {
+            return $component->{$methodName}();
+        }
+
+        return [];
     }
     
     public function getBlock()

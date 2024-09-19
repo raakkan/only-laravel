@@ -4,21 +4,35 @@ namespace Raakkan\OnlyLaravel\Template\Concerns;
 
 trait HasForTemplate
 {
-    protected $forTemplate = 'all';
+    protected $forTemplates = ['all'];
 
-    public function forTemplate($forTemplate)
+    public function forTemplates($forTemplates)
     {
-        $this->forTemplate = $forTemplate;
+        $this->forTemplates = is_array($forTemplates) ? $forTemplates : [$forTemplates];
         return $this;
     }
 
-    public function getForTemplate()
+    public function getForTemplates()
     {
-        return $this->forTemplate;
+        return $this->forTemplates;
     }
 
-    public function setForTemplate($forTemplate)
+    public function setForTemplates($forTemplates)
     {
-        $this->forTemplate = $forTemplate;
+        $this->forTemplates = is_array($forTemplates) ? $forTemplates : [$forTemplates];
+    }
+
+    public function addForTemplate($forTemplate)
+    {
+        if (!in_array($forTemplate, $this->forTemplates)) {
+            $this->forTemplates[] = $forTemplate;
+        }
+        return $this;
+    }
+
+    public function removeForTemplate($forTemplate)
+    {
+        $this->forTemplates = array_diff($this->forTemplates, [$forTemplate]);
+        return $this;
     }
 }

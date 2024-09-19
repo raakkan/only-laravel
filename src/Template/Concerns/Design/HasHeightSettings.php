@@ -215,15 +215,20 @@ trait HasHeightSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
-            return;
+            return $this;
         }
 
         $this->{$setting} = true;
         return $this;
     }
 
-    public function getResponsiveHeightStyles($className, $setting = 'heightAll')
+    public function getResponsiveHeightStyles($className = null, $setting = 'heightAll')
     {
+        if(!$className)
+        {
+            $className = $this->getName();
+        }
+
         $responsiveHeight = $this->getHeight($setting);
         
         if (is_array($responsiveHeight) && array_key_exists('height', $responsiveHeight)) {
@@ -232,8 +237,13 @@ trait HasHeightSettings
         }
     }
 
-    public function getResponsiveMinHeightStyles($className, $setting = 'minHeightAll')
+    public function getResponsiveMinHeightStyles($className = null, $setting = 'minHeightAll')
     {
+        if(!$className)
+        {
+            $className = $this->getName();
+        }
+
         $responsiveMinHeight = $this->getMinHeight($setting);
 
         if (is_array($responsiveMinHeight) && array_key_exists('min_height', $responsiveMinHeight)) {
@@ -242,8 +252,12 @@ trait HasHeightSettings
         }
     }
 
-    public function getResponsiveMaxHeightStyles($className, $setting = 'maxHeightAll')
+    public function getResponsiveMaxHeightStyles($className = null, $setting = 'maxHeightAll')
     {
+        if(!$className)
+        {
+            $className = $this->getName();
+        }
         $responsiveMaxHeight = $this->getMaxHeight($setting);
 
         if (is_array($responsiveMaxHeight) && array_key_exists('max_height', $responsiveMaxHeight)) {

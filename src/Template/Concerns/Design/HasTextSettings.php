@@ -15,7 +15,7 @@ trait HasTextSettings
 {
     protected $fontFamilySetting = true;
     protected $textColorSetting = true;
-    protected $fontSizeSetting = false;
+    protected $fontSizeSetting = true;
     protected $fontProviderSetting = false;
 
     public function getTextSettingFields()
@@ -92,6 +92,11 @@ trait HasTextSettings
     public function hasTextSettingsEnabled()
     {
         return $this->fontFamilySetting || $this->fontSizeSetting || $this->fontWeightSetting;
+    }
+
+    public function getTextSetting($key)
+    {
+        return Arr::get($this->settings, 'onlylaravel.text.'. $key);
     }
 
     public function getTextColor()
