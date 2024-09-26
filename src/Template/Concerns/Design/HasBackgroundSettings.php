@@ -271,7 +271,15 @@ trait HasBackgroundSettings
             ->image()
             ->storeFileNamesIn('attachment_file_names')
             ->directory('templates/backgrounds')
-            ->default($this->getBackgroundImage()),
+            ->default($this->getBackgroundImage())
+            ->hintAction(
+                Action::make('clear')
+                    ->label('Clear')
+                    ->icon('heroicon-m-x-circle')
+                    ->action(function (Set $set) {
+                        $set('onlylaravel.background.image', '');
+                    })
+            ),
         ];
     }
 }

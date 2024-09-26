@@ -2,11 +2,13 @@
     $title = $block->getTitle();
     $description = $block->getDescription();
     $textColor = $block->getTextColor();
-    $textSize = $block->getTextSetting('font.size');
+    $textSize = $block->getTextSetting('font.size') ?? 1;
+    $fontFamily = $block->getTextSetting('font.family') ?? 'Inter';
 @endphp
 
-<section class="{{ $block->getName() }} {{ $block->getBackgroundClasses() }}">
-    <div class="hero__content" style="{{ $block->getBackgroundStyles() }}">
+<section class="{{ $block->getName() }}"
+    style="font-family: {{ $fontFamily }}; {{ $block->getBackgroundImageStyles() }}">
+    <div class="hero__content {{ $block->getBackgroundClasses() }}" style="">
         <h1 class="hero__title">{{ $title }}</h1>
         <div class="hero__description">{{ $description }}</div>
     </div>
