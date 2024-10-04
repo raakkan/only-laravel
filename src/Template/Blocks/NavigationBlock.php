@@ -26,4 +26,12 @@ class NavigationBlock extends Block
             'block' => $this
         ]);
     }
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/blocks/navigation.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/blocks/navigation.blade.php',
+        ];
+    }
 }

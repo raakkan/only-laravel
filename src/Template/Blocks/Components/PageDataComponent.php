@@ -103,4 +103,12 @@ class PageDataComponent extends BlockComponent
         $this->pageDataAttribute = $attribute;
         return $this;
     }
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/components/page-data.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/components/page-data.blade.php',
+        ];
+    }
 }

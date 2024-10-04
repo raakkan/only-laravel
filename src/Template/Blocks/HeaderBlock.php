@@ -21,4 +21,12 @@ class HeaderBlock extends Block
 
     protected $view = 'only-laravel::template.blocks.header';
     protected $addable = false;
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/blocks/header.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/blocks/header.blade.php',
+        ];
+    }
 }

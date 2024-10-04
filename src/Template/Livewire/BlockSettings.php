@@ -45,6 +45,8 @@ class BlockSettings extends Component implements HasForms
         
         $this->getModel()->settings = $settings;
         $this->getModel()->save();
+
+        $this->getModel()->getPageTemplate()->buildCss();
         
         Notification::make()
             ->title('Settings saved')

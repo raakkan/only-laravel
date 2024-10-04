@@ -2,7 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
 
 class PageTemplate extends BaseTemplate
 {
@@ -34,6 +36,17 @@ class PageTemplate extends BaseTemplate
 
         foreach ($this->blocks as $block) {
             $block->create($template);
+        }
+    }
+
+    public function getDummyPageModel()
+    {
+        $dummyPageModel = TemplateManager::getDummyPageModel($this->getName());
+        
+        if ($dummyPageModel) {
+            return $dummyPageModel;
+        } else {
+            return DummyPageModel::make($this->getName());
         }
     }
 

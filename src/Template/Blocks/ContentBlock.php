@@ -111,4 +111,12 @@ class ContentBlock extends Block
             'block' => $this
         ]);
     }
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/blocks/content.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/blocks/content.blade.php',
+        ];
+    }
 }

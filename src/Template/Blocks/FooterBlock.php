@@ -19,4 +19,12 @@ class FooterBlock extends Block
     ];
     protected $view = 'only-laravel::template.blocks.footer';
     protected $addable = false;
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/blocks/footer.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/blocks/footer.blade.php',
+        ];
+    }
 }

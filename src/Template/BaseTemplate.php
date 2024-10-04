@@ -11,6 +11,7 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
+use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
 use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
@@ -38,7 +39,7 @@ abstract class BaseTemplate implements Arrayable
     use HasWidthSettings;
     use HasBlockBuilding;
     use HasBlockAssets;
-
+    use ManageStyle;
     protected $model;
 
     public function initializeFromCachedModel($model)

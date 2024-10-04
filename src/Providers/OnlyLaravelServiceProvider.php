@@ -21,10 +21,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        dd(PhpTailwind::make('p-0 pr-px p-0.5 px-1 px-1 py-1 ps-2 pe-2 pt-2 pb-2 pr-2 pl-2 po-3 m-0 mx-1 my-1 ms-2 me-2 mt-2 mb-2 mr-2 ml-2 mo-3 space-x-1 space-y-1 space-x-2 space-y-2')
-        ->compress()->toString());
-        AliasLoader::getInstance()->alias(BaseFileUpload::class, CustomBaseFileUpload::class);
-        
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
         app('plugin-manager')->bootActivatedPlugins();

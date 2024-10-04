@@ -37,7 +37,8 @@ class LivewireBlock extends Component implements HasForms, HasActions
         }
 
         $block = TemplateManager::getBlockByName($this->block->name)
-        ->setModel($this->block)->setTemplateModel($this->template)->useDummyPageModel();
+        ->setModel($this->block)->setTemplateModel($this->template)
+        ->setPageModel($this->template->getPageTemplate()->getPageModel());
         
         if ($block->getType() == 'block') {
             $block->components($this->getBlockComponents());
@@ -53,7 +54,8 @@ class LivewireBlock extends Component implements HasForms, HasActions
         $blockComponents = [];
         foreach ($components as $component) {
             $blockComponents[] = TemplateManager::getBlockByName($component->name)
-            ->setModel($component)->setTemplateModel($this->template)->useDummyPageModel();
+            ->setModel($component)->setTemplateModel($this->template)
+            ->setPageModel($this->template->getPageTemplate()->getPageModel());
         }
         
         return $blockComponents;

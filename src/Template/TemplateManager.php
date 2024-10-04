@@ -10,6 +10,7 @@ use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
+use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
 use Raakkan\OnlyLaravel\Template\Concerns\ManagesDesignVariants;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\HeroComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
@@ -21,6 +22,7 @@ class TemplateManager
 {
     use TemplateHandler;
     use ManagesDesignVariants;
+    use HandleDummyPageModels;
     protected $blocks = [];
 
     public function getBlocks()

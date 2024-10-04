@@ -79,4 +79,12 @@ class HeroComponent extends BlockComponent
     {
         return $this->description;
     }
+
+    public function getViewPaths()
+    {
+        return [
+            resource_path('views/vendor/only-laravel/template/components/hero.blade.php'),
+            __DIR__ . '/../../../../resources/views/template/components/hero.blade.php',
+        ];
+    }
 }

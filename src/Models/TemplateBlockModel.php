@@ -4,6 +4,7 @@ namespace Raakkan\OnlyLaravel\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateBlockModel extends Model
 {
@@ -71,6 +72,13 @@ class TemplateBlockModel extends Model
             $sibling->order = $sibling->order - 1;
             $sibling->save();
         }
+    }
+
+    public function getPageTemplate()
+    {
+        $template = PageTemplate::make($this->template->name);
+        $template->initializeFromCachedModel($this->template);
+        return $template;
     }
 
     public function getTable(): string

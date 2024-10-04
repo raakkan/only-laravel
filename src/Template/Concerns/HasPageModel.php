@@ -17,7 +17,7 @@ trait HasPageModel
 
     public function getPageModel()
     {
-        return $this->pageModel;
+        return $this->pageModel ?? $this->initializeDummyPageModel();
     }
 
     public function hasPageModel()
@@ -31,20 +31,25 @@ trait HasPageModel
         return $this;
     }
 
-    public function useDummyPageModel()
+    public function initializeDummyPageModel()
     {
         $dummyPageModel = $this->getDummyPageModel();
         if(is_callable($dummyPageModel)) {
-            $this->pageModel = new $dummyPageModel($this);
+            $pageModel = new $dummyPageModel($this);
         } else {
-            $this->pageModel = $dummyPageModel;
+            $pageModel = $dummyPageModel;
         }
-
-        return $this;
+        return $pageModel;
     }
 
     public function getDummyPageModel()
     {
         return $this->dummyPageModel;
+    }
+
+    public function setDummyPageModel($dummyPageModel)
+    {
+        $this->dummyPageModel = $dummyPageModel;
+        return $this;
     }
 }
