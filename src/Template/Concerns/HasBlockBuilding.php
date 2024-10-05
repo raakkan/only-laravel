@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
 
 trait HasBlockBuilding
 {
@@ -29,6 +30,9 @@ trait HasBlockBuilding
 
         foreach ($templateBlockChildren as $block) {
             $blockInstance = TemplateManager::getBlockByName($block->name);
+            if (!$blockInstance) {
+                $blockInstance = NotFoundBlock::make()->setType($block->type);
+            }
             $blockChildren = $blocks->where('parent_id', $block->id)->sortBy('order');
 
             if ($blockChildren->isNotEmpty()) {

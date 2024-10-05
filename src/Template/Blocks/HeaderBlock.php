@@ -26,7 +26,7 @@ class HeaderBlock extends Block
     {
         return [
             resource_path('views/vendor/only-laravel/template/blocks/header.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/blocks/header.blade.php',
+            __DIR__ . '/../../../resources/views/template/blocks/header.blade.php',
         ];
     }
 }

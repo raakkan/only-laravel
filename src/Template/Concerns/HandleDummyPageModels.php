@@ -25,6 +25,7 @@ trait HandleDummyPageModels
                 $this->registerDummyPageModel($dummyPageModel);
             }
         }
+        
         return $this;
     }
 

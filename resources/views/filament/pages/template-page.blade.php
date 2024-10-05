@@ -23,6 +23,8 @@
         </div>
 
         <ul class="space-y-4 w-full md:w-3/4">
+            {{-- <link rel="stylesheet"
+                href="{{ asset('css/templates/' . $record->getPageTemplate()->getSanitizedName() . '.css') }}"> --}}
             @foreach ($record->blocks->whereNull('parent_id') as $block)
                 <livewire:only-laravel::template.livewire.block :template="$record" :block="$block" :key="$block->id . '-' . uniqid()" />
             @endforeach

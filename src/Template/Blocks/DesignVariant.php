@@ -11,6 +11,7 @@ class DesignVariant
     use HasLabel;
     protected string $for;
     protected string $view;
+    protected string $viewPath;
     protected string $css;
 
     public static function make(string $name): self
@@ -31,6 +32,11 @@ class DesignVariant
     public function getView(): string
     {
         return $this->view;
+    }
+
+    public function getViewPath(): string
+    {
+        return $this->viewPath;
     }
 
     public function for(string $for): self
@@ -63,6 +69,12 @@ class DesignVariant
     public function view(string $view): self
     {
         $this->view = $view;
+        return $this;
+    }
+
+    public function viewPath(string $viewPath): self
+    {
+        $this->viewPath = $viewPath;
         return $this;
     }
 

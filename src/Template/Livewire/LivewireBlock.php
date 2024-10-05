@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
 
 class LivewireBlock extends Component implements HasForms, HasActions
 {
@@ -23,11 +24,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
 
     public function mount()
     {
-        // $this->getBlockComponents();
-        // if($this->block->name == 'navigation') {
-        //     $block = $this->getBlock();
-        //     $block->storeDefaultSettingsToDatabase();
-        // }
+        dd($this->template->getPageTemplate()->getCssClassesFromBlocksViews());
     }
 
     public function getBlock()
@@ -36,8 +33,11 @@ class LivewireBlock extends Component implements HasForms, HasActions
            return null;
         }
 
-        $block = TemplateManager::getBlockByName($this->block->name)
-        ->setModel($this->block)->setTemplateModel($this->template)
+        $block = TemplateManager::getBlockByName($this->block->name);
+        if (!$block) {
+            $block = NotFoundBlock::make()->setType($this->block->type);
+        }
+        $block->setModel($this->block)->setTemplateModel($this->template)
         ->setPageModel($this->template->getPageTemplate()->getPageModel());
         
         if ($block->getType() == 'block') {
@@ -53,7 +53,11 @@ class LivewireBlock extends Component implements HasForms, HasActions
         
         $blockComponents = [];
         foreach ($components as $component) {
-            $blockComponents[] = TemplateManager::getBlockByName($component->name)
+            $block = TemplateManager::getBlockByName($component->name);
+            if (!$block) {
+                $block = NotFoundBlock::make()->setType($component->type);
+            }
+            $blockComponents[] = $block
             ->setModel($component)->setTemplateModel($this->template)
             ->setPageModel($this->template->getPageTemplate()->getPageModel());
         }
@@ -70,6 +74,13 @@ class LivewireBlock extends Component implements HasForms, HasActions
     public function handleDrop(array $data, $location, $componentOnly = false)
     {
         $block = TemplateManager::getBlockByName($data['name']);
+
+        if(!$block) {
+            Notification::make()
+            ->title('Block not found')
+            ->warning()
+            ->send();
+        }
 
         if($componentOnly && $block->getType() == 'block')
         {

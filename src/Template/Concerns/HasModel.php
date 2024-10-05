@@ -11,7 +11,7 @@ trait HasModel
     public function setModel($model)
     {
         $this->model = $model;
-        
+        $this->name = $this->model->name;
         $this->type = $this->model->type;
         $this->location = $this->model->location;
         $this->disabled = $this->model->disabled;

@@ -14,7 +14,7 @@ class GridBlock extends Block
     {
         return [
             resource_path('views/vendor/only-laravel/template/blocks/grid.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/blocks/grid.blade.php',
+            __DIR__ . '/../../../resources/views/template/blocks/grid.blade.php',
         ];
     }
 }

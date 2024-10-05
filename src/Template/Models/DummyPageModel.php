@@ -2,25 +2,38 @@
 
 namespace Raakkan\OnlyLaravel\Template\Models;
 
+use Carbon\Carbon;
+
 class DummyPageModel
 {
     public $for = 'home-page';
     public $id = 1;
     public $name = 'Sample Page';
-    public $title = ['en' => 'Sample Page Title', 'es' => 'Título de Página de Muestra'];
-    public $slug = ['en' => 'sample-page', 'es' => 'pagina-de-muestra'];
-    public $content = ['en' => 'This is a sample page content.', 'es' => 'Este es el contenido de una página de muestra.'];
     public $template_id = 1;
     public $settings = ['show_header' => true, 'show_footer' => true];
     public $indexable = true;
     public $disabled = false;
-    public $created_at = '2023-04-15 10:00:00';
-    public $updated_at = '2023-04-15 10:00:00';
+    public $created_at;
+    public $updated_at;
     public $featured_image = [
         'image' => 'pages/sample-featured-image.jpg',
         'alt' => 'Sample Featured Image'
     ];
     protected $custom_data = [];
+    protected $locale;
+
+    public $multilingual_data = [
+        'title' => ['en' => 'Sample Page Title', 'es' => 'Título de Página de Muestra'],
+        'slug' => ['en' => 'sample-page', 'es' => 'pagina-de-muestra'],
+        'content' => ['en' => 'This is a sample page content.', 'es' => 'Este es el contenido de una página de muestra.'],
+    ];
+
+    public function __construct()
+    {
+        $this->locale = app()->getLocale();
+        $this->created_at = Carbon::now();
+        $this->updated_at = Carbon::now();
+    }
 
     public static function make(string $for)
     {
@@ -107,6 +120,10 @@ class DummyPageModel
 
     public function __get($name)
     {
+        if (array_key_exists($name, $this->multilingual_data)) {
+            return $this->getLocalizedAttribute($name);
+        }
+
         if (array_key_exists($name, $this->custom_data)) {
             return $this->custom_data[$name];
         }
@@ -114,6 +131,22 @@ class DummyPageModel
         // You might want to throw an exception here, or return null
         // depending on how you want to handle undefined properties
         return null;
+    }
+
+    public function getLocalizedAttribute($attribute, $locale = null)
+    {
+        $locale = $locale ?: $this->locale;
+        
+        if (isset($this->multilingual_data[$attribute][$locale])) {
+            return $this->multilingual_data[$attribute][$locale];
+        }
+        
+        return $this->multilingual_data[$attribute]['en'] ?? null;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     public function __set($name, $value)
@@ -131,6 +164,7 @@ class DummyPageModel
         foreach ($data as $key => $value) {
             $this->setCustomData($key, $value);
         }
+        return $this;
     }
 
     public function getAllCustomData()

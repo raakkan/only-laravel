@@ -14,6 +14,7 @@ use Raakkan\OnlyLaravel\Template\PageTemplate;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
+use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
 
 class BlockSettings extends Component implements HasForms
 {
@@ -87,7 +88,11 @@ class BlockSettings extends Component implements HasForms
     
     public function getBlock()
     {
-        $block = TemplateManager::getBlockByName($this->blockModel->name)->setModel($this->blockModel);
+        $block = TemplateManager::getBlockByName($this->blockModel->name);
+        if (!$block) {
+            $block = NotFoundBlock::make()->setType($this->blockModel->type);
+        }
+        $block->setModel($this->blockModel);
 
         return $block;
     }

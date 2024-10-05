@@ -85,6 +85,15 @@ trait HasDesignVariant
         return null;
     }
 
+    public function getActiveDesignVariantViewPath()
+    {
+        if ($this->getActiveDesignVariant()) {
+            return $this->getActiveDesignVariant()->getViewPath();
+        }
+
+        return null;
+    }
+
     public function hasDesignVariants()
     {
         return count($this->getComponentDesignVariants()) > 0;

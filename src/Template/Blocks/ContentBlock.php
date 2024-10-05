@@ -116,7 +116,7 @@ class ContentBlock extends Block
     {
         return [
             resource_path('views/vendor/only-laravel/template/blocks/content.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/blocks/content.blade.php',
+            __DIR__ . '/../../../resources/views/template/blocks/content.blade.php',
         ];
     }
 }

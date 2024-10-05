@@ -1,3 +1,3 @@
-<div style="background-color:blueviolet;">
+<div class="p-1">
     image
 </div>

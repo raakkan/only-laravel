@@ -87,9 +87,4 @@ abstract class BaseBlock implements Arrayable
     //     return $value;
     // }
 
-
-    public function getViewPaths()
-    {
-        return [];
-    }
 }

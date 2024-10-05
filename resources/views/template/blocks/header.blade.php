@@ -1,4 +1,4 @@
-<header>
+<header class="p-4">
     @php
         $childrens = $block->getChildren();
     @endphp
