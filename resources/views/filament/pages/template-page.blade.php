@@ -1,9 +1,9 @@
 <x-filament-panels::page>
     {{ Vite::useHotFile(storage_path('vite.hot'))->useBuildDirectory('build')->withEntryPoints(['resources/css/base.css', 'resources/js/menu.ts']) }}
 
-    <div class="mt-4 flex flex-wrap w-full">
+    <div class="mt-4 flex flex-wrap w-full" x-data="{ activeTab: 'blocks' }" x-on:settings-saved.window="$wire.$refresh()">
         <div class="w-full md:w-1/4">
-            <div class="bg-white mr-2 border border-gray-200 rounded" x-data="{ activeTab: 'blocks' }">
+            <div class="bg-white mr-2 border border-gray-200 rounded">
                 <div x-on:show-block-settings.window="activeTab = 'settings'" class="border-b border-gray-200">
                     <div class="flex items-center bg-gray-100 p-2 space-x-2">
                         <button @click="activeTab = 'blocks'" :class="{ 'bg-white': activeTab === 'blocks' }"

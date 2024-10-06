@@ -41,11 +41,6 @@ abstract class BasePlugin
         //
     }
 
-    public function fonts(FontManager $fontManager)
-    {
-        //
-    }
-
     public function getPages(): array
     {
         return [];

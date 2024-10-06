@@ -73,6 +73,7 @@
      {{ $template->getBackgroundImageStyles() }}
     "
     class="{{ $template->getCustomCss() }} {{ $template->getBackgroundClasses() }} {{ $template->getTextColorClasses() }}">
+    {!! setting('onlylaravel.global_insert.body_script') !!}
     @foreach ($blocks as $block)
         {{ $block->render() }}
     @endforeach

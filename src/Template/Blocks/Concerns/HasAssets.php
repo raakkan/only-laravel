@@ -33,14 +33,14 @@ trait HasAssets
 
     public function getAssets(): array
     {
-        if ($this->type == 'component') {
-            $designCss = $this->getActiveDesignVariantCss() ? [$this->getActiveDesignVariantCss()] : [];
-            $mergedCss = array_merge($this->assets['css'], $designCss);
-            return array_merge($this->assets, ['css' => $mergedCss]);
-        } else {
-            return $this->assets;
-        }
-        
+        // if ($this->type == 'component') {
+        //     $designCss = $this->getActiveDesignVariantCss() ? [$this->getActiveDesignVariantCss()] : [];
+        //     $mergedCss = array_merge($this->assets['css'], $designCss);
+        //     return array_merge($this->assets, ['css' => $mergedCss]);
+        // } else {
+        //     return $this->assets;
+        // }
+        return $this->assets;
     }
 
     public function registerAssets(): void

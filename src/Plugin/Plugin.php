@@ -81,7 +81,6 @@ class Plugin
             $pluginClass->pages($pluginManager->getPageManager());
             $pluginClass->menus($pluginManager->getMenuManager());
             $pluginClass->templates($pluginManager->getTemplateManager());
-            $pluginClass->fonts($pluginManager->getFontManager());
         }
     }
 

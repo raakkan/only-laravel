@@ -8,9 +8,11 @@ use Filament\Navigation\NavigationGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Filament\Resources\MenuResource;
 use Raakkan\OnlyLaravel\Filament\Resources\PageResource;
-use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 use Raakkan\OnlyLaravel\Plugin\Filament\Pages\PluginsPage;
+use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 use Raakkan\OnlyLaravel\Setting\Filament\Pages\AiSettingsPage;
+use Raakkan\OnlyLaravel\Setting\Filament\Pages\GlobalPageInsertPage;
+
 class OnlyLaravelPlugin implements Plugin
 {
     use Makable;
@@ -18,6 +20,7 @@ class OnlyLaravelPlugin implements Plugin
     protected $pages = [
         PluginsPage::class,
         AiSettingsPage::class,
+        GlobalPageInsertPage::class,
     ];
     protected $resources = [
         TemplateResource::class,

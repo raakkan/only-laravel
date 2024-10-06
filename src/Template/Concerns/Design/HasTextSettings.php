@@ -13,34 +13,52 @@ use Filament\Forms\Components\Actions\Action;
 
 trait HasTextSettings
 {
+    protected $fontFamilies = [
+        [
+            'name' => 'Arial',
+            'value' => 'Arial, sans-serif'
+        ],
+        [
+            'name' => 'Helvetica',
+            'value' => 'Helvetica, Arial, sans-serif'
+        ],
+        [
+            'name' => 'Verdana',
+            'value' => 'Verdana, Geneva, sans-serif'
+        ],
+        [
+            'name' => 'Tahoma',
+            'value' => 'Tahoma, Geneva, sans-serif'
+        ],
+        [
+            'name' => 'Times New Roman',
+            'value' => '"Times New Roman", Times, serif'
+        ],
+        [
+            'name' => 'Georgia',
+            'value' => 'Georgia, serif'
+        ],
+        [
+            'name' => 'Courier New',
+            'value' => '"Courier New", Courier, monospace'
+        ],
+        [
+            'name' => 'Roboto',
+            'value' => 'Roboto, Arial, sans-serif'
+        ],
+    ];
     protected $fontFamilySetting = true;
     protected $textColorSetting = true;
     protected $fontSizeSetting = true;
-    protected $fontProviderSetting = false;
 
     public function getTextSettingFields()
     {
         $fields = [];
 
-        if ($this->fontProviderSetting) {
-            $fields[] = Select::make('onlylaravel.text.font.provider')
-                ->label('Font Provider')
-                ->options([
-                    'local' => 'Local',
-                    'google' => 'Google Fonts',
-                    'bunny' => 'Bunny Fonts',
-                ])
-                ->default('local')
-                ->reactive();
-        }
-
         if ($this->fontFamilySetting) {
-            $fields[] = Select::make('onlylaravel.text.font.family')
+            $fields[] = TextInput::make('onlylaravel.text.font.family')
                 ->label('Font Family')
-                ->options(function (callable $get) {
-                    $provider = $get('onlylaravel.text.font.provider') ?? 'local';
-                    return $this->getFontFamiliesForProvider($provider);
-                });
+                ->default('Arial, sans-serif');
         }
 
         if ($this->textColorSetting) {
@@ -74,21 +92,6 @@ trait HasTextSettings
         return $fields;
     }
 
-    protected function getFontFamiliesForProvider($provider)
-    {
-        switch ($provider) {
-            case 'google':
-                return FontManager::getGoogleFontFamilies();
-            case 'bunny':
-                return FontManager::getBunnyFontFamilies();
-            case 'local':
-            default:
-                return collect(FontManager::getLocalFontFamilies())->mapWithKeys(function ($value, $key) {
-                    return [$value['value'] => $value['name']];
-                })->toArray();
-        }
-    }
-
     public function hasTextSettingsEnabled()
     {
         return $this->fontFamilySetting || $this->fontSizeSetting || $this->fontWeightSetting;
@@ -112,11 +115,6 @@ trait HasTextSettings
     public function getTextFontFamily()
     {
         return Arr::get($this->settings, 'onlylaravel.text.font.family', 'Inter');
-    }
-
-    public function getTextFontProvider()
-    {
-        return Arr::get($this->settings, 'onlylaravel.text.font.provider', 'local');
     }
 
     public function getTextFontSize()

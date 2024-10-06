@@ -23,7 +23,7 @@
         @endif
     </div>
 
-    @if ($block->hasAnySettings())
+    @if (!$block->isDisabled() && $block->hasAnySettings())
         <div x-show="open" x-anchor.bottom-end="$refs.button" @click.away="open = false;"
             class="w-1/3 mr-10 z-10 bg-white border border-gray-200 rounded-lg shadow-2xl">
             @php

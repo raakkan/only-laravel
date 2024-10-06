@@ -78,8 +78,8 @@ trait HasDesignVariant
 
     public function getActiveDesignVariantView()
     {
-        if ($this->getActiveDesignVariant()) {
-            return $this->getDesignVariantViewByName($this->getActiveDesignVariant()->getName());
+        if ($this->getActiveDesignVariant() && $this->getActiveDesignVariant()->hasView()) {
+            return $this->getActiveDesignVariant()->getView();
         }
 
         return null;
@@ -87,7 +87,7 @@ trait HasDesignVariant
 
     public function getActiveDesignVariantViewPath()
     {
-        if ($this->getActiveDesignVariant()) {
+        if ($this->getActiveDesignVariant() && $this->getActiveDesignVariant()->hasViewPath()) {
             return $this->getActiveDesignVariant()->getViewPath();
         }
 

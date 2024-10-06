@@ -2,12 +2,14 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 class PageTemplate extends BaseTemplate
 {
+    use HasCustomStyleSettings;
     protected $type = 'template';
 
     public function __construct($name)
@@ -16,6 +18,7 @@ class PageTemplate extends BaseTemplate
         $this->enablePaddingSettingOnly(['paddingLeftResponsiveSettings', 'paddingRightResponsiveSettings']);
         $this->enableWidthSettingOnly(['maxWidthResponsiveSettings']);
         $this->widthSettingsTabColumn = 1;
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings', 'customScript']);
     }
 
     public function create()

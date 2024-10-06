@@ -24,7 +24,15 @@ class LivewireBlock extends Component implements HasForms, HasActions
 
     public function mount()
     {
-        dd($this->template->getPageTemplate()->getCssClassesFromBlocksViews());
+        $ccs = $this->template->getPageTemplate()->buildCss();
+        // $css = explode(' ', $ccs);
+        // foreach($css as $class) {
+        //     if ($class == 'md:w-3/4') {
+        //         dd('dd');
+        //     }else{
+        //         dd($css);
+        //     }
+        // }
     }
 
     public function getBlock()

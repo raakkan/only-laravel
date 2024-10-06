@@ -15,15 +15,13 @@ class PluginManager
     protected $pageManager;
     protected $menuManager;
     protected $templateManager;
-    protected $fontManager;
 
-    public function __construct($onlyLaravel, $pageManager, $menuManager, $templateManager, $fontManager)
+    public function __construct($onlyLaravel, $pageManager, $menuManager, $templateManager)
     {
         $this->onlyLaravel = $onlyLaravel;
         $this->pageManager = $pageManager;
         $this->menuManager = $menuManager;
         $this->templateManager = $templateManager;
-        $this->fontManager = $fontManager;
 
         $plugins = $this->loadPlugins();
         $this->pluginJsonManager = new PluginJsonManager($plugins);
@@ -144,10 +142,5 @@ class PluginManager
     public function getTemplateManager()
     {
         return $this->templateManager;
-    }
-
-    public function getFontManager()
-    {
-        return $this->fontManager;
     }
 }

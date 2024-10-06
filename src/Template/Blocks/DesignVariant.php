@@ -50,6 +50,11 @@ class DesignVariant
         return isset($this->view) && $this->view !== null;
     }
 
+    public function hasViewPath(): bool
+    {
+        return isset($this->viewPath) && $this->viewPath !== null;
+    }
+
     public function hasFor(): bool
     {
         return isset($this->for) && $this->for !== null;

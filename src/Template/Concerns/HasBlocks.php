@@ -63,7 +63,7 @@ trait HasBlocks
 
     protected function getBlockViewPathsRecursive($block)
     {
-        $viewPaths = $block->getViewPaths();
+        $viewPaths = $block->getAllViewPaths();
 
         if (method_exists($block, 'getChildren')) {
             foreach ($block->getChildren() as $childBlock) {
@@ -72,5 +72,32 @@ trait HasBlocks
         }
 
         return $viewPaths;
+    }
+
+    public function getAllBlocksCustomCss()
+    {
+        return collect($this->blocks)->map(function ($block) {
+            return $this->getBlockCustomCssRecursive($block);
+        })->filter()->unique()->implode(' ');
+    }
+
+    protected function getBlockCustomCssRecursive($block)
+    {
+        $css = '';
+
+        if (method_exists($block, 'getCustomCss')) {
+            $css .= $block->getCustomCss();
+        }
+
+        if (method_exists($block, 'getChildren')) {
+            foreach ($block->getChildren() as $childBlock) {
+                $childCss = $this->getBlockCustomCssRecursive($childBlock);
+                if (!empty($childCss)) {
+                    $css .= ' ' . $childCss;
+                }
+            }
+        }
+
+        return $css;
     }
 }

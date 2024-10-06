@@ -7,7 +7,7 @@ use Raakkan\OnlyLaravel\Template\Enums\BackgroundType;
 
 class FooterBlock extends Block
 {
-    protected string $name = 'footer';
+    protected string $name = 'footer-block';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $deletable = false;

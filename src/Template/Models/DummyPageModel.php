@@ -113,7 +113,7 @@ class DummyPageModel
     public function getFeaturedImageUrl(): ?string
     {
         if (isset($this->featured_image['image'])) {
-            return 'https://example.com/storage/' . $this->featured_image['image'];
+            return $this->featured_image['image'];
         }
         return null;
     }
@@ -162,7 +162,20 @@ class DummyPageModel
     public function addData(array $data)
     {
         foreach ($data as $key => $value) {
-            $this->setCustomData($key, $value);
+            if ($key === 'featured_image') {
+                $this->featured_image = $value;
+            } elseif (array_key_exists($key, $this->multilingual_data)) {
+                if (is_array($value)) {
+                    foreach ($value as $locale => $translatedValue) {
+                        $this->multilingual_data[$key][$locale] = $translatedValue;
+                    }
+                } else {
+                    // If not an array, assume it's for the default locale
+                    $this->multilingual_data[$key][app()->getLocale()] = $value;
+                }
+            } else {
+                $this->setCustomData($key, $value);
+            }
         }
         return $this;
     }

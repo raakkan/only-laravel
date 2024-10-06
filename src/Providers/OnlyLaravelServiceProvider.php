@@ -46,12 +46,8 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             return new TemplateManager();
         });
 
-        $this->app->singleton('font-manager', function () {
-            return new FontManager();
-        });
-
         $this->app->singleton('plugin-manager', function () {
-            return new PluginManager(app('only-laravel'), app('page-manager'), app('menu-manager'), app('template-manager'), app('font-manager'));
+            return new PluginManager(app('only-laravel'), app('page-manager'), app('menu-manager'), app('template-manager'));
         });
 
         app('only-laravel')->loadSettingsPagesFromApp();

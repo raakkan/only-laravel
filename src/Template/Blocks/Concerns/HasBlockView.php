@@ -56,4 +56,9 @@ trait HasBlockView
         $this->viewPaths = $viewPaths;
         return $this;
     }
+
+    public function getAllViewPaths()
+    {
+        return array_merge($this->getViewPaths(), [$this->getViewPath()]);
+    }
 }

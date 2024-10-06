@@ -17,7 +17,7 @@
         $gropedComponents = $this->getGrouppedComponents();
     @endphp
 
-    <div class="p-2 capitalize ">
+    <div class="p-2 capitalize space-y-2">
 
         <div class="relative">
             <input type="text" name="search" id="search" wire:model.live.debounce.350ms="search"
@@ -48,11 +48,16 @@
 
             @if (count($blockGroups) > 0)
                 @foreach ($blockGroups as $group)
-                    <div class="border border-gray-200 rounded">
-                        <div class="py-1 px-2 border-b border-gray-200">
+                    <div class="border border-gray-200 rounded" x-data="{ open: false }">
+                        <div class="py-1 px-2 border-b border-gray-200 cursor-pointer flex items-center justify-between"
+                            x-on:click="open = !open">
                             <span class="font-semibold">{{ $group }}</span>
+                            <x-filament::icon x-show="!open" icon="heroicon-m-chevron-down"
+                                class="w-5 h-5 text-gray-400 rounded" />
+                            <x-filament::icon x-show="open" icon="heroicon-m-chevron-up"
+                                class="w-5 h-5 text-gray-400 rounded" />
                         </div>
-                        <div class="space-y-2 p-2">
+                        <div class="space-y-2 p-2" x-show="open" x-collapse>
                             @forelse ($gropedBlocks as $item)
                                 @if ($item->getGroup() == $group)
                                     <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
@@ -72,6 +77,7 @@
                 @endforeach
             @endif
         </div>
+
         <div x-show="activeTab === 'components'" class="space-y-2">
             @foreach ($components as $item)
                 <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"
@@ -85,11 +91,16 @@
 
             @if (count($componentGroups) > 0)
                 @foreach ($componentGroups as $group)
-                    <div class="border border-gray-200 rounded">
-                        <div class="py-1 px-2 border-b border-gray-200">
+                    <div class="border border-gray-200 rounded" x-data="{ open: false }">
+                        <div class="py-1 px-2 border-b border-gray-200 cursor-pointer flex items-center justify-between"
+                            x-on:click="open = !open">
                             <span class="font-semibold">{{ $group }}</span>
+                            <x-filament::icon x-show="!open" icon="heroicon-m-chevron-down"
+                                class="w-5 h-5 text-gray-400 rounded" />
+                            <x-filament::icon x-show="open" icon="heroicon-m-chevron-up"
+                                class="w-5 h-5 text-gray-400 rounded" />
                         </div>
-                        <div class="space-y-2 p-2">
+                        <div class="space-y-2 p-2" x-show="open" x-collapse>
                             @forelse ($gropedComponents as $item)
                                 @if ($item->getGroup() == $group)
                                     <div class="bg-gray-100 rounded border border-gray-200 cursor-move" draggable="true"

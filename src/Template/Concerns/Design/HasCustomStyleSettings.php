@@ -11,14 +11,14 @@ use Storage;
 
 trait HasCustomStyleSettings
 {
-    protected $customStyleSettings = true;
-    protected $customCssSettings = true;
+    protected $customStyleSettings = false;
+    protected $customCssSettings = false;
 
     protected $customCssFilesSettings = false;
     protected $customJsFilesSettings = false;
     protected $customScript = false;
     protected $coreFileSettings = false;
-    protected $includeCoreFiles = true;
+    protected $includeCoreFiles = false;
 
     public function getCustomStyle()
     {
@@ -155,5 +155,25 @@ trait HasCustomStyleSettings
         }
 
         return implode("\n", $tags);
+    }
+
+    public function enableCustomStyleSettingOnly(array | string $setting = 'customStyleSettings')
+    {
+        $this->customStyleSettings = false;
+        $this->customCssSettings = false;
+        $this->customCssFilesSettings = false;
+        $this->customJsFilesSettings = false;
+        $this->customScript = false;
+        $this->coreFileSettings = false;
+
+        if (is_array($setting)) {
+            foreach ($setting as $s) {
+                $this->{$s} = true;
+            }
+            return $this;
+        }
+
+        $this->{$setting} = true;
+        return $this;
     }
 }
