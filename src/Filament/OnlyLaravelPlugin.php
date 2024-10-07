@@ -12,6 +12,8 @@ use Raakkan\OnlyLaravel\Plugin\Filament\Pages\PluginsPage;
 use Raakkan\OnlyLaravel\Filament\Resources\TemplateResource;
 use Raakkan\OnlyLaravel\Setting\Filament\Pages\AiSettingsPage;
 use Raakkan\OnlyLaravel\Setting\Filament\Pages\GlobalPageInsertPage;
+use Raakkan\OnlyLaravel\Translation\Filament\Resources\LanguageResource;
+use Raakkan\OnlyLaravel\Translation\Filament\Resources\TranslationResource;
 
 class OnlyLaravelPlugin implements Plugin
 {
@@ -26,6 +28,8 @@ class OnlyLaravelPlugin implements Plugin
         TemplateResource::class,
         MenuResource::class,
         PageResource::class,
+        LanguageResource::class,
+        TranslationResource::class,
     ];
 
     public function getId(): string
@@ -45,6 +49,9 @@ class OnlyLaravelPlugin implements Plugin
             NavigationGroup::make()
                  ->label('Settings')
                  ->icon('heroicon-o-cog'),
+            NavigationGroup::make()
+                 ->label('Translation')
+                 ->icon('heroicon-o-language'),
         ], $navigationGroups));
     }
     public function boot(Panel $panel): void

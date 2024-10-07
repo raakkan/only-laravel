@@ -3,7 +3,7 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Support\Facades\File;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\FooterBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\GridBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
@@ -18,6 +18,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\FooterBlockComponent;
 
 
 class TemplateManager
@@ -95,6 +96,7 @@ class TemplateManager
             HeroComponent::make(),
             HtmlBlockComponent::make(),
             FooterBlockComponent::make(),
+            DivBlock::make(),
         ];
     }
 }

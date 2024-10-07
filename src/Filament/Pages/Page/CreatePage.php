@@ -17,4 +17,9 @@ class CreatePage extends CreateRecord
             Actions\LocaleSwitcher::make(),
         ];
     }
+
+    protected function afterCreate(): void
+    {
+        app('only-laravel')->generateSitemap();
+    }
 }

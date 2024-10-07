@@ -3,10 +3,6 @@
 namespace  Raakkan\OnlyLaravel\Providers;
 
 use Livewire\Livewire;
-use Raakkan\PhpTailwind\PhpTailwind;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\AliasLoader;
-use Raakkan\OnlyLaravel\Css\CssParser;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
@@ -14,6 +10,7 @@ use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Filament\Forms\Components\BaseFileUpload;
 use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Template\FontManager;
+use Raakkan\OnlyLaravel\Installer\InstallManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 use Raakkan\OnlyLaravel\Filament\Components\BaseFileUpload as CustomBaseFileUpload;
 
@@ -21,9 +18,11 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
         app('plugin-manager')->bootActivatedPlugins();
+        Livewire::component('only-laravel::installer.livewire.installer', \Raakkan\OnlyLaravel\Installer\Livewire\Installer::class);
     }
 
     public function register(): void
@@ -32,6 +31,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('only-laravel', function () {
             return new OnlyLaravelManager();
+        });
+
+        $this->app->singleton('install-manager', function () {
+            return new InstallManager();
         });
 
         $this->app->singleton('page-manager', function () {

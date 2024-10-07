@@ -2,11 +2,19 @@
 
 namespace Raakkan\OnlyLaravel;
 
+use Raakkan\OnlyLaravel\Support\SitemapGenerator;
+
 class OnlyLaravelManager
 {
     protected $filamentPages = [];
     protected $filamentResources = [];
     protected $filamentNavigationGroups = [];
+    protected $sitemapGenerator;
+
+    public function __construct()
+    {
+        $this->sitemapGenerator = new SitemapGenerator();
+    }
 
     public function registerFilamentPages($pages)
     {
@@ -59,5 +67,10 @@ class OnlyLaravelManager
         }
         
         return $this;
+    }
+
+    public function generateSitemap()
+    {
+        return $this->sitemapGenerator->generate();
     }
 }

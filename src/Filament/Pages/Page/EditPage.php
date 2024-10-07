@@ -24,4 +24,9 @@ class EditPage extends EditRecord
             Actions\LocaleSwitcher::make(),
         ]);
     }
+
+    protected function afterSave(): void
+    {
+        app('only-laravel')->generateSitemap();
+    }
 }
