@@ -16,10 +16,24 @@ class PageModel extends Model
     use SoftDeletes;
     use HasTranslations;
     use HasSeoTags;
-    protected $pageType = 'pages';
+    protected $pageType = 'page';
     protected $pageTypeLevel = 'root';
     public $translatable = ['title', 'slug', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
-    protected $fillable = ['name', 'title', 'slug', 'content', 'template_id', 'settings', 'indexable', 'disabled', 'seo_title', 'seo_description', 'seo_keywords', 'featured_image'];
+    protected $fillable = [
+        'name',
+        'type',
+        'title',
+        'slug',
+        'content',
+        'template_id',
+        'settings',
+        'indexable',
+        'disabled',
+        'seo_title',
+        'seo_description',
+        'seo_keywords',
+        'featured_image'
+    ];
 
     protected $casts = [
         'settings' => 'array',
@@ -91,27 +105,38 @@ class PageModel extends Model
 
     public static function findBySlug($slug)
     {
-        $driver = \DB::getDriverName();
-
         $query = static::query()->with('template.blocks');
+        $locale = app()->getLocale();
+        $driver = \DB::getDriverName();
 
         switch ($driver) {
             case 'mysql':
+                return $query->where(function($q) use ($slug, $locale) {
+                    $q->where("slug->{$locale}", $slug)
+                      ->orWhere("slug->en", $slug)
+                      ->orWhere('slug', $slug); // For non-JSON slugs
+                })->first();
             case 'mariadb':
-                return $query->where(function($q) use ($slug) {
-                    $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$." . app()->getLocale() . "')) = ?", [$slug])
-                    ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.en')) = ?", [$slug]);
+                return $query->where(function($q) use ($slug, $locale) {
+                    $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.{$locale}')) = ?", [$slug])
+                      ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.en')) = ?", [$slug])
+                      ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'pgsql':
-                return $query->where(function($q) use ($slug) {
-                    $q->where("slug->>'" . app()->getLocale() . "'", $slug)
-                    ->orWhere("slug->>'en'", $slug);
+                return $query->where(function($q) use ($slug, $locale) {
+                    $q->where("slug->>'{$locale}'", $slug)
+                      ->orWhere("slug->>'en'", $slug)
+                      ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'sqlsrv':
-                return $query->where(function($q) use ($slug) {
-                    $q->where("JSON_VALUE(slug, '$." . app()->getLocale() . "')", $slug)
-                    ->orWhere("JSON_VALUE(slug, '$.en')", $slug);
+                return $query->where(function($q) use ($slug, $locale) {
+                    $q->where("JSON_VALUE(slug, '$.{$locale}')", $slug)
+                      ->orWhere("JSON_VALUE(slug, '$.en')", $slug)
+                      ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
+            case 'sqlite':
+                // SQLite doesn't have native JSON functions, so we'll use a simple comparison
+                return $query->where('slug', $slug)->first();
             default:
                 throw new \Exception("Unsupported database driver: {$driver}");
         }

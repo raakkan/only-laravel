@@ -20,6 +20,10 @@ trait HasPaddingSettings
     protected $paddingTopResponsiveSettings = true;
     protected $paddingBottomSettings = true;
     protected $paddingBottomResponsiveSettings = true;
+    protected $paddingXSettings = true;
+    protected $paddingXResponsiveSettings = true;
+    protected $paddingYSettings = true;
+    protected $paddingYResponsiveSettings = true;
 
     public function getPadding($name = 'padding')
     {
@@ -99,6 +103,30 @@ trait HasPaddingSettings
             $tabs[] = Tab::make('Bottom')
                 ->schema([
                     BlockResponsiveNumberField::make('onlylaravel.padding.bottom')->label('Padding Bottom')->default($this->getPadding('bottom')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
+        }
+
+        if ($this->paddingXSettings) {
+            $tabs[] = Tab::make('Horizontal')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.x.padding')->label('Padding X')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('x.padding')),
+                ]);
+        } elseif ($this->paddingXResponsiveSettings) {
+            $tabs[] = Tab::make('Horizontal')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.x')->label('Padding X')->default($this->getPadding('x')),
+                ])->extraAttributes(['style' => 'padding:4px;']);
+        }
+
+        if ($this->paddingYSettings) {
+            $tabs[] = Tab::make('Vertical')
+                ->schema([
+                    TextInput::make('onlylaravel.padding.y.padding')->label('Padding Y')->numeric()->extraAttributes(['style' => 'padding:0;'])->default($this->getPadding('y.padding')),
+                ]);
+        } elseif ($this->paddingYResponsiveSettings) {
+            $tabs[] = Tab::make('Vertical')
+                ->schema([
+                    BlockResponsiveNumberField::make('onlylaravel.padding.y')->label('Padding Y')->default($this->getPadding('y')),
                 ])->extraAttributes(['style' => 'padding:4px;']);
         }
 
@@ -218,6 +246,48 @@ trait HasPaddingSettings
         return $this;
     }
 
+    public function paddingX($padding = 0)
+    {
+        $this->paddingXSettings = true;
+        Arr::set($this->settings, 'onlylaravel.padding.x.padding', $padding);
+        return $this;
+    }
+
+    public function responsivePaddingX($padding = 0, $small = 0, $medium = 0, $large = 0, $extra_large = 0, $two_extra_large = 0)
+    {
+        $this->paddingXResponsiveSettings = true;
+        Arr::set($this->settings, 'onlylaravel.padding.x', [
+            'padding' => $padding,
+            'small' => $small,
+            'medium' => $medium,
+            'large' => $large,
+            'extra_large' => $extra_large,
+            '2_extra_large' => $two_extra_large
+        ]);
+        return $this;
+    }
+
+    public function paddingY($padding = 0)
+    {
+        $this->paddingYSettings = true;
+        Arr::set($this->settings, 'onlylaravel.padding.y.padding', $padding);
+        return $this;
+    }
+
+    public function responsivePaddingY($padding = 0, $small = 0, $medium = 0, $large = 0, $extra_large = 0, $two_extra_large = 0)
+    {
+        $this->paddingYResponsiveSettings = true;
+        Arr::set($this->settings, 'onlylaravel.padding.y', [
+            'padding' => $padding,
+            'small' => $small,
+            'medium' => $medium,
+            'large' => $large,
+            'extra_large' => $extra_large,
+            '2_extra_large' => $two_extra_large
+        ]);
+        return $this;
+    }
+
     public function enablePaddingSettingOnly(array | string  $setting = 'paddingSettings')
     {
         $this->paddingSettings = false;
@@ -287,6 +357,28 @@ trait HasPaddingSettings
 
         if (is_array($responsivePaddingBottom) && array_key_exists('padding', $responsivePaddingBottom)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingBottom, 'padding-bottom');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingXStyles($className, $setting = 'x')
+    {
+        $responsivePaddingX = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingX) && array_key_exists('padding', $responsivePaddingX)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingX, 'padding-left');
+            $styles .= $this->generatePaddingStyles($className, $responsivePaddingX, 'padding-right');
+            return $styles;
+        }
+    }
+
+    public function getResponsivePaddingYStyles($className, $setting = 'y')
+    {
+        $responsivePaddingY = $this->getPadding($setting);
+
+        if (is_array($responsivePaddingY) && array_key_exists('padding', $responsivePaddingY)) {
+            $styles = $this->generatePaddingStyles($className, $responsivePaddingY, 'padding-top');
+            $styles .= $this->generatePaddingStyles($className, $responsivePaddingY, 'padding-bottom');
             return $styles;
         }
     }

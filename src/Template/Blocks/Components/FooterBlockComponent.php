@@ -117,6 +117,52 @@ class FooterBlockComponent extends BlockComponent
         return $this->customLinks;
     }
 
+    public function copyrightText($text)
+    {
+        $this->copyrightText = $text;
+        return $this;
+    }
+
+    public function additionalText($text)
+    {
+        $this->additionalText = $text;
+        return $this;
+    }
+
+    public function showSocialIcons($show = true)
+    {
+        $this->showSocialIcons = $show;
+        return $this;
+    }
+
+    public function socialLink($social, $url)
+    {
+        $this->socialLinks[$social] = $url;
+        return $this;
+    }
+
+    public function socialLinks($links)
+    {
+        $this->socialLinks = $links;
+        return $this;
+    }
+
+    public function customLink($name, $url, $icon)
+    {
+        $this->customLinks[] = [
+            'name' => $name,
+            'url' => $url,
+            'icon' => $icon,
+        ];
+        return $this;
+    }
+
+    public function customLinks($links)
+    {
+        $this->customLinks = $links;
+        return $this;
+    }
+
     public function getViewPaths()
     {
         return [

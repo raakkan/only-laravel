@@ -6,13 +6,13 @@ trait HasSlug
 {
    protected $slug;
 
-   public function setSlug(string $slug): self
+   public function setSlug(string | array $slug): self
    {
        $this->slug = $slug;
        return $this;
    }
 
-   public function getSlug(): string
+   public function getSlug(): string | array
    {
        return $this->slug;
    }
@@ -22,7 +22,7 @@ trait HasSlug
        return isset($this->slug);
    }
 
-   public function slug(string $slug): self
+   public function slug(string | array $slug): self
    {
        return $this->setSlug($slug);
    }

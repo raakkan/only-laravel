@@ -54,6 +54,13 @@ trait HasDesignVariant
         return $variant->getView();
     }
 
+    public function hasDesignVariant($name)
+    {
+        return collect($this->getComponentDesignVariants())->first(function (DesignVariant $designVariant) use ($name) {
+            return $designVariant->getName() == $name;
+        });
+    }
+
     public function getDesignVariantCssByName($name)
     {
         $variant = collect($this->getComponentDesignVariants())->first(function (DesignVariant $designVariant) use ($name) {
@@ -106,6 +113,10 @@ trait HasDesignVariant
 
     public function setDesignVariant($designVariant)
     {
+        if (!$this->hasDesignVariant($designVariant)) {
+            return $this;
+        }
+
         $this->designVariant = $designVariant;
         return $this;
     }
@@ -119,5 +130,10 @@ trait HasDesignVariant
         }
 
         return null;
+    }
+
+    public function designVariant($name)
+    {
+        return $this->setDesignVariant($name);
     }
 }

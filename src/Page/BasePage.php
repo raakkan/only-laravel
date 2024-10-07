@@ -33,6 +33,7 @@ class BasePage
 
     protected $model;
     protected $modelClass = PageModel::class;
+    protected $modelData = [];
 
     public function __construct($name)
     {
@@ -67,6 +68,17 @@ class BasePage
         return $this;
     }
 
+    public function setModelData($modelData)
+    {
+        $this->modelData = $modelData;
+        return $this;
+    }
+
+    public function getModelData()
+    {
+        return $this->modelData;
+    }
+
     public function create()
     {
         $modelClass = $this->getModelClass();
@@ -77,11 +89,12 @@ class BasePage
 
         $page = $modelClass::create([
             'name' => $this->name,
+            'type' => $this->getPageType(),
             'title' => $this->title,
             'slug' => trim($this->slug, '/'),
             'disabled' => $this->disabled,
-            'page_type' => $this->getPageType(),
             'template_id' => $this->getTemplateModel()->id ?? null,
+            ...$this->getModelData(),
         ]);
 
         $this->setModel($page);

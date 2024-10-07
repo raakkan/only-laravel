@@ -64,7 +64,7 @@ trait ManagePageTypes
 
     public function getDefaultPageType()
     {
-        return PageType::make('pages', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
+        return PageType::make('page', 'root', null, $this->defaultPageTypeView, $this->defaultPageTypeModel)->registerJsonSchema(function ($schema) {
             $schema->setType('WebPage');
             $schema->setProperty('@id', 'string', ['instruction' => function ($page, $pageType) {
                 return $pageType->generateUrl($page->slug);

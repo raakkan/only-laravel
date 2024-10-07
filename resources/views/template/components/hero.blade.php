@@ -1,6 +1,6 @@
 @php
     $title = $block->getTitle();
-    $description = $block->getDescription();
+    $subtitle = $block->getSubtitle();
     $textColor = $block->getTextColor();
     $textSize = $block->getTextSetting('font.size') ?? 1;
     $fontFamily = $block->getTextSetting('font.family');
@@ -11,7 +11,7 @@
     <div class="flex flex-col items-center justify-center h-full text-center p-4 {{ $block->getBackgroundClasses() }}"
         style="">
         <h1 class="hero__title">{{ $title }}</h1>
-        <div class="hero__description">{{ $description }}</div>
+        <div class="hero__description">{{ $subtitle }}</div>
     </div>
 
 </section>

@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('type')->default('page');
             $table->json('title');
             $table->json('slug');
             $table->json('content')->nullable();

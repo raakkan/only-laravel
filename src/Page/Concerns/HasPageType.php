@@ -4,7 +4,7 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 
 trait HasPageType
 {
-    protected $pageType = 'pages';
+    protected $pageType = 'page';
 
     public function setPageType($pageType)
     {
