@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
+use Filament\Forms\Components\Textarea;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
@@ -9,16 +10,13 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 class PageTemplate extends BaseTemplate
 {
-    use HasCustomStyleSettings;
     protected $type = 'template';
-
+    protected $containerCssClasses = '';
+    protected $headerContent = '';
     public function __construct($name)
     {
         $this->name = $name;
-        $this->enablePaddingSettingOnly(['paddingLeftResponsiveSettings', 'paddingRightResponsiveSettings']);
-        $this->enableWidthSettingOnly(['maxWidthResponsiveSettings']);
-        $this->widthSettingsTabColumn = 1;
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings', 'customScript']);
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function create()
@@ -40,6 +38,8 @@ class PageTemplate extends BaseTemplate
         foreach ($this->blocks as $block) {
             $block->create($template);
         }
+
+        $this->buildCss();
     }
 
     public function getDummyPageModel()
@@ -58,5 +58,54 @@ class PageTemplate extends BaseTemplate
         return view('only-laravel::template.template', [
             'template' => $this
         ]);
+    }
+
+    public function getBlockSettings()
+    {
+        return [
+            Textarea::make('onlylaravel.header_content')->label('Header Content')->rows(4)->default($this->getHeaderContent()),
+            Textarea::make('onlylaravel.container_css_classes')->label('Container CSS Classes')->rows(4)->default($this->getContainerCssClasses())
+        ];
+    }
+
+    public function setBlockSettings($settings)
+    {
+        if (array_key_exists('onlylaravel', $settings)) {
+            $onlylaravel = $settings['onlylaravel'];
+            if (array_key_exists('header_content', $onlylaravel)) {
+                $this->headerContent($onlylaravel['header_content']);
+            }
+            if (array_key_exists('container_css_classes', $onlylaravel)) {
+                $this->containerCssClasses($onlylaravel['container_css_classes']);
+            }
+        }
+    }
+
+    public function getHeaderContent()
+    {
+        return $this->headerContent;
+    }
+
+    public function headerContent($content)
+    {
+        if (is_string($content)) {
+            $this->headerContent = $content;
+        }
+        return $this;
+    }
+
+    public function getContainerCssClasses()
+    {
+        return $this->containerCssClasses;
+    }
+
+    public function containerCssClasses($classes)
+    {
+        if (is_array($classes)) {
+            $this->containerCssClasses = implode(' ', $classes);
+        } else if (is_string($classes)) {
+            $this->containerCssClasses = $classes;
+        }
+        return $this;
     }
 }

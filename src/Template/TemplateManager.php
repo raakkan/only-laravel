@@ -18,6 +18,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\DynamicHeroComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\FooterBlockComponent;
 
 
@@ -97,6 +98,7 @@ class TemplateManager
             HtmlBlockComponent::make(),
             FooterBlockComponent::make(),
             DivBlock::make(),
+            DynamicHeroComponent::make(),
         ];
     }
 }

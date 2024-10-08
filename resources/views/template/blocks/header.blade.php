@@ -1,4 +1,4 @@
-<header>
+<header class="{{ $block->getCustomCss() }}" style="{{ $block->getCustomStyle() }}">
     @php
         $childrens = $block->getChildren();
     @endphp

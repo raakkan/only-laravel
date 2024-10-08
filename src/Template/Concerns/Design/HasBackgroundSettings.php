@@ -28,9 +28,7 @@ trait HasBackgroundSettings
         if ($this->backgroundType === BackgroundType::COLOR || $this->backgroundType === BackgroundType::BOTH) {
             $fields = array_merge(
                 $fields,
-                $this->getBackgroundColorTypeFields(),
                 $this->getBackgroundColorFields(),
-                $this->getBackgroundGradientFields()
             );
         }
 
@@ -48,7 +46,7 @@ trait HasBackgroundSettings
 
     public function getBackgroundColor()
     {
-        return Arr::get($this->settings, 'onlylaravel.background.color', '#ffffff');
+        return Arr::get($this->settings, 'onlylaravel.background.color', 'transparent');
     }
 
     public function getBackgroundGradientDirection()
@@ -58,12 +56,12 @@ trait HasBackgroundSettings
 
     public function getBackgroundGradientFrom()
     {
-        return Arr::get($this->settings, 'onlylaravel.background.gradient.from', '#ffffff');
+        return Arr::get($this->settings, 'onlylaravel.background.gradient.from', 'transparent');
     }
     
     public function getBackgroundGradientTo()
     {
-        return Arr::get($this->settings, 'onlylaravel.background.gradient.to', '#000000');
+        return Arr::get($this->settings, 'onlylaravel.background.gradient.to', 'transparent');
     }
 
     public function getBackgroundImage()
@@ -73,7 +71,7 @@ trait HasBackgroundSettings
 
     public function getBackgroundColorDark()
     {
-        return Arr::get($this->settings, 'onlylaravel.background.color_dark', '#000000');
+        return Arr::get($this->settings, 'onlylaravel.background.color_dark', 'transparent');
     }
 
     public function hasBackgroundSettingsEnabled()
@@ -167,7 +165,7 @@ trait HasBackgroundSettings
         return '';
     }
 
-    public function getBackgroundColorTypeFields()
+    public function getBackgroundColorFields()
     {
         return [
             Select::make('onlylaravel.background.color_type')
@@ -179,13 +177,7 @@ trait HasBackgroundSettings
             ->required()
             ->live(onBlur: true)
             ->default($this->getBackgroundColorType())
-            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('onlylaravel.background.color', $state == 'color' ? '#000000' : ''))
-        ];
-    }
-
-    public function getBackgroundColorFields()
-    {
-        return [
+            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('onlylaravel.background.color', $state == 'color' ? '#000000' : '')),
             ColorPicker::make('onlylaravel.background.color')
                     ->label('Background Color')
                     ->default($this->getBackgroundColor())
@@ -208,13 +200,7 @@ trait HasBackgroundSettings
                             $set('onlylaravel.background.color_dark', '');
                         })
                 )->visible(fn (Get $get) => $get('onlylaravel.background.color_type') == 'color'),
-        ];
-    }
-
-    public function getBackgroundGradientFields()
-    {
-        return [
-            Select::make('onlylaravel.background.gradient_direction')
+                Select::make('onlylaravel.background.gradient_direction')
             ->label('Gradient Direction')
             ->options([
                 'to right' => 'To Right',
@@ -254,7 +240,7 @@ trait HasBackgroundSettings
             ->rgba()
             ->hintAction(
                 Action::make('clear')
-                    ->label('Clear')    
+                    ->label('Clear')
                     ->icon('heroicon-m-x-circle')
                     ->action(function (Set $set) {
                         $set('onlylaravel.background.gradient.to', '');

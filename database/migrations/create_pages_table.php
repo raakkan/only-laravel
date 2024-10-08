@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('type')->default('page');
             $table->json('title');
+            $table->json('subtitle')->nullable();
             $table->json('slug');
             $table->json('content')->nullable();
             $table->boolean('indexable')->default(true);

@@ -1,6 +1,6 @@
 @php
-    $title = $block->getTitle();
-    $subtitle = $block->getSubtitle();
+    $title = $block->getPageModel()->title;
+    $subtitle = $block->getPageModel()->subtitle;
 @endphp
 
 <div class="{{ $block->getCustomCss() }}" style="{{ $block->getCustomStyle() }}">

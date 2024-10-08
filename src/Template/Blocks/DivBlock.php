@@ -7,12 +7,17 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 
 class DivBlock extends Block
 {
-    use HasBackgroundSettings;
     protected string $name = 'div-block';
+    protected string $label = 'Container';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $view = 'only-laravel::template.blocks.div';
     protected $addable = true;
+
+    public function __construct()
+    {
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
+    }
 
     public function getViewPaths()
     {

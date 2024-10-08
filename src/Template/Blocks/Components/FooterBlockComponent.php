@@ -10,7 +10,6 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 
 class FooterBlockComponent extends BlockComponent
 {
-    use HasBackgroundSettings;
     protected string $name = 'footer-component';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
@@ -23,7 +22,7 @@ class FooterBlockComponent extends BlockComponent
 
     public function __construct()
     {
-        $this->backgroundSettings = true;
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function getBlockSettings()
@@ -31,23 +30,28 @@ class FooterBlockComponent extends BlockComponent
         return [
             TextInput::make('footer.copyright_text')
                 ->label('Copyright Text')
+                ->default($this->getCopyrightText())
                 ->required(),
             Textarea::make('footer.additional_text')
                 ->label('Additional Text')
+                ->default($this->getAdditionalText())
                 ->rows(3),
             Toggle::make('footer.show_social_icons')
                 ->label('Show Social Icons')
-                ->default(true),
+                ->default($this->getShowSocialIcons()),
             TextInput::make('footer.facebook_link')
                 ->label('Facebook Link')
+                ->default($this->getSocialLinks()['facebook'] ?? '')
                 ->url()
                 ->visible(fn ($get) => $get('footer.show_social_icons')),
             TextInput::make('footer.instagram_link')
                 ->label('Instagram Link')
+                ->default($this->getSocialLinks()['instagram'] ?? '')
                 ->url()
                 ->visible(fn ($get) => $get('footer.show_social_icons')),
             TextInput::make('footer.twitter_link')
                 ->label('Twitter Link')
+                ->default($this->getSocialLinks()['twitter'] ?? '')
                 ->url()
                 ->visible(fn ($get) => $get('footer.show_social_icons')),
             Repeater::make('footer.custom_links')

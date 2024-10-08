@@ -42,7 +42,7 @@ class ContentBlock extends Block
             $block->setLocation('left-sidebar');
         })->all();
 
-        $this->childrens = array_merge($this->children, $sidebarBlocks);
+        $this->children = array_merge($this->children, $sidebarBlocks);
 
         return $this->sideBar(true, ContentSidebar::LEFT);
     }
@@ -58,7 +58,7 @@ class ContentBlock extends Block
             $block->setLocation('right-sidebar');
         })->all();
 
-        $this->childrens = array_merge($this->children, $sidebarBlocks);
+        $this->children = array_merge($this->children, $sidebarBlocks);
 
         return $this->sideBar(true, ContentSidebar::RIGHT);
     }

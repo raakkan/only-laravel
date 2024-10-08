@@ -3,9 +3,12 @@
 namespace Raakkan\OnlyLaravel;
 
 use Raakkan\OnlyLaravel\Support\SitemapGenerator;
+use Raakkan\OnlyLaravel\OnlyLaravel\Concerns\HasInstall;
 
 class OnlyLaravelManager
 {
+    use HasInstall;
+
     protected $filamentPages = [];
     protected $filamentResources = [];
     protected $filamentNavigationGroups = [];

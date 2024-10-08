@@ -14,7 +14,7 @@ class HtmlBlockComponent extends BlockComponent
 
     public function __construct()
     {
-        $this->backgroundSettings = false;
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function getBlockSettings()
@@ -23,6 +23,7 @@ class HtmlBlockComponent extends BlockComponent
             Textarea::make('html.content')
                 ->label('HTML Content')
                 ->required()
+                ->default($this->getHtmlContent())
                 ->rows(10)
                 ->helperText('Warning: Do not insert any potentially dangerous or malicious code.'),
 
@@ -33,6 +34,9 @@ class HtmlBlockComponent extends BlockComponent
     {
         if (is_array($settings) && array_key_exists('html', $settings)) {
             $this->htmlContent = $settings['html']['content'] ?? '';
+            if ($this->htmlContent) {
+                $this->extractCssClasses($this->htmlContent);
+            }
         }
 
         return $this;
@@ -41,5 +45,26 @@ class HtmlBlockComponent extends BlockComponent
     public function getHtmlContent()
     {
         return $this->htmlContent;
+    }
+
+    public function html($content)
+    {
+        $this->htmlContent = $content;
+        $this->extractCssClasses($content);
+        return $this;
+    }
+
+    protected function extractCssClasses($html)
+    {
+        preg_match_all('/class=["\']([^"\']*)["\']/', $html, $matches);
+        $classes = [];
+        foreach ($matches[1] as $classString) {
+            $classes = array_merge($classes, explode(' ', $classString));
+        }
+        $extractedClasses = array_unique(array_filter($classes));
+        
+        $existingClasses = explode(' ', $this->otherCssClasses);
+        $allClasses = array_unique(array_merge($existingClasses, $extractedClasses));
+        $this->otherCssClasses = implode(' ', $allClasses);
     }
 }

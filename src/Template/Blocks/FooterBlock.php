@@ -12,13 +12,13 @@ class FooterBlock extends Block
     protected $source = 'raakkan/only-laravel';
     protected $deletable = false;
     protected $sortable = false;
-    protected $backgroundSettings = true;
-    protected $backgroundType = BackgroundType::COLOR;
-    protected $background = [
-        'color' => '#00e693',
-    ];
     protected $view = 'only-laravel::template.blocks.footer';
     protected $addable = false;
+
+    public function __construct()
+    {
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
+    }
 
     public function getViewPaths()
     {

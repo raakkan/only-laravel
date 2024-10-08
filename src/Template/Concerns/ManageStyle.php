@@ -9,7 +9,7 @@ trait ManageStyle
 {
     public function buildCss()
     {
-        $css = $this->getAllBlocksCustomCss() . ' ' . $this->getCssClassesFromBlocksViews() . ' ' . $this->getCustomCss();
+        $css = $this->getAllBlocksCustomCss() . ' ' . $this->getCssClassesFromBlocksViews() . ' ' . $this->getCustomCss() . ' ' . $this->getContainerCssClasses();
         $tailwind = \Raakkan\PhpTailwind\PhpTailwind::make();
         $tailwind->parse($css);
         $tailwind->includePreflight();
@@ -19,7 +19,7 @@ trait ManageStyle
         // Save CSS to file
         $this->saveCssToFile($css);
 
-        return $css;
+        return $tailwind;
     }
 
     protected function saveCssToFile($css)

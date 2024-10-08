@@ -13,6 +13,7 @@ class DesignVariant
     protected string $view;
     protected string $viewPath;
     protected string $css;
+    protected array $data = [];
 
     public static function make(string $name): self
     {
@@ -91,5 +92,16 @@ class DesignVariant
     public function isValid(): bool
     {
         return $this->hasView() && $this->hasFor() && $this->hasLabel() && $this->hasName();
+    }
+
+    public function data(array $data): self
+    {
+        $this->data = $data;
+        return $this;
+    }
+    
+    public function getData(): array
+    {
+        return $this->data;
     }
 }

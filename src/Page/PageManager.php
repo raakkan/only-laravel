@@ -42,7 +42,14 @@ class PageManager
                     $model = $pageType->getModel($slug);
                 }
             } else {
-                $model = $pageType->getHomeModel();
+                $defaultModel = $this->getDefaultPageTypeModel();
+                if ($defaultModel) {
+                    $model = $defaultModel::where('name', 'home-page')->with('template.blocks')->first();
+                    if(!$model){
+                        return abort(404);
+                    }
+                    $pageType = $this->getDefaultPageType();
+                }
             }
 
             if ($model) {

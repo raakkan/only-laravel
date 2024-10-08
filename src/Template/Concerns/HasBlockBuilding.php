@@ -15,7 +15,7 @@ trait HasBlockBuilding
             $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
             $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
             $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
-            $block = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel());
+            $block = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel())->setTemplateModel($this);
             $this->registerBlockAssets($block);
             $builtBlocks[] = $block;
         }
@@ -39,7 +39,7 @@ trait HasBlockBuilding
                 $blockInstance = $this->buildBlockTree($blockInstance, $blockChildren, $blocks);
             }
 
-            $b = $blockInstance->setModel($block)->setPageModel($this->getPageModel());
+            $b = $blockInstance->setModel($block)->setPageModel($this->getPageModel())->setTemplateModel($this);
             $this->registerBlockAssets($b);
             $childBlocks[] = $b;
         }

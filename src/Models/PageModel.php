@@ -18,11 +18,12 @@ class PageModel extends Model
     use HasSeoTags;
     protected $pageType = 'page';
     protected $pageTypeLevel = 'root';
-    public $translatable = ['title', 'slug', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
+    public $translatable = ['title', 'subtitle', 'slug', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
     protected $fillable = [
         'name',
         'type',
         'title',
+        'subtitle',
         'slug',
         'content',
         'template_id',

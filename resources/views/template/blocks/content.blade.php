@@ -1,4 +1,4 @@
-<div class="template-container" style="display: flex; width: 100%;">
+<div class="{{ $block->getCustomCss() }}" style="{{ $block->getCustomStyle() }}">
     @php
         $settings = $block->settings;
     @endphp

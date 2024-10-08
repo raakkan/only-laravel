@@ -30,7 +30,7 @@ trait HasBlockSettings
 
     public function setSettings($settings)
     {
-        if (is_array($settings) && array_key_exists('onlylaravel', $settings ?? [])) {
+        if (is_array($settings) && array_key_exists('onlylaravel', $settings)) {
             $onlylaravel = $settings['onlylaravel'];
             
             if (array_key_exists('design_variant', $onlylaravel) && $this->type == 'component') {
@@ -40,7 +40,12 @@ trait HasBlockSettings
 
         $this->setBlockSettings($settings);
 
-        $this->settings = $settings;
+        // Check if $settings is an array before iterating
+        if (is_array($settings)) {
+            foreach ($settings as $key => $value) {
+                Arr::set($this->settings, $key, $value);
+            }
+        }
 
         return $this;
     }
@@ -65,6 +70,26 @@ trait HasBlockSettings
             if ($this->checkSettingsEnabled('customStyle')) {
                 $settingsFields = array_merge($settingsFields, $this->getCustomStyleSettingFields());
             }
+
+            if ($this->checkSettingsEnabled('margin')) {
+                $settingsFields = array_merge($settingsFields, $this->getMarginSettingFields());
+            }
+
+            if ($this->checkSettingsEnabled('width')) {
+                $settingsFields = array_merge($settingsFields, $this->getWidthSettingFields());
+            }
+
+            if ($this->checkSettingsEnabled('height')) {
+                $settingsFields = array_merge($settingsFields, $this->getHeightSettingFields());
+            }
+            
+            if ($this->checkSettingsEnabled('border')) {
+                $settingsFields = array_merge($settingsFields, $this->getBorderSettingFields());
+            }
+
+            if ($this->checkSettingsEnabled('customAttribute')) {
+                $settingsFields = array_merge($settingsFields, $this->getCustomAttributeSettingFields());
+            }
         }
 
         if ($this->type == 'component' && method_exists($this, 'hasDesignVariants') && $this->hasDesignVariants()) {
@@ -76,7 +101,6 @@ trait HasBlockSettings
 
     public function storeDefaultSettingsToDatabase()
     {
-        // dd($this->getSettingFields(true));
         foreach ($this->getSettingFields(true) as $field) {
             if ($field instanceof Field && $this->hasFieldDefaultValue($field) && $this->hasModel()) {
 
@@ -86,7 +110,7 @@ trait HasBlockSettings
                 ]);
             }
 
-            if ($field instanceof Component && $field->hasChildComponentContainer()) {
+            if ($field instanceof Component && $field->hasChildComponentContainer(true)) {
                 $fileds = $field->getChildComponents();
 
                 foreach ($fileds as $filed) {

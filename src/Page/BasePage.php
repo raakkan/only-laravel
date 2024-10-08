@@ -87,7 +87,11 @@ class BasePage
             return;
         }
 
-        $page = $modelClass::create([
+        // Get fillable attributes
+        $fillable = (new $modelClass)->getFillable();
+
+        // Prepare data for creation
+        $data = [
             'name' => $this->name,
             'type' => $this->getPageType(),
             'title' => $this->title,
@@ -95,7 +99,12 @@ class BasePage
             'disabled' => $this->disabled,
             'template_id' => $this->getTemplateModel()->id ?? null,
             ...$this->getModelData(),
-        ]);
+        ];
+
+        // Filter data to only include fillable attributes
+        $filteredData = array_intersect_key($data, array_flip($fillable));
+
+        $page = $modelClass::create($filteredData);
 
         $this->setModel($page);
 

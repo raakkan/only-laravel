@@ -52,6 +52,7 @@ abstract class BaseBlock implements Arrayable
 
     protected $parent;
     protected $templateModel;
+    protected $otherCssClasses = '';
 
     public function getTemplateModel()
     {
@@ -75,16 +76,20 @@ abstract class BaseBlock implements Arrayable
         return $this;
     }
 
-    // public function __get($key)
-    // {
-    //     if ('settings' === $key) {
-    //         return $this->settings;
-    //     }
+    public function getOtherCssClasses()
+    {
+        return $this->otherCssClasses;
+    }
 
-    //     $value = Arr::get($this->settings, $key);
-    //     dd($value);
+    public function setOtherCssClasses($otherCssClasses)
+    {
+        $this->otherCssClasses = $otherCssClasses;
+        return $this;
+    }
 
-    //     return $value;
-    // }
-
+    public function addOtherCssClass($class)
+    {
+        $this->otherCssClasses .= ' ' . $class;
+        return $this;
+    }
 }

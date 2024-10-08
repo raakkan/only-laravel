@@ -48,7 +48,7 @@ class PageResource extends Resource
                     return false;
                  })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 TextInput::make('title')->required(),
-                TiptapEditor::make('content')->columnSpanFull(),
+                RichEditor::make('content')->columnSpanFull(),
                 TextInput::make('slug')->required(function (?Model $record){
                     if ($record && $record->name == 'home-page') {
                         return false;

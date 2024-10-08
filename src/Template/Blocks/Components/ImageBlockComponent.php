@@ -20,7 +20,7 @@ class ImageBlockComponent extends BlockComponent
 
     public function __construct()
     {
-        $this->backgroundSettings = false;
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function getBlockSettings()

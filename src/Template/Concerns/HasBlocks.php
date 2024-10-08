@@ -84,7 +84,7 @@ trait HasBlocks
     protected function getBlockCustomCssRecursive($block)
     {
         $css = '';
-
+        $css .= $block->getOtherCssClasses();
         if (method_exists($block, 'getCustomCss')) {
             $css .= $block->getCustomCss();
         }

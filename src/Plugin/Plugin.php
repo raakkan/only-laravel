@@ -34,6 +34,7 @@ class Plugin
     protected $version;
     protected $path;
     protected $namespace;
+    protected $isAutoloaded = false;
 
     public function __construct($name, $namespace, $label, $description, $version, $path)
     {
@@ -141,6 +142,10 @@ class Plugin
 
     public function autoload(): void
     {
+        if ($this->isAutoloaded) {
+            return;
+        }
+
         $path = $this->path . '/src';
 
         if (File::isDirectory($path)) {
@@ -148,10 +153,17 @@ class Plugin
             
             foreach ($files as $file) {
                 if (Str::endsWith($file->getFilename(), '.php')) {
-                    include $file->getPathname();
+                    include_once $file->getPathname();
                 }
             }
         }
+
+        $this->isAutoloaded = true;
+    }
+
+    public function isAutoloaded(): bool
+    {
+        return $this->isAutoloaded;
     }
 
     protected function getPluginClass()
@@ -167,3 +179,4 @@ class Plugin
         return new $pluginClass();
     }
 }
+

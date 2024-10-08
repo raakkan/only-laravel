@@ -31,12 +31,8 @@ abstract class BaseTemplate implements Arrayable
     use HasSource;
     use HasForPage;
     use HasBlockSettings;
-    use HasBackgroundSettings;
-    use HasTextSettings;
-    use HasPaddingSettings;
     use HasCustomStyleSettings;
     use HasPageModel;
-    use HasWidthSettings;
     use HasBlockBuilding;
     use HasBlockAssets;
     use ManageStyle;

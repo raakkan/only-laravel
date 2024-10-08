@@ -23,6 +23,7 @@ abstract class Block extends BaseBlock
 
     public function create($template, $parent = null)
     {
+        
         $order = $this->order;
         if ($parent) {
             $childCount = $template->blocks()->where('parent_id', $parent->id)->count();
@@ -40,9 +41,11 @@ abstract class Block extends BaseBlock
         ]);
         
         $this->setModel($model);
+        
         $this->storeDefaultSettingsToDatabase();
-
+        
         foreach ($this->children as $child) {
+            
             $child->create($template, $model);
         }
     }

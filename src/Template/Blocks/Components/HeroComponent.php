@@ -2,51 +2,26 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Actions\Action;
 use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasHeightSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 
 class HeroComponent extends BlockComponent
 {
-    use HasBackgroundSettings;
-    use HasHeightSettings;
-    use HasTextSettings;
     use HasTitle {
         getTitle as parentGetTitle;
         getSubtitle as parentGetSubtitle;
     }
     protected string $name = 'hero';
+    protected string $label = 'Hero';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';
     protected $view = 'only-laravel::template.components.hero';
 
     public function __construct()
     {
-        $this->enableHeightSettingOnly(['heightResponsiveSettings']);
-        $this->responsiveHeight([
-            'height' => 100,
-            'small' => 300,
-            'medium' => 400,
-            'large' => 500,
-            'extra_large' => 600,
-            '2_extra_large' => 700
-        ], [
-            'unit' => 'pixels',
-            'small' => 'pixels',
-            'medium' => 'pixels',
-            'large' => 'pixels',
-            'extra_large' => 'pixels',
-            '2_extra_large' => 'pixels'
-        ]   );
+        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function getBlockSettings()
@@ -95,7 +70,7 @@ class HeroComponent extends BlockComponent
         return $this->title ?? 'Hero Title';
     }
 
-    public function getDescription()
+    public function getSubtitle()
     {
         return $this->subtitle ?? 'Hero Subtitle';
     }

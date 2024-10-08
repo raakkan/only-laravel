@@ -15,8 +15,7 @@ trait ManagePageTypes
 
     public function getPageTypes()
     {
-        $this->pageTypes = array_merge($this->pageTypes, [$this->getDefaultPageType()]);
-        return $this->pageTypes;
+        return array_merge($this->pageTypes, [$this->getDefaultPageType()]);
     }
 
     public function getPageTypeModels()
