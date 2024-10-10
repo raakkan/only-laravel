@@ -26,11 +26,11 @@ class CreateLanguageLinesTable extends Migration
             $table->timestamps();
         });
 
-        if (!Schema::hasColumn('users', 'lang')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('lang')->default('en');
-            });
-        }
+        // if (!Schema::hasColumn('users', 'lang')) {
+        //     Schema::table('users', function (Blueprint $table) {
+        //         $table->string('lang')->default('en');
+        //     });
+        // }
     }
 
     /**

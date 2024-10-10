@@ -55,7 +55,7 @@ trait HasInstall
     {
         foreach ($this->beforeInstallCallbacks as $callback) {
             if (is_callable($callback)) {
-                call_user_func($callback);
+                call_user_func($callback, $this);
             }
         }
     }
@@ -64,7 +64,7 @@ trait HasInstall
     {
         foreach ($this->afterInstallCallbacks as $callback) {
             if (is_callable($callback)) {
-                call_user_func($callback);
+                call_user_func($callback, $this);
             }
         }
     }

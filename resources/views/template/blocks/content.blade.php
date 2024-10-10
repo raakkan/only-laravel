@@ -1,4 +1,5 @@
-<div class="{{ $block->getCustomCss() }}" style="{{ $block->getCustomStyle() }}">
+<div class="{{ $block->getCustomCss() }} {{ $block->getTemplateModel()->getContainerCssClasses() }}"
+    style="{{ $block->getCustomStyle() }}">
     @php
         $settings = $block->settings;
     @endphp

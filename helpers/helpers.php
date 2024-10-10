@@ -26,3 +26,12 @@ if (!function_exists('setting')) {
         return Setting::get($key, $default);
     }
 }
+
+if (!function_exists('trans_fallback')) {
+    function trans_fallback($key, $fallback, $replace = [], $locale = null)
+    {
+        $translation = trans($key, $replace, $locale);
+        
+        return $key === $translation ? $fallback : $translation;
+    }
+}

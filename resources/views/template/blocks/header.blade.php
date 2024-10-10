@@ -4,6 +4,6 @@
     @endphp
 
     @foreach ($childrens as $child)
-        {{ $child->render() }}
+        {!! $child->render() !!}
     @endforeach
 </header>
