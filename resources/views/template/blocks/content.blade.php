@@ -14,7 +14,7 @@
             @endif
 
             <main
-                class="{{ $block->sidebarPosition->value === 'both' ? 'w-full md:w-1/2 mx-0 md:mx-2 space-y-2' : 'w-full md:w-3/4 space-y-2' }}">
+                class="{{ $block->sidebarPosition->value === 'both' ? 'w-full md:w-1/2 mx-0 md:mx-2' : 'w-full md:w-3/4' }}">
                 @foreach ($block->getChildrenByLocation('default') as $blockComponent)
                     {!! $blockComponent->render() !!}
                 @endforeach

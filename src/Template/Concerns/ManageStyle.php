@@ -3,8 +3,8 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
+// TODO: dont include disabled blocks or components
 trait ManageStyle
 {
     public function buildCss()
@@ -49,7 +49,7 @@ trait ManageStyle
         $viewPaths = $this->getBlockViewPaths();
         
         foreach ($viewPaths as $viewPath) {
-            if (File::exists($viewPath)) {
+            if (File::isFile($viewPath)) {
                 $content = File::get($viewPath);
                 
                 // Extract all class attributes, including those with Blade syntax

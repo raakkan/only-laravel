@@ -17,10 +17,26 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        
         if ($request->user()) {
             if (!empty($request->user()->settings->lang)) {
                 app()->setLocale($request->user()->settings->lang);
             } else {
+                if(session()->has('locale')){
+                    app()->setLocale(session()->get('locale', 'en'));
+                }else {
+                    $Language = Language::getDefaultLanguage();
+                    if (!empty($Language)) {
+                        app()->setLocale($Language->locale);
+                    }else{
+                        app()->setLocale('en');
+                    }
+                }
+            }
+        }else {
+            if(session()->has('locale')){
+                app()->setLocale(session()->get('locale', 'en'));
+            }else {
                 $Language = Language::getDefaultLanguage();
                 if (!empty($Language)) {
                     app()->setLocale($Language->locale);
@@ -28,13 +44,6 @@ class LanguageMiddleware
                     app()->setLocale('en');
                 }
             }
-        }else {
-            $Language = Language::getDefaultLanguage();
-                if (!empty($Language)) {
-                    app()->setLocale($Language->locale);
-                }else{
-                    app()->setLocale('en');
-                }
         }
         return $next($request);
     }
