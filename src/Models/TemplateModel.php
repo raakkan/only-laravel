@@ -31,6 +31,11 @@ class TemplateModel extends Model
         return $template;
     }
 
+    public function getContainerCssClasses()
+    {
+        return $this->settings['onlylaravel']['container_css_classes'] ?? '';
+    }
+
     // return Cache::remember('template_' . $this->id, $this->cache_ttl, function () {
     //     return TemplateManager::getTemplate($this->name)->setModel($this->load('blocks'))->render();
     // });

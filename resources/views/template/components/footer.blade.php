@@ -15,7 +15,7 @@
             @endif
         </div>
         @if ($showSocialIcons)
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 mt-2 sm:mt-0">
                 @if ($socialLinks['facebook'])
                     <a href="{{ $socialLinks['facebook'] }}" target="_blank" rel="noopener noreferrer"
                         class="text-gray-400 hover:text-gray-600">

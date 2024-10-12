@@ -70,7 +70,7 @@ class PageTemplate extends BaseTemplate
 
     public function setBlockSettings($settings)
     {
-        if (array_key_exists('onlylaravel', $settings)) {
+        if (is_array($settings) && array_key_exists('onlylaravel', $settings)) {
             $onlylaravel = $settings['onlylaravel'];
             if (array_key_exists('header_content', $onlylaravel)) {
                 $this->headerContent($onlylaravel['header_content']);

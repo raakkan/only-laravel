@@ -40,6 +40,7 @@ class PageManager
                     }
                 }else{
                     $model = $pageType->getModel($slug);
+                    
                 }
             } else {
                 $defaultModel = $this->getDefaultPageTypeModel();
@@ -56,6 +57,7 @@ class PageManager
                 break;
             }
         }
+        
         if (! $model) {
             return abort(404);
         }

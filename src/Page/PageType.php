@@ -55,8 +55,7 @@ class PageType
                 return $model;
             }
         }
-        
-        abort(404, 'Page type model not found');
+        return null;
     }
 
     public function getModelClass()
