@@ -4,16 +4,20 @@ namespace Raakkan\OnlyLaravel\Page;
 
 use App\Livewire\Pages\HomePage;
 use Raakkan\OnlyLaravel\Models\PageModel;
+use Raakkan\OnlyLaravel\Page\Concerns\HasSlug;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
-use Raakkan\OnlyLaravel\Support\Concerns\HasSlug;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Page\Concerns\HasPageType;
 use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
 use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
+use Raakkan\OnlyLaravel\Page\Concerns\HasPageModel;
+use Raakkan\OnlyLaravel\Page\Concerns\HasJsonSchema;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Page\Concerns\HasPageEditable;
+use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRoute;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
+use Raakkan\OnlyLaravel\Page\Concerns\ManagesMiddleware;
 
 // add option for disable some translation pages ex: en, ta 
 // for example, if we have a page with name "Home" and we want to disable it for some languages, we can do it by 
@@ -28,55 +32,15 @@ class BasePage
     use HasTemplate;
     use Disableable;
     use Deletable;
-    use HasPageType;
     use HasPageEditable;
-
-    protected $model;
-    protected $modelClass = PageModel::class;
-    protected $modelData = [];
+    use ManagesMiddleware;
+    use ManagePageRoute;
+    use HasPageModel;
+    use HasJsonSchema;
 
     public function __construct($name)
     {
         $this->name = $name;
-    }
-
-    public function setModel($model, $save = true)
-    {
-        $this->model = $model;
-        
-        return $this;
-    }
-
-    public function getModel()
-    {
-        return $this->model;
-    }
-
-    public function hasModel()
-    {
-        return isset($this->model);
-    }
-
-    public function getModelClass()
-    {
-        return $this->modelClass;
-    }
-
-    public function setModelClass($modelClass)
-    {
-        $this->modelClass = $modelClass;
-        return $this;
-    }
-
-    public function setModelData($modelData)
-    {
-        $this->modelData = $modelData;
-        return $this;
-    }
-
-    public function getModelData()
-    {
-        return $this->modelData;
     }
 
     public function create()
@@ -93,7 +57,6 @@ class BasePage
         // Prepare data for creation
         $data = [
             'name' => $this->name,
-            'type' => $this->getPageType(),
             'title' => $this->title,
             'slug' => trim($this->slug, '/'),
             'disabled' => $this->disabled,

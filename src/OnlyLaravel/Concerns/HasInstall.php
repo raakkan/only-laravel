@@ -18,15 +18,15 @@ trait HasInstall
         
         $this->collectAndStoreSettingPages();
 
-        $plugins = PluginManager::loadPlugins();
-        foreach ($plugins as $plugin) {
-            $plugin->autoload();
-            $plugin->migrate();
-            $plugin->createMenus();
-            $plugin->createTemplates();
-            $plugin->createPages();
-            PluginManager::activatePlugin($plugin->getName());
-        }
+        // $plugins = PluginManager::loadPlugins();
+        // foreach ($plugins as $plugin) {
+        //     $plugin->autoload();
+        //     $plugin->migrate();
+        //     $plugin->createMenus();
+        //     $plugin->createTemplates();
+        //     $plugin->createPages();
+        //     PluginManager::activatePlugin($plugin->getName());
+        // }
 
         MenuManager::createMenus();
         TemplateManager::createTemplates();

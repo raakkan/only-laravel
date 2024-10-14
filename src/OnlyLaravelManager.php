@@ -10,7 +10,6 @@ class OnlyLaravelManager
 {
     use HasInstall;
     use CollectsSettingPages;
-
     protected $filamentPages = [];
     protected $filamentResources = [];
     protected $filamentNavigationGroups = [];

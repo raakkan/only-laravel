@@ -13,6 +13,7 @@ use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
 use Raakkan\OnlyLaravel\Template\Concerns\ManagesDesignVariants;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\HeroComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
@@ -65,11 +66,18 @@ class TemplateManager
         }
 
         $blocks = collect(File::allFiles($path))->map(function ($file) use ($namespace) {
-            $className = $namespace . '\\' . $file->getFilenameWithoutExtension();
-            $block = new $className();
-            $block->source($namespace);
-            return $block;
-        });
+            $relativePath = $file->getRelativePath();
+            $subNamespace = str_replace('/', '\\', $relativePath);
+            $className = $namespace . ($subNamespace ? '\\' . $subNamespace : '') . '\\' . $file->getFilenameWithoutExtension();
+            
+            if (class_exists($className)) {
+                $block = new $className();
+                $block->source($namespace . ($subNamespace ? '\\' . $subNamespace : ''));
+                return $block;
+            }
+            
+            return null;
+        })->filter();
 
         return $blocks->all();
     }
@@ -99,6 +107,7 @@ class TemplateManager
             FooterBlockComponent::make(),
             DivBlock::make(),
             DynamicHeroComponent::make(),
+            PageContent::make(),
         ];
     }
 }

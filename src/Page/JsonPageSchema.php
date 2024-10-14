@@ -70,11 +70,11 @@ class JsonPageSchema
         return "<script type=\"application/ld+json\">\n{$json}\n</script>";
     }
 
-    public function generateJsonLd($page, $pageType)
+    public function generateJsonLd($pageModel, $page)
     {
         foreach ($this->dataInstructions as $key => $instruction) {
-            if (isset($instruction['instruction']) && is_callable($instruction['instruction'])) {
-                $this->schema['@graph'][0][$key] = call_user_func($instruction['instruction'], $page, $pageType);
+            if (isset($instruction) && is_callable($instruction)) {
+                $this->schema['@graph'][0][$key] = call_user_func($instruction, $pageModel, $page);
             }
         }
 

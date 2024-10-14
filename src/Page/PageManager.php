@@ -4,83 +4,27 @@ namespace Raakkan\OnlyLaravel\Page;
 
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePages;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePageTypes;
+use Illuminate\Support\Facades\App;
+use Illuminate\Pipeline\Pipeline;
 
 class PageManager
 {
     use ManagePages;
-    use ManagePageTypes;
+    private $app;
 
-    public function render($slug = null, $level = 'root')
+    protected $globalMiddleware = ['web'];
+
+    public function __construct($app)
     {
-        $model = null;
-        $pageTypes = $this->getPageTypesByLevel($level);
-        
-        if (count($pageTypes) == 0) {
-            return abort(404);
+        $this->app = $app;
+    }
+
+    public function registerPageRoutes(){
+        $pages = $this->getPages();
+
+        foreach ($pages as $page) {
+            $page->registerRoute($this);
         }
-
-        foreach ($pageTypes as $pageType) {
-            if ($slug) {
-                $slug = trim($slug, '/');
-                
-                if ($pageType->isExternalModelPage($slug)) {
-                    $externalModelPage = $pageType->getExternalModelPage($slug);
-
-                    if($externalModelPage->isRedirectable()){
-                        return $externalModelPage->redirect();
-                    }
-
-                    $externalPageType = $pageType->getExternalPageType($slug);
-                    
-                    if($externalPageType){
-                        $pageType = $externalPageType;
-                        $model = $pageType->getModel($slug);
-                    }else{
-                        return abort(404);
-                    }
-                }else{
-                    $model = $pageType->getModel($slug);
-                    
-                }
-            } else {
-                $defaultModel = $this->getDefaultPageTypeModel();
-                if ($defaultModel) {
-                    $model = $defaultModel::where('name', 'home-page')->with('template.blocks')->first();
-                    if(!$model){
-                        return abort(404);
-                    }
-                    $pageType = $this->getDefaultPageType();
-                }
-            }
-
-            if ($model) {
-                break;
-            }
-        }
-        
-        if (! $model) {
-            return abort(404);
-        }
-
-        if ($model->disabled) {
-            return abort(404);
-        }
-
-        $page = $this->getPageByName($model->getName());
-        
-        if ($page) {
-            $page->setModel($model);
-            
-            if (!$page->hasView()) {
-                $page->setView($pageType->getDefaultView() ?? $this->getDefaultPageTypeView());
-            }
-        }else{
-            $page = new Page($model->getName());
-            $page->setView($pageType->getDefaultView() ?? $this->getDefaultPageTypeView());
-            $page->setModel($model);
-        }
-        
-        return $page->render();
     }
 
     public function pageIsDeletable(string $name): bool
@@ -123,5 +67,31 @@ class PageManager
             return false;
         }
         return $page->isSlugEditable();
+    }
+
+    public function addGlobalMiddleware(string $middleware): void
+    {
+        if (!in_array($middleware, $this->globalMiddleware)) {
+            $this->globalMiddleware[] = $middleware;
+        }
+    }
+
+    public function removeGlobalMiddleware(string $middleware): void
+    {
+        if ($middleware !== 'web') {
+            $this->globalMiddleware = array_filter($this->globalMiddleware, function ($item) use ($middleware) {
+                return $item !== $middleware;
+            });
+        }
+    }
+
+    public function setGlobalMiddleware(array $middleware): void
+    {
+        $this->globalMiddleware = array_unique(array_merge(['web'], $middleware));
+    }
+
+    public function getGlobalMiddleware(): array
+    {
+        return $this->globalMiddleware;
     }
 }

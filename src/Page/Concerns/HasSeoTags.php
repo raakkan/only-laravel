@@ -1,13 +1,13 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Support\Concerns;
+namespace Raakkan\OnlyLaravel\Page\Concerns;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 
 trait HasSeoTags
 {
     public function getSeoTags()
     {
-        $pageType = PageManager::findPageTypeByType($this->pageType);
+        $page = PageManager::getPageByName($this->name);
         
         $seoTags = '';
 
@@ -20,11 +20,21 @@ trait HasSeoTags
             $seoTags .= '<meta property="og:image" content="' . $this->getFeaturedImageUrl() . '">';
         }
 
-        $slugUrl = $this->name == 'home-page' ? url('/') : $pageType->generateUrl($this->slug);
+        if($page){
+            $slugUrl = $page->generateUrl($this->slug);
+        }else{
+            $slugUrl = url($this->slug);
+        }
         
         $seoTags .= '<link rel="canonical" href="' . $slugUrl . '">';
         $seoTags .= '<meta property="og:locale" content="' . app()->getLocale() . '">';
-        $seoTags .= $pageType->generateJsonLd($this)->toScriptTag();
+
+        if($page){
+            $jsonLd = $page->generateJsonLd($this, $page);
+            if($jsonLd){
+                $seoTags .= $jsonLd->toScriptTag();
+            }
+        }
         
         foreach ($this->generateOpenGraphTags($slugUrl) as $tag => $content) {
             $seoTags .= '<meta property="' . $tag . '" content="' . $content . '">';

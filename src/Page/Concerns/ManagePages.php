@@ -8,6 +8,18 @@ use Raakkan\OnlyLaravel\Models\PageModel;
 trait ManagePages
 {
     protected $pages = [];
+    protected $defaultPageView = 'only-laravel::pages.default-page';
+
+    public function useDefaultPageView($view)
+    {
+        $this->defaultPageView = $view;
+        return $this;
+    }
+
+    public function getDefaultPageView()
+    {
+        return $this->defaultPageView;
+    }
 
     public function getPageByName($name)
     {

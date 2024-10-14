@@ -9,19 +9,16 @@ use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
-use Raakkan\OnlyLaravel\Support\Concerns\HasSeoTags;
+use Raakkan\OnlyLaravel\Page\Concerns\HasSeoTags;
 
 class PageModel extends Model
 {
     use SoftDeletes;
     use HasTranslations;
     use HasSeoTags;
-    protected $pageType = 'page';
-    protected $pageTypeLevel = 'root';
     public $translatable = ['title', 'subtitle', 'slug', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
     protected $fillable = [
         'name',
-        'type',
         'title',
         'subtitle',
         'slug',
@@ -88,22 +85,6 @@ class PageModel extends Model
         return $this->name;
     }
 
-    public static function createWithData($data)
-    {
-        $model = new static;
-        $model->name = $data['name'];
-        $model->title = $data['title'];
-        $model->slug = $data['slug'];
-        $model->content = $data['content'];
-        $model->template_id = $data['template_id'];
-        $model->settings = $data['settings'];
-        $model->indexable = $data['indexable'];
-        $model->disabled = $data['disabled'];
-        $model->seo_title = $data['seo_title'];
-
-        return $model;
-    }
-
     public static function findBySlug($slug)
     {
         $query = static::query()->with('template.blocks');
@@ -143,40 +124,18 @@ class PageModel extends Model
         }
     }
 
-    public function setPageType($pageType)
-    {
-        $this->pageType = $pageType;
-        return $this;
-    }
-
-    public function setPageTypeLevel($pageTypeLevel)
-    {
-        $this->pageTypeLevel = $pageTypeLevel;
-        return $this;
-    }
-
-    public function getPageType()
-    {
-        return $this->pageType;
-    }
-
-    public function getPageTypeLevel()
-    {
-        return $this->pageTypeLevel;
-    }
-
-    public function getSlugUrl()
-    {
-        $pageType = app('page-manager')->findPageTypeByType($this->pageType);
+    // public function getSlugUrl()
+    // {
+    //     $pageType = app('page-manager')->findPageTypeByType($this->pageType);
         
-        if ($this->name == 'home-page') {
-            return url('/');
-        }
+    //     if ($this->name == 'home-page') {
+    //         return url('/');
+    //     }
 
-        if ($pageType) {
-            return $pageType->generateUrl($this->slug);
-        }
+    //     if ($pageType) {
+    //         return $pageType->generateUrl($this->slug);
+    //     }
 
-        return url($this->slug);
-    }
+    //     return url($this->slug);
+    // }
 }

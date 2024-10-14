@@ -22,6 +22,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
         app('plugin-manager')->bootActivatedPlugins();
+        app('page-manager')->registerPageRoutes();
         Livewire::component('only-laravel::installer.livewire.installer', \Raakkan\OnlyLaravel\Installer\Livewire\Installer::class);
     }
 
@@ -38,7 +39,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('page-manager', function () {
-            return new PageManager();
+            return new PageManager($this->app);
         });
 
         $this->app->singleton('menu-manager', function () {

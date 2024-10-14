@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Support\Concerns;
+namespace Raakkan\OnlyLaravel\Page\Concerns;
 
 trait HasSlug
 {
@@ -25,5 +25,10 @@ trait HasSlug
    public function slug(string | array $slug): self
    {
        return $this->setSlug($slug);
+   }
+
+   public function generateUrl(string | array $slug): string
+   {
+       return url($slug);
    }
 }

@@ -30,7 +30,10 @@ if (!function_exists('setting')) {
 if (!function_exists('trans_fallback')) {
     function trans_fallback($key, $fallback, $replace = [], $locale = null)
     {
-        $translation = trans($key, $replace, $locale);
+        if (!app()->bound('translator')) {
+            return $fallback;
+        }
+        $translation = __($key, $replace, $locale);
         
         return $key === $translation ? $fallback : $translation;
     }

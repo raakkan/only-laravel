@@ -10,24 +10,36 @@ trait ManagePageRender
 {
     protected $view;
 
-    public function render()
+    public function render($slug = '')
     {
-        $page = $this->getModel();
-
-        if (!$this->view) {
+        if ($slug == '/') {
+            $model = $this->getHomeModel();
+        } else {
+            try {
+                $model = $this->modelClass::findBySlug($slug);
+            } catch (\Exception $e) {
+                $model = '';
+            }
+        }
+        
+        if (!$model) {
             return abort(404);
         }
 
-        if (is_subclass_of($this->view, \Livewire\Component::class)) {
-            return $this->renderLivewire($this->view, ['page' => $page]);
+        if ($this->view) {
+            return view($this->view, [
+                'page' => $model,
+            ]);
         }
 
-        if (! view()->exists($this->view)) {
+        $view = app('page-manager')->getDefaultPageView();
+
+        if (! view()->exists($view)) {
             return abort(404);
         }
         
-        return view($this->view, [
-            'page' => $page,
+        return view($view, [
+            'page' => $model,
         ]);
     }
 
@@ -47,9 +59,16 @@ trait ManagePageRender
     {
         return isset($this->view);
     }
+    public function getHomeModel()
+    {
+        return $this->modelClass::where('name', 'home-page')->with('template.blocks')->first();
+    }
 
     public function renderLivewire($component, $componentData = [])
     {
+        // if (is_subclass_of($this->view, \Livewire\Component::class)) {
+        //     return $this->renderLivewire($this->view, ['page' => $page]);
+        // }
         $html = null;
 
         $layoutConfig = SupportPageComponents::interceptTheRenderOfTheComponentAndRetreiveTheLayoutConfiguration(function () use (&$html, $component, $componentData) {
