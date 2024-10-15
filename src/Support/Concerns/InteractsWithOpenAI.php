@@ -111,8 +111,13 @@ trait InteractsWithOpenAI
 
     protected function getFieldActions($field, $withState = false): array
     {
+        $apiKey = null;
         $actions = [];
-        $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
+
+        if (setting('onlylaravel.ai.openai_api_key')) {
+            $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
+        }
+        
         if ($apiKey && isset($apiKey) && $this->apiKeyIsValid($apiKey)) {
             $actions[] = Action::make('ai')
                 ->label($withState ? 'Regenerate With AI' : 'Generate With AI')

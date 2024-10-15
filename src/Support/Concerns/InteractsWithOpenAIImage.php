@@ -126,9 +126,20 @@ trait InteractsWithOpenAIImage
         ];
     }
 
-    protected function getImageGenerationAction($field, $directory): Action
+    protected function getImageGenerationAction($field, $directory)
     {
-        return Action::make('generateImage')
+        $actions = [];
+        if (setting('onlylaravel.ai.openai_api_key')) {
+            $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
+            if(!$this->apiKeyIsValid($apiKey))
+            {
+                return [];
+            }
+        }else{
+            return [];
+        }
+
+        $actions[] = Action::make('generateImage')
             ->label('Generate Image with AI')
             ->action(function (array $data) use ($field, $directory) {
                 $generatedImagePath = $this->generateImageWithAI($data, $directory, $field);
@@ -150,5 +161,6 @@ trait InteractsWithOpenAIImage
             })
             ->form($this->getGenerateImageWithAIFormSchema())
             ->modalSubmitActionLabel('Generate Image');
+        return $actions;
     }
 }

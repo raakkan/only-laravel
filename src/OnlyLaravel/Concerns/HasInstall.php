@@ -18,7 +18,8 @@ trait HasInstall
         
         $this->collectAndStoreSettingPages();
 
-        //TODO: storage link
+        //TODO: storage link and php artisan icons:cache and artisan optimize
+        // artisan filament:cache-components
         // $plugins = PluginManager::loadPlugins();
         // foreach ($plugins as $plugin) {
         //     $plugin->autoload();
