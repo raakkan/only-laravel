@@ -42,19 +42,19 @@ class PageResource extends Resource
             ->schema([
                 TextInput::make('name')->unique(ignoreRecord: true)->live(onBlur: true)->required()->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                 ->disabled(function (?Model $record) { 
-                    if ($record && $record->name == 'home-page') {
+                    if ($record && !app('page-manager')->getPageNameIsEditable($record->name)) {
                         return true;
                     }
                     return false;
                  })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 TextInput::make('title')->required(),
                 RichEditor::make('content')->columnSpanFull(),
-                TextInput::make('slug')->required(function (?Model $record){
-                    if ($record && $record->name == 'home-page') {
-                        return false;
+                TextInput::make('slug')->required()->disabled(function (?Model $record) { 
+                    if ($record && !app('page-manager')->getPageSlugIsEditable($record->name)) {
+                        return true;
                     }
-                    return true;
-                })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
+                    return false;
+                 })->rules('regex:/^[a-zA-Z0-9_-]+$/'),
                 Select::make('template_id')->relationship(
                     name: 'template',
                     titleAttribute: 'label',

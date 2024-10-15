@@ -25,7 +25,6 @@ class PageModel extends Model
         'content',
         'template_id',
         'settings',
-        'indexable',
         'disabled',
         'seo_title',
         'seo_description',
@@ -35,7 +34,6 @@ class PageModel extends Model
 
     protected $casts = [
         'settings' => 'array',
-        'indexable' => 'boolean',
         'disabled' => 'boolean',
         'featured_image' => 'array',
     ];

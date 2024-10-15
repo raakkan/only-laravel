@@ -30,4 +30,18 @@ trait HasPageEditable
 
         return $this;
     }
+
+    public function disableNameEditable(): self
+    {
+        $this->isNameEditable = false;
+
+        return $this;
+    }
+
+    public function disableSlugEditable(): self
+    {
+        $this->isSlugEditable = false;
+
+        return $this;
+    }
 }

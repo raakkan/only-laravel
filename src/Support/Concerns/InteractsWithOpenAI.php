@@ -14,15 +14,18 @@ trait InteractsWithOpenAI
     {
         $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
         
-        if (!$this->apiKeyIsValid($apiKey)) {
-            Notification::make()
-                ->title('Error')
-                ->body('Invalid OpenAI API key. Please check your settings.')
-                ->danger()
-                ->send();
-            return [];
+        $requiredKeys = ['ai_model', 'ai_prompt', 'max_tokens', 'temperature'];
+        foreach ($requiredKeys as $key) {
+            if (!isset($data[$key])) {
+                Notification::make()
+                    ->title('Error')
+                    ->body("Missing required field: {$key}")
+                    ->danger()
+                    ->send();
+                return '';
+            }
         }
-        
+
         $model = $data['ai_model'];
         $prompt = $data['ai_prompt'];
         $maxTokens = is_string($data['max_tokens']) ? intval($data['max_tokens']) : $data['max_tokens'];
@@ -106,14 +109,14 @@ trait InteractsWithOpenAI
         ];
     }
 
-    protected function getFieldActions($field): array
+    protected function getFieldActions($field, $withState = false): array
     {
         $actions = [];
-        $apiKey = setting('onlylaravel.ai.openai_api_key');
-        if ($apiKey && isset($apiKey)) {
+        $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
+        if ($apiKey && isset($apiKey) && $this->apiKeyIsValid($apiKey)) {
             $actions[] = Action::make('ai')
-                ->label('Regenerate With AI')
-                ->action(function (array $data) use ($field) {
+                ->label($withState ? 'Regenerate With AI' : 'Generate With AI')
+                ->action(function (array $data) use ($field)  {
                     $generatedContent = $this->generateWithAI($data, false);
                     
                     if (empty($generatedContent)) {
@@ -122,14 +125,14 @@ trait InteractsWithOpenAI
                             ->body('Failed to generate content. Please try again.')
                             ->danger()
                             ->send();
-                        Log::error('Failed to generate content with AI: ' . json_encode($generatedContent));
+                        Log::error('Failed to generate content with AI: ' . json_decode($generatedContent));
                         return;
                     }
-                    $currentFormData = $this->form->getState();
-                    $currentFormData[$field] = $generatedContent;
-                    $this->form->fill($currentFormData);
+                    $this->form->fill([
+                        $field => $generatedContent,
+                    ]);
                 })
-                ->form($this->getGenerateWithAIFormSchema($this->buildPromptForField($field)))
+                ->form($this->getGenerateWithAIFormSchema($withState ? $this->buildPromptForField($field) : null))
                 ->modalSubmitActionLabel('Generate');
         }
         return $actions;

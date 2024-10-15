@@ -24,4 +24,11 @@ trait Deletable
     {
         return $this->deletable;
     }
+
+    public function disableDeletable()
+    {
+        $this->deletable = false;
+
+        return $this;
+    }
 }

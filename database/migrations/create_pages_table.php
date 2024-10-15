@@ -16,7 +16,6 @@ return new class extends Migration
             $table->json('subtitle')->nullable();
             $table->json('slug');
             $table->json('content')->nullable();
-            $table->boolean('indexable')->default(true);
             $table->boolean('disabled')->default(false);
             $table->json('seo_title')->nullable();
             $table->json('seo_description')->nullable();
@@ -29,8 +28,6 @@ return new class extends Migration
 
             $table->foreign('template_id')->references('id')->on('templates')->nullOnDelete();
         });
-
-        DB::statement('CREATE UNIQUE INDEX pages_name_slug_en_unique ON pages (name, (CAST(JSON_EXTRACT(slug, "$.en") AS CHAR(255))))');
     }
 
     public function down(): void

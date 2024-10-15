@@ -18,6 +18,7 @@ trait HasInstall
         
         $this->collectAndStoreSettingPages();
 
+        //TODO: storage link
         // $plugins = PluginManager::loadPlugins();
         // foreach ($plugins as $plugin) {
         //     $plugin->autoload();

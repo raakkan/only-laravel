@@ -43,7 +43,7 @@ class PageManager
         $page = $this->getPageByName($name);
 
         if(! $page) {
-            return false;
+            return true;
         }
        
         return $page->isDisableable();
@@ -54,7 +54,7 @@ class PageManager
         $page = $this->getPageByName($name);
 
         if(! $page) {
-            return false;
+            return true;
         }
         return $page->isNameEditable();
     }
@@ -64,7 +64,7 @@ class PageManager
         $page = $this->getPageByName($name);
 
         if(! $page) {
-            return false;
+            return true;
         }
         return $page->isSlugEditable();
     }
