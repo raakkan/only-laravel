@@ -6,6 +6,7 @@ use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\UI\Components\UI;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Filament\Forms\Components\BaseFileUpload;
 use Raakkan\OnlyLaravel\Plugin\PluginManager;
@@ -18,6 +19,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         $this->registerLivewireComponents();
