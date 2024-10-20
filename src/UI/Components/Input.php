@@ -26,6 +26,7 @@ class Input extends Component
         // Slots
         public mixed $prepend = null,
         public mixed $append = null,
+        public mixed $labelRight = null,  // New slot for label right content
         // Validations
         public ?string $errorField = null,
         public ?string $errorClass = 'text-red-500 label-text-alt p-1',
@@ -60,21 +61,28 @@ class Input extends Component
         return <<<'BLADE'
             <div>
                 @php
-                    // Wee need this extra step to support models arrays. Ex: wire:model="emails.0"  , wire:model="emails.1"
+                    // We need this extra step to support models arrays. Ex: wire:model="emails.0"  , wire:model="emails.1"
                     $uuid = $uuid . $modelName()
                 @endphp
 
                 {{-- STANDARD LABEL --}}
                 @if($label && !$inline)
-                    <label for="{{ $uuid }}" class="pt-0 label label-text font-semibold">
-                        <span>
-                            {{ $label }}
+                    <div class="flex justify-between items-center">
+                        <label for="{{ $uuid }}" class="pt-0 label label-text font-semibold">
+                            <span>
+                                {{ $label }}
 
-                            @if($attributes->get('required'))
-                                <span class="text-error">*</span>
-                            @endif
-                        </span>
-                    </label>
+                                @if($attributes->get('required'))
+                                    <span class="text-error">*</span>
+                                @endif
+                            </span>
+                        </label>
+                        @if($labelRight)
+                            <div class="text-sm text-gray-500">
+                                {{ $labelRight }}
+                            </div>
+                        @endif
+                    </div>
                 @endif
 
                 {{-- PREFIX/SUFFIX/PREPEND/APPEND CONTAINER --}}
@@ -200,6 +208,6 @@ class Input extends Component
                     <div class="{{ $hintClass }}" x-classes="label-text-alt text-gray-400 py-1 pb-0">{{ $hint }}</div>
                 @endif
             </div>
-            BLADE;
+        BLADE;
     }
 }

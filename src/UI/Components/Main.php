@@ -35,7 +35,7 @@ class Main extends Component
                         "max-sm:drawer-end" => $sidebar?->attributes['right-mobile'],
                     ])>
                         <input id="{{ $sidebar?->attributes['drawer'] }}" type="checkbox" class="drawer-toggle" />
-                        <div {{ $content->attributes->class(["drawer-content w-full mx-auto p-5 lg:px-10 lg:py-5"]) }}>
+                        <div {{ $content->attributes->class(["drawer-content w-full mx-auto p-2 lg:px-10 lg:py-5"]) }}>
                             <!-- MAIN CONTENT -->
                             {{ $content }}
                         </div>

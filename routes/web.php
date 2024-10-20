@@ -4,8 +4,8 @@ use App\Livewire\Admin\Admin;
 use Illuminate\Support\Facades\Route;
 use Raakkan\OnlyLaravel\Installer\Livewire\Installer;
 
-Route::get('admin', Admin::class)->name('installer')
-    ->middleware(['web']);
+// Route::get('admin', Admin::class)->name('installer')
+//     ->middleware(['web']);
 
 Route::get('installer', Installer::class)->name('installer')
     ->middleware(['web']);
