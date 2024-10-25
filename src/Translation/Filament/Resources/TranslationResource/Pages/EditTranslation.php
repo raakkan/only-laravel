@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Translation\Filament\Resources\TranslationResource\Pages;
 
-use Raakkan\OnlyLaravel\Translation\Filament\Resources\TranslationResource;
 use Filament\Resources\Pages\EditRecord;
+use Raakkan\OnlyLaravel\Translation\Filament\Resources\TranslationResource;
 
 class EditTranslation extends EditRecord
 {

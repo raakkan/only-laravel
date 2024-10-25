@@ -2,19 +2,23 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Select;
+use Illuminate\Support\Arr;
 
 trait HasBorderSettings
 {
     protected $borderSettings = true;
+
     protected $borderRadiusSettings = true;
+
     protected $borderWidthSettings = true;
+
     protected $borderColorSettings = true;
+
     protected $borderStyleSettings = true;
 
     public function getBorder($name = 'border')
@@ -22,6 +26,7 @@ trait HasBorderSettings
         if ($name == 'borderAll') {
             return Arr::get($this->settings, 'onlylaravel.border', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.border.$name");
     }
 
@@ -73,10 +78,11 @@ trait HasBorderSettings
             'color' => $color,
             'style' => $style,
         ]);
+
         return $this;
     }
 
-    public function enableBorderSettingOnly(array | string  $setting = 'borderSettings')
+    public function enableBorderSettingOnly(array|string $setting = 'borderSettings')
     {
         $this->borderSettings = false;
         $this->borderRadiusSettings = false;
@@ -88,6 +94,7 @@ trait HasBorderSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return;
         }
 
@@ -100,6 +107,7 @@ trait HasBorderSettings
 
         if (is_array($border) && array_key_exists('radius', $border) && array_key_exists('width', $border)) {
             $styles = $this->generateBorderStyles($className, $border);
+
             return $styles;
         }
     }
@@ -109,10 +117,10 @@ trait HasBorderSettings
         $styles = [];
 
         $styles[] = ".$className {";
-        $styles[] = "border-radius: " . ($border['radius'] ?? '0') . 'rem;';
-        $styles[] = "border-width: " . ($border['width'] ?? '0') . 'rem;';
-        $styles[] = "border-color: " . ($border['color'] ?? '#000000') . ';';
-        $styles[] = "border-style: " . ($border['style'] ?? 'none') . ';';
+        $styles[] = 'border-radius: '.($border['radius'] ?? '0').'rem;';
+        $styles[] = 'border-width: '.($border['width'] ?? '0').'rem;';
+        $styles[] = 'border-color: '.($border['color'] ?? '#000000').';';
+        $styles[] = 'border-style: '.($border['style'] ?? 'none').';';
         $styles[] = '} ';
 
         return implode('', $styles);

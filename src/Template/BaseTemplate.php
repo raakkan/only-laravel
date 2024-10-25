@@ -3,39 +3,33 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
-use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
-use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
-use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
-use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
+use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
 use Raakkan\OnlyLaravel\Template\Concerns\ManageTemplateParent;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
 
 abstract class BaseTemplate implements Arrayable
 {
-    use Makable;
-    use HasName;
-    use HasLabel;
+    use HasBlockAssets;
+    use HasBlockBuilding;
     use HasBlocks;
     use HasBlockSettings;
     use HasCustomStyleSettings;
+    use HasLabel;
+    use HasName;
     use HasPageModel;
-    use HasBlockBuilding;
-    use HasBlockAssets;
+    use Makable;
     use ManageStyle;
     use ManageTemplateParent;
+
     protected $model;
 
     public function initializeFromCachedModel($model)
@@ -51,16 +45,18 @@ abstract class BaseTemplate implements Arrayable
         $this->model = $model;
 
         $this->setSettings($this->model->settings);
+
         return $this->makeBlocks($templateBlocks, $blocks);
     }
 
     public function setModel($model, $save = true)
     {
         $this->model = $model;
-        
-        if($save) {
+
+        if ($save) {
             $this->setModelData();
         }
+
         return $this;
     }
 
@@ -78,15 +74,16 @@ abstract class BaseTemplate implements Arrayable
     {
         $this->name = $this->model->name;
         $this->setSettings($this->model->settings);
-        
+
         $blocks = [];
         foreach ($this->model->blocks()->with('children')->where('parent_id', null)->where('disabled', 0)->get() as $block) {
             $themeBlock = TemplateManager::getBlockByName($block->name);
-            
+
             $blocks[] = $themeBlock->setModel($block);
         }
-        
+
         $this->blocks = $blocks;
+
         return $this;
     }
 

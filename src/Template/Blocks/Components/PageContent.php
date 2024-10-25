@@ -3,13 +3,15 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
 use Illuminate\Support\Facades\Blade;
-use Raakkan\OnlyLaravel\Template\Blocks\Block;
 
 class PageContent extends BlockComponent
 {
     protected string $name = 'page-content';
+
     protected string $label = 'Page Content';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
 
     public function __construct()

@@ -10,8 +10,7 @@ class Toast extends Component
 {
     public function __construct(
         public string $position = 'toast-top toast-end'
-    ) {
-    }
+    ) {}
 
     public function render(): View|Closure|string
     {

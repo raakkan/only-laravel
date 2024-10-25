@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 /**
- * This component is a copy of Input::class modified with a 
+ * This component is a copy of Input::class modified with a
  * input type toggle between 'password' and 'text'.
  */
 class Password extends Component
@@ -40,16 +40,16 @@ class Password extends Component
         public ?bool $omitError = false,
         public ?bool $firstErrorOnly = false,
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
 
         // Cannot use a left icon when password toggle should be shown on the left side.
-        if (($this->icon && !$this->right) && !$this->onlyPassword) {
-            throw new Exception("Cannot use `icon` without providing `right` or `onlyPassword`.");
+        if (($this->icon && ! $this->right) && ! $this->onlyPassword) {
+            throw new Exception('Cannot use `icon` without providing `right` or `onlyPassword`.');
         }
 
         // Cannot use a right icon when password toggle should be shown on the right side.
-        if (($this->iconRight && $this->right) && !$this->onlyPassword) {
-            throw new Exception("Cannot use `iconRight` when providing `right` and not providing `onlyPassword`.");
+        if (($this->iconRight && $this->right) && ! $this->onlyPassword) {
+            throw new Exception('Cannot use `iconRight` when providing `right` and not providing `onlyPassword`.');
         }
     }
 
@@ -65,12 +65,12 @@ class Password extends Component
 
     public function placeToggleLeft(): bool
     {
-        return (!$this->icon && !$this->right) && !$this->onlyPassword;
+        return (! $this->icon && ! $this->right) && ! $this->onlyPassword;
     }
 
     public function placeToggleRight(): bool
     {
-        return (!$this->iconRight && $this->right) && !$this->onlyPassword;
+        return (! $this->iconRight && $this->right) && ! $this->onlyPassword;
     }
 
     public function render(): View|Closure|string

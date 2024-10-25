@@ -18,18 +18,18 @@ class ImageLibrary extends Component
         public ?string $hint = null,
         public ?bool $hideErrors = false,
         public ?bool $hideProgress = false,
-        public ?string $changeText = "Change",
-        public ?string $cropText = "Crop",
-        public ?string $removeText = "Remove",
-        public ?string $cropTitleText = "Crop image",
-        public ?string $cropCancelText = "Cancel",
-        public ?string $cropSaveText = "Crop",
-        public ?string $addFilesText = "Add images",
+        public ?string $changeText = 'Change',
+        public ?string $cropText = 'Crop',
+        public ?string $removeText = 'Remove',
+        public ?string $cropTitleText = 'Crop image',
+        public ?string $cropCancelText = 'Cancel',
+        public ?string $cropSaveText = 'Crop',
+        public ?string $addFilesText = 'Add images',
         public ?array $cropConfig = [],
-        public Collection $preview = new Collection(),
+        public Collection $preview = new Collection,
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

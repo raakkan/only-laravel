@@ -16,7 +16,7 @@ class MenuSub extends Component
         public bool $open = false,
         public ?bool $enabled = true,
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function render(): View|Closure|string

@@ -53,8 +53,8 @@ return [
     |
     */
     'cache' => [
-        'enabled'  => false,
-        'key'      => 'themes-manager',
+        'enabled' => false,
+        'key' => 'themes-manager',
         'lifetime' => 86400,
     ],
 
@@ -71,7 +71,7 @@ return [
     'composer' => [
         'vendor' => null,
         'author' => [
-            'name'  => null,
+            'name' => null,
             'email' => null,
         ],
     ],
@@ -84,5 +84,5 @@ return [
         'database_table_name' => 'theme_menus',
         'menu_items_database_table_name' => 'theme_menu_items',
         'cache_key' => 'only-laravel-menus-',
-    ]
+    ],
 ];

@@ -2,13 +2,14 @@
 
 namespace Raakkan\OnlyLaravel\Support\Concerns;
 
-use Illuminate\Support\Arr;
-use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Field;
+use Illuminate\Support\Arr;
 
 trait HasSettings
 {
     protected $settings = [];
+
     protected $settingFields = [];
 
     public function getSettings(): array
@@ -19,12 +20,14 @@ trait HasSettings
     public function setSettings(array $settings): self
     {
         $this->settings = $settings;
+
         return $this;
     }
 
     public function settings(array $settingFields): self
     {
         $this->settingFields = $settingFields;
+
         return $this;
     }
 
@@ -46,6 +49,7 @@ trait HasSettings
     public function setSettingFields(array $settingFields): self
     {
         $this->settingFields = $settingFields;
+
         return $this;
     }
 
@@ -66,7 +70,7 @@ trait HasSettings
 
                 foreach ($fileds as $filed) {
                     if ($filed instanceof Field && $this->hasFieldDefaultValue($filed) && method_exists($this, 'hasModel') && $this->hasModel()) {
-                        
+
                         $blockSettings = $this->model->settings ?? [];
 
                         $this->model->update([
@@ -76,6 +80,7 @@ trait HasSettings
                 }
             }
         }
+
         return $this;
     }
 
@@ -86,13 +91,14 @@ trait HasSettings
         } else {
             $settings[$name] = $value;
         }
+
         return $settings;
     }
 
     public function hasFieldDefaultValue($field)
     {
         try {
-            return $field->getDefaultState() && $field->getDefaultState()!== null;
+            return $field->getDefaultState() && $field->getDefaultState() !== null;
         } catch (\Throwable $th) {
             return false;
         }

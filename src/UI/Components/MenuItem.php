@@ -26,7 +26,7 @@ class MenuItem extends Component
         public ?bool $enabled = true,
         public ?bool $exact = false
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function spinnerTarget(): ?string

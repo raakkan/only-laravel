@@ -23,7 +23,7 @@ class Setting extends Model
 
             return $settings;
         });
-        
+
         if ($key === '*') {
             return $settings;
         }

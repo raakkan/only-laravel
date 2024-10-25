@@ -13,7 +13,7 @@ class Rating extends Component
     public function __construct(
         public int $total = 5
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

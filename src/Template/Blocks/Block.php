@@ -4,9 +4,10 @@ namespace Raakkan\OnlyLaravel\Template\Blocks;
 
 use Raakkan\OnlyLaravel\Template\Concerns\HasChildren;
 
-abstract class Block extends BaseBlock 
+abstract class Block extends BaseBlock
 {
     use HasChildren;
+
     protected $type = 'block';
 
     public function toArray()
@@ -22,7 +23,7 @@ abstract class Block extends BaseBlock
 
     public function create($template, $parent = null)
     {
-        
+
         $order = $this->order;
         if ($parent) {
             $childCount = $template->blocks()->where('parent_id', $parent->id)->count();
@@ -35,15 +36,15 @@ abstract class Block extends BaseBlock
             'order' => $order,
             'location' => $this->location,
             'type' => 'block',
-            'parent_id' => $parent ? $parent->id : null
+            'parent_id' => $parent ? $parent->id : null,
         ]);
-        
+
         $this->setModel($model);
-        
+
         $this->storeDefaultSettingsToDatabase();
-        
+
         foreach ($this->children as $child) {
-            
+
             $child->create($template, $model);
         }
     }
@@ -51,14 +52,14 @@ abstract class Block extends BaseBlock
     public function editorRender()
     {
         return view('only-laravel::template.editor.block', [
-            'block' => $this
+            'block' => $this,
         ]);
     }
 
     public function render()
     {
         return view($this->view, [
-            'block' => $this
+            'block' => $this,
         ]);
     }
 }

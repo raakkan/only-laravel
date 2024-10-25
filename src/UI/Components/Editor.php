@@ -25,7 +25,7 @@ class Editor extends Component
         public ?bool $omitError = false,
         public ?bool $firstErrorOnly = false,
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
         $this->uploadUrl = route('mary.upload', absolute: false);
     }
 
@@ -55,7 +55,7 @@ class Editor extends Component
 
         $setup['plugins'] = str('advlist autolink lists link image table quickbars ')->append($this->config['plugins'] ?? '');
 
-        return str(json_encode($setup))->trim('{}')->replace("\"", "'")->toString();
+        return str(json_encode($setup))->trim('{}')->replace('"', "'")->toString();
     }
 
     public function render(): View|Closure|string

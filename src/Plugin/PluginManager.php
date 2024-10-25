@@ -4,16 +4,21 @@ namespace Raakkan\OnlyLaravel\Plugin;
 
 use Illuminate\Support\Facades\File;
 use Raakkan\OnlyLaravel\Plugin\Concerns\ManageModels;
-use Raakkan\OnlyLaravel\Plugin\Concerns\HasFilamentResources;
 
 class PluginManager
 {
     use ManageModels;
+
     protected $plugins = [];
+
     protected $pluginJsonManager;
+
     protected $onlyLaravel;
+
     protected $pageManager;
+
     protected $menuManager;
+
     protected $templateManager;
 
     public function __construct($onlyLaravel, $pageManager, $menuManager, $templateManager)
@@ -37,7 +42,7 @@ class PluginManager
 
             foreach ($directories as $directory) {
                 $pluginName = basename($directory);
-                $composerFile = $directory . '/plugin.json';
+                $composerFile = $directory.'/plugin.json';
 
                 if (File::exists($composerFile)) {
                     $composerData = json_decode(File::get($composerFile), true);
@@ -64,6 +69,7 @@ class PluginManager
             $plugin = $this->getPlugin($name);
             $plugin->register($this);
         }
+
         return $this;
     }
 
@@ -74,12 +80,14 @@ class PluginManager
             $plugin = $this->getPlugin($name);
             $plugin->boot($this);
         }
+
         return $this;
     }
 
     public function activatePlugin(string $name)
     {
         $this->pluginJsonManager->activatePlugin($name);
+
         return $this;
     }
 
@@ -88,6 +96,7 @@ class PluginManager
         return collect($this->loadPlugins())
             ->map(function ($plugin) {
                 $plugin->setActivated(PluginManager::pluginIsActivated($plugin->getName()));
+
                 return $plugin;
             })
             ->filter(function ($plugin) {
@@ -98,6 +107,7 @@ class PluginManager
     public function deactivatePlugin(string $name)
     {
         $this->pluginJsonManager->deactivatePlugin($name);
+
         return $this;
     }
 

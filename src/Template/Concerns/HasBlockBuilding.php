@@ -21,6 +21,7 @@ trait HasBlockBuilding
         }
 
         $this->blocks = $builtBlocks;
+
         return $this;
     }
 
@@ -30,7 +31,7 @@ trait HasBlockBuilding
 
         foreach ($templateBlockChildren as $block) {
             $blockInstance = TemplateManager::getBlockByName($block->name);
-            if (!$blockInstance) {
+            if (! $blockInstance) {
                 $blockInstance = NotFoundBlock::make()->setType($block->type);
             }
             $blockChildren = $blocks->where('parent_id', $block->id)->sortBy('order');
@@ -45,6 +46,7 @@ trait HasBlockBuilding
         }
 
         $themeBlock->children($childBlocks);
+
         return $themeBlock;
     }
 }

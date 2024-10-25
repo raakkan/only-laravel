@@ -16,9 +16,9 @@ class Swap extends Component
         public ?string $false = null,
         public ?string $trueIcon = 'o-sun',
         public ?string $falseIcon = 'o-moon',
-        public ?string $iconSize = "h-5 w-5",
+        public ?string $iconSize = 'h-5 w-5',
     ) {
-        $this->uuid = "mary" . md5(serialize($this)) . $id;
+        $this->uuid = 'mary'.md5(serialize($this)).$id;
     }
 
     public function render(): View|Closure|string

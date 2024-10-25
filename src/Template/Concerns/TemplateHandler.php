@@ -2,9 +2,6 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
-
 trait TemplateHandler
 {
     protected $templates = [];
@@ -17,6 +14,7 @@ trait TemplateHandler
     public function registerTemplates($templates)
     {
         $this->templates = array_merge($this->templates, $templates);
+
         return $this;
     }
 

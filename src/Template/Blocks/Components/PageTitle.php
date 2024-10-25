@@ -3,13 +3,15 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
 use Illuminate\Support\Facades\Blade;
-use Raakkan\OnlyLaravel\Template\Blocks\Block;
 
 class PageTitle extends BlockComponent
 {
     protected string $name = 'page-title';
+
     protected string $label = 'Page Title';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
 
     public function __construct()

@@ -10,7 +10,7 @@ final class UI
 {
     public static function registerUiComponents()
     {
-        
+
         Blade::component('BladeUI\Icons\Components\Icon', 'svg');
         Blade::component('mary-button', Button::class);
         Blade::component('mary-card', Card::class);
@@ -26,7 +26,7 @@ final class UI
         $componentDirectory = __DIR__;
         $namespace = __NAMESPACE__;
 
-        $finder = new Finder();
+        $finder = new Finder;
         $finder->files()->in($componentDirectory)->name('*.php');
 
         foreach ($finder as $file) {
@@ -35,7 +35,7 @@ final class UI
                 continue;
             }
 
-            $fullyQualifiedClassName = $namespace . '\\' . $className;
+            $fullyQualifiedClassName = $namespace.'\\'.$className;
             $componentName = Str::kebab($className);
 
             Blade::component($componentName, $fullyQualifiedClassName);

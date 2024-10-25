@@ -5,9 +5,11 @@ namespace Raakkan\OnlyLaravel\Menu\Concerns;
 trait HasMenuLocation
 {
     protected $location;
+
     public function location($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -19,11 +21,12 @@ trait HasMenuLocation
     public function setLocation($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
     public function hasLocation()
     {
-        return !empty($this->location) && !is_null($this->location);
+        return ! empty($this->location) && ! is_null($this->location);
     }
 }

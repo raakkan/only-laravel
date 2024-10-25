@@ -3,13 +3,11 @@
 namespace Raakkan\OnlyLaravel\Page;
 
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePages;
-use Raakkan\OnlyLaravel\Page\Concerns\ManagePageTypes;
-use Illuminate\Support\Facades\App;
-use Illuminate\Pipeline\Pipeline;
 
 class PageManager
 {
     use ManagePages;
+
     private $app;
 
     protected $globalMiddleware = ['web'];
@@ -19,7 +17,8 @@ class PageManager
         $this->app = $app;
     }
 
-    public function registerPageRoutes(){
+    public function registerPageRoutes()
+    {
         $pages = $this->getPages();
 
         foreach ($pages as $page) {
@@ -30,8 +29,8 @@ class PageManager
     public function pageIsDeletable(string $name): bool
     {
         $page = $this->getPageByName($name);
-        
-        if(! $page) {
+
+        if (! $page) {
             return true;
         }
 
@@ -42,10 +41,10 @@ class PageManager
     {
         $page = $this->getPageByName($name);
 
-        if(! $page) {
+        if (! $page) {
             return true;
         }
-       
+
         return $page->isDisableable();
     }
 
@@ -53,9 +52,10 @@ class PageManager
     {
         $page = $this->getPageByName($name);
 
-        if(! $page) {
+        if (! $page) {
             return true;
         }
+
         return $page->isNameEditable();
     }
 
@@ -63,15 +63,16 @@ class PageManager
     {
         $page = $this->getPageByName($name);
 
-        if(! $page) {
+        if (! $page) {
             return true;
         }
+
         return $page->isSlugEditable();
     }
 
     public function addGlobalMiddleware(string $middleware): void
     {
-        if (!in_array($middleware, $this->globalMiddleware)) {
+        if (! in_array($middleware, $this->globalMiddleware)) {
             $this->globalMiddleware[] = $middleware;
         }
     }

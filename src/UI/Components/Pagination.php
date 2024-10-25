@@ -16,7 +16,7 @@ class Pagination extends Component
         public ArrayAccess|array $rows,
         public ?array $perPageValues = [10, 20, 50, 100],
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

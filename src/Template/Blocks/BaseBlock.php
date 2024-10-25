@@ -3,53 +3,52 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
+use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\HasType;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
-use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasAssets;
+use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
 use Raakkan\OnlyLaravel\Template\Concerns\Addable;
+use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
+use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
+use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Template\Concerns\HasModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasOrder;
-use Raakkan\OnlyLaravel\Template\Concerns\Sortable;
-use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
-use Raakkan\OnlyLaravel\Template\Concerns\HasSource;
-use Raakkan\OnlyLaravel\Template\Concerns\HasForPage;
-use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
-use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
-use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
-use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasAssets;
-use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
-use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\Sortable;
 
 abstract class BaseBlock implements Arrayable
 {
-    use Makable;
-    use HasName;
+    use Addable;
+    use Deletable;
+    use Disableable;
+    use HasAssets;
+    use HasBlockSettings;
+    use HasBlockView;
+    use HasCustomStyleSettings;
+    use HasForTemplate;
+    use HasGroup;
     use HasLabel {
         getLabel as parentGetLabel;
     }
-    use HasType;
-    use HasGroup;
-    use HasBlockSettings;
-    use HasOrder;
     use HasLocation;
     use HasModel;
-    use Deletable;
-    use Sortable;
-    use HasForTemplate;
-    use Addable;
-    use Disableable;
-    use HasBlockView;
+    use HasName;
+    use HasOrder;
     use HasPageModel;
-    use HasAssets;
-    use HasCustomStyleSettings;
+    use HasType;
+    use Makable;
+    use Sortable;
 
     protected $parent;
+
     protected $templateModel;
+
     protected $otherCssClasses = '';
 
     public function getTemplateModel()
@@ -60,6 +59,7 @@ abstract class BaseBlock implements Arrayable
     public function setTemplateModel($templateModel)
     {
         $this->templateModel = $templateModel;
+
         return $this;
     }
 
@@ -71,6 +71,7 @@ abstract class BaseBlock implements Arrayable
     public function parent($parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -82,12 +83,14 @@ abstract class BaseBlock implements Arrayable
     public function setOtherCssClasses($otherCssClasses)
     {
         $this->otherCssClasses = $otherCssClasses;
+
         return $this;
     }
 
     public function addOtherCssClass($class)
     {
-        $this->otherCssClasses .= ' ' . $class;
+        $this->otherCssClasses .= ' '.$class;
+
         return $this;
     }
 }

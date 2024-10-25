@@ -3,22 +3,21 @@
 namespace Raakkan\OnlyLaravel\Template\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Raakkan\OnlyLaravel\Models\PageModel;
-use Raakkan\OnlyLaravel\Template\PageTemplate;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateModel extends Model
 {
     protected $fillable = [
-        'name', 
-        'label', 
-        'type', 
+        'name',
+        'label',
+        'type',
         'settings',
         'is_parent',
         'use_parent_header',
         'use_parent_content',
         'use_parent_footer',
-        'parent_template_id'
+        'parent_template_id',
     ];
 
     protected $casts = [
@@ -43,6 +42,7 @@ class TemplateModel extends Model
     {
         $template = PageTemplate::make($this->name);
         $template->initializeFromCachedModel($this);
+
         return $template;
     }
 

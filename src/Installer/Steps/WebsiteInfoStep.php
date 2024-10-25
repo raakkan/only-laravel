@@ -16,16 +16,15 @@ class WebsiteInfoStep extends Step
 
     public static function make(): self
     {
-        return new self();
+        return new self;
     }
 
-    public function init()
-    {
-    }
+    public function init() {}
 
     public function setInputs(array $inputs): self
     {
         $this->inputs = array_merge($this->inputs, $inputs);
+
         return $this;
     }
 

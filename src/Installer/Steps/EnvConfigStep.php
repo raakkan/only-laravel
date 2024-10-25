@@ -2,26 +2,29 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Steps;
 
-use Illuminate\View\View;
 use Illuminate\Support\Facades\File;
+use Illuminate\View\View;
 
 class EnvConfigStep extends Step
 {
     protected $envPath;
+
     protected $isEnvWritable;
+
     protected $envContent;
 
     public static function make(): self
     {
-        $step = new self();
+        $step = new self;
         $step->init();
+
         return $step;
     }
 
     public function init()
     {
         $this->envPath = base_path('.env');
-        $this->isEnvWritable = is_writable(dirname($this->envPath)) && (!file_exists($this->envPath) || is_writable($this->envPath));
+        $this->isEnvWritable = is_writable(dirname($this->envPath)) && (! file_exists($this->envPath) || is_writable($this->envPath));
         $this->envContent = $this->getEnvContent();
     }
 
@@ -30,6 +33,7 @@ class EnvConfigStep extends Step
         if ($this->isEnvWritable) {
             return $this->writeEnvFile();
         }
+
         return true; // Always return true, as we'll show manual instructions if not writable
     }
 
@@ -37,9 +41,11 @@ class EnvConfigStep extends Step
     {
         try {
             File::put($this->envPath, $this->envContent);
+
             return true;
         } catch (\Exception $e) {
-            $this->setErrorMessage("Failed to write .env file: " . $e->getMessage());
+            $this->setErrorMessage('Failed to write .env file: '.$e->getMessage());
+
             return false;
         }
     }
@@ -47,7 +53,7 @@ class EnvConfigStep extends Step
     protected function getEnvContent(): string
     {
         // Replace this with your actual .env template or generation logic
-        return "APP_NAME=Laravel
+        return 'APP_NAME=Laravel
 APP_ENV=production
 APP_KEY=
 APP_DEBUG=false
@@ -61,7 +67,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 
 # ... Add other necessary configurations ...
-";
+';
     }
 
     public function getTitle(): string

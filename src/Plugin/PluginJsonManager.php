@@ -29,7 +29,7 @@ class PluginJsonManager
 
     public function pluginIsActivated($pluginName)
     {
-        if (!$this->pluginExists($pluginName)) {
+        if (! $this->pluginExists($pluginName)) {
             return false;
         }
 
@@ -38,7 +38,7 @@ class PluginJsonManager
 
     public function activatePlugin($pluginName)
     {
-        if (!$this->pluginExists($pluginName)) {
+        if (! $this->pluginExists($pluginName)) {
             return false;
         }
 
@@ -48,7 +48,7 @@ class PluginJsonManager
 
     public function deactivatePlugin($pluginName)
     {
-        if (!$this->pluginExists($pluginName)) {
+        if (! $this->pluginExists($pluginName)) {
             return false;
         }
 
@@ -68,7 +68,7 @@ class PluginJsonManager
             json_encode(collect($plugins)->mapWithKeys(function ($plugin) {
                 return [$plugin->getName() => [
                     'version' => $plugin->getVersion(),
-                    'activated' => $plugin->isActivated()
+                    'activated' => $plugin->isActivated(),
                 ]];
             })->toArray())
         );
@@ -83,10 +83,11 @@ class PluginJsonManager
     {
         $jsonPath = storage_path('onlylaravel/plugins.json');
 
-        if (!File::exists($jsonPath)) {
+        if (! File::exists($jsonPath)) {
             File::ensureDirectoryExists(dirname($jsonPath));
             $this->savePluginsJson($plugins);
             $this->plugins = $plugins;
+
             return true;
         }
 

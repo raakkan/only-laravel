@@ -9,6 +9,7 @@ trait HasForTemplate
     public function forTemplates($forTemplates)
     {
         $this->forTemplates = is_array($forTemplates) ? $forTemplates : [$forTemplates];
+
         return $this;
     }
 
@@ -24,15 +25,17 @@ trait HasForTemplate
 
     public function addForTemplate($forTemplate)
     {
-        if (!in_array($forTemplate, $this->forTemplates)) {
+        if (! in_array($forTemplate, $this->forTemplates)) {
             $this->forTemplates[] = $forTemplate;
         }
+
         return $this;
     }
 
     public function removeForTemplate($forTemplate)
     {
         $this->forTemplates = array_diff($this->forTemplates, [$forTemplate]);
+
         return $this;
     }
 }

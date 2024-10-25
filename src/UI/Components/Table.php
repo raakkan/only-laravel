@@ -47,7 +47,7 @@ class Table extends Component
 
     ) {
         if ($this->selectable && $this->expandable) {
-            throw new Exception("You can not combine `expandable` with `selectable`.");
+            throw new Exception('You can not combine `expandable` with `selectable`.');
         }
 
         // Temp decoration
@@ -59,7 +59,7 @@ class Table extends Component
         unset($this->cellDecoration);
 
         // Serialize
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
 
         // Put them back
         $this->rowDecoration = $rowDecoration;
@@ -135,7 +135,7 @@ class Table extends Component
 
         // Replace tokens by actual row values
         $tokens->each(function (string $token) use ($row, &$link) {
-            $link = Str::of($link)->replace("{" . $token . "}", data_get($row, $token))->toString();
+            $link = Str::of($link)->replace('{'.$token.'}', data_get($row, $token))->toString();
         });
 
         return $link;
@@ -169,7 +169,7 @@ class Table extends Component
 
     public function selectableModifier(): string
     {
-        return is_string($this->getAllIds()[0] ?? null) ? "" : ".number";
+        return is_string($this->getAllIds()[0] ?? null) ? '' : '.number';
     }
 
     public function getKeyValue($row, $key): mixed

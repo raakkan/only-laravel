@@ -3,8 +3,6 @@
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
 use Illuminate\Support\Arr;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Component;
 
 trait HasBlockSettings
 {
@@ -15,6 +13,7 @@ trait HasBlockSettings
     public function settings($settingFields)
     {
         $this->settingFields = $settingFields;
+
         return $this;
     }
 
@@ -59,13 +58,14 @@ trait HasBlockSettings
         }
     }
 
-    public function setSettingValue(array $settings, string $name, string | array $value)
+    public function setSettingValue(array $settings, string $name, string|array $value)
     {
         if (strpos($name, '.') !== false) {
             Arr::set($settings, $name, $value);
         } else {
             $settings[$name] = $value;
         }
+
         return $settings;
     }
 
@@ -105,7 +105,7 @@ trait HasBlockSettings
         if (method_exists($this, 'has'.ucfirst($name).'SettingsEnabled') && $this->{'has'.ucfirst($name).'SettingsEnabled'}()) {
             return true;
         }
+
         return false;
     }
-
 }

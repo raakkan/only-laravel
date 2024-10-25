@@ -7,11 +7,17 @@ use Illuminate\Support\Facades\Storage;
 class ImageBlockComponent extends BlockComponent
 {
     protected string $name = 'image';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
+
     protected $view = 'only-laravel::template.components.image';
+
     protected $image;
+
     protected $altText;
+
     protected $imagePosition;
 
     public function __construct()
@@ -77,7 +83,7 @@ class ImageBlockComponent extends BlockComponent
     {
         return [
             resource_path('views/vendor/only-laravel/template/components/image.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/components/image.blade.php',
+            __DIR__.'/../../../../resources/views/template/components/image.blade.php',
         ];
     }
 }

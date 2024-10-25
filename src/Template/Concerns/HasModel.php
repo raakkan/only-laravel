@@ -2,8 +2,6 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
-
 trait HasModel
 {
     protected $model;
@@ -15,8 +13,9 @@ trait HasModel
         $this->type = $this->model->type;
         $this->location = $this->model->location;
         $this->disabled = $this->model->disabled;
-        
+
         $this->setSettings($this->model->settings);
+
         return $this;
     }
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Raakkan\OnlyLaravel\Support\Helpers;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Filesystem\Filesystem;
 use Raakkan\OnlyLaravel\Support\Exceptions\InvalidJsonException;
 
 class Json
@@ -32,7 +32,7 @@ class Json
     public function __construct(string $path, ?Filesystem $filesystem = null)
     {
         $this->path = $path;
-        $this->filesystem = $filesystem ? $filesystem : new Filesystem();
+        $this->filesystem = $filesystem ? $filesystem : new Filesystem;
         $this->attributes = collect($this->getAttributes());
     }
 
@@ -127,7 +127,7 @@ class Json
 
         // any JSON parsing errors should throw an exception
         if (json_last_error() > 0) {
-            throw new InvalidJsonException('Error processing file: ' . $this->getPath() . '. Error: ' . json_last_error_msg());
+            throw new InvalidJsonException('Error processing file: '.$this->getPath().'. Error: '.json_last_error_msg());
         }
 
         return $attributes;

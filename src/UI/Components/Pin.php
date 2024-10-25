@@ -15,7 +15,7 @@ class Pin extends Component
         public ?bool $numeric = false,
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

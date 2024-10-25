@@ -30,6 +30,6 @@ trait HasType
 
     public function hasType()
     {
-        return !is_null($this->type);
+        return ! is_null($this->type);
     }
 }

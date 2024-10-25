@@ -2,21 +2,23 @@
 
 namespace Raakkan\OnlyLaravel\Models;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Raakkan\OnlyLaravel\Template\PageTemplate;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Raakkan\OnlyLaravel\Page\Concerns\HasSeoTags;
 use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
+use Spatie\Translatable\HasTranslations;
 
 class PageModel extends Model
 {
-    use SoftDeletes;
-    use HasTranslations;
     use HasSeoTags;
+    use HasTranslations;
+    use SoftDeletes;
+
     public $translatable = ['title', 'subtitle', 'slug', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
+
     protected $fillable = [
         'name',
         'title',
@@ -29,7 +31,7 @@ class PageModel extends Model
         'seo_title',
         'seo_description',
         'seo_keywords',
-        'featured_image'
+        'featured_image',
     ];
 
     protected $casts = [
@@ -51,6 +53,7 @@ class PageModel extends Model
     {
         $template = PageTemplate::make($this->template->name);
         $template->setPageModel($this)->initializeFromCachedModel($this->template);
+
         return $template;
     }
 
@@ -66,9 +69,10 @@ class PageModel extends Model
 
     public function getFeaturedImageUrl(): ?string
     {
-        if (isset($this->featured_image['image']) && File::exists(storage_path('app/public/' . $this->featured_image['image']))) {
+        if (isset($this->featured_image['image']) && File::exists(storage_path('app/public/'.$this->featured_image['image']))) {
             return url(Storage::url($this->featured_image['image']));
         }
+
         return null;
     }
 
@@ -90,28 +94,28 @@ class PageModel extends Model
 
         switch ($driver) {
             case 'mysql':
-                return $query->where(function($q) use ($slug, $locale) {
+                return $query->where(function ($q) use ($slug, $locale) {
                     $q->where("slug->{$locale}", $slug)
-                      ->orWhere("slug->en", $slug)
-                      ->orWhere('slug', $slug); // For non-JSON slugs
+                        ->orWhere('slug->en', $slug)
+                        ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'mariadb':
-                return $query->where(function($q) use ($slug, $locale) {
+                return $query->where(function ($q) use ($slug, $locale) {
                     $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.{$locale}')) = ?", [$slug])
-                      ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.en')) = ?", [$slug])
-                      ->orWhere('slug', $slug); // For non-JSON slugs
+                        ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(slug, '$.en')) = ?", [$slug])
+                        ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'pgsql':
-                return $query->where(function($q) use ($slug, $locale) {
+                return $query->where(function ($q) use ($slug, $locale) {
                     $q->where("slug->>'{$locale}'", $slug)
-                      ->orWhere("slug->>'en'", $slug)
-                      ->orWhere('slug', $slug); // For non-JSON slugs
+                        ->orWhere("slug->>'en'", $slug)
+                        ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'sqlsrv':
-                return $query->where(function($q) use ($slug, $locale) {
+                return $query->where(function ($q) use ($slug, $locale) {
                     $q->where("JSON_VALUE(slug, '$.{$locale}')", $slug)
-                      ->orWhere("JSON_VALUE(slug, '$.en')", $slug)
-                      ->orWhere('slug', $slug); // For non-JSON slugs
+                        ->orWhere("JSON_VALUE(slug, '$.en')", $slug)
+                        ->orWhere('slug', $slug); // For non-JSON slugs
                 })->first();
             case 'sqlite':
                 // SQLite doesn't have native JSON functions, so we'll use a simple comparison
@@ -124,7 +128,7 @@ class PageModel extends Model
     // public function getSlugUrl()
     // {
     //     $pageType = app('page-manager')->findPageTypeByType($this->pageType);
-        
+
     //     if ($this->name == 'home-page') {
     //         return url('/');
     //     }

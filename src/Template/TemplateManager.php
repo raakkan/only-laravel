@@ -3,30 +3,25 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Support\Facades\File;
-use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\GridBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
 use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
-use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\NavigationBlock;
-use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
-use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
-use Raakkan\OnlyLaravel\Template\Concerns\ManagesDesignVariants;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\HeroComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\MenuComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\PageDataComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\DynamicHeroComponent;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\FooterBlockComponent;
-
+use Raakkan\OnlyLaravel\Template\Blocks\Components\HeroComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\ImageBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
+use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
+use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
+use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 
 class TemplateManager
 {
-    use TemplateHandler;
     use HandleDummyPageModels;
+    use TemplateHandler;
+
     protected $blocks = [];
 
     public function getBlocks()
@@ -44,37 +39,39 @@ class TemplateManager
     public function getPluginBlocksAndComponents()
     {
         $plugins = collect(PluginManager::getActivatedPlugins());
-        
-        if($plugins->count() > 0) {
+
+        if ($plugins->count() > 0) {
             $blocks = [];
             $components = [];
-            foreach($plugins as $plugin) {
-                $blocks = $this->getBlocksAndComponentsFromPath($plugin->getPath() . '/src/OnlyLaravel/Template/Blocks', $plugin->getNamespace() . '\\OnlyLaravel\\Template\\Blocks');
-                $components = $this->getBlocksAndComponentsFromPath($plugin->getPath() . '/src/OnlyLaravel/Template/Components', $plugin->getNamespace() . '\\OnlyLaravel\\Template\\Components');
+            foreach ($plugins as $plugin) {
+                $blocks = $this->getBlocksAndComponentsFromPath($plugin->getPath().'/src/OnlyLaravel/Template/Blocks', $plugin->getNamespace().'\\OnlyLaravel\\Template\\Blocks');
+                $components = $this->getBlocksAndComponentsFromPath($plugin->getPath().'/src/OnlyLaravel/Template/Components', $plugin->getNamespace().'\\OnlyLaravel\\Template\\Components');
             }
+
             return array_merge($blocks, $components);
-        }else{
+        } else {
             return [];
         }
     }
 
     public function getBlocksAndComponentsFromPath($path, $namespace)
     {
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             return [];
         }
 
         $blocks = collect(File::allFiles($path))->map(function ($file) use ($namespace) {
             $relativePath = $file->getRelativePath();
             $subNamespace = str_replace('/', '\\', $relativePath);
-            $className = $namespace . ($subNamespace ? '\\' . $subNamespace : '') . '\\' . $file->getFilenameWithoutExtension();
-            
+            $className = $namespace.($subNamespace ? '\\'.$subNamespace : '').'\\'.$file->getFilenameWithoutExtension();
+
             if (class_exists($className)) {
-                $block = new $className();
+                $block = new $className;
+
                 // $block->source($namespace . ($subNamespace ? '\\' . $subNamespace : ''));
                 return $block;
             }
-            
+
             return null;
         })->filter();
 
@@ -91,6 +88,7 @@ class TemplateManager
     public function registerBlocks($blocks)
     {
         $this->blocks = array_merge($this->blocks, $blocks);
+
         return $this;
     }
 

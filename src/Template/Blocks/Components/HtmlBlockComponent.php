@@ -7,9 +7,13 @@ use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 class HtmlBlockComponent extends BlockComponent
 {
     protected string $name = 'html';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
+
     protected $view = 'only-laravel::template.components.html';
+
     protected $htmlContent;
 
     public function __construct()
@@ -51,6 +55,7 @@ class HtmlBlockComponent extends BlockComponent
     {
         $this->htmlContent = $content;
         $this->extractCssClasses($content);
+
         return $this;
     }
 
@@ -62,7 +67,7 @@ class HtmlBlockComponent extends BlockComponent
             $classes = array_merge($classes, explode(' ', $classString));
         }
         $extractedClasses = array_unique(array_filter($classes));
-        
+
         $existingClasses = explode(' ', $this->otherCssClasses);
         $allClasses = array_unique(array_merge($existingClasses, $extractedClasses));
         $this->otherCssClasses = implode(' ', $allClasses);

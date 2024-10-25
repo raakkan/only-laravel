@@ -2,28 +2,29 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
 use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
 use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
-use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
 
 class Installer extends Component
 {
     public $currentStep = 'website-info';
+
     public $inputs = [];
 
     public function mount()
     {
         $cssBuilder = \Raakkan\OnlyLaravel\Template\CssBuilder::make([
-            __DIR__ . '/../../../resources/views/installer/components/layouts/app.blade.php',
-            __DIR__ . '/../../../resources/views/installer/livewire/installer.blade.php',
-            __DIR__ . '/../../../resources/views/installer/steps/requirements.blade.php',
-            __DIR__ . '/../../../resources/views/installer/steps/folder-permissions.blade.php',
-            __DIR__ . '/../../../resources/views/installer/steps/database.blade.php',
-            __DIR__ . '/../../../resources/views/installer/steps/admin-account.blade.php',
-            __DIR__ . '/../../../resources/views/installer/steps/website-info.blade.php',
+            __DIR__.'/../../../resources/views/installer/components/layouts/app.blade.php',
+            __DIR__.'/../../../resources/views/installer/livewire/installer.blade.php',
+            __DIR__.'/../../../resources/views/installer/steps/requirements.blade.php',
+            __DIR__.'/../../../resources/views/installer/steps/folder-permissions.blade.php',
+            __DIR__.'/../../../resources/views/installer/steps/database.blade.php',
+            __DIR__.'/../../../resources/views/installer/steps/admin-account.blade.php',
+            __DIR__.'/../../../resources/views/installer/steps/website-info.blade.php',
         ]);
         $cssBuilder->setFileName('installer');
         $cssBuilder->setFolderName('installer');
@@ -45,7 +46,7 @@ class Installer extends Component
         $steps = $installManager->getSteps();
         $keys = array_keys($steps);
         $currentIndex = array_search($this->currentStep, $keys);
-        
+
         if ($currentIndex !== false && $currentIndex > 0) {
             $this->currentStep = $keys[$currentIndex - 1];
         }
@@ -65,7 +66,7 @@ class Installer extends Component
             if ($currentStep->validate()) {
                 $keys = array_keys($steps);
                 $currentIndex = array_search($this->currentStep, $keys);
-                
+
                 if ($currentIndex !== false && $currentIndex < count($keys) - 1) {
                     $this->currentStep = $keys[$currentIndex + 1];
                 }
@@ -77,7 +78,7 @@ class Installer extends Component
 
     public function dehydrate(): void
     {
-        Log::info("installation dehydrate...");
+        Log::info('installation dehydrate...');
         Artisan::call('config:clear');
         Artisan::call('cache:clear');
     }
@@ -102,9 +103,10 @@ class Installer extends Component
                 $step->setInputs($this->inputs);
             }
 
-            if (!$step->validate()) {
-                $this->addError('step', $step->getErrorMessage() ?: 'Validation failed for ' . $step->getTitle() . '. Please check your inputs.');
+            if (! $step->validate()) {
+                $this->addError('step', $step->getErrorMessage() ?: 'Validation failed for '.$step->getTitle().'. Please check your inputs.');
                 $this->currentStep = $stepKey;
+
                 return;
             }
         }
@@ -112,13 +114,13 @@ class Installer extends Component
         // Perform installation
         try {
             // Mark installation as complete
-            file_put_contents(storage_path('installed'), 'Installation completed on ' . date('Y-m-d H:i:s'));
+            file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
 
             // Redirect to the home page or a success page
             return redirect()->to('/')->with('success', 'Installation completed successfully!');
         } catch (\Exception $e) {
-            Log::error('Installation failed: ' . $e->getMessage());
-            $this->addError('step', 'Installation failed: ' . $e->getMessage());
+            Log::error('Installation failed: '.$e->getMessage());
+            $this->addError('step', 'Installation failed: '.$e->getMessage());
         }
     }
 }

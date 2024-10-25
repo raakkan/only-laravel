@@ -9,6 +9,7 @@ use Raakkan\OnlyLaravel\Filament\Resources\PageResource;
 class CreatePage extends CreateRecord
 {
     use CreateRecord\Concerns\Translatable;
+
     protected static string $resource = PageResource::class;
 
     protected function getHeaderActions(): array

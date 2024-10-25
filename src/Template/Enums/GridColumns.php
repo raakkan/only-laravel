@@ -11,7 +11,7 @@ enum GridColumns: string
 
     public function getColumnClasses(): array
     {
-        return match($this) {
+        return match ($this) {
             self::ONE => ['w-full'],
             self::TWO => ['w-full md:w-1/2'],
             self::THREE => ['w-full md:w-1/3'],
@@ -21,7 +21,7 @@ enum GridColumns: string
 
     public function getGridClasses(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ONE => 'grid-cols-1',
             self::TWO => 'grid-cols-1 md:grid-cols-2',
             self::THREE => 'grid-cols-1 md:grid-cols-3',

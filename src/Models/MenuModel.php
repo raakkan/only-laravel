@@ -3,11 +3,10 @@
 namespace Raakkan\OnlyLaravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Raakkan\OnlyLaravel\Menu\Menu;
 
 class MenuModel extends Model
 {
-    protected $fillable = ['name', 'location','disabled', 'settings'];
+    protected $fillable = ['name', 'location', 'disabled', 'settings'];
 
     protected $casts = [
         'disabled' => 'boolean',

@@ -2,17 +2,17 @@
 
 namespace Raakkan\OnlyLaravel\Menu\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
 use Filament\Notifications\Notification;
-use Raakkan\OnlyLaravel\Models\MenuModel;
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Raakkan\OnlyLaravel\Models\MenuItemModel;
+use Raakkan\OnlyLaravel\Models\MenuModel;
 
 class MenuItemsManage extends Component
 {
     public MenuModel $menu;
 
-    #[On('item-deleted')] 
+    #[On('item-deleted')]
     public function itemDeleted()
     {
         $this->menu->refresh();

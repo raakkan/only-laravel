@@ -1,19 +1,16 @@
 <?php
 
-namespace  Raakkan\OnlyLaravel\Providers;
+namespace Raakkan\OnlyLaravel\Providers;
 
-use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
-use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\Page\PageManager;
-use Raakkan\OnlyLaravel\UI\Components\UI;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
-use Filament\Forms\Components\BaseFileUpload;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Template\FontManager;
+use Livewire\Livewire;
 use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Raakkan\OnlyLaravel\Menu\MenuManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
-use Raakkan\OnlyLaravel\Filament\Components\BaseFileUpload as CustomBaseFileUpload;
+use Raakkan\OnlyLaravel\UI\Components\UI;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -33,11 +30,11 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         $this->registerConfigs();
 
         $this->app->singleton('only-laravel', function () {
-            return new OnlyLaravelManager();
+            return new OnlyLaravelManager;
         });
 
         $this->app->singleton('install-manager', function () {
-            return new InstallManager();
+            return new InstallManager;
         });
 
         $this->app->singleton('page-manager', function () {
@@ -45,11 +42,11 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('menu-manager', function () {
-            return new MenuManager();
+            return new MenuManager;
         });
 
         $this->app->singleton('template-manager', function () {
-            return new TemplateManager();
+            return new TemplateManager;
         });
 
         $this->app->singleton('plugin-manager', function () {
@@ -64,7 +61,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     {
         $rc = new \ReflectionClass(static::class);
 
-        return dirname($rc->getFileName()) . '/../../' . $path;
+        return dirname($rc->getFileName()).'/../../'.$path;
     }
 
     protected function registerConfigs(): void

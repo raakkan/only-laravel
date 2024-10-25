@@ -2,9 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Steps;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Exception;
 
 class DatabaseStep extends Step
 {
@@ -19,16 +19,15 @@ class DatabaseStep extends Step
 
     public static function make(): self
     {
-        return new self();
+        return new self;
     }
 
-    public function init()
-    {
-    }
+    public function init() {}
 
     public function setInputs(array $inputs): self
     {
         $this->dbInputs = array_merge($this->dbInputs, $inputs);
+
         return $this;
     }
 
@@ -41,9 +40,11 @@ class DatabaseStep extends Step
     {
         try {
             $this->checkConnection();
+
             return true;
         } catch (Exception $e) {
-            $this->setErrorMessage("Database connection failed: " . $e->getMessage());
+            $this->setErrorMessage('Database connection failed: '.$e->getMessage());
+
             return false;
         }
     }

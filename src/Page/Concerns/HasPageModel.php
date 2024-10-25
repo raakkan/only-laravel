@@ -7,12 +7,15 @@ use Raakkan\OnlyLaravel\Models\PageModel;
 trait HasPageModel
 {
     protected $model;
+
     protected $modelClass = PageModel::class;
+
     protected $modelData = [];
 
     public function setModel($model)
     {
         $this->model = $model;
+
         return $this;
     }
 
@@ -34,12 +37,14 @@ trait HasPageModel
     public function setModelClass($modelClass)
     {
         $this->modelClass = $modelClass;
+
         return $this;
     }
 
     public function setModelData($modelData)
     {
         $this->modelData = $modelData;
+
         return $this;
     }
 

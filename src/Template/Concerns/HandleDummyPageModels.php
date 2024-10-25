@@ -25,21 +25,23 @@ trait HandleDummyPageModels
                 $this->registerDummyPageModel($dummyPageModel);
             }
         }
-        
+
         return $this;
     }
 
     public function registerDummyPageModel(DummyPageModel $dummyPageModel)
     {
         $this->dummyPageModels[$dummyPageModel->getFor()] = $dummyPageModel;
+
         return $this;
     }
 
     public function getDummyPageModel($for)
     {
-        if(!$this->hasDummyPageModel($for)) {
+        if (! $this->hasDummyPageModel($for)) {
             return null;
         }
+
         return $this->dummyPageModels[$for];
     }
 }

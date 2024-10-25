@@ -29,6 +29,7 @@ class MenuLocation implements Arrayable
     public function label(string $label): self
     {
         $this->label = $label;
+
         return $this;
     }
 

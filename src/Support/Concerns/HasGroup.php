@@ -14,6 +14,7 @@ trait HasGroup
     public function setGroup($group)
     {
         $this->group = $group;
+
         return $this;
     }
 
@@ -24,6 +25,6 @@ trait HasGroup
 
     public function hasGroup()
     {
-        return !is_null($this->group);
+        return ! is_null($this->group);
     }
 }

@@ -7,19 +7,30 @@ use Carbon\Carbon;
 class DummyPageModel
 {
     public $for = 'home-page';
+
     public $id = 1;
+
     public $name = 'Sample Page';
+
     public $template_id = 1;
+
     public $settings = ['show_header' => true, 'show_footer' => true];
+
     public $indexable = true;
+
     public $disabled = false;
+
     public $created_at;
+
     public $updated_at;
+
     public $featured_image = [
         'image' => 'pages/sample-featured-image.jpg',
-        'alt' => 'Sample Featured Image'
+        'alt' => 'Sample Featured Image',
     ];
+
     protected $custom_data = [];
+
     protected $locale;
 
     public $multilingual_data = [
@@ -37,8 +48,9 @@ class DummyPageModel
 
     public static function make(string $for)
     {
-        $instance = new self();
+        $instance = new self;
         $instance->setFor($for);
+
         return $instance;
     }
 
@@ -56,6 +68,7 @@ class DummyPageModel
     public function setFor($for)
     {
         $this->for = $for;
+
         return $this;
     }
 
@@ -77,16 +90,17 @@ class DummyPageModel
     public static function findBySlug($slug)
     {
         // This method would normally query a database, but for this dummy class, we'll just return the instance if the slug matches
-        $instance = new self();
+        $instance = new self;
         if ($instance->slug['en'] === $slug || $instance->slug['es'] === $slug) {
             return $instance;
         }
+
         return null;
     }
 
     public function getSlugUrl()
     {
-        return 'https://example.com/' . $this->slug['en'];
+        return 'https://example.com/'.$this->slug['en'];
     }
 
     public static function getAccessebleAttributes()
@@ -115,6 +129,7 @@ class DummyPageModel
         if (isset($this->featured_image['image'])) {
             return $this->featured_image['image'];
         }
+
         return null;
     }
 
@@ -136,11 +151,11 @@ class DummyPageModel
     public function getLocalizedAttribute($attribute, $locale = null)
     {
         $locale = $locale ?: $this->locale;
-        
+
         if (isset($this->multilingual_data[$attribute][$locale])) {
             return $this->multilingual_data[$attribute][$locale];
         }
-        
+
         return $this->multilingual_data[$attribute]['en'] ?? null;
     }
 
@@ -177,6 +192,7 @@ class DummyPageModel
                 $this->setCustomData($key, $value);
             }
         }
+
         return $this;
     }
 

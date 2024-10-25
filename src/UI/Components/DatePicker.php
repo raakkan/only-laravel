@@ -25,7 +25,7 @@ class DatePicker extends Component
         public ?bool $omitError = false,
         public ?bool $firstErrorOnly = false,
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string
@@ -41,10 +41,10 @@ class DatePicker extends Component
     public function setup(): string
     {
         // Handle `wire:model.live` for `range` dates
-        if (isset($this->config["mode"]) && $this->config["mode"] == "range" && $this->attributes->wire('model')->hasModifier('live')) {
+        if (isset($this->config['mode']) && $this->config['mode'] == 'range' && $this->attributes->wire('model')->hasModifier('live')) {
             $this->attributes->setAttributes([
                 'wire:model' => $this->modelName(),
-                'live' => true
+                'live' => true,
             ]);
         }
 
@@ -54,20 +54,20 @@ class DatePicker extends Component
             'clickOpens' => ! $this->attributes->has('readonly') || $this->attributes->get('readonly') == false,
             'defaultDate' => '#model#',
             'plugins' => ['#plugins#'],
-        ], Arr::except($this->config, ["plugins"])));
+        ], Arr::except($this->config, ['plugins'])));
 
         // Plugins
-        $plugins = "";
+        $plugins = '';
 
         foreach (Arr::get($this->config, 'plugins', []) as $plugin) {
-            $plugins .= "new " . key($plugin) . "( " . json_encode(current($plugin)) . " ),";
+            $plugins .= 'new '.key($plugin).'( '.json_encode(current($plugin)).' ),';
         }
 
         // Plugins
         $config = str_replace('"#plugins#"', $plugins, $config);
 
         // Sets default date as current bound model
-        $config = str_replace('"#model#"', '$wire.get("' . $this->modelName() . '")', $config);
+        $config = str_replace('"#model#"', '$wire.get("'.$this->modelName().'")', $config);
 
         return $config;
     }

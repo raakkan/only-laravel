@@ -5,6 +5,7 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 trait HasPageEditable
 {
     protected $isNameEditable = true;
+
     protected $isSlugEditable = true;
 
     public function isNameEditable(): bool

@@ -9,12 +9,14 @@ trait HasPageType
     public function setPageType($pageType)
     {
         $this->pageType = $pageType;
+
         return $this;
     }
 
     public function pageType($pageType)
     {
         $this->pageType = $pageType;
+
         return $this;
     }
 

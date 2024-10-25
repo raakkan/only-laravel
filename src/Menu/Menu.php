@@ -2,26 +2,25 @@
 
 namespace Raakkan\OnlyLaravel\Menu;
 
-use Raakkan\OnlyLaravel\Menu\MenuItem;
-use Raakkan\OnlyLaravel\Models\MenuModel;
 use Illuminate\Contracts\Support\Arrayable;
-use Raakkan\OnlyLaravel\Support\Concerns\HasName;
-use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Support\Concerns\HasModel;
 use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuItems;
-use Raakkan\OnlyLaravel\Support\Concerns\HasSettings;
 use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuLocation;
+use Raakkan\OnlyLaravel\Models\MenuModel;
+use Raakkan\OnlyLaravel\Support\Concerns\HasModel;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\HasSettings;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 
 class Menu implements Arrayable
 {
-    use Makable;
-    use HasName;
+    use Disableable;
     use HasMenuItems;
     use HasMenuLocation;
-    use HasSettings;
     use HasModel;
-    use Disableable;
+    use HasName;
+    use HasSettings;
+    use Makable;
 
     public function __construct($name)
     {
@@ -73,7 +72,7 @@ class Menu implements Arrayable
         $this->model = $model;
 
         // $this->setMenuSettings($this->model->settings);
-        
+
         return $this->makeItems($menuItems, $items);
     }
 
@@ -89,6 +88,7 @@ class Menu implements Arrayable
         }
 
         $this->items = $builtItems;
+
         return $this;
     }
 
@@ -108,6 +108,7 @@ class Menu implements Arrayable
         }
 
         $themeItem->children($childItems);
+
         return $themeItem;
     }
 

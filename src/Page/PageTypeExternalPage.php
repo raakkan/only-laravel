@@ -2,13 +2,14 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 
-use Illuminate\Support\Facades\View;
-
 class PageTypeExternalPage
 {
     protected $parentPageType;
+
     protected $slug;
+
     protected $pageType;
+
     protected $redirectToUrl;
 
     public static function make($parentPageType, $slug, $pageType = null)
@@ -23,7 +24,7 @@ class PageTypeExternalPage
         $this->pageType = $pageType;
     }
 
-    public function getPageType()  
+    public function getPageType()
     {
         return $this->pageType;
     }
@@ -31,6 +32,7 @@ class PageTypeExternalPage
     public function setPageType($pageType)
     {
         $this->pageType = $pageType;
+
         return $this;
     }
 
@@ -47,6 +49,7 @@ class PageTypeExternalPage
     public function redirectTo($url)
     {
         $this->redirectToUrl = $url;
+
         return $this;
     }
 

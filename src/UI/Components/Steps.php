@@ -15,7 +15,7 @@ class Steps extends Component
         public ?string $stepsColor = 'step-primary'
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function render(): View|Closure|string

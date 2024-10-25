@@ -16,6 +16,7 @@ trait HasName
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -26,7 +27,7 @@ trait HasName
 
     public function hasName(): bool
     {
-        return !is_null($this->name);
+        return ! is_null($this->name);
     }
 
     public function getSanitizedName(): string

@@ -5,10 +5,11 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 trait HasDummyPage
 {
     protected $dummyPage = false;
-    
+
     public function setDummyPage($dummyPage = true)
     {
         $this->dummyPage = $dummyPage;
+
         return $this;
     }
 
@@ -20,6 +21,7 @@ trait HasDummyPage
     public function dummyPage()
     {
         $this->dummyPage = true;
+
         return $this;
     }
 }

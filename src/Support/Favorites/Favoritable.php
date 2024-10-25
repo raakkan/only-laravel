@@ -2,9 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Support\Favorites;
 
-use Raakkan\OnlyLaravel\Support\Favorites\FavoriteModel as Favorite;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Raakkan\OnlyLaravel\Support\Favorites\FavoriteModel as Favorite;
 
 trait Favoritable
 {
@@ -21,7 +21,7 @@ trait Favoritable
     public function favorite($userId = null)
     {
         $userId = $userId ?? auth()->id();
-        
+
         if ($this->id === $userId) {
             return;
         }
@@ -40,6 +40,7 @@ trait Favoritable
     public function isFavoritedBy($userId = null)
     {
         $userId = $userId ?? auth()->id();
+
         return $this->favorites()->where('user_id', $userId)->exists();
     }
 

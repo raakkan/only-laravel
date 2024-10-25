@@ -2,32 +2,31 @@
 
 namespace Raakkan\OnlyLaravel\Support\Concerns;
 
-use OpenAI;
 use Filament\Forms;
-use Illuminate\Support\Str;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Filament\Notifications\Notification;
-use Filament\Forms\Components\Actions\Action;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
-use Filament\Forms\Components\FileUpload;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Support\Str;
+use OpenAI;
 
 trait InteractsWithOpenAIImage
 {
     public function generateImageWithAI(array $data, string $folderName, string $fieldName)
     {
         $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
-        
+
         $requiredKeys = ['prompt', 'size', 'quality', 'style'];
         foreach ($requiredKeys as $key) {
-            if (!isset($data[$key])) {
+            if (! isset($data[$key])) {
                 Notification::make()
                     ->title('Error')
                     ->body("Missing required field: {$key}")
                     ->danger()
                     ->send();
+
                 return null;
             }
         }
@@ -50,11 +49,11 @@ trait InteractsWithOpenAIImage
             ]);
 
             $imageUrl = $response->data[0]->url;
-            
+
             // Download the image
             $imageContents = file_get_contents($imageUrl);
-            $filename = Str::random(40) . '.png';
-            $tempPath = sys_get_temp_dir() . '/' . $filename;
+            $filename = Str::random(40).'.png';
+            $tempPath = sys_get_temp_dir().'/'.$filename;
             file_put_contents($tempPath, $imageContents);
 
             /** @var FileUpload $fileUploadComponent */
@@ -86,8 +85,9 @@ trait InteractsWithOpenAIImage
 
             return $path;
         } catch (\Exception $e) {
-            Log::error('Error generating image with AI: ' . $e->getMessage());
-            Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('Error generating image with AI: '.$e->getMessage());
+            Log::error('Stack trace: '.$e->getTraceAsString());
+
             return null;
         }
     }
@@ -131,11 +131,10 @@ trait InteractsWithOpenAIImage
         $actions = [];
         if (setting('onlylaravel.ai.openai_api_key')) {
             $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
-            if(!$this->apiKeyIsValid($apiKey))
-            {
+            if (! $this->apiKeyIsValid($apiKey)) {
                 return [];
             }
-        }else{
+        } else {
             return [];
         }
 
@@ -143,16 +142,17 @@ trait InteractsWithOpenAIImage
             ->label('Generate Image with AI')
             ->action(function (array $data) use ($field, $directory) {
                 $generatedImagePath = $this->generateImageWithAI($data, $directory, $field);
-                
+
                 if (empty($generatedImagePath)) {
                     Notification::make()
                         ->title('Error')
                         ->body('Failed to generate image. Please try again.')
                         ->danger()
                         ->send();
+
                     return;
                 }
-                
+
                 Notification::make()
                     ->title('Success')
                     ->body('Image generated successfully')
@@ -161,6 +161,7 @@ trait InteractsWithOpenAIImage
             })
             ->form($this->getGenerateImageWithAIFormSchema())
             ->modalSubmitActionLabel('Generate Image');
+
         return $actions;
     }
 }

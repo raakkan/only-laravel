@@ -16,7 +16,7 @@ class Tab extends Component
         public ?string $label = null,
         public ?string $icon = null
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function tabLabel(string $label): string
@@ -25,7 +25,7 @@ class Tab extends Component
 
         if ($this->icon) {
             return Blade::render("
-                <x-mary-icon name='" . $this->icon . "' class='me-2 whitespace-nowrap'>
+                <x-mary-icon name='".$this->icon."' class='me-2 whitespace-nowrap'>
                     <x-slot:label>
                         {$fromLabel}
                     </x-slot:label>

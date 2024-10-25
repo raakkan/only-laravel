@@ -2,21 +2,21 @@
 
 namespace Raakkan\OnlyLaravel\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Filament\Tables\Table;
 use Raakkan\OnlyLaravel\Filament\Pages\EditTemplatePage;
 use Raakkan\OnlyLaravel\Filament\Pages\ListTemplatePage;
+use Raakkan\OnlyLaravel\Models\TemplateModel;
 
 class TemplateResource extends Resource
 {
     protected static ?string $model = TemplateModel::class;
 
     protected static ?string $navigationGroup = 'Appearance';
+
     protected static ?string $slug = 'appearance/templates';
 
     public static function form(Form $form): Form
@@ -57,7 +57,7 @@ class TemplateResource extends Resource
             'edit' => EditTemplatePage::route('/{record}/edit'),
         ];
     }
-    
+
     public function getTitle(): string
     {
         return 'Templates';

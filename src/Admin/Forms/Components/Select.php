@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\Blade;
 class Select extends Field
 {
     protected $options = [];
+
     protected ?string $optionValue = 'id';
+
     protected ?string $optionLabel = 'name';
+
     protected ?string $placeholder = null;
+
     protected ?string $placeholderValue = null;
+
     protected string $wireModel = '';
 
     public static function make(string $name): static
@@ -22,18 +27,21 @@ class Select extends Field
     public function options(Collection|array|callable $options): static
     {
         $this->options = $options;
+
         return $this;
     }
 
     public function optionValue(string $value): static
     {
         $this->optionValue = $value;
+
         return $this;
     }
 
     public function optionLabel(string $label): static
     {
         $this->optionLabel = $label;
+
         return $this;
     }
 
@@ -41,12 +49,14 @@ class Select extends Field
     {
         $this->placeholder = $placeholder;
         $this->placeholderValue = $value;
+
         return $this;
     }
 
     public function wireModel(string $wireModel): static
     {
         $this->wireModel = $wireModel;
+
         return $this;
     }
 

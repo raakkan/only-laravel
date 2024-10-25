@@ -3,10 +3,8 @@
 namespace Raakkan\OnlyLaravel\Plugin;
 
 use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravelManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Template\FontManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 abstract class BasePlugin

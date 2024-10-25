@@ -2,17 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Raakkan\OnlyLaravel\Page\Page;
-use Raakkan\OnlyLaravel\Models\PageModel;
-
 trait ManagePages
 {
     protected $pages = [];
+
     protected $defaultPageView = 'only-laravel::pages.default-page';
 
     public function useDefaultPageView($view)
     {
         $this->defaultPageView = $view;
+
         return $this;
     }
 
@@ -63,7 +62,7 @@ trait ManagePages
         foreach ($this->getPages() as $page) {
             $page->create();
         }
+
         return $this;
     }
-    
 }

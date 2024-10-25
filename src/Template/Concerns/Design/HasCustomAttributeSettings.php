@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Arr;
 
 trait HasCustomAttributeSettings
 {
@@ -37,6 +37,7 @@ trait HasCustomAttributeSettings
     {
         $this->customAttributeSettings = true;
         Arr::set($this->settings, 'onlylaravel.custom_attributes', $attributes);
+
         return $this;
     }
 }

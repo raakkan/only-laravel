@@ -14,6 +14,7 @@ trait HasIcon
     public function setIcon(string $icon): self
     {
         $this->icon = $icon;
+
         return $this;
     }
 
@@ -24,6 +25,6 @@ trait HasIcon
 
     public function hasIcon(): bool
     {
-        return !is_null($this->icon) && !empty($this->icon);
+        return ! is_null($this->icon) && ! empty($this->icon);
     }
 }

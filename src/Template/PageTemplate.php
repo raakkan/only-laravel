@@ -2,16 +2,19 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
-use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 
 class PageTemplate extends BaseTemplate
 {
     protected $type = 'template';
+
     protected $containerCssClasses = '';
+
     protected $headerContent = '';
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -47,7 +50,7 @@ class PageTemplate extends BaseTemplate
     public function getDummyPageModel()
     {
         $dummyPageModel = TemplateManager::getDummyPageModel($this->getName());
-        
+
         if ($dummyPageModel) {
             return $dummyPageModel;
         } else {
@@ -58,7 +61,7 @@ class PageTemplate extends BaseTemplate
     public function render()
     {
         return view('only-laravel::template.template', [
-            'template' => $this
+            'template' => $this,
         ]);
     }
 
@@ -66,7 +69,7 @@ class PageTemplate extends BaseTemplate
     {
         return [
             Textarea::make('onlylaravel.header_content')->label('Header Content')->rows(4)->default($this->getHeaderContent()),
-            Textarea::make('onlylaravel.container_css_classes')->label('Container CSS Classes')->rows(4)->default($this->getContainerCssClasses())
+            Textarea::make('onlylaravel.container_css_classes')->label('Container CSS Classes')->rows(4)->default($this->getContainerCssClasses()),
         ];
     }
 
@@ -93,6 +96,7 @@ class PageTemplate extends BaseTemplate
         if (is_string($content)) {
             $this->headerContent = $content;
         }
+
         return $this;
     }
 
@@ -105,9 +109,10 @@ class PageTemplate extends BaseTemplate
     {
         if (is_array($classes)) {
             $this->containerCssClasses = implode(' ', $classes);
-        } else if (is_string($classes)) {
+        } elseif (is_string($classes)) {
             $this->containerCssClasses = $classes;
         }
+
         return $this;
     }
 }

@@ -9,6 +9,7 @@ trait HasOrder
     public function order($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -20,6 +21,7 @@ trait HasOrder
     public function setOrder($order)
     {
         $this->order = $order;
+
         return $this;
     }
 }

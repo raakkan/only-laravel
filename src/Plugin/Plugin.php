@@ -2,38 +2,38 @@
 
 namespace Raakkan\OnlyLaravel\Plugin;
 
-use Illuminate\Support\Str;
-use Filament\Facades\Filament;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Raakkan\OnlyLaravel\Facades\PageManager;
-use Raakkan\OnlyLaravel\Support\Concerns\HasName;
-use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
-use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Illuminate\Support\Str;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginMenus;
-use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginPages;
-use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginBlocks;
-use Raakkan\OnlyLaravel\Plugin\Concerns\PluginActivation;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginMigration;
+use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginPages;
 use Raakkan\OnlyLaravel\Plugin\Concerns\HasPluginTemplates;
+use Raakkan\OnlyLaravel\Plugin\Concerns\PluginActivation;
+use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 
 class Plugin
 {
-    use PluginActivation;
-    use HasPluginMigration;
-    use HasName;
     use HasLabel {
         getLabel as getPluginLabel;
     }
+    use HasName;
+    use HasPluginMenus;
+    use HasPluginMigration;
     use HasPluginPages;
     use HasPluginTemplates;
-    use HasPluginMenus;
-    
+    use PluginActivation;
+
     protected $description;
+
     protected $version;
+
     protected $path;
+
     protected $namespace;
+
     protected $isAutoloaded = false;
 
     public function __construct($name, $namespace, $label, $description, $version, $path)
@@ -75,8 +75,8 @@ class Plugin
     {
         $this->autoload();
         $pluginClass = $this->getPluginClass();
-        
-        if($pluginClass){
+
+        if ($pluginClass) {
             $pluginClass->register($pluginManager);
             $pluginClass->onlyLaravel($pluginManager->getOnlyLaravel());
             $pluginClass->pages($pluginManager->getPageManager());
@@ -87,11 +87,11 @@ class Plugin
 
     public function boot(PluginManager $pluginManager)
     {
-        $viewPath = $this->path . '/resources/views';
+        $viewPath = $this->path.'/resources/views';
         if (is_dir($viewPath)) {
             app('view')->addNamespace($this->name, $viewPath);
         }
-        
+
         $this->registerLivewireComponents();
         $this->loadBladeComponents();
         $this->loadRoutes();
@@ -101,8 +101,8 @@ class Plugin
 
     protected function loadRoutes()
     {
-        $webRoutesPath = $this->path . '/routes/web.php';
-        $apiRoutesPath = $this->path . '/routes/api.php';
+        $webRoutesPath = $this->path.'/routes/web.php';
+        $apiRoutesPath = $this->path.'/routes/api.php';
 
         if (file_exists($webRoutesPath)) {
             Route::middleware('web')->group(function () use ($webRoutesPath) {
@@ -119,21 +119,21 @@ class Plugin
 
     protected function loadBladeComponents()
     {
-        $componentsPath = $this->path . '/resources/views/components';
+        $componentsPath = $this->path.'/resources/views/components';
         Blade::anonymousComponentNamespace($componentsPath, $this->name);
     }
 
     public function registerLivewireComponents()
     {
-        $livewirePath = $this->path . '/src/Livewire';
+        $livewirePath = $this->path.'/src/Livewire';
         if (is_dir($livewirePath)) {
-            $namespace = $this->namespace . '\\Livewire';
+            $namespace = $this->namespace.'\\Livewire';
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($livewirePath)) as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $className = $namespace . '\\' . str_replace('/', '\\', substr($file->getPathname(), strlen($livewirePath) + 1, -4));
+                    $className = $namespace.'\\'.str_replace('/', '\\', substr($file->getPathname(), strlen($livewirePath) + 1, -4));
                     if (is_subclass_of($className, \Livewire\Component::class)) {
                         $componentName = (new \ReflectionClass($className))->getShortName();
-                        \Livewire\Livewire::component($this->name . '::' . $className::getComponentName(), $className);
+                        \Livewire\Livewire::component($this->name.'::'.$className::getComponentName(), $className);
                     }
                 }
             }
@@ -146,11 +146,11 @@ class Plugin
             return;
         }
 
-        $path = $this->path . '/src';
+        $path = $this->path.'/src';
 
         if (File::isDirectory($path)) {
             $files = File::allFiles($path);
-            
+
             foreach ($files as $file) {
                 if (Str::endsWith($file->getFilename(), '.php')) {
                     include_once $file->getPathname();
@@ -168,15 +168,14 @@ class Plugin
 
     protected function getPluginClass()
     {
-        $pluginFile  = $this->path . '/src/Plugin.php';
+        $pluginFile = $this->path.'/src/Plugin.php';
 
-        if (!File::exists($pluginFile)) {
+        if (! File::exists($pluginFile)) {
             return;
         }
-        
-        $pluginClass = $this->namespace . '\Plugin';
 
-        return new $pluginClass();
+        $pluginClass = $this->namespace.'\Plugin';
+
+        return new $pluginClass;
     }
 }
-

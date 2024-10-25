@@ -5,9 +5,11 @@ namespace Raakkan\OnlyLaravel\Menu\Concerns;
 trait HasMenuItems
 {
     protected $items = [];
+
     public function items($items)
     {
         $this->items = $items;
+
         return $this;
     }
 

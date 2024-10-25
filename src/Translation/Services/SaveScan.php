@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
-use Raakkan\OnlyLaravel\Translation\Services\Scan;
 use Raakkan\OnlyLaravel\Translation\Models\Translation;
 
 class SaveScan
@@ -25,26 +24,25 @@ class SaveScan
             $scanner->addScannedPath($path);
         });
 
-        list($trans, $__) = $scanner->getAllViewFilesWithTranslations();
+        [$trans, $__] = $scanner->getAllViewFilesWithTranslations();
 
         /** @var Collection $trans */
         /** @var Collection $__ */
-
         DB::transaction(function () use ($trans, $__) {
             Translation::query()
                 ->whereNull('deleted_at')
                 ->update([
-                    'deleted_at' => Carbon::now()
+                    'deleted_at' => Carbon::now(),
                 ]);
 
             $trans->each(function ($trans) {
-                list($group, $key) = explode('.', $trans, 2);
+                [$group, $key] = explode('.', $trans, 2);
                 $namespaceAndGroup = explode('::', $group, 2);
                 if (count($namespaceAndGroup) === 1) {
                     $namespace = '*';
                     $group = $namespaceAndGroup[0];
                 } else {
-                    list($namespace, $group) = $namespaceAndGroup;
+                    [$namespace, $group] = $namespaceAndGroup;
                 }
                 $this->createOrUpdate($namespace, $group, $key, $trans);
             });
@@ -55,12 +53,7 @@ class SaveScan
         });
     }
 
-    /**
-     * @param $namespace
-     * @param $group
-     * @param $key
-     */
-    protected function createOrUpdate($namespace, $group, $key, $mainKey=null): void
+    protected function createOrUpdate($namespace, $group, $key, $mainKey = null): void
     {
         /** @var Translation $translation */
         $translation = Translation::withTrashed()
@@ -72,14 +65,14 @@ class SaveScan
         $defaultLocale = config('app.locale');
 
         if ($translation) {
-            if (!$this->isCurrentTransForTranslationArray($translation, $defaultLocale)) {
+            if (! $this->isCurrentTransForTranslationArray($translation, $defaultLocale)) {
                 $translation->restore();
             }
         } else {
             $locals = config('filament-translations.locals');
             $text = [];
             foreach ($locals as $locale => $lang) {
-                $text[$locale] = Lang::get($mainKey,[],$locale);
+                $text[$locale] = Lang::get($mainKey, [], $locale);
             }
             $translation = Translation::make([
                 'namespace' => $namespace,
@@ -88,17 +81,12 @@ class SaveScan
                 'text' => $text,
             ]);
 
-            if (!$this->isCurrentTransForTranslationArray($translation, $defaultLocale)) {
+            if (! $this->isCurrentTransForTranslationArray($translation, $defaultLocale)) {
                 $translation->save();
             }
         }
     }
 
-    /**
-     * @param Translation $translation
-     * @param $locale
-     * @return bool
-     */
     private function isCurrentTransForTranslationArray(Translation $translation, $locale): bool
     {
         if ($translation->group === '*') {
@@ -106,9 +94,9 @@ class SaveScan
         }
 
         if ($translation->namespace === '*') {
-            return is_array(trans($translation->group . '.' . $translation->key, [], $locale));
+            return is_array(trans($translation->group.'.'.$translation->key, [], $locale));
         }
 
-        return is_array(trans($translation->namespace . '::' . $translation->group . '.' . $translation->key, [], $locale));
+        return is_array(trans($translation->namespace.'::'.$translation->group.'.'.$translation->key, [], $locale));
     }
 }

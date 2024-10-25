@@ -28,12 +28,12 @@ class TranslationLoader
     {
         foreach ($translations as $key => $value) {
             if (is_array($value)) {
-                self::saveTranslations($language, $group, $value, $prefix . $key . '.');
+                self::saveTranslations($language, $group, $value, $prefix.$key.'.');
             } else {
                 LanguageLine::updateOrCreate(
                     [
                         'group' => $group,
-                        'key' => $prefix . $key,
+                        'key' => $prefix.$key,
                     ],
                     [
                         'text' => [$language => $value],

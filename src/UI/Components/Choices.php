@@ -33,7 +33,7 @@ class Choices extends Component
         public ?string $optionSubLabel = '',
         public ?string $optionAvatar = 'avatar',
         public ?string $height = 'max-h-64',
-        public Collection|array $options = new Collection(),
+        public Collection|array $options = new Collection,
         public ?string $noResultText = 'No results found.',
         // Validations
         public ?string $errorField = null,
@@ -46,10 +46,10 @@ class Choices extends Component
         public mixed $prepend = null,
         public mixed $append = null
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
 
         if (($this->allowAll || $this->compact) && ($this->single || $this->searchable)) {
-            throw new Exception("`allow-all` and `compact` does not work combined with `single` or `searchable`.");
+            throw new Exception('`allow-all` and `compact` does not work combined with `single` or `searchable`.');
         }
     }
 

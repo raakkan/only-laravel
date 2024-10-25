@@ -16,7 +16,7 @@ class ImageGallery extends Component
         public ?bool $withIndicators = false
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function render(): View|Closure|string

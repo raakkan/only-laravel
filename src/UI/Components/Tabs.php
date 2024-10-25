@@ -17,7 +17,7 @@ class Tabs extends Component
         public string $labelDivClass = 'border-b-2 border-b-base-200 flex overflow-x-auto',
         public string $tabsClass = 'relative w-full',
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function render(): View|Closure|string

@@ -2,27 +2,29 @@
 
 namespace Raakkan\OnlyLaravel\Menu\Livewire;
 
-use Livewire\Component;
-use Filament\Forms\Form;
 use Filament\Actions\Action;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
-use Raakkan\OnlyLaravel\Models\MenuModel;
-use Filament\Actions\Contracts\HasActions;
-use Raakkan\OnlyLaravel\Models\MenuItemModel;
-use Stichoza\GoogleTranslate\GoogleTranslate;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\Actions\Action as FormAction;
-use Raakkan\OnlyLaravel\Support\Concerns\HasTranslateAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Livewire\Component;
+use Raakkan\OnlyLaravel\Models\MenuItemModel;
+use Raakkan\OnlyLaravel\Models\MenuModel;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
-class MenuItemComponent extends Component implements HasForms, HasActions
+class MenuItemComponent extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
+
     public MenuModel $menu;
+
     public MenuItemModel $item;
+
     public ?array $settings = [];
 
     public function mount()
@@ -38,13 +40,14 @@ class MenuItemComponent extends Component implements HasForms, HasActions
     {
         $availableLanguages = ['en', 'ta'];
         $translationFields = [];
-        
+
         foreach ($availableLanguages as $lang) {
             $translationFields[] = TextInput::make("label_{$lang}")
                 ->label("Label ({$lang})")
                 ->default($this->item->getTranslation('label', $lang, false))
                 ->hintActions($this->getFieldTranslateActions($lang, "label_{$lang}"));
         }
+
         return $form
             ->schema([
                 TextInput::make('label')
@@ -112,13 +115,13 @@ class MenuItemComponent extends Component implements HasForms, HasActions
             ->action(function (Component $livewire) {
                 $order = $this->item->order;
                 $parentId = $this->item->parent_id;
-        
+
                 $this->item->delete();
 
                 $livewire->dispatch('item-deleted');
 
                 MenuItemModel::reorderSiblings($this->menu, $order, $parentId);
-                
+
                 Notification::make()
                     ->title('Item deleted')
                     ->success()
@@ -133,32 +136,33 @@ class MenuItemComponent extends Component implements HasForms, HasActions
 
     public function getFieldTranslateActions($lang, $field)
     {
-        if($lang == 'en'){
+        if ($lang == 'en') {
             return [];
         }
+
         return [
             FormAction::make('translate')
                 ->label('Translate')
                 ->action(function ($data) use ($lang, $field) {
-                $text = $this->item->getTranslation('label', 'en', false);
-                if(!empty($text)){
-                    try {
-                        $translator = new GoogleTranslate();
-                        $translatedText = $translator->setSource('en')->setTarget($lang)->translate($text);
-                        $this->mountedFormComponentActionsData[0][$field] = $translatedText;
-                        $this->item->setTranslation('label', $lang, $translatedText);
-                        $this->item->save();
-                    } catch (\Exception $e) {
-                        \Log::error('Translation error: ' . $e->getMessage());
-                        \Log::error('Stack trace: ' . $e->getTraceAsString());
-                        Notification::make()
-                            ->title('Translation Error')
-                            ->body('An error occurred while translating the text. Please try again.')
-                            ->danger()
-                            ->send();
+                    $text = $this->item->getTranslation('label', 'en', false);
+                    if (! empty($text)) {
+                        try {
+                            $translator = new GoogleTranslate;
+                            $translatedText = $translator->setSource('en')->setTarget($lang)->translate($text);
+                            $this->mountedFormComponentActionsData[0][$field] = $translatedText;
+                            $this->item->setTranslation('label', $lang, $translatedText);
+                            $this->item->save();
+                        } catch (\Exception $e) {
+                            \Log::error('Translation error: '.$e->getMessage());
+                            \Log::error('Stack trace: '.$e->getTraceAsString());
+                            Notification::make()
+                                ->title('Translation Error')
+                                ->body('An error occurred while translating the text. Please try again.')
+                                ->danger()
+                                ->send();
+                        }
                     }
-                    }
-                })
+                }),
         ];
     }
 }

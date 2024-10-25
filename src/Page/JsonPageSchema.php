@@ -5,6 +5,7 @@ namespace Raakkan\OnlyLaravel\Page;
 class JsonPageSchema
 {
     protected $schema = [];
+
     protected $dataInstructions = [];
 
     public function __construct()
@@ -22,7 +23,7 @@ class JsonPageSchema
                 ],
                 [
                     '@type' => 'WebSite',
-                    '@id' => url('/') . '#website',
+                    '@id' => url('/').'#website',
                     'url' => url('/'),
                 ],
             ],
@@ -32,6 +33,7 @@ class JsonPageSchema
     public function setType($type)
     {
         $this->schema['@graph'][0]['@type'] = $type;
+
         return $this;
     }
 
@@ -39,6 +41,7 @@ class JsonPageSchema
     {
         $this->schema['@graph'][0][$key] = $value;
         $this->dataInstructions[$key] = $dataInstruction;
+
         return $this;
     }
 
@@ -46,6 +49,7 @@ class JsonPageSchema
     {
         unset($this->schema['@graph'][0][$key]);
         unset($this->dataInstructions[$key]);
+
         return $this;
     }
 
@@ -67,6 +71,7 @@ class JsonPageSchema
     public function toScriptTag()
     {
         $json = $this->toJson();
+
         return "<script type=\"application/ld+json\">\n{$json}\n</script>";
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Menu\Concerns;
+
 use Raakkan\OnlyLaravel\Menu\Menu;
 
 trait HandleMenus
@@ -19,6 +20,7 @@ trait HandleMenus
                 $this->registerMenu($menu);
             }
         }
+
         return $this;
     }
 
@@ -27,6 +29,7 @@ trait HandleMenus
         if ($menu->allRequiredFieldsFilled() && ! $this->isMenuExist($menu->getName())) {
             $this->menus[] = $menu;
         }
+
         return $this;
     }
 
@@ -42,6 +45,7 @@ trait HandleMenus
         foreach ($this->getMenus() as $menu) {
             $menu->create();
         }
+
         return $this;
     }
 }

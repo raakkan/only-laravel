@@ -2,11 +2,11 @@
 
 namespace Raakkan\OnlyLaravel\OnlyLaravel\Concerns;
 
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Field;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Component;
 
 trait CollectsSettingPages
 {
@@ -27,8 +27,9 @@ trait CollectsSettingPages
         return collect(File::allFiles($settingPagesPath))
             ->map(function ($file) use ($namespace) {
                 $fileName = $file->getRelativePathname();
-                $className = $namespace . Str::replaceLast('.php', '', $fileName);
-                return new $className();
+                $className = $namespace.Str::replaceLast('.php', '', $fileName);
+
+                return new $className;
             })
             ->filter(function ($class) {
                 return method_exists($class, 'schema');
@@ -71,7 +72,7 @@ trait CollectsSettingPages
         // Check if the setting already exists
         $existingSetting = DB::table('settings')->where('key', $key)->first();
 
-        if (!$existingSetting) {
+        if (! $existingSetting) {
             // Prepare the value for JSON storage
             $value = $this->prepareValueForStorage($defaultValue);
 

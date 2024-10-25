@@ -12,12 +12,14 @@ trait HasAssets
     public function addJs(string $jsFile): self
     {
         $this->assets['js'][] = $jsFile;
+
         return $this;
     }
 
     public function addCss(string $cssFile): self
     {
         $this->assets['css'][] = $cssFile;
+
         return $this;
     }
 
@@ -46,7 +48,7 @@ trait HasAssets
     public function registerAssets(): void
     {
         $template = $this->getTemplate();
-        
+
         foreach ($this->getJs() as $jsFile) {
             $template->addJs($jsFile);
         }
@@ -55,5 +57,4 @@ trait HasAssets
             $template->addCss($cssFile);
         }
     }
-
 }

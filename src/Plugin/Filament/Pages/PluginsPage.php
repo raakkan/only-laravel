@@ -2,13 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Plugin\Filament\Pages;
 
-use Filament\Pages\Page;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
+use Filament\Pages\Page;
 use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 
 class PluginsPage extends Page implements HasForms
@@ -16,19 +13,22 @@ class PluginsPage extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
+
     protected static string $view = 'only-laravel::filament.pages.plugins';
+
     protected static ?string $title = 'Plugins';
+
     protected static ?string $navigationTitle = 'Plugins';
 
-    public function mount(): void
-    {
-    }
+    public function mount(): void {}
 
     public function getPlugins(): array
     {
         $plugins = PluginManager::loadPlugins();
+
         return collect($plugins)->map(function ($plugin) {
             $plugin->setActivated(PluginManager::pluginIsActivated($plugin->getName()));
+
             return $plugin;
         })->toArray();
     }
@@ -47,7 +47,7 @@ class PluginsPage extends Page implements HasForms
 
         Notification::make()
             ->title('Plugin Activated')
-            ->body('The plugin ' . $plugin->getName() . ' has been activated.')
+            ->body('The plugin '.$plugin->getName().' has been activated.')
             ->success()
             ->send();
     }
@@ -60,7 +60,7 @@ class PluginsPage extends Page implements HasForms
         PluginManager::deactivatePlugin($name);
         Notification::make()
             ->title('Plugin Deactivated')
-            ->body('The plugin ' . $plugin->getName() . ' has been deactivated.')
+            ->body('The plugin '.$plugin->getName().' has been deactivated.')
             ->success()
             ->send();
     }

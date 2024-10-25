@@ -9,6 +9,7 @@ trait Addable
     public function setAddable($addable)
     {
         $this->addable = $addable;
+
         return $this;
     }
 

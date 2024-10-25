@@ -5,8 +5,8 @@ namespace Raakkan\OnlyLaravel\UI\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
-use Illuminate\View\Component;
 use Illuminate\Support\Stringable;
+use Illuminate\View\Component;
 
 class Icon extends Component
 {
@@ -16,7 +16,7 @@ class Icon extends Component
         public string $name,
         public ?string $label = null
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function icon(): string|Stringable

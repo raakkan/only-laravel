@@ -2,22 +2,25 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
 use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Arr;
 use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 
 trait HasWidthSettings
 {
     protected $widthSettings = true;
+
     protected $widthResponsiveSettings = true;
+
     protected $minWidthSettings = true;
+
     protected $minWidthResponsiveSettings = true;
+
     protected $maxWidthSettings = true;
+
     protected $maxWidthResponsiveSettings = true;
+
     protected $widthSettingsTabColumn = 2;
 
     public function getWidth($name = 'width')
@@ -25,6 +28,7 @@ trait HasWidthSettings
         if ($name == 'widthAll') {
             return Arr::get($this->settings, 'onlylaravel.width', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.width.$name");
     }
 
@@ -33,6 +37,7 @@ trait HasWidthSettings
         if ($name == 'minWidthAll') {
             return Arr::get($this->settings, 'onlylaravel.min_width', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.min_width.$name");
     }
 
@@ -41,6 +46,7 @@ trait HasWidthSettings
         if ($name == 'maxWidthAll') {
             return Arr::get($this->settings, 'onlylaravel.max_width', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.max_width.$name");
     }
 
@@ -60,7 +66,7 @@ trait HasWidthSettings
                 ->schema([
                     BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
                 ]);
-        }elseif ($this->widthResponsiveSettings) {
+        } elseif ($this->widthResponsiveSettings) {
             $tabs[] = Tab::make('Width')
                 ->schema([
                     BlockWidthField::make('onlylaravel.width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
@@ -77,7 +83,7 @@ trait HasWidthSettings
                 ->schema([
                     BlockWidthField::make('onlylaravel.min_width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
                 ]);
-        }elseif ($this->minWidthResponsiveSettings) {
+        } elseif ($this->minWidthResponsiveSettings) {
             $tabs[] = Tab::make('Min Width')
                 ->schema([
                     BlockWidthField::make('onlylaravel.min_width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
@@ -94,7 +100,7 @@ trait HasWidthSettings
                 ->schema([
                     BlockWidthField::make('onlylaravel.max_width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
                 ]);
-        }elseif ($this->maxWidthResponsiveSettings) {
+        } elseif ($this->maxWidthResponsiveSettings) {
             $tabs[] = Tab::make('Max Width')
                 ->schema([
                     BlockWidthField::make('onlylaravel.max_width')->default(['unit' => $this->getWidth('unit'), 'width' => $this->getWidth()]),
@@ -120,28 +126,30 @@ trait HasWidthSettings
         $this->widthSettings = true;
         Arr::set($this->settings, 'onlylaravel.width.width', $value);
         Arr::set($this->settings, 'onlylaravel.width.unit', $unit);
+
         return $this;
     }
 
     public function responsiveWidth($width = [
-        'width' => 100, 
-        'small' => 640, 
-        'medium' => 768, 
-        'large' => 1024, 
-        'extra_large' => 1280, 
-        '2_extra_large' => 1536
+        'width' => 100,
+        'small' => 640,
+        'medium' => 768,
+        'large' => 1024,
+        'extra_large' => 1280,
+        '2_extra_large' => 1536,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'  
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->widthResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.width', $width);
         Arr::set($this->settings, 'onlylaravel.width.unit', $unit);
+
         return $this;
     }
 
@@ -150,28 +158,30 @@ trait HasWidthSettings
         $this->minWidthSettings = true;
         Arr::set($this->settings, 'onlylaravel.min_width.width', $value);
         Arr::set($this->settings, 'onlylaravel.min_width.unit', $unit);
+
         return $this;
     }
 
     public function responsiveMinWidth($width = [
-        'width' => 100, 
-        'small' => 640, 
-        'medium' => 768, 
-        'large' => 1024, 
-        'extra_large' => 1280, 
-        '2_extra_large' => 1536
+        'width' => 100,
+        'small' => 640,
+        'medium' => 768,
+        'large' => 1024,
+        'extra_large' => 1280,
+        '2_extra_large' => 1536,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'  
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->minWidthResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.min_width', $width);
         Arr::set($this->settings, 'onlylaravel.min_width.unit', $unit);
+
         return $this;
     }
 
@@ -180,32 +190,34 @@ trait HasWidthSettings
         $this->maxWidthSettings = true;
         Arr::set($this->settings, 'onlylaravel.max_width.width', $value);
         Arr::set($this->settings, 'onlylaravel.max_width.unit', $unit);
+
         return $this;
     }
 
     public function responsiveMaxWidth($width = [
-        'width' => 100, 
-        'small' => 640, 
-        'medium' => 768, 
-        'large' => 1024, 
-        'extra_large' => 1280, 
-        '2_extra_large' => 1536
+        'width' => 100,
+        'small' => 640,
+        'medium' => 768,
+        'large' => 1024,
+        'extra_large' => 1280,
+        '2_extra_large' => 1536,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'  
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->maxWidthResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.max_width', $width);
         Arr::set($this->settings, 'onlylaravel.max_width.unit', $unit);
+
         return $this;
     }
 
-    public function enableWidthSettingOnly(array | string $setting = 'widthSettings')
+    public function enableWidthSettingOnly(array|string $setting = 'widthSettings')
     {
         $this->widthSettings = false;
         $this->widthResponsiveSettings = false;
@@ -218,19 +230,22 @@ trait HasWidthSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return;
         }
 
         $this->{$setting} = true;
+
         return $this;
     }
 
     public function getResponsiveWidthStyles($className, $setting = 'widthAll')
     {
         $responsiveWidth = $this->getWidth($setting);
-        
+
         if (is_array($responsiveWidth) && array_key_exists('width', $responsiveWidth)) {
             $styles = $this->generateWidthStyles($className, $responsiveWidth);
+
             return $styles;
         }
     }
@@ -241,6 +256,7 @@ trait HasWidthSettings
 
         if (is_array($responsiveMinWidth) && array_key_exists('min_width', $responsiveMinWidth)) {
             $styles = $this->generateWidthStyles($className, $responsiveMinWidth, 'min-width');
+
             return $styles;
         }
     }
@@ -251,6 +267,7 @@ trait HasWidthSettings
 
         if (is_array($responsiveMaxWidth) && array_key_exists('max_width', $responsiveMaxWidth)) {
             $styles = $this->generateWidthStyles($className, $responsiveMaxWidth, 'max-width');
+
             return $styles;
         }
     }
@@ -267,23 +284,23 @@ trait HasWidthSettings
 
         $width = 'width';
 
-        if($property == 'min-width') {
+        if ($property == 'min-width') {
             $width = 'min_width';
-        } elseif($property == 'max-width') {
+        } elseif ($property == 'max-width') {
             $width = 'max_width';
         }
 
         $styles = [];
 
         $styles[] = ".$className {";
-        $styles[] = "$property: " . ($responsiveWidth[$width] ?? '100') . ($responsiveWidth['unit'] ?? '%') . ';';
+        $styles[] = "$property: ".($responsiveWidth[$width] ?? '100').($responsiveWidth['unit'] ?? '%').';';
         $styles[] = '} ';
 
         foreach ($breakpoints as $size => $media) {
             if (isset($responsiveWidth[$size]) && isset($responsiveWidth[$size][$width]) && isset($responsiveWidth[$size]['unit'])) {
                 $styles[] = $media ? "$media {" : '';
                 $styles[] = ".$className {";
-                $styles[] = "$property: " . $responsiveWidth[$size][$width] . $responsiveWidth[$size]['unit'] . ';';
+                $styles[] = "$property: ".$responsiveWidth[$size][$width].$responsiveWidth[$size]['unit'].';';
                 $styles[] = '} ';
                 $styles[] = $media ? '} ' : '';
             }

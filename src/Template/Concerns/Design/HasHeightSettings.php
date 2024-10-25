@@ -2,19 +2,25 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
+use Illuminate\Support\Arr;
 use Raakkan\OnlyLaravel\Filament\Components\BlockWidthField;
 
 trait HasHeightSettings
 {
     protected $heightSettings = true;
+
     protected $heightResponsiveSettings = true;
+
     protected $minHeightSettings = true;
+
     protected $minHeightResponsiveSettings = true;
+
     protected $maxHeightSettings = true;
+
     protected $maxHeightResponsiveSettings = true;
+
     protected $heightSettingsTabColumn = 2;
 
     public function getHeight($name = 'height')
@@ -22,6 +28,7 @@ trait HasHeightSettings
         if ($name == 'heightAll') {
             return Arr::get($this->settings, 'onlylaravel.height', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.height.$name");
     }
 
@@ -30,6 +37,7 @@ trait HasHeightSettings
         if ($name == 'minHeightAll') {
             return Arr::get($this->settings, 'onlylaravel.min_height', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.min_height.$name");
     }
 
@@ -38,6 +46,7 @@ trait HasHeightSettings
         if ($name == 'maxHeightAll') {
             return Arr::get($this->settings, 'onlylaravel.max_height', []);
         }
+
         return Arr::get($this->settings, "onlylaravel.max_height.$name");
     }
 
@@ -117,6 +126,7 @@ trait HasHeightSettings
         $this->heightSettings = true;
         Arr::set($this->settings, 'onlylaravel.height.height', $value);
         Arr::set($this->settings, 'onlylaravel.height.unit', $unit);
+
         return $this;
     }
 
@@ -126,19 +136,20 @@ trait HasHeightSettings
         'medium' => 400,
         'large' => 500,
         'extra_large' => 600,
-        '2_extra_large' => 700
+        '2_extra_large' => 700,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->heightResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.height', $height);
         Arr::set($this->settings, 'onlylaravel.height.unit', $unit);
+
         return $this;
     }
 
@@ -147,6 +158,7 @@ trait HasHeightSettings
         $this->minHeightSettings = true;
         Arr::set($this->settings, 'onlylaravel.min_height.height', $value);
         Arr::set($this->settings, 'onlylaravel.min_height.unit', $unit);
+
         return $this;
     }
 
@@ -156,19 +168,20 @@ trait HasHeightSettings
         'medium' => 400,
         'large' => 500,
         'extra_large' => 600,
-        '2_extra_large' => 700
+        '2_extra_large' => 700,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->minHeightResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.min_height', $height);
         Arr::set($this->settings, 'onlylaravel.min_height.unit', $unit);
+
         return $this;
     }
 
@@ -177,6 +190,7 @@ trait HasHeightSettings
         $this->maxHeightSettings = true;
         Arr::set($this->settings, 'onlylaravel.max_height.height', $value);
         Arr::set($this->settings, 'onlylaravel.max_height.unit', $unit);
+
         return $this;
     }
 
@@ -186,23 +200,24 @@ trait HasHeightSettings
         'medium' => 400,
         'large' => 500,
         'extra_large' => 600,
-        '2_extra_large' => 700
+        '2_extra_large' => 700,
     ], $unit = [
         'unit' => 'percentage',
         'small' => 'pixels',
         'medium' => 'pixels',
         'large' => 'pixels',
         'extra_large' => 'pixels',
-        '2_extra_large' => 'pixels'
+        '2_extra_large' => 'pixels',
     ])
     {
         $this->maxHeightResponsiveSettings = true;
         Arr::set($this->settings, 'onlylaravel.max_height', $height);
         Arr::set($this->settings, 'onlylaravel.max_height.unit', $unit);
+
         return $this;
     }
 
-    public function enableHeightSettingOnly(array | string $setting = 'heightSettings')
+    public function enableHeightSettingOnly(array|string $setting = 'heightSettings')
     {
         $this->heightSettings = false;
         $this->heightResponsiveSettings = false;
@@ -215,32 +230,33 @@ trait HasHeightSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return $this;
         }
 
         $this->{$setting} = true;
+
         return $this;
     }
 
     public function getResponsiveHeightStyles($className = null, $setting = 'heightAll')
     {
-        if(!$className)
-        {
+        if (! $className) {
             $className = $this->getName();
         }
 
         $responsiveHeight = $this->getHeight($setting);
-        
+
         if (is_array($responsiveHeight) && array_key_exists('height', $responsiveHeight)) {
             $styles = $this->generateHeightStyles($className, $responsiveHeight);
+
             return $styles;
         }
     }
 
     public function getResponsiveMinHeightStyles($className = null, $setting = 'minHeightAll')
     {
-        if(!$className)
-        {
+        if (! $className) {
             $className = $this->getName();
         }
 
@@ -248,20 +264,21 @@ trait HasHeightSettings
 
         if (is_array($responsiveMinHeight) && array_key_exists('min_height', $responsiveMinHeight)) {
             $styles = $this->generateHeightStyles($className, $responsiveMinHeight, 'min-height');
+
             return $styles;
         }
     }
 
     public function getResponsiveMaxHeightStyles($className = null, $setting = 'maxHeightAll')
     {
-        if(!$className)
-        {
+        if (! $className) {
             $className = $this->getName();
         }
         $responsiveMaxHeight = $this->getMaxHeight($setting);
 
         if (is_array($responsiveMaxHeight) && array_key_exists('max_height', $responsiveMaxHeight)) {
             $styles = $this->generateHeightStyles($className, $responsiveMaxHeight, 'max-height');
+
             return $styles;
         }
     }
@@ -278,23 +295,23 @@ trait HasHeightSettings
 
         $height = 'height';
 
-        if($property == 'min-height') {
+        if ($property == 'min-height') {
             $height = 'min_height';
-        } elseif($property == 'max-height') {
+        } elseif ($property == 'max-height') {
             $height = 'max_height';
         }
 
         $styles = [];
 
         $styles[] = ".$className {";
-        $styles[] = "$property: " . ($responsiveHeight[$height] ?? '100') . ($responsiveHeight['unit'] ?? '%') . ';';
+        $styles[] = "$property: ".($responsiveHeight[$height] ?? '100').($responsiveHeight['unit'] ?? '%').';';
         $styles[] = '} ';
 
         foreach ($breakpoints as $size => $media) {
             if (isset($responsiveHeight[$size]) && isset($responsiveHeight[$size][$height]) && isset($responsiveHeight[$size]['unit'])) {
                 $styles[] = $media ? "$media {" : '';
                 $styles[] = ".$className {";
-                $styles[] = "$property: " . $responsiveHeight[$size][$height] . $responsiveHeight[$size]['unit'] . ';';
+                $styles[] = "$property: ".$responsiveHeight[$size][$height].$responsiveHeight[$size]['unit'].';';
                 $styles[] = '} ';
                 $styles[] = $media ? '} ' : '';
             }

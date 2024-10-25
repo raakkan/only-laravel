@@ -10,8 +10,9 @@ class FolderPermissionsStep extends Step
 
     public static function make(): self
     {
-        $step = new self();
+        $step = new self;
         $step->init();
+
         return $step;
     }
 
@@ -37,13 +38,13 @@ class FolderPermissionsStep extends Step
         $errors = [];
 
         foreach ($this->folders as $folder => $isWritable) {
-            if (!$isWritable) {
+            if (! $isWritable) {
                 $allFoldersWritable = false;
                 $errors[] = "The {$folder} folder is not writable.";
             }
         }
 
-        if (!$allFoldersWritable) {
+        if (! $allFoldersWritable) {
             $this->setErrorMessage(implode(' ', $errors));
         }
 

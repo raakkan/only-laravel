@@ -11,12 +11,14 @@ trait HandleMenuLocations
     public function addLocation($location)
     {
         $this->locations[] = $location;
+
         return $this;
     }
 
     public function registerLocation($location)
     {
         $this->addLocation($location);
+
         return $this;
     }
 
@@ -25,6 +27,7 @@ trait HandleMenuLocations
         foreach ($locations as $location) {
             $this->addLocation($location);
         }
+
         return $this;
     }
 
@@ -39,6 +42,7 @@ trait HandleMenuLocations
         foreach ($this->getMenuLocations() as $location) {
             $locations[$location->getName()] = $location->getLabel();
         }
+
         return $locations;
     }
 

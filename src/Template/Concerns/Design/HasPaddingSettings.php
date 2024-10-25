@@ -2,27 +2,40 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Arr;
 use Raakkan\OnlyLaravel\Filament\Components\BlockResponsiveNumberField;
 
 trait HasPaddingSettings
 {
     protected $paddingSettings = true;
+
     protected $paddingResponsiveSettings = true;
+
     protected $paddingLeftSettings = true;
+
     protected $paddingLeftResponsiveSettings = true;
+
     protected $paddingRightSettings = true;
+
     protected $paddingRightResponsiveSettings = true;
+
     protected $paddingTopSettings = true;
+
     protected $paddingTopResponsiveSettings = true;
+
     protected $paddingBottomSettings = true;
+
     protected $paddingBottomResponsiveSettings = true;
+
     protected $paddingXSettings = true;
+
     protected $paddingXResponsiveSettings = true;
+
     protected $paddingYSettings = true;
+
     protected $paddingYResponsiveSettings = true;
 
     public function getPadding($name = 'padding')
@@ -144,6 +157,7 @@ trait HasPaddingSettings
     {
         $this->paddingSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.padding', $padding);
+
         return $this;
     }
 
@@ -156,9 +170,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
-        
+
         return $this;
     }
 
@@ -166,6 +180,7 @@ trait HasPaddingSettings
     {
         $this->paddingLeftSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.left.padding', $padding);
+
         return $this;
     }
 
@@ -178,8 +193,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -187,6 +203,7 @@ trait HasPaddingSettings
     {
         $this->paddingRightSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.right.padding', $padding);
+
         return $this;
     }
 
@@ -199,8 +216,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -208,6 +226,7 @@ trait HasPaddingSettings
     {
         $this->paddingTopSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.top.padding', $padding);
+
         return $this;
     }
 
@@ -220,8 +239,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -229,6 +249,7 @@ trait HasPaddingSettings
     {
         $this->paddingBottomSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.bottom.padding', $padding);
+
         return $this;
     }
 
@@ -241,8 +262,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -250,6 +272,7 @@ trait HasPaddingSettings
     {
         $this->paddingXSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.x.padding', $padding);
+
         return $this;
     }
 
@@ -262,8 +285,9 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -271,6 +295,7 @@ trait HasPaddingSettings
     {
         $this->paddingYSettings = true;
         Arr::set($this->settings, 'onlylaravel.padding.y.padding', $padding);
+
         return $this;
     }
 
@@ -283,12 +308,13 @@ trait HasPaddingSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
-    public function enablePaddingSettingOnly(array | string  $setting = 'paddingSettings')
+    public function enablePaddingSettingOnly(array|string $setting = 'paddingSettings')
     {
         $this->paddingSettings = false;
         $this->paddingResponsiveSettings = false;
@@ -305,6 +331,7 @@ trait HasPaddingSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return;
         }
 
@@ -317,6 +344,7 @@ trait HasPaddingSettings
 
         if (is_array($responsivePadding) && array_key_exists('padding', $responsivePadding)) {
             $styles = $this->generatePaddingStyles($className, $responsivePadding, 'padding');
+
             return $styles;
         }
     }
@@ -327,6 +355,7 @@ trait HasPaddingSettings
 
         if (is_array($responsivePaddingLeft) && array_key_exists('padding', $responsivePaddingLeft)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingLeft, 'padding-left');
+
             return $styles;
         }
     }
@@ -337,6 +366,7 @@ trait HasPaddingSettings
 
         if (is_array($responsivePaddingRight) && array_key_exists('padding', $responsivePaddingRight)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingRight, 'padding-right');
+
             return $styles;
         }
     }
@@ -347,6 +377,7 @@ trait HasPaddingSettings
 
         if (is_array($responsivePaddingTop) && array_key_exists('padding', $responsivePaddingTop)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingTop, 'padding-top');
+
             return $styles;
         }
     }
@@ -357,6 +388,7 @@ trait HasPaddingSettings
 
         if (is_array($responsivePaddingBottom) && array_key_exists('padding', $responsivePaddingBottom)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingBottom, 'padding-bottom');
+
             return $styles;
         }
     }
@@ -368,6 +400,7 @@ trait HasPaddingSettings
         if (is_array($responsivePaddingX) && array_key_exists('padding', $responsivePaddingX)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingX, 'padding-left');
             $styles .= $this->generatePaddingStyles($className, $responsivePaddingX, 'padding-right');
+
             return $styles;
         }
     }
@@ -379,6 +412,7 @@ trait HasPaddingSettings
         if (is_array($responsivePaddingY) && array_key_exists('padding', $responsivePaddingY)) {
             $styles = $this->generatePaddingStyles($className, $responsivePaddingY, 'padding-top');
             $styles .= $this->generatePaddingStyles($className, $responsivePaddingY, 'padding-bottom');
+
             return $styles;
         }
     }
@@ -396,20 +430,19 @@ trait HasPaddingSettings
         $styles = [];
 
         $styles[] = ".$className {";
-        $styles[] = "$property: " . ($responsivePadding['padding'] ?? '0') . 'rem;';
+        $styles[] = "$property: ".($responsivePadding['padding'] ?? '0').'rem;';
         $styles[] = '} ';
 
         foreach ($breakpoints as $size => $media) {
             if (isset($responsivePadding[$size])) {
                 $styles[] = $media ? "$media {" : '';
                 $styles[] = ".$className {";
-                $styles[] = "$property: " . $responsivePadding[$size] . 'rem;';
+                $styles[] = "$property: ".$responsivePadding[$size].'rem;';
                 $styles[] = '} ';
                 $styles[] = $media ? '} ' : '';
             }
         }
 
         return implode('', $styles);
-    }   
-
+    }
 }

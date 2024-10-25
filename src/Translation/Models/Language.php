@@ -52,10 +52,10 @@ class Language extends Model
 
     public function getIconAttribute()
     {
-        $iconPath = __DIR__ . '/../../../resources/svg/' . $this->locale . '.svg';
-        
+        $iconPath = __DIR__.'/../../../resources/svg/'.$this->locale.'.svg';
+
         if (file_exists($iconPath)) {
-            return $this->getIconUrl($this->locale . '.svg');
+            return $this->getIconUrl($this->locale.'.svg');
         }
 
         return $this->getIconUrl('default.svg');
@@ -63,6 +63,6 @@ class Language extends Model
 
     private function getIconUrl($filename)
     {
-        return asset('vendor/raakkan/only-laravel/svg/' . $filename);
+        return asset('vendor/raakkan/only-laravel/svg/'.$filename);
     }
 }

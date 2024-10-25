@@ -8,7 +8,6 @@ use Illuminate\View\Component;
 
 class DateTime extends Component
 {
-
     public string $uuid;
 
     public function __construct(
@@ -25,7 +24,7 @@ class DateTime extends Component
         public ?bool $firstErrorOnly = false,
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

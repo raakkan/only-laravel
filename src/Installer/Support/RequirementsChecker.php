@@ -11,16 +11,12 @@ class RequirementsChecker
 
     /**
      * Check for the server requirements.
-     *
-     * @param  array  $allRequirements
-     *
-     * @return array
      */
     public function check(array $allRequirements): array
     {
         $results = [];
         $mapMethod = [
-            'php'    => 'checkPhpExtensions',
+            'php' => 'checkPhpExtensions',
             'apache' => 'checkApacheModules',
         ];
 
@@ -57,44 +53,36 @@ class RequirementsChecker
 
     /**
      * Create a new instance and perform the requirements check.
-     *
-     * @param array $requirements
-     * @param string|null $minPhpVersion
-     * @return array
      */
     public static function make(array $requirements, ?string $minPhpVersion = null): array
     {
-        $checker = new self();
+        $checker = new self;
         $results = $checker->check($requirements);
         $results['phpVersion'] = $checker->checkPhpVersion($minPhpVersion);
+
         return $results;
     }
 
     /**
      * Check PHP version requirement.
-     *
-     * @param string|null $minPhpVersion
-     * @return array
      */
     public function checkPhpVersion(?string $minPhpVersion = null): array
     {
         $currentPhpVersion = $this->getPhpVersionInfo();
         $minVersionPhp = $minPhpVersion ?? $this->getMinPhpVersion();
         $supported = version_compare($currentPhpVersion['version'],
-                $minVersionPhp) >= 0;
+            $minVersionPhp) >= 0;
 
         return [
-            'full'      => $currentPhpVersion['full'],
-            'current'   => $currentPhpVersion['version'],
-            'minimum'   => $minVersionPhp,
+            'full' => $currentPhpVersion['full'],
+            'current' => $currentPhpVersion['version'],
+            'minimum' => $minVersionPhp,
             'supported' => $supported,
         ];
     }
 
     /**
      * Get current Php version information.
-     *
-     * @return array
      */
     private static function getPhpVersionInfo(): array
     {
@@ -103,7 +91,7 @@ class RequirementsChecker
         $currentVersion = $filtered[0];
 
         return [
-            'full'    => $currentVersionFull,
+            'full' => $currentVersionFull,
             'version' => $currentVersion,
         ];
     }

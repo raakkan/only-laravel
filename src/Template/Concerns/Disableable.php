@@ -11,12 +11,14 @@ trait Disableable
     public function disable()
     {
         $this->disabled = true;
+
         return $this;
     }
 
     public function enable()
     {
         $this->disabled = false;
+
         return $this;
     }
 
@@ -33,6 +35,7 @@ trait Disableable
     public function setDisableable($disableable)
     {
         $this->disableable = $disableable;
+
         return $this;
     }
 

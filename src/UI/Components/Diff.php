@@ -17,7 +17,7 @@ class Diff extends Component
         public string $fileName = 'payload.json',
         public ?array $config = []
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function setup(): string
@@ -33,11 +33,11 @@ class Diff extends Component
 
     public function diff(): string
     {
-        $diff = DiffHelper::calculate($this->old . '
-', $this->new . '
+        $diff = DiffHelper::calculate($this->old.'
+', $this->new.'
 ');
 
-        return "--- {$this->fileName}\n+++ {$this->fileName}\n" . $diff;
+        return "--- {$this->fileName}\n+++ {$this->fileName}\n".$diff;
     }
 
     public function render(): View|Closure|string

@@ -2,19 +2,24 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
-use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasNavigationBlock;
 use Raakkan\OnlyLaravel\Template\Enums\BackgroundType;
 
 class NavigationBlock extends Block
 {
     protected string $name = 'navigation-block';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
+
     protected $backgroundSettings = true;
+
     protected $fontSettings = true;
 
     protected $backgroundType = BackgroundType::COLOR;
+
     public $backgroundColor = '#ffffff';
+
     protected $textColorSettings = true;
 
     protected $view = 'only-laravel::template.blocks.navigation';
@@ -22,7 +27,7 @@ class NavigationBlock extends Block
     public function editorRender()
     {
         return view('only-laravel::template.editor.navigation', [
-            'block' => $this
+            'block' => $this,
         ]);
     }
 
@@ -30,7 +35,7 @@ class NavigationBlock extends Block
     {
         return [
             resource_path('views/vendor/only-laravel/template/blocks/navigation.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/blocks/navigation.blade.php',
+            __DIR__.'/../../../../resources/views/template/blocks/navigation.blade.php',
         ];
     }
 }

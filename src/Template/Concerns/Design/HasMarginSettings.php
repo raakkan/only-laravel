@@ -2,23 +2,32 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
-use Illuminate\Support\Arr;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Arr;
 use Raakkan\OnlyLaravel\Filament\Components\BlockResponsiveNumberField;
 
 trait HasMarginSettings
 {
     protected $marginSettings = true;
+
     protected $marginResponsiveSettings = true;
+
     protected $marginLeftSettings = true;
+
     protected $marginLeftResponsiveSettings = true;
+
     protected $marginRightSettings = true;
+
     protected $marginRightResponsiveSettings = true;
+
     protected $marginTopSettings = true;
+
     protected $marginTopResponsiveSettings = true;
+
     protected $marginBottomSettings = true;
+
     protected $marginBottomResponsiveSettings = true;
 
     public function getMargin($name = 'margin')
@@ -116,6 +125,7 @@ trait HasMarginSettings
     {
         $this->marginSettings = true;
         Arr::set($this->settings, 'onlylaravel.margin.margin', $margin);
+
         return $this;
     }
 
@@ -128,9 +138,9 @@ trait HasMarginSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
-        
+
         return $this;
     }
 
@@ -138,6 +148,7 @@ trait HasMarginSettings
     {
         $this->marginLeftSettings = true;
         Arr::set($this->settings, 'onlylaravel.margin.left.margin', $margin);
+
         return $this;
     }
 
@@ -150,8 +161,9 @@ trait HasMarginSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -159,6 +171,7 @@ trait HasMarginSettings
     {
         $this->marginRightSettings = true;
         Arr::set($this->settings, 'onlylaravel.margin.right.margin', $margin);
+
         return $this;
     }
 
@@ -171,8 +184,9 @@ trait HasMarginSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -180,6 +194,7 @@ trait HasMarginSettings
     {
         $this->marginTopSettings = true;
         Arr::set($this->settings, 'onlylaravel.margin.top.margin', $margin);
+
         return $this;
     }
 
@@ -192,8 +207,9 @@ trait HasMarginSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
@@ -201,6 +217,7 @@ trait HasMarginSettings
     {
         $this->marginBottomSettings = true;
         Arr::set($this->settings, 'onlylaravel.margin.bottom.margin', $margin);
+
         return $this;
     }
 
@@ -213,12 +230,13 @@ trait HasMarginSettings
             'medium' => $medium,
             'large' => $large,
             'extra_large' => $extra_large,
-            '2_extra_large' => $two_extra_large
+            '2_extra_large' => $two_extra_large,
         ]);
+
         return $this;
     }
 
-    public function enableMarginSettingOnly(array | string  $setting = 'marginSettings')
+    public function enableMarginSettingOnly(array|string $setting = 'marginSettings')
     {
         $this->marginSettings = false;
         $this->marginResponsiveSettings = false;
@@ -235,6 +253,7 @@ trait HasMarginSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return;
         }
 
@@ -247,6 +266,7 @@ trait HasMarginSettings
 
         if (is_array($responsiveMargin) && array_key_exists('margin', $responsiveMargin)) {
             $styles = $this->generateMarginStyles($className, $responsiveMargin, 'margin');
+
             return $styles;
         }
     }
@@ -257,6 +277,7 @@ trait HasMarginSettings
 
         if (is_array($responsiveMarginLeft) && array_key_exists('margin', $responsiveMarginLeft)) {
             $styles = $this->generateMarginStyles($className, $responsiveMarginLeft, 'margin-left');
+
             return $styles;
         }
     }
@@ -267,6 +288,7 @@ trait HasMarginSettings
 
         if (is_array($responsiveMarginRight) && array_key_exists('margin', $responsiveMarginRight)) {
             $styles = $this->generateMarginStyles($className, $responsiveMarginRight, 'margin-right');
+
             return $styles;
         }
     }
@@ -277,6 +299,7 @@ trait HasMarginSettings
 
         if (is_array($responsiveMarginTop) && array_key_exists('margin', $responsiveMarginTop)) {
             $styles = $this->generateMarginStyles($className, $responsiveMarginTop, 'margin-top');
+
             return $styles;
         }
     }
@@ -287,6 +310,7 @@ trait HasMarginSettings
 
         if (is_array($responsiveMarginBottom) && array_key_exists('margin', $responsiveMarginBottom)) {
             $styles = $this->generateMarginStyles($className, $responsiveMarginBottom, 'margin-bottom');
+
             return $styles;
         }
     }
@@ -304,20 +328,19 @@ trait HasMarginSettings
         $styles = [];
 
         $styles[] = ".$className {";
-        $styles[] = "$property: " . ($responsiveMargin['margin'] ?? '0') . 'rem;';
+        $styles[] = "$property: ".($responsiveMargin['margin'] ?? '0').'rem;';
         $styles[] = '} ';
 
         foreach ($breakpoints as $size => $media) {
             if (isset($responsiveMargin[$size])) {
                 $styles[] = $media ? "$media {" : '';
                 $styles[] = ".$className {";
-                $styles[] = "$property: " . $responsiveMargin[$size] . 'rem;';
+                $styles[] = "$property: ".$responsiveMargin[$size].'rem;';
                 $styles[] = '} ';
                 $styles[] = $media ? '} ' : '';
             }
         }
 
         return implode('', $styles);
-    }   
-
+    }
 }

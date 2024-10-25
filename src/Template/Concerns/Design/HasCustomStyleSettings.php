@@ -2,22 +2,26 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Arr;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
 use Storage;
 
 trait HasCustomStyleSettings
 {
     protected $customStyleSettings = false;
+
     protected $customCssSettings = false;
 
     protected $customCssFilesSettings = false;
+
     protected $customJsFilesSettings = false;
+
     protected $customScript = false;
+
     protected $coreFileSettings = false;
+
     protected $includeCoreFiles = false;
 
     public function getCustomStyle()
@@ -100,6 +104,7 @@ trait HasCustomStyleSettings
     {
         $this->customStyleSettings = true;
         Arr::set($this->settings, 'onlylaravel.custom_style', $style);
+
         return $this;
     }
 
@@ -107,6 +112,7 @@ trait HasCustomStyleSettings
     {
         $this->customCssSettings = true;
         Arr::set($this->settings, 'onlylaravel.custom_css', $css);
+
         return $this;
     }
 
@@ -114,6 +120,7 @@ trait HasCustomStyleSettings
     {
         $this->customCssFilesSettings = true;
         Arr::set($this->settings, 'onlylaravel.custom_css_files', $files);
+
         return $this;
     }
 
@@ -121,6 +128,7 @@ trait HasCustomStyleSettings
     {
         $this->customJsFilesSettings = true;
         Arr::set($this->settings, 'onlylaravel.custom_js_files', $files);
+
         return $this;
     }
 
@@ -128,6 +136,7 @@ trait HasCustomStyleSettings
     {
         $this->customScript = true;
         Arr::set($this->settings, 'onlylaravel.custom_script', $script);
+
         return $this;
     }
 
@@ -135,6 +144,7 @@ trait HasCustomStyleSettings
     {
         $this->coreFileSettings = true;
         Arr::set($this->settings, 'onlylaravel.include_core_files', $value);
+
         return $this;
     }
 
@@ -146,18 +156,18 @@ trait HasCustomStyleSettings
 
         foreach ($cssFiles as $file) {
             $cssUrl = Storage::url($file);
-            $tags[] = '<link rel="stylesheet" href="' . $cssUrl . '">';
+            $tags[] = '<link rel="stylesheet" href="'.$cssUrl.'">';
         }
 
         foreach ($jsFiles as $file) {
             $jsUrl = Storage::url($file);
-            $tags[] = '<script src="' . $jsUrl . '"></script>';
+            $tags[] = '<script src="'.$jsUrl.'"></script>';
         }
 
         return implode("\n", $tags);
     }
 
-    public function enableCustomStyleSettingOnly(array | string $setting = 'customStyleSettings')
+    public function enableCustomStyleSettingOnly(array|string $setting = 'customStyleSettings')
     {
         $this->customStyleSettings = false;
         $this->customCssSettings = false;
@@ -170,10 +180,12 @@ trait HasCustomStyleSettings
             foreach ($setting as $s) {
                 $this->{$s} = true;
             }
+
             return $this;
         }
 
         $this->{$setting} = true;
+
         return $this;
     }
 }

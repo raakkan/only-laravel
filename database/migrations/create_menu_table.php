@@ -32,7 +32,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->json('settings')->nullable();
             $table->timestamps();
-    
+
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('menu_items')->onDelete('cascade');
 

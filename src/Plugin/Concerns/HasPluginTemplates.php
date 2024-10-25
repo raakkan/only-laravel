@@ -12,14 +12,14 @@ trait HasPluginTemplates
         $templates = collect($pluginClass->getTemplates())->map(function ($template) {
             return $template->source($this->namespace);
         });
-        
+
         return $templates;
     }
 
     public function createTemplates()
     {
         $templates = $this->getTemplates();
-        
+
         foreach ($templates as $template) {
             $template->create();
         }

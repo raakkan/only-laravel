@@ -7,19 +7,33 @@ use Illuminate\Support\Facades\Blade;
 class TextInput extends Field
 {
     protected ?string $type = 'text';
+
     protected ?string $icon = null;
+
     protected ?string $iconRight = null;
+
     protected ?string $prefix = null;
+
     protected ?string $suffix = null;
+
     protected bool $inline = false;
+
     protected bool $clearable = false;
+
     protected bool $money = false;
+
     protected string $locale = 'en-US';
+
     protected string $wireModel = '';
+
     protected bool $numeric = false;
+
     protected bool $integer = false;
+
     protected ?float $step = null;
+
     protected ?float $min = null;
+
     protected ?float $max = null;
 
     public static function make(string $name): static
@@ -30,42 +44,49 @@ class TextInput extends Field
     public function type(string $type): static
     {
         $this->type = $type;
+
         return $this;
     }
 
     public function icon(?string $icon): static
     {
         $this->icon = $icon;
+
         return $this;
     }
 
     public function iconRight(?string $icon): static
     {
         $this->iconRight = $icon;
+
         return $this;
     }
 
     public function prefix(?string $prefix): static
     {
         $this->prefix = $prefix;
+
         return $this;
     }
 
     public function suffix(?string $suffix): static
     {
         $this->suffix = $suffix;
+
         return $this;
     }
 
     public function inline(bool $inline = true): static
     {
         $this->inline = $inline;
+
         return $this;
     }
 
     public function clearable(bool $clearable = true): static
     {
         $this->clearable = $clearable;
+
         return $this;
     }
 
@@ -73,12 +94,14 @@ class TextInput extends Field
     {
         $this->money = $money;
         $this->locale = $locale;
+
         return $this;
     }
 
     public function wireModel(string $wireModel): static
     {
         $this->wireModel = $wireModel;
+
         return $this;
     }
 
@@ -89,6 +112,7 @@ class TextInput extends Field
         $this->step = $step;
         $this->min = $min;
         $this->max = $max;
+
         return $this;
     }
 
@@ -99,6 +123,7 @@ class TextInput extends Field
         $this->step = 1;
         $this->min = $min;
         $this->max = $max;
+
         return $this;
     }
 

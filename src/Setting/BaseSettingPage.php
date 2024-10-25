@@ -3,26 +3,28 @@
 namespace Raakkan\OnlyLaravel\Setting;
 
 use Closure;
-use Filament\Forms\Form;
-use Filament\Pages\Page;
-use Illuminate\Support\Str;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
-use Filament\Support\Exceptions\Halt;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Support\Facades\FilamentView;
-use Raakkan\OnlyLaravel\Setting\Models\Setting;
-use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
+use Filament\Pages\Concerns\InteractsWithFormActions;
+use Filament\Pages\Page;
+use Filament\Support\Exceptions\Halt;
+use Illuminate\Support\Str;
+use Raakkan\OnlyLaravel\Setting\Models\Setting;
 
 class BaseSettingPage extends Page
 {
     use HasUnsavedDataChangesAlert;
     use InteractsWithFormActions;
+
     protected static string $view = 'only-laravel::filament.pages.base-setting-page';
 
     protected static ?string $navigationGroup = 'Settings';
+
     protected static ?string $slug = 'settings';
+
     public $data = [];
 
     public function schema(): array|Closure
@@ -35,25 +37,25 @@ class BaseSettingPage extends Page
         return $form->schema($this->schema())->statePath('data');
     }
 
-    public function getFormActions() : array
+    public function getFormActions(): array
     {
         return [
             Action::make('save')
                 ->label('Save')
                 ->submit('data')
-                ->keyBindings(['mod+s'])
+                ->keyBindings(['mod+s']),
         ];
     }
 
-    public function mount() : void
+    public function mount(): void
     {
         $this->fillForm();
     }
 
-    protected function fillForm() : void
+    protected function fillForm(): void
     {
         $data = Setting::get();
-        
+
         $this->callHook('beforeFill');
 
         $this->form->fill($data);
@@ -61,7 +63,7 @@ class BaseSettingPage extends Page
         $this->callHook('afterFill');
     }
 
-    public function save() : void
+    public function save(): void
     {
         try {
             $this->callHook('beforeValidate');
@@ -70,8 +72,8 @@ class BaseSettingPage extends Page
             $fieldsWithNestedFields = $fields->filter(fn (Field $field) => count($field->getChildComponents()) > 0);
 
             $fieldsWithNestedFields->each(function (Field $fieldWithNestedFields, string $fieldWithNestedFieldsKey) use (&$fields) {
-                $fields = $fields->reject(function (Field $field, string $fieldKey) use ($fieldWithNestedFields, $fieldWithNestedFieldsKey) {
-                    return Str::startsWith($fieldKey, $fieldWithNestedFieldsKey . '.');
+                $fields = $fields->reject(function (Field $field, string $fieldKey) use ($fieldWithNestedFieldsKey) {
+                    return Str::startsWith($fieldKey, $fieldWithNestedFieldsKey.'.');
                 });
             });
 
@@ -99,14 +101,14 @@ class BaseSettingPage extends Page
         }
     }
 
-    protected function getSavedNotification() : ?Notification
+    protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
             ->success()
             ->title('Settings saved successfully');
     }
 
-    protected function getRedirectUrl() : ?string
+    protected function getRedirectUrl(): ?string
     {
         return null;
     }

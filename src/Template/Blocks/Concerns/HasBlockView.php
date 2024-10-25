@@ -5,7 +5,9 @@ namespace Raakkan\OnlyLaravel\Template\Blocks\Concerns;
 trait HasBlockView
 {
     protected $view = '';
+
     protected $viewPath = [];
+
     protected $viewPaths = [];
 
     public function getView()
@@ -15,18 +17,21 @@ trait HasBlockView
         } else {
             $view = $this->view;
         }
+
         return $view;
     }
 
     public function setView($view)
     {
         $this->view = $view;
+
         return $this;
     }
 
     public function view($view)
     {
         $this->view = $view;
+
         return $this;
     }
 
@@ -37,12 +42,14 @@ trait HasBlockView
         } else {
             $viewPath = $this->viewPath;
         }
+
         return $viewPath;
     }
 
     public function setViewPath($viewPath)
     {
         $this->viewPath = $viewPath;
+
         return $this;
     }
 
@@ -54,6 +61,7 @@ trait HasBlockView
     public function setViewPaths($viewPaths)
     {
         $this->viewPaths = $viewPaths;
+
         return $this;
     }
 

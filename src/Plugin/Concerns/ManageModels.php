@@ -17,7 +17,8 @@ trait ManageModels
 
     public function isModelHasSlug($model)
     {
-        $model = new $model();
+        $model = new $model;
+
         return $model->isFillable('slug');
     }
 
@@ -27,7 +28,7 @@ trait ManageModels
             $this->registerModel($model);
         }
     }
-    
+
     public function getModels()
     {
         return $this->models;

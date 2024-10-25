@@ -16,10 +16,10 @@ class File extends Component
         public ?string $hintClass = 'label-text-alt text-gray-400 py-1 pb-0',
         public ?bool $hideProgress = false,
         public ?bool $cropAfterChange = false,
-        public ?string $changeText = "Change",
-        public ?string $cropTitleText = "Crop image",
-        public ?string $cropCancelText = "Cancel",
-        public ?string $cropSaveText = "Crop",
+        public ?string $changeText = 'Change',
+        public ?string $cropTitleText = 'Crop image',
+        public ?string $cropCancelText = 'Cancel',
+        public ?string $cropSaveText = 'Crop',
         public ?array $cropConfig = [],
         // Validations
         public ?string $errorField = null,
@@ -28,7 +28,7 @@ class File extends Component
         public ?bool $firstErrorOnly = false,
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string
@@ -46,7 +46,7 @@ class File extends Component
         return json_encode(array_merge([
             'autoCropArea' => 1,
             'viewMode' => 1,
-            'dragMode' => 'move'
+            'dragMode' => 'move',
         ], $this->cropConfig));
     }
 

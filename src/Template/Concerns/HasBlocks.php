@@ -7,16 +7,18 @@ use Raakkan\OnlyLaravel\Template\Blocks\Block;
 trait HasBlocks
 {
     protected $blocks = [];
-    
+
     public function blocks($blocks)
     {
         $this->blocks = $blocks;
+
         return $this;
     }
 
     public function addBlock(Block $block)
     {
         $this->blocks[] = $block;
+
         return $this;
     }
 
@@ -92,8 +94,8 @@ trait HasBlocks
         if (method_exists($block, 'getChildren')) {
             foreach ($block->getChildren() as $childBlock) {
                 $childCss = $this->getBlockCustomCssRecursive($childBlock);
-                if (!empty($childCss)) {
-                    $css .= ' ' . $childCss;
+                if (! empty($childCss)) {
+                    $css .= ' '.$childCss;
                 }
             }
         }

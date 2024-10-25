@@ -11,15 +11,15 @@ class Popover extends Component
     public string $uuid;
 
     public function __construct(
-        public ?string $position = "bottom",
-        public ?string $offset = "10",
+        public ?string $position = 'bottom',
+        public ?string $offset = '10',
 
         // Slots
         public mixed $trigger = null,
         public mixed $content = null
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function render(): View|Closure|string

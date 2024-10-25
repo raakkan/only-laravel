@@ -2,53 +2,53 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns\Design;
 
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Set;
 use Illuminate\Support\Arr;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ColorPicker;
-use Raakkan\OnlyLaravel\Facades\FontManager;
-use Filament\Forms\Components\Actions\Action;
 
 trait HasTextSettings
 {
     protected $fontFamilies = [
         [
             'name' => 'Arial',
-            'value' => 'Arial, sans-serif'
+            'value' => 'Arial, sans-serif',
         ],
         [
             'name' => 'Helvetica',
-            'value' => 'Helvetica, Arial, sans-serif'
+            'value' => 'Helvetica, Arial, sans-serif',
         ],
         [
             'name' => 'Verdana',
-            'value' => 'Verdana, Geneva, sans-serif'
+            'value' => 'Verdana, Geneva, sans-serif',
         ],
         [
             'name' => 'Tahoma',
-            'value' => 'Tahoma, Geneva, sans-serif'
+            'value' => 'Tahoma, Geneva, sans-serif',
         ],
         [
             'name' => 'Times New Roman',
-            'value' => '"Times New Roman", Times, serif'
+            'value' => '"Times New Roman", Times, serif',
         ],
         [
             'name' => 'Georgia',
-            'value' => 'Georgia, serif'
+            'value' => 'Georgia, serif',
         ],
         [
             'name' => 'Courier New',
-            'value' => '"Courier New", Courier, monospace'
+            'value' => '"Courier New", Courier, monospace',
         ],
         [
             'name' => 'Roboto',
-            'value' => 'Roboto, Arial, sans-serif'
+            'value' => 'Roboto, Arial, sans-serif',
         ],
     ];
+
     protected $fontFamilySetting = true;
+
     protected $textColorSetting = true;
+
     protected $fontSizeSetting = true;
 
     public function getTextSettingFields()
@@ -63,30 +63,30 @@ trait HasTextSettings
 
         if ($this->textColorSetting) {
             $fields[] = ColorPicker::make('onlylaravel.text.color')
-            ->label('Text Color')
-            ->hintAction(
-                Action::make('clear')
-                    ->label('Clear')
-                    ->icon('heroicon-m-x-circle')
-                    ->action(function (Set $set) {
-                        $set('onlylaravel.text.color', '');
-                    })
-            );
+                ->label('Text Color')
+                ->hintAction(
+                    Action::make('clear')
+                        ->label('Clear')
+                        ->icon('heroicon-m-x-circle')
+                        ->action(function (Set $set) {
+                            $set('onlylaravel.text.color', '');
+                        })
+                );
             $fields[] = ColorPicker::make('onlylaravel.text.color_dark')
-            ->label('Text Color (Dark)')
-            ->hintAction(
-                Action::make('clear')
-                    ->label('Clear')
-                    ->icon('heroicon-m-x-circle')
-                    ->action(function (Set $set) {
-                        $set('onlylaravel.text.color_dark', '');
-                    })
-            );
+                ->label('Text Color (Dark)')
+                ->hintAction(
+                    Action::make('clear')
+                        ->label('Clear')
+                        ->icon('heroicon-m-x-circle')
+                        ->action(function (Set $set) {
+                            $set('onlylaravel.text.color_dark', '');
+                        })
+                );
         }
 
         if ($this->fontSizeSetting) {
             $fields[] = TextInput::make('onlylaravel.text.font.size')
-            ->label('Font Size')->numeric();
+                ->label('Font Size')->numeric();
         }
 
         return $fields;
@@ -99,7 +99,7 @@ trait HasTextSettings
 
     public function getTextSetting($key)
     {
-        return Arr::get($this->settings, 'onlylaravel.text.'. $key);
+        return Arr::get($this->settings, 'onlylaravel.text.'.$key);
     }
 
     public function getTextColor()
@@ -129,6 +129,7 @@ trait HasTextSettings
         if ($darkColor) {
             Arr::set($this->settings, 'onlylaravel.text.color_dark', $darkColor);
         }
+
         return $this;
     }
 
@@ -176,7 +177,7 @@ trait HasTextSettings
         if ($fontSize) {
             $styles[] = "font-size: {$fontSize};";
         }
-        
+
         return implode("\n", $styles);
     }
 }

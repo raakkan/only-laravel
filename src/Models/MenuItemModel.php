@@ -2,15 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Spatie\Translatable\HasTranslations;
-use Raakkan\OnlyLaravel\Models\MenuModel;
 
 class MenuItemModel extends Model
 {
     use HasTranslations;
+
     public $translatable = ['label'];
+
     protected $fillable = ['menu_id', 'name', 'target', 'order', 'url', 'icon', 'parent_id', 'label'];
 
     public function menu()

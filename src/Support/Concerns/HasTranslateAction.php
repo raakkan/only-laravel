@@ -2,10 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Support\Concerns;
 
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Component;
-use Filament\Notifications\Notification;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Field;
+use Filament\Notifications\Notification;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 trait HasTranslateAction
@@ -16,22 +16,22 @@ trait HasTranslateAction
             return [];
         }
         $text = $this->getRecord()->getTranslation($field, 'en');
-        
+
         return [
             Action::make('translate')
                 ->label('Translate')
                 ->color('info')
                 ->action(function () use ($text, $field) {
-                    if(!empty($text)){
+                    if (! empty($text)) {
                         try {
-                            $translator = new GoogleTranslate();
+                            $translator = new GoogleTranslate;
                             $translatedText = $translator->setSource('en')->setTarget($this->activeLocale)->translate($text);
                             $currentData = $this->getFormFieldsStateByFilled();
                             $currentData[$field] = $translatedText;
                             $this->form->fill($currentData);
                         } catch (\Exception $e) {
-                            \Log::error('Translation error: ' . $e->getMessage());
-                            \Log::error('Stack trace: ' . $e->getTraceAsString());
+                            \Log::error('Translation error: '.$e->getMessage());
+                            \Log::error('Stack trace: '.$e->getTraceAsString());
                             Notification::make()
                                 ->title('Translation Error')
                                 ->body('An error occurred while translating the text. Please try again.')
@@ -39,7 +39,7 @@ trait HasTranslateAction
                                 ->send();
                         }
                     }
-                })
+                }),
         ];
     }
 
@@ -68,6 +68,7 @@ trait HasTranslateAction
                     }
                 }
             }
+
             return $state;
         } catch (\Throwable $th) {
             return [];

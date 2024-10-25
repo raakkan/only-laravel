@@ -1,16 +1,16 @@
 <?php
 
-use Raakkan\OnlyLaravel\Setting\Models\Setting;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Setting\Models\Setting;
 
-if (!function_exists('theme_template')) {
+if (! function_exists('theme_template')) {
     function theme_template($name)
     {
         return TemplateManager::getTemplate($name);
     }
 }
 
-if (!function_exists('setting')) {
+if (! function_exists('setting')) {
     function setting(string|array $key = '*', mixed $default = null): mixed
     {
         if (is_array($key)) {
@@ -27,14 +27,14 @@ if (!function_exists('setting')) {
     }
 }
 
-if (!function_exists('trans_fallback')) {
+if (! function_exists('trans_fallback')) {
     function trans_fallback($key, $fallback, $replace = [], $locale = null)
     {
-        if (!app()->bound('translator')) {
+        if (! app()->bound('translator')) {
             return $fallback;
         }
         $translation = __($key, $replace, $locale);
-        
+
         return $key === $translation ? $fallback : $translation;
     }
 }

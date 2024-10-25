@@ -7,11 +7,13 @@ use Raakkan\OnlyLaravel\Page\JsonPageSchema;
 trait HasJsonSchema
 {
     protected $jsonSchema;
+
     public function registerJsonSchema(callable $callback)
     {
-        $jsonSchema = new JsonPageSchema();
+        $jsonSchema = new JsonPageSchema;
         $callback($jsonSchema);
         $this->jsonSchema = $jsonSchema;
+
         return $this;
     }
 
@@ -20,7 +22,7 @@ trait HasJsonSchema
         if ($this->jsonSchema) {
             return $this->jsonSchema->generateJsonLd($pageModel, $page);
         }
+
         return null;
     }
 }
-

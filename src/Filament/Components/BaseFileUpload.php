@@ -3,37 +3,32 @@
 namespace Raakkan\OnlyLaravel\Filament\Components;
 
 use Closure;
-use Throwable;
+use Filament\Forms\Components\Concerns;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\Field;
-use Intervention\Image\ImageManager;
-use Filament\Forms\Components\Concerns;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Contracts\Support\Arrayable;
-use Intervention\Image\Encoders\GifEncoder;
-use Intervention\Image\Encoders\PngEncoder;
-use Illuminate\Filesystem\FilesystemAdapter;
-use Intervention\Image\Encoders\AvifEncoder;
-use Intervention\Image\Encoders\JpegEncoder;
-use Intervention\Image\Encoders\WebpEncoder;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use League\Flysystem\UnableToCheckFileExistence;
-use Intervention\Image\Interfaces\EncoderInterface;
+use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\ImageManager;
+use League\Flysystem\UnableToCheckFileExistence;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Throwable;
 
 /**
  * this class writed by Josh Embling
+ *
  * @source https://github.com/joshembling/image-optimizer
+ *
  * @author https://github.com/joshembling
  */
-
 class BaseFileUpload extends Field
 {
     use Concerns\HasUploadingMessage;
@@ -41,47 +36,47 @@ class BaseFileUpload extends Field
     /**
      * @var array<string> | Arrayable | Closure | null
      */
-    protected array | Arrayable | Closure | null $acceptedFileTypes = null;
+    protected array|Arrayable|Closure|null $acceptedFileTypes = null;
 
-    protected bool | Closure $isDeletable = true;
+    protected bool|Closure $isDeletable = true;
 
-    protected bool | Closure $isDownloadable = false;
+    protected bool|Closure $isDownloadable = false;
 
-    protected bool | Closure $isOpenable = false;
+    protected bool|Closure $isOpenable = false;
 
-    protected bool | Closure $isPreviewable = true;
+    protected bool|Closure $isPreviewable = true;
 
-    protected bool | Closure $isReorderable = false;
+    protected bool|Closure $isReorderable = false;
 
-    protected string | Closure | null $directory = null;
+    protected string|Closure|null $directory = null;
 
-    protected string | Closure | null $diskName = null;
+    protected string|Closure|null $diskName = null;
 
-    protected bool | Closure $isMultiple = false;
+    protected bool|Closure $isMultiple = false;
 
-    protected int | Closure | null $maxSize = null;
+    protected int|Closure|null $maxSize = null;
 
-    protected int | Closure | null $minSize = null;
+    protected int|Closure|null $minSize = null;
 
-    protected int | Closure | null $maxFiles = null;
+    protected int|Closure|null $maxFiles = null;
 
-    protected int | Closure | null $minFiles = null;
+    protected int|Closure|null $minFiles = null;
 
-    protected string | Closure | null $optimize = null;
+    protected string|Closure|null $optimize = null;
 
-    protected int | Closure | null $resize = null;
+    protected int|Closure|null $resize = null;
 
-    protected bool | Closure $shouldPreserveFilenames = false;
+    protected bool|Closure $shouldPreserveFilenames = false;
 
-    protected bool | Closure $shouldMoveFiles = false;
+    protected bool|Closure $shouldMoveFiles = false;
 
-    protected bool | Closure $shouldStoreFiles = true;
+    protected bool|Closure $shouldStoreFiles = true;
 
-    protected bool | Closure $shouldFetchFileInformation = true;
+    protected bool|Closure $shouldFetchFileInformation = true;
 
-    protected string | Closure | null $fileNamesStatePath = null;
+    protected string|Closure|null $fileNamesStatePath = null;
 
-    protected string | Closure $visibility = 'public';
+    protected string|Closure $visibility = 'public';
 
     protected ?Closure $deleteUploadedFileUsing = null;
 
@@ -92,13 +87,14 @@ class BaseFileUpload extends Field
     protected ?Closure $reorderUploadedFilesUsing = null;
 
     protected ?Closure $saveUploadedFileUsing = null;
+
     protected bool $generateThumbnails = false;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->afterStateHydrated(static function (BaseFileUpload $component, string | array | null $state): void {
+        $this->afterStateHydrated(static function (BaseFileUpload $component, string|array|null $state): void {
             if (blank($state)) {
                 $component->state([]);
 
@@ -149,7 +145,7 @@ class BaseFileUpload extends Field
             $component->saveUploadedFiles();
         });
 
-        $this->dehydrateStateUsing(static function (BaseFileUpload $component, ?array $state): string | array | null | TemporaryUploadedFile {
+        $this->dehydrateStateUsing(static function (BaseFileUpload $component, ?array $state): string|array|null|TemporaryUploadedFile {
             $files = array_values($state ?? []);
 
             if ($component->isMultiple()) {
@@ -159,7 +155,7 @@ class BaseFileUpload extends Field
             return $files[0] ?? null;
         });
 
-        $this->getUploadedFileUsing(static function (BaseFileUpload $component, string $file, string | array | null $storedFileNames): ?array {
+        $this->getUploadedFileUsing(static function (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array {
             /** @var FilesystemAdapter $storage */
             $storage = $component->getDisk();
 
@@ -199,9 +195,9 @@ class BaseFileUpload extends Field
         });
 
         $this->getUploadedFileNameForStorageUsing(static function (BaseFileUpload $component, TemporaryUploadedFile $file) {
-            return $component->shouldPreserveFilenames() ? $file->getClientOriginalName() : (Str::ulid() . '.' . $file->getClientOriginalExtension());
+            return $component->shouldPreserveFilenames() ? $file->getClientOriginalName() : (Str::ulid().'.'.$file->getClientOriginalExtension());
         });
-        
+
         $this->saveUploadedFileUsing(static function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
             // Log::info($component->isGenerateThumbnails() ? 'generate' : 'not generate');
             try {
@@ -214,13 +210,13 @@ class BaseFileUpload extends Field
 
             $filename = $component->getUploadedFileNameForStorage($file);
             $imageManager = $component->createImageManager();
-            
+
             if ($imageManager) {
                 $image = $imageManager->read($file);
                 $filename = self::formatFileName($filename, 'webp');
-                
+
                 Storage::disk($component->getDiskName())->put(
-                    $component->getDirectory() . '/' . $filename,
+                    $component->getDirectory().'/'.$filename,
                     $image->toWebp()
                 );
             } else {
@@ -229,32 +225,33 @@ class BaseFileUpload extends Field
                     $filename,
                     ['disk' => $component->getDiskName()]
                 );
-                
+
                 if ($path === false) {
                     return null;
                 }
-                
+
                 $filename = basename($path);
             }
-            
-            return $component->getDirectory() . '/' . $filename;
+
+            return $component->getDirectory().'/'.$filename;
         });
     }
 
     public function createImageManager(): ImageManager|bool
     {
         if (extension_loaded('imagick')) {
-            return new ImageManager(new ImagickDriver());
+            return new ImageManager(new ImagickDriver);
         } elseif (extension_loaded('gd')) {
-            return new ImageManager(new GdDriver());
+            return new ImageManager(new GdDriver);
         }
 
         return false;
     }
 
-    public function thumbnails(bool | Closure $condition = true): static
+    public function thumbnails(bool|Closure $condition = true): static
     {
         $this->generateThumbnails = $condition;
+
         return $this;
     }
 
@@ -289,7 +286,7 @@ class BaseFileUpload extends Field
     /**
      * @param  array<string> | Arrayable | Closure  $types
      */
-    public function acceptedFileTypes(array | Arrayable | Closure $types): static
+    public function acceptedFileTypes(array|Arrayable|Closure $types): static
     {
         $this->acceptedFileTypes = $types;
 
@@ -302,49 +299,49 @@ class BaseFileUpload extends Field
         return $this;
     }
 
-    public function deletable(bool | Closure $condition = true): static
+    public function deletable(bool|Closure $condition = true): static
     {
         $this->isDeletable = $condition;
 
         return $this;
     }
 
-    public function directory(string | Closure | null $directory): static
+    public function directory(string|Closure|null $directory): static
     {
         $this->directory = $directory;
 
         return $this;
     }
 
-    public function disk(string | Closure | null $name): static
+    public function disk(string|Closure|null $name): static
     {
         $this->diskName = $name;
 
         return $this;
     }
 
-    public function downloadable(bool | Closure $condition = true): static
+    public function downloadable(bool|Closure $condition = true): static
     {
         $this->isDownloadable = $condition;
 
         return $this;
     }
 
-    public function openable(bool | Closure $condition = true): static
+    public function openable(bool|Closure $condition = true): static
     {
         $this->isOpenable = $condition;
 
         return $this;
     }
 
-    public function reorderable(bool | Closure $condition = true): static
+    public function reorderable(bool|Closure $condition = true): static
     {
         $this->isReorderable = $condition;
 
         return $this;
     }
 
-    public function previewable(bool | Closure $condition = true): static
+    public function previewable(bool|Closure $condition = true): static
     {
         $this->isPreviewable = $condition;
 
@@ -354,7 +351,7 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `downloadable()` instead.
      */
-    public function enableDownload(bool | Closure $condition = true): static
+    public function enableDownload(bool|Closure $condition = true): static
     {
         $this->downloadable($condition);
 
@@ -364,7 +361,7 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `openable()` instead.
      */
-    public function enableOpen(bool | Closure $condition = true): static
+    public function enableOpen(bool|Closure $condition = true): static
     {
         $this->openable($condition);
 
@@ -374,7 +371,7 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `reorderable()` instead.
      */
-    public function enableReordering(bool | Closure $condition = true): static
+    public function enableReordering(bool|Closure $condition = true): static
     {
         $this->reorderable($condition);
 
@@ -384,28 +381,28 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `previewable()` instead.
      */
-    public function disablePreview(bool | Closure $condition = true): static
+    public function disablePreview(bool|Closure $condition = true): static
     {
         $this->previewable(fn (BaseFileUpload $component): bool => ! $component->evaluate($condition));
 
         return $this;
     }
 
-    public function storeFileNamesIn(string | Closure | null $statePath): static
+    public function storeFileNamesIn(string|Closure|null $statePath): static
     {
         $this->fileNamesStatePath = $statePath;
 
         return $this;
     }
 
-    public function preserveFilenames(bool | Closure $condition = true): static
+    public function preserveFilenames(bool|Closure $condition = true): static
     {
         $this->shouldPreserveFilenames = $condition;
 
         return $this;
     }
 
-    public function moveFiles(bool | Closure $condition = true): static
+    public function moveFiles(bool|Closure $condition = true): static
     {
         $this->shouldMoveFiles = $condition;
 
@@ -415,14 +412,14 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `moveFiles()` instead.
      */
-    public function moveFile(bool | Closure $condition = true): static
+    public function moveFile(bool|Closure $condition = true): static
     {
         $this->moveFiles($condition);
 
         return $this;
     }
 
-    public function maxSize(int | Closure | null $size): static
+    public function maxSize(int|Closure|null $size): static
     {
         $this->maxSize = $size;
 
@@ -435,7 +432,7 @@ class BaseFileUpload extends Field
         return $this;
     }
 
-    public function minSize(int | Closure | null $size): static
+    public function minSize(int|Closure|null $size): static
     {
         $this->minSize = $size;
 
@@ -448,42 +445,42 @@ class BaseFileUpload extends Field
         return $this;
     }
 
-    public function maxFiles(int | Closure | null $count): static
+    public function maxFiles(int|Closure|null $count): static
     {
         $this->maxFiles = $count;
 
         return $this;
     }
 
-    public function minFiles(int | Closure | null $count): static
+    public function minFiles(int|Closure|null $count): static
     {
         $this->minFiles = $count;
 
         return $this;
     }
 
-    public function multiple(bool | Closure $condition = true): static
+    public function multiple(bool|Closure $condition = true): static
     {
         $this->isMultiple = $condition;
 
         return $this;
     }
 
-    public function optimize(string | Closure | null $optimize): static
+    public function optimize(string|Closure|null $optimize): static
     {
         $this->optimize = $optimize;
 
         return $this;
     }
 
-    public function resize(int | Closure | null $reductionPercentage): static
+    public function resize(int|Closure|null $reductionPercentage): static
     {
         $this->resize = $reductionPercentage;
 
         return $this;
     }
 
-    public function storeFiles(bool | Closure $condition = true): static
+    public function storeFiles(bool|Closure $condition = true): static
     {
         $this->shouldStoreFiles = $condition;
 
@@ -493,14 +490,14 @@ class BaseFileUpload extends Field
     /**
      * @deprecated Use `storeFiles()` instead.
      */
-    public function storeFile(bool | Closure $condition = true): static
+    public function storeFile(bool|Closure $condition = true): static
     {
         $this->storeFiles($condition);
 
         return $this;
     }
 
-    public function visibility(string | Closure | null $visibility): static
+    public function visibility(string|Closure|null $visibility): static
     {
         $this->visibility = $visibility;
 
@@ -672,7 +669,7 @@ class BaseFileUpload extends Field
         }
 
         $rules[] = function (string $attribute, array $value, Closure $fail): void {
-            $files = array_filter($value, fn (TemporaryUploadedFile | string $file): bool => $file instanceof TemporaryUploadedFile);
+            $files = array_filter($value, fn (TemporaryUploadedFile|string $file): bool => $file instanceof TemporaryUploadedFile);
 
             $name = $this->getName();
 
@@ -714,7 +711,7 @@ class BaseFileUpload extends Field
         return $this;
     }
 
-    public function removeUploadedFile(string $fileKey): string | TemporaryUploadedFile | null
+    public function removeUploadedFile(string $fileKey): string|TemporaryUploadedFile|null
     {
         $files = $this->getState();
         $file = $files[$fileKey] ?? null;
@@ -820,7 +817,7 @@ class BaseFileUpload extends Field
             return;
         }
 
-        $state = array_filter(array_map(function (TemporaryUploadedFile | string $file) {
+        $state = array_filter(array_map(function (TemporaryUploadedFile|string $file) {
             if (! $file instanceof TemporaryUploadedFile) {
                 return $file;
             }
@@ -882,7 +879,7 @@ class BaseFileUpload extends Field
     /**
      * @return string | array<string, string> | null
      */
-    public function getStoredFileNames(): string | array | null
+    public function getStoredFileNames(): string|array|null
     {
         $state = null;
         $statePath = $this->fileNamesStatePath;
@@ -955,7 +952,7 @@ class BaseFileUpload extends Field
         $extension = strrpos($filename, '.');
 
         if ($extension !== false) {
-            return substr($filename, 0, $extension + 1) . $format;
+            return substr($filename, 0, $extension + 1).$format;
         }
 
         return $filename;

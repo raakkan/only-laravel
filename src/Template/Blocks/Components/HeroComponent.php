@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
+use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
 
 class HeroComponent extends BlockComponent
 {
@@ -11,10 +11,15 @@ class HeroComponent extends BlockComponent
         getTitle as parentGetTitle;
         getSubtitle as parentGetSubtitle;
     }
+
     protected string $name = 'hero';
+
     protected string $label = 'Hero';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
+
     protected $view = 'only-laravel::template.components.hero';
 
     public function __construct()
@@ -61,7 +66,7 @@ class HeroComponent extends BlockComponent
     {
         return [
             resource_path('views/vendor/only-laravel/template/components/hero.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/components/hero.blade.php',
+            __DIR__.'/../../../../resources/views/template/components/hero.blade.php',
         ];
     }
 }

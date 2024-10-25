@@ -89,13 +89,13 @@ class Manager
         }
         $value = (string) $value;
         $translation = Translation::firstOrNew([
-            'group'  => $group,
-            'key'    => $key,
+            'group' => $group,
+            'key' => $key,
         ]);
 
         $text = $translation->text;
 
-        if(empty($text[$locale])) {
+        if (empty($text[$locale])) {
             $text[$locale] = $value;
             $replace = true;
         }

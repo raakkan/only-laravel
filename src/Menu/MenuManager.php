@@ -1,15 +1,16 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Menu;
+
 use Raakkan\OnlyLaravel\Facades\PageManager;
-use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenus;
-use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenuLocations;
+use Raakkan\OnlyLaravel\Menu\Concerns\HandleMenus;
 
 class MenuManager
 {
-    use HandleMenus;
     use HandleMenuLocations;
+    use HandleMenus;
+
     protected $items = [];
 
     public function getItems()
@@ -20,7 +21,7 @@ class MenuManager
     public function getPageMenuItems()
     {
         $models = array_filter(PageManager::getAllModels(), 'is_string');
-        
+
         $items = [];
         foreach ($models as $model) {
             $data = $model::get();
@@ -32,7 +33,7 @@ class MenuManager
                 $items[] = MenuItem::make($item->getName())->url($pageType->generateUrl($item->slug))->label($item->title ?? $item->getName())->group($pageType->getGroup());
             }
         }
-        
+
         return $items;
     }
 }

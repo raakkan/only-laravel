@@ -5,9 +5,11 @@ namespace Raakkan\OnlyLaravel\Template\Concerns;
 trait HasLocation
 {
     protected $location = 'default';
+
     public function location($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -19,6 +21,7 @@ trait HasLocation
     public function setLocation($location)
     {
         $this->location = $location;
+
         return $this;
     }
 }

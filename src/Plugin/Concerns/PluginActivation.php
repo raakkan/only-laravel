@@ -24,6 +24,7 @@ trait PluginActivation
     public function setActivated(bool $activated)
     {
         $this->activated = $activated;
+
         return $this;
     }
 }

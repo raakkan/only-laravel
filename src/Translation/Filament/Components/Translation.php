@@ -12,11 +12,10 @@ class Translation extends Field
 
     public array $lang = [];
 
-
     protected function setUp(): void
     {
         $lang = [];
-        foreach (Language::getActiveLanguages() as $language){
+        foreach (Language::getActiveLanguages() as $language) {
             $lang[] = Textarea::make($language->locale)
                 ->placeholder($language->name)->label($language->name);
         }

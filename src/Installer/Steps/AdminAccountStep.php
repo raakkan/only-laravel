@@ -15,7 +15,7 @@ class AdminAccountStep extends Step
 
     public static function make(): self
     {
-        return new self();
+        return new self;
     }
 
     public function init()
@@ -31,6 +31,7 @@ class AdminAccountStep extends Step
     public function setInputs(array $inputs): self
     {
         $this->adminInputs = array_merge($this->adminInputs, $inputs);
+
         return $this;
     }
 
@@ -46,12 +47,14 @@ class AdminAccountStep extends Step
         foreach ($this->adminInputs as $value) {
             if (empty($value)) {
                 $this->setErrorMessage('All fields are required.');
+
                 return false;
             }
         }
 
         if ($this->adminInputs['password'] !== $this->adminInputs['password_confirmation']) {
             $this->setErrorMessage('Passwords do not match.');
+
             return false;
         }
 

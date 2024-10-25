@@ -8,19 +8,21 @@ use Raakkan\OnlyLaravel\Installer\Support\RequirementsChecker;
 class RequirementsStep extends Step
 {
     protected array $requirements;
+
     protected array $phpVersion;
 
     public static function make(): self
     {
-        $step = new self();
+        $step = new self;
         $step->init();
+
         return $step;
     }
 
     public function init()
     {
         $requirements = [
-            'php'    => [
+            'php' => [
                 'openssl',
                 'pdo',
                 'mbstring',
@@ -48,7 +50,7 @@ class RequirementsStep extends Step
         // Check PHP extensions and Apache modules
         foreach ($this->requirements['requirements'] as $type => $requirements) {
             foreach ($requirements as $requirement => $met) {
-                if (!$met) {
+                if (! $met) {
                     $allRequirementsMet = false;
                     $errors[] = "The {$requirement} {$type} requirement is not met.";
                 }
@@ -57,12 +59,12 @@ class RequirementsStep extends Step
 
         // Check PHP version
         $phpVersionSupported = $this->requirements['phpVersion']['supported'];
-        if (!$phpVersionSupported) {
+        if (! $phpVersionSupported) {
             $allRequirementsMet = false;
-            $errors[] = "The PHP version requirement is not met.";
+            $errors[] = 'The PHP version requirement is not met.';
         }
 
-        if (!$allRequirementsMet) {
+        if (! $allRequirementsMet) {
             $this->setErrorMessage(implode(' ', $errors));
         }
 

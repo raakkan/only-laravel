@@ -3,12 +3,11 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
 use Raakkan\OnlyLaravel\Template\Blocks\BaseBlock;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasDesignVariant;
 
 abstract class BlockComponent extends BaseBlock
 {
     protected $type = 'component';
-    
+
     public function toArray()
     {
         return [
@@ -28,9 +27,9 @@ abstract class BlockComponent extends BaseBlock
             'order' => $childCount === 0 ? 0 : $childCount++,
             'location' => $this->location,
             'type' => 'component',
-            'parent_id' => $parent ? $parent->id : null
+            'parent_id' => $parent ? $parent->id : null,
         ]);
-        
+
         $this->setModel($model);
         $this->storeDefaultSettingsToDatabase();
     }
@@ -38,23 +37,24 @@ abstract class BlockComponent extends BaseBlock
     public function editorRender()
     {
         return view('only-laravel::template.editor.component', [
-            'block' => $this
+            'block' => $this,
         ]);
     }
 
     public function render()
     {
-        if (!view()->exists($this->view)) {
+        if (! view()->exists($this->view)) {
             if (app()->environment('local')) {
                 throw new \Exception("View '{$this->view}' does not exist.");
             } else {
                 \Log::error("View '{$this->view}' does not exist.");
+
                 return '';
             }
         }
 
         return view($this->view, [
-            'block' => $this
+            'block' => $this,
         ]);
     }
 }

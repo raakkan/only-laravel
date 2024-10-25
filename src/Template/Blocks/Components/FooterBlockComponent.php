@@ -2,20 +2,28 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
 
 class FooterBlockComponent extends BlockComponent
 {
     protected string $name = 'footer-component';
+
     protected $group = 'core';
+
     protected $source = 'raakkan/only-laravel';
+
     protected $view = 'only-laravel::template.components.footer';
+
     protected $copyrightText;
+
     protected $additionalText;
+
     protected $showSocialIcons;
+
     protected $socialLinks;
+
     protected $customLinks;
 
     public function __construct()
@@ -122,30 +130,35 @@ class FooterBlockComponent extends BlockComponent
     public function copyrightText($text)
     {
         $this->copyrightText = $text;
+
         return $this;
     }
 
     public function additionalText($text)
     {
         $this->additionalText = $text;
+
         return $this;
     }
 
     public function showSocialIcons($show = true)
     {
         $this->showSocialIcons = $show;
+
         return $this;
     }
 
     public function socialLink($social, $url)
     {
         $this->socialLinks[$social] = $url;
+
         return $this;
     }
 
     public function socialLinks($links)
     {
         $this->socialLinks = $links;
+
         return $this;
     }
 
@@ -156,12 +169,14 @@ class FooterBlockComponent extends BlockComponent
             'url' => $url,
             'icon' => $icon,
         ];
+
         return $this;
     }
 
     public function customLinks($links)
     {
         $this->customLinks = $links;
+
         return $this;
     }
 
@@ -169,7 +184,7 @@ class FooterBlockComponent extends BlockComponent
     {
         return [
             resource_path('views/vendor/only-laravel/template/components/footer.blade.php'),
-            __DIR__ . '/../../../../resources/views/template/components/footer.blade.php',
+            __DIR__.'/../../../../resources/views/template/components/footer.blade.php',
         ];
     }
 }

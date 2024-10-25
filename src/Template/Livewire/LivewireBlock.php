@@ -2,24 +2,26 @@
 
 namespace Raakkan\OnlyLaravel\Template\Livewire;
 
-use Livewire\Component;
 use Filament\Actions\Action;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Support\Enums\ActionSize;
-use Filament\Notifications\Notification;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
+use Filament\Support\Enums\ActionSize;
+use Livewire\Component;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Models\TemplateBlockModel;
-use Filament\Actions\Concerns\InteractsWithActions;
+use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
 
-class LivewireBlock extends Component implements HasForms, HasActions
+class LivewireBlock extends Component implements HasActions, HasForms
 {
     use InteractsWithActions;
     use InteractsWithForms;
+
     public TemplateBlockModel $block;
+
     public TemplateModel $template;
 
     public function mount()
@@ -37,17 +39,17 @@ class LivewireBlock extends Component implements HasForms, HasActions
 
     public function getBlock()
     {
-        if (!$this->block->name) {
-           return null;
+        if (! $this->block->name) {
+            return null;
         }
 
         $block = TemplateManager::getBlockByName($this->block->name);
-        if (!$block) {
+        if (! $block) {
             $block = NotFoundBlock::make()->setType($this->block->type);
         }
         $block->setModel($this->block)->setTemplateModel($this->template)
-        ->setPageModel($this->template->getPageTemplate()->getPageModel());
-        
+            ->setPageModel($this->template->getPageTemplate()->getPageModel());
+
         if ($block->getType() == 'block') {
             $block->components($this->getBlockComponents());
         }
@@ -58,18 +60,18 @@ class LivewireBlock extends Component implements HasForms, HasActions
     public function getBlockComponents()
     {
         $components = $this->block->children ?? [];
-        
+
         $blockComponents = [];
         foreach ($components as $component) {
             $block = TemplateManager::getBlockByName($component->name);
-            if (!$block) {
+            if (! $block) {
                 $block = NotFoundBlock::make()->setType($component->type);
             }
             $blockComponents[] = $block
-            ->setModel($component)->setTemplateModel($this->template)
-            ->setPageModel($this->template->getPageTemplate()->getPageModel());
+                ->setModel($component)->setTemplateModel($this->template)
+                ->setPageModel($this->template->getPageTemplate()->getPageModel());
         }
-        
+
         return $blockComponents;
     }
 
@@ -83,19 +85,19 @@ class LivewireBlock extends Component implements HasForms, HasActions
     {
         $block = TemplateManager::getBlockByName($data['name']);
 
-        if(!$block) {
+        if (! $block) {
             Notification::make()
-            ->title('Block not found')
-            ->warning()
-            ->send();
+                ->title('Block not found')
+                ->warning()
+                ->send();
         }
 
-        if($componentOnly && $block->getType() == 'block')
-        {
+        if ($componentOnly && $block->getType() == 'block') {
             Notification::make()
-            ->title('Block not allowed here')
-            ->warning()
-            ->send();
+                ->title('Block not allowed here')
+                ->warning()
+                ->send();
+
             return;
         }
 
@@ -108,7 +110,7 @@ class LivewireBlock extends Component implements HasForms, HasActions
             'order' => $childCount === 0 ? 0 : $childCount++,
             'location' => $location,
             'type' => $data['type'],
-            'parent_id' => $this->block->id
+            'parent_id' => $this->block->id,
         ]);
 
         $block->setModel($blockModel);
@@ -135,13 +137,13 @@ class LivewireBlock extends Component implements HasForms, HasActions
                 $order = $this->block->order;
                 $parentId = $this->block->parent_id;
                 $location = $this->block->location;
-        
+
                 $this->block->delete();
 
                 $livewire->dispatch('block-deleted');
 
                 TemplateBlockModel::reorderSiblings($this->template, $order, $parentId, $location);
-                
+
                 Notification::make()
                     ->title('Block deleted')
                     ->success()
@@ -158,9 +160,9 @@ class LivewireBlock extends Component implements HasForms, HasActions
             ->color(fn () => $this->block->disabled ? 'gray' : 'primary')
             ->link()
             ->action(function () {
-                $this->block->disabled = !$this->block->disabled;
+                $this->block->disabled = ! $this->block->disabled;
                 $this->block->save();
-                
+
                 Notification::make()
                     ->title($this->block->disabled ? 'Block disabled' : 'Block enabled')
                     ->success()

@@ -8,6 +8,7 @@ use Raakkan\OnlyLaravel\Facades\MenuManager;
 class MenuItemsComponent extends Component
 {
     public $search = '';
+
     public function mount()
     {
         // dd(MenuManager::getItems());
@@ -16,7 +17,7 @@ class MenuItemsComponent extends Component
     public function getItems()
     {
         return collect(MenuManager::getItems())->filter(function ($item) {
-            return !$item->hasGroup();
+            return ! $item->hasGroup();
         })->when($this->search, function ($items) {
             return $items->filter(function ($item) {
                 return str_contains($item->getName(), $this->search);

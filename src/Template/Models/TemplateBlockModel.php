@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateBlockModel extends Model
@@ -78,6 +78,7 @@ class TemplateBlockModel extends Model
     {
         $template = PageTemplate::make($this->template->name);
         $template->initializeFromCachedModel($this->template);
+
         return $template;
     }
 

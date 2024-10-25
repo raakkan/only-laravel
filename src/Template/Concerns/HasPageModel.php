@@ -2,16 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
-use Closure;
-
 trait HasPageModel
 {
     protected $pageModel;
+
     protected $dummyPageModel;
 
     public function setPageModel($model)
     {
         $this->pageModel = $model;
+
         return $this;
     }
 
@@ -25,20 +25,22 @@ trait HasPageModel
         return isset($this->pageModel);
     }
 
-    public function dummyPageModel(string | callable $model)
+    public function dummyPageModel(string|callable $model)
     {
         $this->dummyPageModel = $model;
+
         return $this;
     }
 
     public function initializeDummyPageModel()
     {
         $dummyPageModel = $this->getDummyPageModel();
-        if(is_callable($dummyPageModel)) {
+        if (is_callable($dummyPageModel)) {
             $pageModel = new $dummyPageModel($this);
         } else {
             $pageModel = $dummyPageModel;
         }
+
         return $pageModel;
     }
 
@@ -50,6 +52,7 @@ trait HasPageModel
     public function setDummyPageModel($dummyPageModel)
     {
         $this->dummyPageModel = $dummyPageModel;
+
         return $this;
     }
 }

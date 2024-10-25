@@ -1,14 +1,17 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
-use Raakkan\OnlyLaravel\Page\PageType;
+
 use Raakkan\OnlyLaravel\Models\PageModel;
+use Raakkan\OnlyLaravel\Page\PageType;
 use Raakkan\OnlyLaravel\Page\PageTypeExternalPage;
 
 trait ManagePageTypes
 {
     protected $pageTypes = [];
+
     protected $defaultPageTypeView = 'only-laravel::pages.default-page';
+
     protected $defaultPageTypeModel = PageModel::class;
 
     protected $otherModels = [];
@@ -36,14 +39,16 @@ trait ManagePageTypes
                 $this->registerPageType($pageType);
             }
         }
+
         return $this;
     }
 
     public function registerPageType(PageType $pageType)
     {
-        if(! $this->isPageTypeExist($pageType->getType())) {
+        if (! $this->isPageTypeExist($pageType->getType())) {
             $this->pageTypes[] = $pageType;
         }
+
         return $this;
     }
 
@@ -99,12 +104,14 @@ trait ManagePageTypes
     public function useDefaultPageTypeView($view)
     {
         $this->defaultPageTypeView = $view;
+
         return $this;
     }
 
     public function useDefaultPageTypeModel($model)
     {
         $this->defaultPageTypeModel = $model;
+
         return $this;
     }
 
@@ -139,7 +146,7 @@ trait ManagePageTypes
             if ($parentPageType) {
                 $pageType = $this->findPageTypeByType($parentPageType);
                 if ($pageType && $externalModelPage instanceof PageTypeExternalPage) {
-                    if($externalModelPage->getPageType()){
+                    if ($externalModelPage->getPageType()) {
                         $externalModelPage = $externalModelPage->setPageType($this->findPageTypeByType($externalModelPage->getPageType()));
                     }
                     $pageType->registerExternalModelPage($externalModelPage);
@@ -147,6 +154,7 @@ trait ManagePageTypes
                 }
             }
         }
+
         return $this;
     }
 
@@ -156,8 +164,10 @@ trait ManagePageTypes
             if ($item->getType() == $pageType->getType()) {
                 return $pageType;
             }
+
             return $item;
         })->toArray();
+
         return $this;
     }
 
@@ -166,6 +176,7 @@ trait ManagePageTypes
         foreach ($models as $model) {
             $this->registerOtherModel($model);
         }
+
         return $this;
     }
 
@@ -176,12 +187,14 @@ trait ManagePageTypes
         } else {
             throw new \InvalidArgumentException('The provided model must be a child of Eloquent Model and have a slug property.');
         }
+
         return $this;
     }
 
     public function isModelHasSlug($model)
     {
-        $model = new $model();
+        $model = new $model;
+
         return $model->isFillable('slug');
     }
 

@@ -11,15 +11,15 @@ class Spotlight extends Component
     public string $uuid;
 
     public function __construct(
-        public ?string $shortcut = "meta.g",
-        public ?string $searchText = "Search ...",
-        public ?string $noResultsText = "Nothing found.",
+        public ?string $shortcut = 'meta.g',
+        public ?string $searchText = 'Search ...',
+        public ?string $noResultsText = 'Nothing found.',
         public ?string $url = null,
 
         // Slots
         public mixed $append = null
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
         $this->url = $this->url ?? route('mary.spotlight', absolute: false);
     }
 

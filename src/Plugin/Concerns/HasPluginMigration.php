@@ -9,13 +9,13 @@ trait HasPluginMigration
 {
     public function migrate()
     {
-        $migrationPath = $this->path . '/database/migrations';
+        $migrationPath = $this->path.'/database/migrations';
 
         if (is_dir($migrationPath)) {
-            $migrationFiles = glob($migrationPath . '/*.php');
+            $migrationFiles = glob($migrationPath.'/*.php');
             foreach ($migrationFiles as $file) {
                 if (File::exists($file)) {
-                    if (!$this->migrationTableExists($file)) {
+                    if (! $this->migrationTableExists($file)) {
                         $this->runMigrationUp($file);
                     }
                 }
@@ -25,13 +25,13 @@ trait HasPluginMigration
 
     public function rollback()
     {
-        $migrationPath = $this->path . '/database/migrations';
+        $migrationPath = $this->path.'/database/migrations';
 
         if (is_dir($migrationPath)) {
-            $migrationFiles = glob($migrationPath . '/*.php');
+            $migrationFiles = glob($migrationPath.'/*.php');
             foreach ($migrationFiles as $file) {
                 if (File::exists($file)) {
-                    if (!$this->migrationTableExists($file)) {
+                    if (! $this->migrationTableExists($file)) {
                         $this->runMigrationDown($file);
                     }
                 }
@@ -42,7 +42,7 @@ trait HasPluginMigration
     protected function migrationTableExists($migrationFile)
     {
         $tableName = $this->getTableNameFromMigrationFile($migrationFile);
-        
+
         return Schema::hasTable($tableName);
     }
 
@@ -62,7 +62,7 @@ trait HasPluginMigration
                 break;
             }
 
-            $tableName .= '_' . $part;
+            $tableName .= '_'.$part;
         }
 
         return ltrim($tableName, '_');

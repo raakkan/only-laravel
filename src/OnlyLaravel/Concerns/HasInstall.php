@@ -10,12 +10,13 @@ use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 trait HasInstall
 {
     protected $beforeInstallCallbacks = [];
+
     protected $afterInstallCallbacks = [];
 
     public function install()
     {
         $this->runBeforeInstallCallbacks();
-        
+
         // $this->collectAndStoreSettingPages();
 
         //TODO: storage link and php artisan icons:cache and artisan optimize
@@ -42,6 +43,7 @@ trait HasInstall
         if (is_callable($callback)) {
             $this->beforeInstallCallbacks[] = $callback;
         }
+
         return $this;
     }
 
@@ -50,6 +52,7 @@ trait HasInstall
         if (is_callable($callback)) {
             $this->afterInstallCallbacks[] = $callback;
         }
+
         return $this;
     }
 

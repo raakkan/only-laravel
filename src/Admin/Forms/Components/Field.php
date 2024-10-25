@@ -7,11 +7,17 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 abstract class Field
 {
     use HasName;
+
     protected string $label;
+
     protected mixed $value = null;
+
     protected bool $required = false;
+
     protected ?string $placeholder = null;
+
     protected ?string $helperText = null;
+
     protected mixed $default = null;
 
     public function __construct(string $name)
@@ -23,36 +29,42 @@ abstract class Field
     public function label(string $label): static
     {
         $this->label = $label;
+
         return $this;
     }
 
     public function required(bool $required = true): static
     {
         $this->required = $required;
+
         return $this;
     }
 
     public function placeholder(string $placeholder): static
     {
         $this->placeholder = $placeholder;
+
         return $this;
     }
 
     public function helperText(string $text): static
     {
         $this->helperText = $text;
+
         return $this;
     }
 
     public function default(mixed $default): static
     {
         $this->default = $default;
+
         return $this;
     }
 
     public function value(mixed $value): static
     {
         $this->value = $value;
+
         return $this;
     }
 

@@ -7,7 +7,9 @@ use Illuminate\Support\Arr;
 trait ManagesMiddleware
 {
     protected $middleware = [];
+
     protected $middlewareGroups = [];
+
     protected $middlewareAliases = [];
 
     public function middleware($middleware)
@@ -76,9 +78,10 @@ trait ManagesMiddleware
 
     public function middlewares($middlewares)
     {
-        foreach($middlewares as $middleware){
+        foreach ($middlewares as $middleware) {
             $this->middleware($middleware);
         }
+
         return $this;
     }
 
@@ -87,13 +90,13 @@ trait ManagesMiddleware
         $resolvedMiddleware = $this->getAllMiddleware();
 
         if ($middleware === null) {
-            return !empty($resolvedMiddleware);
+            return ! empty($resolvedMiddleware);
         }
 
         $requestedMiddleware = Arr::wrap($middleware);
 
         foreach ($requestedMiddleware as $m) {
-            if (!in_array($m, $resolvedMiddleware)) {
+            if (! in_array($m, $resolvedMiddleware)) {
                 return false;
             }
         }

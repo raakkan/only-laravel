@@ -2,7 +2,4 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 
-class Page extends BasePage
-{
-    
-}
+class Page extends BasePage {}

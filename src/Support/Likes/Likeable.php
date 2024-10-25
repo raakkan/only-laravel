@@ -2,10 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Support\Likes;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use Raakkan\OnlyLaravel\Support\Likes\LikeModel;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait Likeable
 {
@@ -22,7 +20,7 @@ trait Likeable
     public function like($userId = null)
     {
         $userId = $userId ?? auth()->id();
-        
+
         if ($this->id === $userId) {
             return;
         }
@@ -36,7 +34,7 @@ trait Likeable
     public function unlike($userId = null)
     {
         $userId = $userId ?? auth()->id();
-        
+
         $this->likes()->updateOrCreate(
             ['user_id' => $userId],
             ['is_like' => false]

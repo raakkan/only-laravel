@@ -1,24 +1,32 @@
 <?php
 
 namespace Raakkan\OnlyLaravel\Page;
+
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 
 class PageType
 {
-    use Makable;
     use HasGroup;
+    use Makable;
 
     public $type;
+
     public $defaultView;
+
     public $model;
+
     public $level;
+
     public $jsonSchema;
+
     public $parentSlug;
+
     public $externalModelPages = [];
+
     public $skipParentSlugForSlugs = [];
 
-    public function __construct($type, $level, $parentSlug, $defaultView, string | callable $model, $group = null)
+    public function __construct($type, $level, $parentSlug, $defaultView, string|callable $model, $group = null)
     {
         $this->type = $type;
         $this->defaultView = $defaultView;
@@ -55,6 +63,7 @@ class PageType
                 return $model;
             }
         }
+
         return null;
     }
 
@@ -70,15 +79,16 @@ class PageType
 
     public function registerJsonSchema(callable $callback)
     {
-        $jsonSchema = new JsonPageSchema();
+        $jsonSchema = new JsonPageSchema;
         $callback($jsonSchema);
         $this->jsonSchema = $jsonSchema;
+
         return $this;
     }
 
     public function generateUrl($slug)
     {
-        return $this->parentSlug && !$this->shouldSkipParentSlugForSlug($slug) ? url($this->parentSlug . '/' . $slug) : url($slug);
+        return $this->parentSlug && ! $this->shouldSkipParentSlugForSlug($slug) ? url($this->parentSlug.'/'.$slug) : url($slug);
     }
 
     public function generateJsonLd($page)
@@ -91,12 +101,14 @@ class PageType
         foreach ($externalModelPages as $externalModelPage) {
             $this->registerExternalModelPage($externalModelPage);
         }
+
         return $this;
     }
 
     public function registerExternalModelPage(PageTypeExternalPage $externalModelPage)
     {
         $this->externalModelPages[] = $externalModelPage;
+
         return $this;
     }
 
@@ -124,12 +136,14 @@ class PageType
     public function skipParentSlugForSlugs($slugs)
     {
         $this->skipParentSlugForSlugs = array_merge($this->skipParentSlugForSlugs, $slugs);
+
         return $this;
     }
 
     public function skipParentSlugForSlug($slug)
     {
         $this->skipParentSlugForSlugs[] = $slug;
+
         return $this;
     }
 

@@ -2,32 +2,31 @@
 
 namespace Raakkan\OnlyLaravel\Menu;
 
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
+use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuItemChildren;
 use Raakkan\OnlyLaravel\Menu\Concerns\HasUrl;
-use Raakkan\OnlyLaravel\Models\MenuItemModel;
-use Raakkan\OnlyLaravel\Support\Concerns\HasIcon;
-use Raakkan\OnlyLaravel\Support\Concerns\HasName;
-use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Support\Concerns\HasGroup;
+use Raakkan\OnlyLaravel\Support\Concerns\HasIcon;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasModel;
-use Raakkan\OnlyLaravel\Template\Concerns\HasOrder;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\HasSettings;
-use Raakkan\OnlyLaravel\Menu\Concerns\HasMenuItemChildren;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Template\Concerns\HasOrder;
 
-class MenuItem  implements Arrayable
+class MenuItem implements Arrayable
 {
-    use Makable;
-    use HasName;
-    use HasLabel { getLabel as protected; }
-    use HasIcon;
     use HasGroup;
-    use HasOrder;
-    use HasUrl;
+    use HasIcon;
+    use HasLabel { getLabel as protected; }
     use HasMenuItemChildren;
-    use HasSettings;
     use HasModel;
+    use HasName;
+    use HasOrder;
+    use HasSettings;
+    use HasUrl;
+    use Makable;
 
     protected $model;
 
@@ -71,7 +70,7 @@ class MenuItem  implements Arrayable
             'label' => $this->getLabel(),
             'parent_id' => $parent ? $parent->id : null,
         ]);
-        
+
         $this->setModel($model);
         $this->storeDefaultSettingsToDatabase();
 

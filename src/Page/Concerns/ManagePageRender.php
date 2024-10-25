@@ -2,7 +2,6 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Illuminate\Support\Facades\Blade;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
@@ -21,8 +20,8 @@ trait ManagePageRender
                 $model = '';
             }
         }
-        
-        if (!$model) {
+
+        if (! $model) {
             return abort(404);
         }
 
@@ -37,7 +36,7 @@ trait ManagePageRender
         if (! view()->exists($view)) {
             return abort(404);
         }
-        
+
         return view($view, [
             'page' => $model,
         ]);
@@ -46,12 +45,14 @@ trait ManagePageRender
     public function setView($view)
     {
         $this->view = $view;
+
         return $this;
     }
 
     public function view($view)
     {
         $this->view = $view;
+
         return $this;
     }
 
@@ -59,6 +60,7 @@ trait ManagePageRender
     {
         return isset($this->view);
     }
+
     public function getHomeModel()
     {
         return $this->modelClass::where('name', 'home-page')->with('template.blocks')->first();

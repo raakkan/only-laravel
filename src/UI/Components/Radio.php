@@ -17,14 +17,14 @@ class Radio extends Component
         public ?string $hintClass = 'label-text-alt text-gray-400 ps-1 mt-2',
         public ?string $optionValue = 'id',
         public ?string $optionLabel = 'name',
-        public Collection|array $options = new Collection(),
+        public Collection|array $options = new Collection,
         // Validations
         public ?string $errorField = null,
         public ?string $errorClass = 'text-red-500 label-text-alt p-1',
         public ?bool $omitError = false,
         public ?bool $firstErrorOnly = false,
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

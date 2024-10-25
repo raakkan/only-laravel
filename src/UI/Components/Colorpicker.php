@@ -26,7 +26,7 @@ class Colorpicker extends Component
         public ?bool $firstErrorOnly = false,
 
     ) {
-        $this->uuid = "mary" . md5(serialize($this));
+        $this->uuid = 'mary'.md5(serialize($this));
     }
 
     public function modelName(): ?string

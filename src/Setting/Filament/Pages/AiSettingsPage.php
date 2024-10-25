@@ -3,9 +3,7 @@
 namespace Raakkan\OnlyLaravel\Setting\Filament\Pages;
 
 use Closure;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Setting\BaseSettingPage;
 
 class AiSettingsPage extends BaseSettingPage

@@ -14,6 +14,7 @@ trait HasLabel
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -24,6 +25,6 @@ trait HasLabel
 
     public function hasLabel(): bool
     {
-        return !empty($this->label) && !is_null($this->label);
+        return ! empty($this->label) && ! is_null($this->label);
     }
 }

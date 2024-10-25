@@ -2,26 +2,27 @@
 
 namespace Raakkan\OnlyLaravel\Support\Concerns;
 
-use OpenAI;
 use Filament\Forms;
-use Illuminate\Support\Facades\Log;
-use Filament\Notifications\Notification;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use OpenAI;
 
 trait InteractsWithOpenAI
 {
     public function generateWithAI(array $data, $json = true)
     {
         $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
-        
+
         $requiredKeys = ['ai_model', 'ai_prompt', 'max_tokens', 'temperature'];
         foreach ($requiredKeys as $key) {
-            if (!isset($data[$key])) {
+            if (! isset($data[$key])) {
                 Notification::make()
                     ->title('Error')
                     ->body("Missing required field: {$key}")
                     ->danger()
                     ->send();
+
                 return '';
             }
         }
@@ -56,8 +57,9 @@ trait InteractsWithOpenAI
 
             return $response->choices[0]->message->content;
         } catch (\Exception $e) {
-            Log::error('Error generating content with AI: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('Error generating content with AI: '.$e->getMessage());
+            \Log::error('Stack trace: '.$e->getTraceAsString());
+
             return null;
         }
     }
@@ -68,6 +70,7 @@ trait InteractsWithOpenAI
 
         try {
             $client->models()->retrieve('gpt-4o-mini');
+
             return true;
         } catch (\Exception $e) {
             return false;
@@ -117,20 +120,21 @@ trait InteractsWithOpenAI
         if (setting('onlylaravel.ai.openai_api_key')) {
             $apiKey = decrypt(setting('onlylaravel.ai.openai_api_key'));
         }
-        
+
         if ($apiKey && isset($apiKey) && $this->apiKeyIsValid($apiKey)) {
             $actions[] = Action::make('ai')
                 ->label($withState ? 'Regenerate With AI' : 'Generate With AI')
-                ->action(function (array $data) use ($field)  {
+                ->action(function (array $data) use ($field) {
                     $generatedContent = $this->generateWithAI($data, false);
-                    
+
                     if (empty($generatedContent)) {
                         Notification::make()
                             ->title('Error')
                             ->body('Failed to generate content. Please try again.')
                             ->danger()
                             ->send();
-                        Log::error('Failed to generate content with AI: ' . json_decode($generatedContent));
+                        Log::error('Failed to generate content with AI: '.json_decode($generatedContent));
+
                         return;
                     }
                     $this->form->fill([
@@ -140,13 +144,15 @@ trait InteractsWithOpenAI
                 ->form($this->getGenerateWithAIFormSchema($withState ? $this->buildPromptForField($field) : null))
                 ->modalSubmitActionLabel('Generate');
         }
+
         return $actions;
     }
-    
+
     protected function buildPromptForField($field)
     {
         $prompt = "regenerate the following text:\n";
         $prompt .= $this->getRecord()->$field;
+
         return $prompt;
     }
 }

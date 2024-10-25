@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Blade;
 class Textarea extends Field
 {
     protected int $rows = 3;
+
     protected ?int $maxLength = null;
+
     protected bool $autosize = false;
 
     protected string $wireModel = '';
@@ -20,24 +22,28 @@ class Textarea extends Field
     public function rows(int $rows): static
     {
         $this->rows = $rows;
+
         return $this;
     }
 
     public function maxLength(?int $length): static
     {
         $this->maxLength = $length;
+
         return $this;
     }
 
     public function autosize(bool $autosize = true): static
     {
         $this->autosize = $autosize;
+
         return $this;
     }
 
     public function wireModel(string $wireModel): static
     {
         $this->wireModel = $wireModel;
+
         return $this;
     }
 
@@ -55,4 +61,3 @@ class Textarea extends Field
         ]);
     }
 }
-

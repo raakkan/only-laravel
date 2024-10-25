@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FavoriteModel extends Model
 {
     protected $table = 'favorites';
+
     protected $fillable = ['user_id'];
 
     public function favoritable()
