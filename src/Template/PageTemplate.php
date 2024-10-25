@@ -2,11 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Filament\Forms\Components\Textarea;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 class PageTemplate extends BaseTemplate
 {
@@ -28,8 +27,11 @@ class PageTemplate extends BaseTemplate
         $template = TemplateModel::create([
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
-            'source' => $this->getSource(),
-            'for' => $this->forPage,
+            'is_parent' => $this->isParent,
+            'use_parent_header' => $this->useParentHeader,
+            'use_parent_content' => $this->useParentContent,
+            'use_parent_footer' => $this->useParentFooter,
+            'parent_template_id' => $this->parentTemplate?->id,
         ]);
 
         $this->setModel($template, false);
@@ -39,7 +41,7 @@ class PageTemplate extends BaseTemplate
             $block->create($template);
         }
 
-        $this->buildCss();
+        // $this->buildCss();
     }
 
     public function getDummyPageModel()

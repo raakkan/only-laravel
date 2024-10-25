@@ -34,7 +34,6 @@ abstract class BaseBlock implements Arrayable
     }
     use HasType;
     use HasGroup;
-    use HasSource;
     use HasBlockSettings;
     use HasOrder;
     use HasLocation;
@@ -44,7 +43,6 @@ abstract class BaseBlock implements Arrayable
     use HasForTemplate;
     use Addable;
     use Disableable;
-    use HasForPage;
     use HasBlockView;
     use HasPageModel;
     use HasAssets;

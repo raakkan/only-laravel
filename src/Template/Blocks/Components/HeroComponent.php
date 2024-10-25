@@ -2,10 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Set;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Actions\Action;
 use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
 
 class HeroComponent extends BlockComponent
 {
@@ -30,26 +28,10 @@ class HeroComponent extends BlockComponent
             TextInput::make('hero.title')
                 ->label('Title')
                 ->required()
-                ->default($this->getTitle())
-                ->hintAction(
-                    Action::make('clear')
-                        ->label('Clear')
-                        ->icon('heroicon-m-x-circle')
-                        ->action(function (Set $set) {
-                            $set('onlylaravel.background.color_dark', '');
-                        })
-                    ),
+                ->default($this->getTitle()),
             TextInput::make('hero.subtitle')
                 ->label('Subtitle')
-                ->default($this->getSubtitle())
-                ->hintAction(
-                    Action::make('clear')
-                        ->label('Clear')
-                        ->icon('heroicon-m-x-circle')
-                        ->action(function (Set $set) {
-                            $set('onlylaravel.background.color_dark', '');
-                        })
-                ),
+                ->default($this->getSubtitle()),
         ];
     }
 

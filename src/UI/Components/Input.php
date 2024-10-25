@@ -22,6 +22,11 @@ class Input extends Component
         public ?bool $clearable = false,
         public ?bool $money = false,
         public ?string $locale = 'en-US',
+        public ?bool $numeric = false,
+        public ?bool $integer = false,
+        public ?float $step = null,
+        public ?float $min = null,
+        public ?float $max = null,
 
         // Slots
         public mixed $prepend = null,
@@ -118,17 +123,22 @@ class Input extends Component
                     <input
                         id="{{ $uuid }}"
                         placeholder = "{{ $attributes->whereStartsWith('placeholder')->first() }} "
-
+                        @if($numeric || $integer)
+                            type="number"
+                            step="{{ $integer ? '1' : ($step ?? 'any') }}"
+                            @if($min !== null) min="{{ $min }}" @endif
+                            @if($max !== null) max="{{ $max }}" @endif
+                            @if($integer) inputmode="numeric" pattern="[0-9]*" @endif
+                        @endif
                         @if($money)
                             x-ref="myInput"
                             :value="amount"
                             x-on:input="$nextTick(() => $wire.set('{{ $modelName() }}', Currency.getUnmasked(), false))"
                             inputmode="numeric"
                         @endif
-
                         {{
                             $attributes
-                                ->merge(['type' => 'text'])
+                                ->merge(['type' => ($numeric || $integer) ? 'number' : 'text'])
                                 ->except($money ? 'wire:model' : '')
                                 ->class([
                                     'input input-primary w-full peer',
@@ -139,7 +149,7 @@ class Input extends Component
                                     'rounded-e-none' => $suffix || $append,
                                     'border border-dashed' => $attributes->has('readonly') && $attributes->get('readonly') == true,
                                     'input-error' => $errorFieldName() && $errors->has($errorFieldName()) && !$omitError
-                            ])
+                                ])
                         }}
                     />
 

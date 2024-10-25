@@ -2,12 +2,14 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\PageTemplate;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
+
 
 trait HasTemplate
 {
     protected $template;
+    protected $templateModel;
 
     public function setTemplate($template)
     {
@@ -20,9 +22,9 @@ trait HasTemplate
         return !empty($this->template);
     }
 
-    public function template($name)
+    public function template(PageTemplate $template)
     {
-        return $this->setTemplate($name);
+        return $this->setTemplate($template);
     }
 
     public function getTemplate()
@@ -32,6 +34,15 @@ trait HasTemplate
 
     public function getTemplateModel()
     {
-        return TemplateModel::where('name', $this->template)->first();
+        if (empty($this->templateModel)) {
+            $this->templateModel = TemplateModel::where('name', $this->template->getName())->first();
+        }
+
+        return $this->templateModel;
+    }
+
+    public function createTemplate()
+    {
+        return $this->template->create();
     }
 }

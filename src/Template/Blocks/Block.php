@@ -14,7 +14,6 @@ abstract class Block extends BaseBlock
         return [
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
-            'source' => $this->source,
             'group' => $this->group,
             'order' => $this->order,
             'type' => $this->type,
@@ -33,7 +32,6 @@ abstract class Block extends BaseBlock
         $model = $template->blocks()->create([
             'name' => $this->name,
             'template_id' => $template->id,
-            'source' => $this->getSource(),
             'order' => $order,
             'location' => $this->location,
             'type' => 'block',

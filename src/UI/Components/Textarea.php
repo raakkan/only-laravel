@@ -15,7 +15,7 @@ class Textarea extends Component
         public ?string $hint = null,
         public ?string $hintClass = 'label-text-alt text-gray-400 py-1 pb-0',
         public ?bool $inline = false,
-        public mixed $labelRight = null,  // New slot for label right content
+        public mixed $labelRight = null,
         // Validations
         public ?string $errorField = null,
         public ?string $errorClass = 'text-red-500 label-text-alt p-1',
@@ -38,9 +38,8 @@ class Textarea extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-            <div>
+            <div wire:key="{{ $uuid }}">
                 @php
-                    // We need this extra step to support models arrays. Ex: wire:model="emails.0"  , wire:model="emails.1"
                     $uuid = $uuid . $modelName()
                 @endphp
 
@@ -67,8 +66,8 @@ class Textarea extends Component
                 <div class="flex-1 relative">
                     <!-- INPUT -->
                     <textarea
-                        placeholder = "{{ $attributes->whereStartsWith('placeholder')->first() }} "
-
+                        placeholder="{{ $attributes->whereStartsWith('placeholder')->first() }}"
+                        wire:ignore
                         {{
                             $attributes
                             ->merge([

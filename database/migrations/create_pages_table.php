@@ -20,13 +20,13 @@ return new class extends Migration
             $table->json('seo_title')->nullable();
             $table->json('seo_description')->nullable();
             $table->json('seo_keywords')->nullable();
-            $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('template_id')->unique();
             $table->json('settings')->nullable();
-            $table->json('featured_image')->nullable();
+            $table->string('featured_image')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('template_id')->references('id')->on('templates')->nullOnDelete();
+            $table->foreign('template_id')->references('id')->on('templates')->cascadeOnDelete();
         });
     }
 

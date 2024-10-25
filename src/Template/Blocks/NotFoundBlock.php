@@ -7,7 +7,6 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasDesignVariant;
 
 class NotFoundBlock extends Block
 {
-    use HasDesignVariant;
     protected string $name = 'not-found';
     protected $group = 'core';
     protected $source = 'raakkan/only-laravel';

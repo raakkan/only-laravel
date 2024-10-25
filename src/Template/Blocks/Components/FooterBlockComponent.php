@@ -2,11 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
 
 class FooterBlockComponent extends BlockComponent
 {
@@ -28,50 +26,50 @@ class FooterBlockComponent extends BlockComponent
     public function getBlockSettings()
     {
         return [
-            TextInput::make('footer.copyright_text')
-                ->label('Copyright Text')
-                ->default($this->getCopyrightText())
-                ->required(),
-            Textarea::make('footer.additional_text')
-                ->label('Additional Text')
-                ->default($this->getAdditionalText())
-                ->rows(3),
-            Toggle::make('footer.show_social_icons')
-                ->label('Show Social Icons')
-                ->default($this->getShowSocialIcons()),
-            TextInput::make('footer.facebook_link')
-                ->label('Facebook Link')
-                ->default($this->getSocialLinks()['facebook'] ?? '')
-                ->url()
-                ->visible(fn ($get) => $get('footer.show_social_icons')),
-            TextInput::make('footer.instagram_link')
-                ->label('Instagram Link')
-                ->default($this->getSocialLinks()['instagram'] ?? '')
-                ->url()
-                ->visible(fn ($get) => $get('footer.show_social_icons')),
-            TextInput::make('footer.twitter_link')
-                ->label('Twitter Link')
-                ->default($this->getSocialLinks()['twitter'] ?? '')
-                ->url()
-                ->visible(fn ($get) => $get('footer.show_social_icons')),
-            Repeater::make('footer.custom_links')
-                ->label('Custom Links')
-                ->schema([
-                    TextInput::make('name')
-                        ->label('Name')
-                        ->required(),
-                    TextInput::make('url')
-                        ->label('URL')
-                        ->url()
-                        ->required(),
-                    Textarea::make('icon')
-                        ->label('Icon (Full SVG)')
-                        ->required()
-                        ->helperText('Enter the full SVG code for the icon')
-                        ->helperText('For best results, submit SVG without color. The icon color will be set automatically.'),
-                ])
-                ->visible(fn ($get) => $get('footer.show_social_icons'))
-                ->collapsible(),
+            // TextInput::make('footer.copyright_text')
+            //     ->label('Copyright Text')
+            //     ->default($this->getCopyrightText())
+            //     ->required(),
+            // Textarea::make('footer.additional_text')
+            //     ->label('Additional Text')
+            //     ->default($this->getAdditionalText())
+            //     ->rows(3),
+            // Toggle::make('footer.show_social_icons')
+            //     ->label('Show Social Icons')
+            //     ->default($this->getShowSocialIcons()),
+            // TextInput::make('footer.facebook_link')
+            //     ->label('Facebook Link')
+            //     ->default($this->getSocialLinks()['facebook'] ?? '')
+            //     ->url()
+            //     ->visible(fn ($get) => $get('footer.show_social_icons')),
+            // TextInput::make('footer.instagram_link')
+            //     ->label('Instagram Link')
+            //     ->default($this->getSocialLinks()['instagram'] ?? '')
+            //     ->url()
+            //     ->visible(fn ($get) => $get('footer.show_social_icons')),
+            // TextInput::make('footer.twitter_link')
+            //     ->label('Twitter Link')
+            //     ->default($this->getSocialLinks()['twitter'] ?? '')
+            //     ->url()
+            //     ->visible(fn ($get) => $get('footer.show_social_icons')),
+            // Repeater::make('footer.custom_links')
+            //     ->label('Custom Links')
+            //     ->schema([
+            //         TextInput::make('name')
+            //             ->label('Name')
+            //             ->required(),
+            //         TextInput::make('url')
+            //             ->label('URL')
+            //             ->url()
+            //             ->required(),
+            //         Textarea::make('icon')
+            //             ->label('Icon (Full SVG)')
+            //             ->required()
+            //             ->helperText('Enter the full SVG code for the icon')
+            //             ->helperText('For best results, submit SVG without color. The icon color will be set automatically.'),
+            //     ])
+            //     ->visible(fn ($get) => $get('footer.show_social_icons'))
+            //     ->collapsible(),
         ];
     }
 

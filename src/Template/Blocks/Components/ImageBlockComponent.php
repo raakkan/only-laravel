@@ -2,11 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Storage;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasBackgroundSettings;
 
 class ImageBlockComponent extends BlockComponent
 {
@@ -26,21 +22,21 @@ class ImageBlockComponent extends BlockComponent
     public function getBlockSettings()
     {
         return [
-            FileUpload::make('image.file')
-                ->label('Image')
-                ->image()
-                ->required(),
-            TextInput::make('image.alt_text')
-                ->label('Alt Text')
-                ->required(),
-            Select::make('image.position')
-                ->label('Image Position')
-                ->options([
-                    'left' => 'Left',
-                    'center' => 'Center',
-                    'right' => 'Right',
-                ])
-                ->default('center'),
+            // FileUpload::make('image.file')
+            //     ->label('Image')
+            //     ->image()
+            //     ->required(),
+            // TextInput::make('image.alt_text')
+            //     ->label('Alt Text')
+            //     ->required(),
+            // Select::make('image.position')
+            //     ->label('Image Position')
+            //     ->options([
+            //         'left' => 'Left',
+            //         'center' => 'Center',
+            //         'right' => 'Right',
+            //     ])
+            //     ->default('center'),
         ];
     }
 

@@ -2,12 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Select;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
 use Raakkan\OnlyLaravel\Template\Enums\ContentSidebar;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
 
 class ContentBlock extends Block
 {
@@ -81,14 +79,12 @@ class ContentBlock extends Block
     public function getBlockSettings()
     {
         return [
-            Section::make('Sidebar')->schema([
-                Toggle::make('sidebar.enabled')->label('Enabled')->default(true),
+            Toggle::make('sidebar.enabled')->label('Enabled')->default(true),
                 Select::make('sidebar.position')->label('Position')->default($this->getSideBarPosition()->value)->options([
                     ContentSidebar::LEFT->value => ContentSidebar::LEFT->name,
                     ContentSidebar::RIGHT->value => ContentSidebar::RIGHT->name,
                     ContentSidebar::BOTH->value => ContentSidebar::BOTH->name,
                 ]),
-            ])->compact()
         ];
     }
 

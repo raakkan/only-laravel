@@ -2,7 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Filament\Forms\Components\Textarea;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 class HtmlBlockComponent extends BlockComponent
 {

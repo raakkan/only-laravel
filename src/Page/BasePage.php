@@ -51,6 +51,10 @@ class BasePage
             return;
         }
 
+        if ($this->hasTemplate()) {
+            $this->createTemplate();
+        }
+
         // Get fillable attributes
         $fillable = (new $modelClass)->getFillable();
 

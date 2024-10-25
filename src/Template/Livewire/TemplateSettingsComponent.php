@@ -3,17 +3,11 @@
 namespace Raakkan\OnlyLaravel\Template\Livewire;
 
 use Livewire\Component;
-use Filament\Forms\Form;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 
-class TemplateSettingsComponent extends Component implements HasForms
+class TemplateSettingsComponent extends Component
 {
-    use InteractsWithForms;
     
     public TemplateModel $template;
     public ?array $settings = [];
@@ -23,13 +17,6 @@ class TemplateSettingsComponent extends Component implements HasForms
         $this->form->fill($this->template->settings);
     }
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema($this->getTemplate()->getSettingFields())
-            ->statePath('settings');
-    }
-
     public function save()
     {
         $settings = array_replace_recursive($this->template->settings ?? [], $this->form->getState());
@@ -37,10 +24,6 @@ class TemplateSettingsComponent extends Component implements HasForms
             'settings' => $settings,
         ]);
 
-        Notification::make()
-            ->title('Template settings saved')
-            ->success()
-            ->send();
     }
 
     public function getTemplate()

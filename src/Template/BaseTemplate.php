@@ -16,6 +16,7 @@ use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\ManageTemplateParent;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasTextSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasWidthSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Design\HasPaddingSettings;
@@ -28,14 +29,13 @@ abstract class BaseTemplate implements Arrayable
     use HasName;
     use HasLabel;
     use HasBlocks;
-    use HasSource;
-    use HasForPage;
     use HasBlockSettings;
     use HasCustomStyleSettings;
     use HasPageModel;
     use HasBlockBuilding;
     use HasBlockAssets;
     use ManageStyle;
+    use ManageTemplateParent;
     protected $model;
 
     public function initializeFromCachedModel($model)
@@ -77,8 +77,6 @@ abstract class BaseTemplate implements Arrayable
     public function setModelData()
     {
         $this->name = $this->model->name;
-        $this->source = $this->model->source;
-        $this->forPage = $this->model->for_page;
         $this->setSettings($this->model->settings);
         
         $blocks = [];
@@ -97,8 +95,6 @@ abstract class BaseTemplate implements Arrayable
         return [
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
-            'source' => $this->source,
-            'for' => $this->forPage,
             'blocks' => $this->blocks,
         ];
     }

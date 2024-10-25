@@ -26,7 +26,6 @@ use Raakkan\OnlyLaravel\Template\Blocks\Components\FooterBlockComponent;
 class TemplateManager
 {
     use TemplateHandler;
-    use ManagesDesignVariants;
     use HandleDummyPageModels;
     protected $blocks = [];
 
@@ -72,7 +71,7 @@ class TemplateManager
             
             if (class_exists($className)) {
                 $block = new $className();
-                $block->source($namespace . ($subNamespace ? '\\' . $subNamespace : ''));
+                // $block->source($namespace . ($subNamespace ? '\\' . $subNamespace : ''));
                 return $block;
             }
             

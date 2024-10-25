@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Raakkan\OnlyLaravel\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
 use Raakkan\OnlyLaravel\Page\Concerns\HasSeoTags;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 
 class PageModel extends Model
 {
@@ -35,12 +35,11 @@ class PageModel extends Model
     protected $casts = [
         'settings' => 'array',
         'disabled' => 'boolean',
-        'featured_image' => 'array',
     ];
 
     public function template()
     {
-        return $this->belongsTo(TemplateModel::class, 'template_id');
+        return $this->belongsTo(TemplateModel::class, 'template_id')->required();
     }
 
     public static function getRegisteredPageTypes()

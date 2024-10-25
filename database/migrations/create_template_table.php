@@ -15,19 +15,22 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('label')->nullable();
-            $table->string('source')->index();
-            $table->string('for', 100)->default('all');
             $table->json('settings')->nullable();
             $table->string('type')->default('page');
+            $table->boolean('is_parent')->default(false);
+            $table->boolean('use_parent_header')->default(false);
+            $table->boolean('use_parent_content')->default(false);
+            $table->boolean('use_parent_footer')->default(false);
+            $table->unsignedBigInteger('parent_template_id')->nullable();
+            $table->foreign('parent_template_id')->references('id')->on('templates')->onDelete('set null');
             $table->timestamps();
 
-            $table->unique(['name', 'source', 'for'], 'unique_templates');
+            $table->unique(['name', 'type'], 'unique_templates');
         });
 
         Schema::create('template_blocks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('source')->index();
             $table->boolean('disabled')->default(false);
             $table->integer('order')->default(1);
             $table->json('settings')->nullable();

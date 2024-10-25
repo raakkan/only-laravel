@@ -7,7 +7,6 @@ use Raakkan\OnlyLaravel\Template\Concerns\Design\HasDesignVariant;
 
 abstract class BlockComponent extends BaseBlock
 {
-    use HasDesignVariant;
     protected $type = 'component';
     
     public function toArray()
@@ -16,7 +15,6 @@ abstract class BlockComponent extends BaseBlock
             'name' => $this->name,
             'type' => $this->type,
             'group' => $this->group,
-            'source' => $this->source,
         ];
     }
 
@@ -27,7 +25,6 @@ abstract class BlockComponent extends BaseBlock
         $model = $template->blocks()->create([
             'name' => $this->name,
             'template_id' => $template->id,
-            'source' => $this->getSource(),
             'order' => $childCount === 0 ? 0 : $childCount++,
             'location' => $this->location,
             'type' => 'component',
@@ -47,13 +44,6 @@ abstract class BlockComponent extends BaseBlock
 
     public function render()
     {
-        $designVariantView = $this->getActiveDesignVariantView();
-        
-        
-        if($designVariantView && view()->exists($designVariantView)) {
-            $this->view = $designVariantView;
-        }
-
         if (!view()->exists($this->view)) {
             if (app()->environment('local')) {
                 throw new \Exception("View '{$this->view}' does not exist.");

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raakkan\OnlyLaravel\Models;
+namespace Raakkan\OnlyLaravel\Template\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateBlockModel extends Model
 {
-    protected $fillable = ['name', 'source', 'order', 'settings', 'template_id', 'parent_id', 'location', 'type', 'disabled'];
+    protected $fillable = ['name', 'order', 'settings', 'template_id', 'parent_id', 'location', 'type', 'disabled'];
 
     protected $casts = [
         'settings' => 'array',
