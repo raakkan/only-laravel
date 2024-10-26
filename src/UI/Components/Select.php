@@ -23,6 +23,7 @@ class Select extends Component
         public ?string $optionValue = 'id',
         public ?string $optionLabel = 'name',
         public Collection|array $options = new Collection,
+        public ?string $size = null,
 
         // Slots
         public mixed $prepend = null,
@@ -92,7 +93,10 @@ class Select extends Component
                                     'rounded-s-none' => $prepend,
                                     'rounded-e-none' => $append,
                                     'border border-dashed' => $attributes->has('readonly') && $attributes->get('readonly') == true,
-                                    'select-error' => $errors->has($errorFieldName())
+                                    'select-error' => $errors->has($errorFieldName()),
+                                    'select-lg' => $size === 'lg',
+                                    'select-sm' => $size === 'sm',
+                                    'select-xs' => $size === 'xs'
                                 ])
                         }}
 

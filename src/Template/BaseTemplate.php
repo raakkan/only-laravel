@@ -7,7 +7,7 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;

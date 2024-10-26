@@ -10,11 +10,7 @@ trait ManageTemplateParent
 
     protected $parentTemplate;
 
-    protected $useParentHeader = false;
-
-    protected $useParentContent = false;
-
-    protected $useParentFooter = false;
+    protected $parentBlocks = [];
 
     public function parent($value = true)
     {
@@ -23,31 +19,31 @@ trait ManageTemplateParent
         return $this;
     }
 
-    public function parentTemplate(TemplateModel $template)
+    public function parentTemplate($templateName)
     {
-        $this->parentTemplate = $template;
+        // $parentTemplate = TemplateModel::where('name', $templateName)->first() ?? null;
+        $this->parentTemplate = $templateName;
+        return $this;
+    }
+
+    public function useParentBlock($blockName, $value = true)
+    {
+        $this->parentBlocks[$blockName] = $value;
 
         return $this;
     }
 
-    public function useParentHeader($value = true)
+    public function useParentBlocks(array $blocks)
     {
-        $this->useParentHeader = $value;
-
+        foreach ($blocks as $blockName => $value) {
+            $this->parentBlocks[$blockName] = $value;
+        }
+        
         return $this;
     }
 
-    public function useParentContent($value = true)
+    public function shouldUseParentBlock($blockName)
     {
-        $this->useParentContent = $value;
-
-        return $this;
-    }
-
-    public function useParentFooter($value = true)
-    {
-        $this->useParentFooter = $value;
-
-        return $this;
+        return $this->parentBlocks[$blockName] ?? false;
     }
 }

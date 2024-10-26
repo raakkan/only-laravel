@@ -18,11 +18,6 @@ class FooterBlock extends Block
 
     protected $addable = false;
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getViewPaths()
     {
         return [

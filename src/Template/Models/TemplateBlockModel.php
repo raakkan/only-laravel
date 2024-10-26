@@ -35,8 +35,9 @@ class TemplateBlockModel extends Model
         $oldPosition = $this->order;
         $parentId = $this->parent_id;
         $location = $this->location;
+        $templateId = $this->template_id;
 
-        DB::transaction(function () use ($newPosition, $oldPosition, $parentId, $location) {
+        DB::transaction(function () use ($newPosition, $oldPosition, $parentId, $location, $templateId) {
 
             DB::table($this->getTable())
                 ->where('id', $this->id)
@@ -44,6 +45,7 @@ class TemplateBlockModel extends Model
 
             if ($oldPosition < $newPosition) {
                 DB::table($this->getTable())
+                    ->where('template_id', $templateId)
                     ->where('parent_id', $parentId)
                     ->where('location', $location)
                     ->where('order', '>', $oldPosition)
@@ -51,6 +53,7 @@ class TemplateBlockModel extends Model
                     ->decrement('order');
             } else {
                 DB::table($this->getTable())
+                    ->where('template_id', $templateId)
                     ->where('parent_id', $parentId)
                     ->where('location', $location)
                     ->where('order', '>=', $newPosition)

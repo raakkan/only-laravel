@@ -63,7 +63,9 @@ trait ManagePageRender
 
     public function getHomeModel()
     {
-        return $this->modelClass::where('name', 'home-page')->with('template.blocks')->first();
+        return $this->modelClass::where('name', 'home-page')
+            ->with(['template.blocks', 'template.parentTemplate.blocks'])
+            ->first();
     }
 
     public function renderLivewire($component, $componentData = [])

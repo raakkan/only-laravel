@@ -76,7 +76,8 @@ trait HasBlockSettings
 
     public function hasAnySettings()
     {
-        return count($this->getSettingFields()) > 0;
+        $settingFields = array_merge($this->getSettingFields(), $this->getCustomStyleSettingFields());
+        return count($settingFields) > 0;
     }
 
     public function getSettingsTabsData()

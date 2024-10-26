@@ -13,12 +13,6 @@ class PageTitle extends BlockComponent
     protected $group = 'core';
 
     protected $source = 'raakkan/only-laravel';
-
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function render()
     {
         return Blade::render(<<<'blade'

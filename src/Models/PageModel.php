@@ -41,7 +41,7 @@ class PageModel extends Model
 
     public function template()
     {
-        return $this->belongsTo(TemplateModel::class, 'template_id')->required();
+        return $this->belongsTo(TemplateModel::class, 'template_id');
     }
 
     public static function getRegisteredPageTypes()

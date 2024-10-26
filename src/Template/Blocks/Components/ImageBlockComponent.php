@@ -20,11 +20,6 @@ class ImageBlockComponent extends BlockComponent
 
     protected $imagePosition;
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getBlockSettings()
     {
         return [

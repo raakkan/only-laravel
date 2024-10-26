@@ -14,11 +14,6 @@ class DynamicHeroComponent extends BlockComponent
 
     protected $view = 'only-laravel::template.components.dynamic-hero';
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getViewPaths()
     {
         return [

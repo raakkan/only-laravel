@@ -14,18 +14,14 @@ class TemplateModel extends Model
         'type',
         'settings',
         'is_parent',
-        'use_parent_header',
-        'use_parent_content',
-        'use_parent_footer',
+        'parent_block_access',
         'parent_template_id',
     ];
 
     protected $casts = [
         'settings' => 'array',
         'is_parent' => 'boolean',
-        'use_parent_header' => 'boolean',
-        'use_parent_content' => 'boolean',
-        'use_parent_footer' => 'boolean',
+        'parent_block_access' => 'array',
     ];
 
     public function blocks()

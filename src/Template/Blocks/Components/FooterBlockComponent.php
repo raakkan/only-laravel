@@ -26,11 +26,6 @@ class FooterBlockComponent extends BlockComponent
 
     protected $customLinks;
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getBlockSettings()
     {
         return [

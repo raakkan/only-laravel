@@ -16,11 +16,6 @@ class DivBlock extends Block
 
     protected $addable = true;
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getViewPaths()
     {
         return [

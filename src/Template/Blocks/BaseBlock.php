@@ -10,9 +10,10 @@ use Raakkan\OnlyLaravel\Support\Concerns\HasType;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasAssets;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
+use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasDummyState;
 use Raakkan\OnlyLaravel\Template\Concerns\Addable;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
-use Raakkan\OnlyLaravel\Template\Concerns\Design\HasCustomStyleSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
@@ -44,12 +45,15 @@ abstract class BaseBlock implements Arrayable
     use HasType;
     use Makable;
     use Sortable;
+    use HasDummyState;
 
     protected $parent;
 
     protected $templateModel;
 
     protected $otherCssClasses = '';
+
+    protected $acceptDropChild = true;
 
     public function getTemplateModel()
     {
@@ -71,6 +75,18 @@ abstract class BaseBlock implements Arrayable
     public function parent($parent)
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function isAcceptDropChild()
+    {
+        return $this->acceptDropChild;
+    }
+
+    public function setAcceptDropChild($acceptDropChild = true)
+    {
+        $this->acceptDropChild = $acceptDropChild;
 
         return $this;
     }

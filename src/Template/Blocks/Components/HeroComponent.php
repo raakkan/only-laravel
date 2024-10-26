@@ -22,11 +22,6 @@ class HeroComponent extends BlockComponent
 
     protected $view = 'only-laravel::template.components.hero';
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
-
     public function getBlockSettings()
     {
         return [

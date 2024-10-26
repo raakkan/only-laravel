@@ -12,13 +12,7 @@ trait HasBlockView
 
     public function getView()
     {
-        if ($this->getType() == 'component') {
-            $view = $this->getActiveDesignVariantView() ?? $this->view;
-        } else {
-            $view = $this->view;
-        }
-
-        return $view;
+        return $this->view;
     }
 
     public function setView($view)
@@ -37,13 +31,7 @@ trait HasBlockView
 
     public function getViewPath()
     {
-        if ($this->getType() == 'component') {
-            $viewPath = $this->getActiveDesignVariantViewPath() ?? $this->viewPath;
-        } else {
-            $viewPath = $this->viewPath;
-        }
-
-        return $viewPath;
+        return $this->viewPath;
     }
 
     public function setViewPath($viewPath)

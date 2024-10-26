@@ -15,11 +15,9 @@ class HtmlBlockComponent extends BlockComponent
     protected $view = 'only-laravel::template.components.html';
 
     protected $htmlContent;
+    protected $customStyleSettings = false;
 
-    public function __construct()
-    {
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
-    }
+    protected $customCssSettings = false;
 
     public function getBlockSettings()
     {

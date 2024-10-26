@@ -17,10 +17,8 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->json('settings')->nullable();
             $table->string('type')->default('page');
+            $table->json('parent_block_access')->nullable();
             $table->boolean('is_parent')->default(false);
-            $table->boolean('use_parent_header')->default(false);
-            $table->boolean('use_parent_content')->default(false);
-            $table->boolean('use_parent_footer')->default(false);
             $table->unsignedBigInteger('parent_template_id')->nullable();
             $table->foreign('parent_template_id')->references('id')->on('templates')->onDelete('set null');
             $table->timestamps();

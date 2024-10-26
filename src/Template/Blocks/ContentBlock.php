@@ -19,8 +19,6 @@ class ContentBlock extends Block
 
     protected $sortable = false;
 
-    protected $backgroundSettings = true;
-
     protected $disableable = false;
 
     protected $addable = false;
@@ -89,11 +87,20 @@ class ContentBlock extends Block
     public function getBlockSettings()
     {
         return [
-            Toggle::make('sidebar.enabled')->label('Enabled')->default(true),
-            Select::make('sidebar.position')->label('Position')->default($this->getSideBarPosition()->value)->options([
-                ContentSidebar::LEFT->value => ContentSidebar::LEFT->name,
-                ContentSidebar::RIGHT->value => ContentSidebar::RIGHT->name,
-                ContentSidebar::BOTH->value => ContentSidebar::BOTH->name,
+            Toggle::make('sidebar.enabled')->label('Sidebar Enabled')->default(true),
+            Select::make('sidebar.position')->label('Sidebar Position')->default($this->getSideBarPosition()->value)->options([
+                [
+                    'id' => ContentSidebar::LEFT->value,
+                    'name' => ContentSidebar::LEFT->name
+                ],
+                [
+                    'id' => ContentSidebar::RIGHT->value, 
+                    'name' => ContentSidebar::RIGHT->name
+                ],
+                [
+                    'id' => ContentSidebar::BOTH->value,
+                    'name' => ContentSidebar::BOTH->name
+                ]
             ]),
         ];
     }

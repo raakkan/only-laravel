@@ -18,7 +18,6 @@ class PageTemplate extends BaseTemplate
     public function __construct($name)
     {
         $this->name = $name;
-        $this->enableCustomStyleSettingOnly(['customStyleSettings', 'customCssSettings']);
     }
 
     public function create()
@@ -27,14 +26,17 @@ class PageTemplate extends BaseTemplate
             return;
         }
 
+        $parentTemplate = $this->parentTemplate;
+        if ($parentTemplate && is_string($parentTemplate)) {
+            $parentTemplate = TemplateModel::where('name', $this->parentTemplate)->first();
+        }
+
         $template = TemplateModel::create([
             'name' => $this->name,
             'label' => $this->label ?? $this->name,
             'is_parent' => $this->isParent,
-            'use_parent_header' => $this->useParentHeader,
-            'use_parent_content' => $this->useParentContent,
-            'use_parent_footer' => $this->useParentFooter,
-            'parent_template_id' => $this->parentTemplate?->id,
+            'parent_block_access' => $this->parentBlocks ?? [],
+            'parent_template_id' => $parentTemplate?->id,
         ]);
 
         $this->setModel($template, false);

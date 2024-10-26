@@ -20,7 +20,7 @@ class PageManager
     public function registerPageRoutes()
     {
         $pages = $this->getPages();
-
+        
         foreach ($pages as $page) {
             $page->registerRoute($this);
         }

@@ -45,7 +45,9 @@ trait HasBlockBuilding
             $childBlocks[] = $b;
         }
 
-        $themeBlock->children($childBlocks);
+        if ($themeBlock->isType('block')) {
+            $themeBlock->children($childBlocks);
+        }
 
         return $themeBlock;
     }
