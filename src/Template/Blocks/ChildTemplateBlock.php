@@ -2,6 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
+use Illuminate\Support\Facades\Blade;
+
 class ChildTemplateBlock extends Block
 {
     protected string $name = 'child-template-block';
@@ -22,4 +24,17 @@ class ChildTemplateBlock extends Block
 
     protected $customCssSettings = false;
     protected $acceptDropChild = false;
+
+    public function render()
+    {
+        return Blade::render(<<<'blade'
+            @php
+                $childrens = $block->getChildren();
+            @endphp
+
+            @foreach ($childrens as $child)
+                {!! $child->render() !!}
+            @endforeach
+            blade, ['block' => $this]);
+    }
 }

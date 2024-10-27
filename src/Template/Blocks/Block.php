@@ -58,6 +58,16 @@ abstract class Block extends BaseBlock
 
     public function render()
     {
+        if (! view()->exists($this->view)) {
+            if (app()->environment('local')) {
+                throw new \Exception("View '{$this->view}' does not exist.");
+            } else {
+                \Log::error("View '{$this->view}' does not exist.");
+
+                return '';
+            }
+        }
+        
         return view($this->view, [
             'block' => $this,
         ]);

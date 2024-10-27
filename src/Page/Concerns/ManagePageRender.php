@@ -64,7 +64,11 @@ trait ManagePageRender
     public function getHomeModel()
     {
         return $this->modelClass::where('name', 'home-page')
-            ->with(['template.blocks', 'template.parentTemplate.blocks'])
+            ->with(['template.blocks' => function($query) {
+                $query->orderBy('order', 'asc');
+            }, 'template.parentTemplate.blocks' => function($query) {
+                $query->orderBy('order', 'asc');
+            }])
             ->first();
     }
 

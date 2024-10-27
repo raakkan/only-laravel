@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->json('title');
             $table->json('subtitle')->nullable();
-            $table->json('slug');
+            $table->string('slug')->unique();
             $table->json('content')->nullable();
             $table->boolean('disabled')->default(false);
             $table->json('seo_title')->nullable();

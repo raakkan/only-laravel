@@ -2,20 +2,22 @@
 
 namespace Raakkan\OnlyLaravel\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Template\TemplateManager;
 use Raakkan\OnlyLaravel\UI\Components\UI;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        app('theme-manager')->registerActiveThemeViews();
         UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
@@ -43,6 +45,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('menu-manager', function () {
             return new MenuManager;
+        });
+
+        $this->app->singleton('theme-manager', function () {
+            return new ThemeManager;
         });
 
         $this->app->singleton('template-manager', function () {

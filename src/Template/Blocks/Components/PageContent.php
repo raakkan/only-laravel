@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
 use Illuminate\Support\Facades\Blade;
+use Raakkan\OnlyLaravel\Facades\Theme;
 
 class PageContent extends BlockComponent
 {
@@ -16,10 +17,19 @@ class PageContent extends BlockComponent
 
     public function render()
     {
+        if (Theme::hasView('core.components.page-content')) {
+            return view(Theme::getThemeView('core.components.page-content'), ['block' => $this]);
+        }
+
         return Blade::render(<<<'blade'
-        <div class="{{ $block->getCustomCss() }}" style="{{ $block->getCustomStyle() }}">
-            {!! $blockModel->content !!}
+        <div class="{{ $block->getCustomCss() }} bg-white dark:bg-gray-800 rounded-lg p-6 text-gray-800 dark:text-gray-200" style="{{ $block->getCustomStyle() }}">
+            {!! $pageModel->content !!}
         </div>
-        blade, ['blockModel' => $this->getModel(), 'block' => $this]);
+        blade, ['pageModel' => $this->getPageModel(), 'block' => $this]);
+    }
+
+    public function getViewPaths()
+    {
+        return [Theme::getViewPath('core.components.page-content')];
     }
 }

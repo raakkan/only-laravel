@@ -42,7 +42,7 @@ trait HasBlockSettings
 
     public function getSettingFields()
     {
-        return array_merge($this->getBlockSettings(), $this->settingFields);
+        return array_merge($this->getBlockSettings(), $this->settingFields, $this->getCustomStyleSettingFields());
     }
 
     public function storeDefaultSettingsToDatabase()

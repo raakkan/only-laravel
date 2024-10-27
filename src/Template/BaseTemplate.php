@@ -34,15 +34,46 @@ abstract class BaseTemplate implements Arrayable
 
     public function initializeFromCachedModel($model)
     {
-        $templateBlocks = collect($model->blocks)->filter(function ($block) {
-            return $block->disabled == 0 && $block->parent_id == null;
-        });
-
-        $blocks = collect($model->blocks)->filter(function ($block) {
-            return $block->disabled == 0 && $block->parent_id;
-        });
-
         $this->model = $model;
+
+        if ($model->parent_template_id) {
+            $parentTemplateBlocks = $model->parentTemplate->blocks;
+            $modelBlocks = $model->blocks;
+
+            $childTemplateBlock = collect($parentTemplateBlocks)->first(function ($block) {
+                return $block->name === 'child-template-block';
+            });
+
+            if ($childTemplateBlock) {
+                $modelBlocks = $modelBlocks->map(function ($block) use ($childTemplateBlock) {
+                    if ($block->parent_id === null) {
+                        $block->parent_id = $childTemplateBlock->id;
+                    }
+                    return $block;
+                });
+            }
+
+            $parentTemplateBlocks = collect($parentTemplateBlocks)->merge($modelBlocks);
+
+            $templateBlocks = $parentTemplateBlocks->filter(function ($block) {
+                return $block->disabled == 0 && $block->parent_id == null;
+            });
+
+            $blocks = $parentTemplateBlocks->filter(function ($block) {
+                return $block->disabled == 0 && $block->parent_id;
+            });
+
+            $this->model->settings = $model->parentTemplate?->settings;
+            
+        } else {
+            $templateBlocks = collect($model->blocks)->filter(function ($block) {
+                return $block->disabled == 0 && $block->parent_id == null;
+            });
+    
+            $blocks = collect($model->blocks)->filter(function ($block) {
+                return $block->disabled == 0 && $block->parent_id;
+            });
+        }
 
         $this->setSettings($this->model->settings);
 
