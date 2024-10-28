@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
 use Illuminate\Support\Facades\Storage;
 
 class ImageBlockComponent extends BlockComponent
@@ -74,10 +75,21 @@ class ImageBlockComponent extends BlockComponent
         return $this->imagePosition;
     }
 
+    public function render()
+    {
+        if (Theme::hasView('core.components.image')) {
+            return view(Theme::getThemeView('core.components.image'), ['block' => $this]);
+        }
+
+        return view('only-laravel::template.components.image', ['block' => $this]);
+    }
+
     public function getViewPaths()
     {
+        if (Theme::hasView('core.components.image')) {
+            return [Theme::getViewPath('core.components.image')];
+        }
         return [
-            resource_path('views/vendor/only-laravel/template/components/image.blade.php'),
             __DIR__.'/../../../../resources/views/template/components/image.blade.php',
         ];
     }

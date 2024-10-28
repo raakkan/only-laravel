@@ -4,10 +4,12 @@ namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Support\Facades\File;
 use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\HeroBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
 use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\CallToActionBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
 use Raakkan\OnlyLaravel\Template\Blocks\ChildTemplateBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
@@ -104,6 +106,8 @@ class TemplateManager
             DynamicHeroComponent::make(),
             PageContent::make(),
             ChildTemplateBlock::make(),
+            HeroBlock::make(),
+            CallToActionBlock::make(),
         ];
     }
 }

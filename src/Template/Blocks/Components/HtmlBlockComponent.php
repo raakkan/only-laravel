@@ -2,6 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 class HtmlBlockComponent extends BlockComponent
@@ -69,5 +71,10 @@ class HtmlBlockComponent extends BlockComponent
         $existingClasses = explode(' ', $this->otherCssClasses);
         $allClasses = array_unique(array_merge($existingClasses, $extractedClasses));
         $this->otherCssClasses = implode(' ', $allClasses);
+    }
+
+    public function render()
+    {
+        return new HtmlString($this->getHtmlContent());
     }
 }

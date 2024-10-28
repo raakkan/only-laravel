@@ -40,14 +40,18 @@ trait HasBlockSettings
         return $this;
     }
 
-    public function getSettingFields()
+    public function getSettingFields($all = false)
     {
-        return array_merge($this->getBlockSettings(), $this->settingFields, $this->getCustomStyleSettingFields());
+        if ($all) {
+            return array_merge($this->getBlockSettings(), $this->settingFields, $this->getCustomStyleSettingFields());
+        }
+
+        return array_merge($this->getBlockSettings(), $this->settingFields);
     }
 
     public function storeDefaultSettingsToDatabase()
     {
-        foreach ($this->getSettingFields() as $field) {
+        foreach ($this->getSettingFields(true) as $field) {
             if ($field->hasDefault()) {
                 $blockSettings = $this->model->settings ?? [];
 

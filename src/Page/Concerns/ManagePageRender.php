@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
@@ -23,6 +24,10 @@ trait ManagePageRender
 
         if (! $model) {
             return abort(404);
+        }
+
+        if (Theme::hasView('layouts.app')) {
+            return view(Theme::getThemeView('layouts.app'), ['page' => $model]);
         }
 
         if ($this->view) {

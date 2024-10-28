@@ -48,10 +48,18 @@ class ThemeManager
     public function updateOrCreateThemes(): void
     {
         $this->themes->each(function ($theme) {
-            ThemeModel::updateOrCreate(
-                ['name' => $theme['json']->getName()],
-                $theme['config']
-            );
+            $existingTheme = ThemeModel::where('name', $theme['json']->getName())->first();
+            
+            if ($existingTheme) {
+                $jsonVersion = $theme['config']['version'] ?? '0.0.0';
+                $dbVersion = $existingTheme->version ?? '0.0.0';
+                
+                if (version_compare($jsonVersion, $dbVersion, '>')) {
+                    $existingTheme->update(['update_available' => true]);
+                }
+            } else {
+                ThemeModel::create($theme['config']);
+            }
         });
     }
 
@@ -108,6 +116,15 @@ class ThemeManager
         }
 
         return $activated;
+    }
+
+    public function updateTheme(string $name): bool
+    {
+        $theme = $this->getTheme($name);
+        if (!$theme) {
+            return false;
+        }
+        return $theme->updateTheme();
     }
 
     public function themeExists(string $name): bool

@@ -13,6 +13,9 @@ trait HasBlockBuilding
 
         foreach ($templateBlocks as $templateBlock) {
             $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
+            if (! $themeBlock) {
+                $themeBlock = NotFoundBlock::make()->setType($templateBlock->type);
+            }
             $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
             $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
             $block = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel())->setTemplateModel($this->getModel());

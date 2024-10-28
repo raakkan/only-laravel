@@ -4,7 +4,8 @@ namespace Raakkan\OnlyLaravel\Template\Blocks;
 
 class NotFoundBlock extends Block
 {
-    protected string $name = 'not-found';
+    protected string $name = 'not-found-block';
+    protected string $label = 'Not Found Block';
 
     protected $group = 'core';
 

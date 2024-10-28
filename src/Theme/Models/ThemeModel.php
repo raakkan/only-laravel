@@ -20,10 +20,12 @@ class ThemeModel extends Model
         'description',
         'is_active',
         'settings',
+        'update_available',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'update_available' => 'boolean',
         'settings' => 'array',
     ];
 
@@ -44,8 +46,27 @@ class ThemeModel extends Model
         });
     }
 
-    public function getActiveThemeJson(): ?ThemeJson
+    public function updateTheme(): bool
+    {
+        $latestVersion = $this->getThemeJson()->getVersion();
+        if ($latestVersion > $this->version) {
+            return $this->update(['update_available' => false, 'version' => $latestVersion]);
+        }
+        return false;
+    }
+
+    public function getThemeJson(): ?ThemeJson
     {
         return new ThemeJson(app('theme-manager')->getThemePath($this->name) . '/theme.json');
+    }
+
+    public function hasUpdate(): bool
+    {
+        return $this->update_available;
+    }
+
+    public function getLatestVersion(): string
+    {
+        return $this->getThemeJson()->getVersion();
     }
 }

@@ -2,9 +2,12 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
+
 class HeaderBlock extends Block
 {
-    protected string $name = 'header';
+    protected string $name = 'header-block';
+    protected string $label = 'Header Block';
 
     protected $group = 'core';
 
@@ -18,10 +21,21 @@ class HeaderBlock extends Block
 
     protected $addable = false;
 
+    public function render()
+    {
+        if (Theme::hasView('core.blocks.header')) {
+            return view(Theme::getThemeView('core.blocks.header'), ['block' => $this]);
+        }
+
+        return view('only-laravel::template.blocks.header', ['block' => $this]);
+    }
+
     public function getViewPaths()
     {
+        if (Theme::hasView('core.blocks.header')) {
+            return [Theme::getViewPath('core.blocks.header')];
+        }
         return [
-            resource_path('views/vendor/only-laravel/template/blocks/header.blade.php'),
             __DIR__.'/../../../resources/views/template/blocks/header.blade.php',
         ];
     }

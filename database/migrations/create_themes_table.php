@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('version');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(false);
+            $table->boolean('update_available')->default(false);
             $table->json('settings')->nullable();
             $table->timestamps();
             $table->softDeletes();

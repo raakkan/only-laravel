@@ -2,10 +2,11 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
+use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
 use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 class PageTemplate extends BaseTemplate
 {
@@ -62,6 +63,11 @@ class PageTemplate extends BaseTemplate
 
     public function render()
     {
+        if (Theme::hasView('core.template')) {
+            return view(Theme::getThemeView('core.template'), [
+                'template' => $this,
+            ]);
+        }
         return view('only-laravel::template.template', [
             'template' => $this,
         ]);

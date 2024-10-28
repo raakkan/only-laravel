@@ -2,6 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
+
 class DynamicHeroComponent extends BlockComponent
 {
     protected string $name = 'dynamic-hero';
@@ -14,10 +16,21 @@ class DynamicHeroComponent extends BlockComponent
 
     protected $view = 'only-laravel::template.components.dynamic-hero';
 
+    public function render()
+    {
+        if (Theme::hasView('core.components.dynamic-hero')) {
+            return view(Theme::getThemeView('core.components.dynamic-hero'), ['block' => $this]);
+        }
+
+        return view('only-laravel::template.components.dynamic-hero', ['block' => $this]);
+    }
+
     public function getViewPaths()
     {
+        if (Theme::hasView('core.components.dynamic-hero')) {
+            return [Theme::getViewPath('core.components.dynamic-hero')];
+        }
         return [
-            resource_path('views/vendor/only-laravel/template/components/dynamic-hero.blade.php'),
             __DIR__.'/../../../../resources/views/template/components/dynamic-hero.blade.php',
         ];
     }

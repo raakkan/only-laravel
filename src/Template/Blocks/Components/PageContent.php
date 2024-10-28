@@ -30,6 +30,9 @@ class PageContent extends BlockComponent
 
     public function getViewPaths()
     {
-        return [Theme::getViewPath('core.components.page-content')];
+        if (Theme::hasView('core.components.page-content')) {
+            return [Theme::getViewPath('core.components.page-content')];
+        }
+        return [];
     }
 }

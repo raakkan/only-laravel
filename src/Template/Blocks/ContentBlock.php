@@ -2,14 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Select;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
 use Raakkan\OnlyLaravel\Template\Enums\ContentSidebar;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
 
 class ContentBlock extends Block
 {
-    protected string $name = 'content';
+    protected string $name = 'content-block';
+    protected string $label = 'Content Block';
 
     protected $group = 'core';
 
@@ -125,10 +127,21 @@ class ContentBlock extends Block
         ]);
     }
 
+    public function render()
+    {
+        if (Theme::hasView('core.blocks.content')) {
+            return view(Theme::getThemeView('core.blocks.content'), ['block' => $this]);
+        }
+
+        return view('only-laravel::template.blocks.content', ['block' => $this]);
+    }
+
     public function getViewPaths()
     {
+        if (Theme::hasView('core.blocks.content')) {
+            return [Theme::getViewPath('core.blocks.content')];
+        }
         return [
-            resource_path('views/vendor/only-laravel/template/blocks/content.blade.php'),
             __DIR__.'/../../../resources/views/template/blocks/content.blade.php',
         ];
     }

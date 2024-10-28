@@ -2,8 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
 
 trait HandlesThemeViews
 {
@@ -23,16 +25,20 @@ trait HandlesThemeViews
 
         $viewsPath = $themePath . '/views';
         if (File::exists($viewsPath)) {
-            view()->addNamespace('theme', $viewsPath);
+            $viewFinder = view()->getFinder();
             
-            // Debug view namespaces
-            // dd(
-            //     [
-            //         'namespaces' => view()->getFinder()->getHints(),
-            //         'view_exists' => view()->exists("theme::livewire.tools.widgets.category"),
-            //         'views_path' => $viewsPath,
-            //     ]
-            // );
+            $directories = collect(File::directories($viewsPath))
+                ->filter(fn($dir) => basename($dir) !== 'components')
+                ->toArray();
+                
+            $directories[] = $viewsPath;
+            
+            $viewFinder->prependNamespace('theme', $directories);
+
+            $componentsPath = $viewsPath . '/components';
+            if (File::exists($componentsPath)) {
+                Blade::anonymousComponentPath($componentsPath, 'theme');
+            }
         }
     }
 
@@ -47,6 +53,10 @@ trait HandlesThemeViews
 
     public function hasView(string $view): bool
     {
+        if (Str::startsWith($view, 'x-')) {
+            return $this->hasComponent($view);
+        }
+
         return view()->exists("theme::{$view}");
     }
 
@@ -57,8 +67,25 @@ trait HandlesThemeViews
 
     public function getViewPath(string $view): string
     {
+        if (Str::startsWith($view, 'x-')) {
+            return $this->getComponentPath($view);
+        }
+
         $viewPath = str_replace('.', '/', $view);
-        
         return $this->getThemePath($this->getActiveTheme()->name) . "/views/{$viewPath}.blade.php";
+    }
+
+    public function hasComponent(string $component): bool
+    {
+        $component = Str::startsWith($component, 'x-') ? Str::after($component, 'x-') : $component;
+        $componentPath = $this->getComponentPath($component);
+        return File::exists($componentPath);
+    }
+
+    public function getComponentPath(string $component): string
+    {
+        $component = Str::startsWith($component, 'x-') ? Str::after($component, 'x-') : $component;
+        $componentPath = str_replace('.', '/', $component);
+        return $this->getThemePath($this->getActiveTheme()->name) . "/views/components/{$componentPath}.blade.php";
     }
 }
