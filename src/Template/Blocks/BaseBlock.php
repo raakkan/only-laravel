@@ -13,9 +13,9 @@ use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasBlockView;
 use Raakkan\OnlyLaravel\Template\Blocks\Concerns\HasDummyState;
 use Raakkan\OnlyLaravel\Template\Concerns\Addable;
 use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
-use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasForTemplate;
 use Raakkan\OnlyLaravel\Template\Concerns\HasLocation;
 use Raakkan\OnlyLaravel\Template\Concerns\HasModel;
@@ -32,6 +32,7 @@ abstract class BaseBlock implements Arrayable
     use HasBlockSettings;
     use HasBlockView;
     use HasCustomStyleSettings;
+    use HasDummyState;
     use HasForTemplate;
     use HasGroup;
     use HasLabel {
@@ -45,7 +46,6 @@ abstract class BaseBlock implements Arrayable
     use HasType;
     use Makable;
     use Sortable;
-    use HasDummyState;
 
     protected $parent;
 

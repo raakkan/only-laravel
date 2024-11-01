@@ -2,9 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Concerns;
 
-use Storage;
 use Illuminate\Support\Arr;
-use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 trait HasCustomStyleSettings

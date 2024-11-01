@@ -7,6 +7,7 @@ use Raakkan\OnlyLaravel\Facades\Theme;
 class FooterBlock extends Block
 {
     protected string $name = 'footer-block';
+
     protected string $label = 'Footer Block';
 
     protected $group = 'core';
@@ -35,6 +36,7 @@ class FooterBlock extends Block
         if (Theme::hasView('core.blocks.footer')) {
             return [Theme::getViewPath('core.blocks.footer')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/footer.blade.php',
         ];

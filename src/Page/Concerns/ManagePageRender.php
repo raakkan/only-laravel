@@ -2,9 +2,9 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\Theme;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
+use Raakkan\OnlyLaravel\Facades\Theme;
 
 trait ManagePageRender
 {
@@ -69,9 +69,9 @@ trait ManagePageRender
     public function getHomeModel()
     {
         return $this->modelClass::where('name', 'home-page')
-            ->with(['template.blocks' => function($query) {
+            ->with(['template.blocks' => function ($query) {
                 $query->orderBy('order', 'asc');
-            }, 'template.parentTemplate.blocks' => function($query) {
+            }, 'template.parentTemplate.blocks' => function ($query) {
                 $query->orderBy('order', 'asc');
             }])
             ->first();

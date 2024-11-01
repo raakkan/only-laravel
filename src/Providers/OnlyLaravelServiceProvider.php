@@ -2,16 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Providers;
 
-use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
-use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\Page\PageManager;
-use Raakkan\OnlyLaravel\UI\Components\UI;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Livewire\Livewire;
 use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Raakkan\OnlyLaravel\Menu\MenuManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Raakkan\OnlyLaravel\UI\Components\UI;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {

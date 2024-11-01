@@ -20,17 +20,16 @@ class MenuManager
 
     public function getPageMenuItems()
     {
-        $models = array_filter(PageManager::getAllModels(), 'is_string');
+        $models = PageManager::getAllModels();
 
         $items = [];
         foreach ($models as $model) {
             $data = $model::get();
             foreach ($data as $item) {
-                $pageType = PageManager::findPageTypeByType($item->getPageType());
-                if ($pageType->isExternalModelPage($item->slug)) {
-                    continue;
-                }
-                $items[] = MenuItem::make($item->getName())->url($pageType->generateUrl($item->slug))->label($item->title ?? $item->getName())->group($pageType->getGroup());
+                $items[] = MenuItem::make($item->name)
+                    ->url($item->generateUrl())
+                    ->label($item->title ?? $item->name)
+                    ->group($item->getMenuGroup());
             }
         }
 

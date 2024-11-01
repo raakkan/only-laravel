@@ -13,7 +13,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('locale')->unique();
-            $table->boolean('rtl')->default(false);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_default')->default(false);
             $table->timestamps();
@@ -23,7 +22,6 @@ return new class extends Migration
         DB::table('languages')->insert([
             'name' => 'English',
             'locale' => 'en',
-            'rtl' => false,
             'is_active' => true,
             'is_default' => true,
             'created_at' => now(),

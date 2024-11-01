@@ -7,6 +7,7 @@ use Raakkan\OnlyLaravel\Facades\Theme;
 class CallToActionBlock extends Block
 {
     protected string $name = 'call-to-action-block';
+
     protected string $label = 'Call to Action Block';
 
     protected $group = 'core';
@@ -35,6 +36,7 @@ class CallToActionBlock extends Block
         if (Theme::hasView('core.blocks.call-to-action')) {
             return [Theme::getViewPath('core.blocks.call-to-action')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/call-to-action.blade.php',
         ];

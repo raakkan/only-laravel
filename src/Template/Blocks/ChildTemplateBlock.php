@@ -23,6 +23,7 @@ class ChildTemplateBlock extends Block
     protected $customStyleSettings = false;
 
     protected $customCssSettings = false;
+
     protected $acceptDropChild = false;
 
     public function render()

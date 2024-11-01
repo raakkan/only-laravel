@@ -88,27 +88,22 @@ class PageModel extends Model
 
     public static function findBySlug($slug)
     {
-        $query = static::query()->with(['template.blocks' => function($query) {
+        $query = static::query()->with(['template.blocks' => function ($query) {
             $query->orderBy('order', 'asc');
-        }, 'template.parentTemplate.blocks' => function($query) {
+        }, 'template.parentTemplate.blocks' => function ($query) {
             $query->orderBy('order', 'asc');
         }]);
-    
+
         return $query->where('slug', $slug)->first();
     }
 
-    // public function getSlugUrl()
-    // {
-    //     $pageType = app('page-manager')->findPageTypeByType($this->pageType);
+    public function getMenuGroup()
+    {
+        return 'Pages';
+    }
 
-    //     if ($this->name == 'home-page') {
-    //         return url('/');
-    //     }
-
-    //     if ($pageType) {
-    //         return $pageType->generateUrl($this->slug);
-    //     }
-
-    //     return url($this->slug);
-    // }
+    public function generateUrl()
+    {
+        return url($this->slug);
+    }
 }

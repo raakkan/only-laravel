@@ -7,11 +7,11 @@ use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
+use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
 use Raakkan\OnlyLaravel\Template\Concerns\ManageTemplateParent;
@@ -49,6 +49,7 @@ abstract class BaseTemplate implements Arrayable
                     if ($block->parent_id === null) {
                         $block->parent_id = $childTemplateBlock->id;
                     }
+
                     return $block;
                 });
             }
@@ -64,12 +65,12 @@ abstract class BaseTemplate implements Arrayable
             });
 
             $this->model->settings = $model->parentTemplate?->settings;
-            
+
         } else {
             $templateBlocks = collect($model->blocks)->filter(function ($block) {
                 return $block->disabled == 0 && $block->parent_id == null;
             });
-    
+
             $blocks = collect($model->blocks)->filter(function ($block) {
                 return $block->disabled == 0 && $block->parent_id;
             });

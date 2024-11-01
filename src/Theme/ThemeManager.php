@@ -4,42 +4,45 @@ namespace Raakkan\OnlyLaravel\Theme;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Raakkan\OnlyLaravel\Theme\Models\ThemeModel;
 use Raakkan\OnlyLaravel\Theme\Concerns\HandlesThemeViews;
+use Raakkan\OnlyLaravel\Theme\Models\ThemeModel;
 
 class ThemeManager
 {
     use HandlesThemeViews;
 
     protected Collection $themes;
+
     protected ?ThemeModel $activeTheme = null;
+
     protected string $themesPath;
+
     protected ?ThemeJson $activeThemeJson = null;
 
     public function __construct()
     {
         $this->themesPath = base_path('themes');
-        $this->themes = new Collection();
+        $this->themes = new Collection;
         $this->loadThemes();
     }
 
     public function loadThemes(): void
     {
-        if (!File::exists($this->themesPath)) {
+        if (! File::exists($this->themesPath)) {
             File::makeDirectory($this->themesPath, 0755, true);
         }
 
         $themeFolders = File::directories($this->themesPath);
-        
+
         foreach ($themeFolders as $themeFolder) {
-            $themeJsonPath = $themeFolder . '/theme.json';
+            $themeJsonPath = $themeFolder.'/theme.json';
             $themeJson = new ThemeJson($themeJsonPath);
-            
+
             if ($themeJson->isValid()) {
                 $this->themes->put($themeJson->getName(), [
                     'path' => $themeFolder,
                     'json' => $themeJson,
-                    'config' => $themeJson->toArray()
+                    'config' => $themeJson->toArray(),
                 ]);
             }
         }
@@ -49,11 +52,11 @@ class ThemeManager
     {
         $this->themes->each(function ($theme) {
             $existingTheme = ThemeModel::where('name', $theme['json']->getName())->first();
-            
+
             if ($existingTheme) {
                 $jsonVersion = $theme['config']['version'] ?? '0.0.0';
                 $dbVersion = $existingTheme->version ?? '0.0.0';
-                
+
                 if (version_compare($jsonVersion, $dbVersion, '>')) {
                     $existingTheme->update(['update_available' => true]);
                 }
@@ -75,7 +78,7 @@ class ThemeManager
 
     public function getActiveTheme(): ?ThemeModel
     {
-        if (!$this->activeTheme) {
+        if (! $this->activeTheme) {
             $this->activeTheme = ThemeModel::activatedTheme();
         }
 
@@ -84,14 +87,14 @@ class ThemeManager
 
     public function getActiveThemeJson(): ?ThemeJson
     {
-        if (!$this->activeTheme) {
+        if (! $this->activeTheme) {
             return null;
         }
 
-        if (!$this->activeThemeJson) {
+        if (! $this->activeThemeJson) {
             $themePath = $this->getThemePath($this->activeTheme->name);
             if ($themePath) {
-                $themeJsonPath = $themePath . '/theme.json';
+                $themeJsonPath = $themePath.'/theme.json';
                 $this->activeThemeJson = new ThemeJson($themeJsonPath);
             }
         }
@@ -102,13 +105,13 @@ class ThemeManager
     public function activateTheme(string $name): bool
     {
         $theme = $this->getTheme($name);
-        
-        if (!$theme) {
+
+        if (! $theme) {
             return false;
         }
 
         $activated = $theme->activate();
-        
+
         if ($activated) {
             $this->activeTheme = $theme;
             $this->activeThemeJson = null;
@@ -121,9 +124,10 @@ class ThemeManager
     public function updateTheme(string $name): bool
     {
         $theme = $this->getTheme($name);
-        if (!$theme) {
+        if (! $theme) {
             return false;
         }
+
         return $theme->updateTheme();
     }
 

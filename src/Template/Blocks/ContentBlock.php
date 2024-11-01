@@ -2,15 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
-use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Select;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Toggle;
-use Raakkan\OnlyLaravel\Template\Enums\ContentSidebar;
+use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Template\Blocks\Components\BlockComponent;
+use Raakkan\OnlyLaravel\Template\Enums\ContentSidebar;
 
 class ContentBlock extends Block
 {
     protected string $name = 'content-block';
+
     protected string $label = 'Content Block';
 
     protected $group = 'core';
@@ -89,20 +90,21 @@ class ContentBlock extends Block
     public function getBlockSettings()
     {
         return [
-            Toggle::make('sidebar.enabled')->label('Sidebar Enabled')->default(true),
+            // TODO: check default value set as boolean
+            Toggle::make('sidebar.enabled')->label('Sidebar Enabled')->default($this->isSideBarEnabled()),
             Select::make('sidebar.position')->label('Sidebar Position')->default($this->getSideBarPosition()->value)->options([
                 [
                     'id' => ContentSidebar::LEFT->value,
-                    'name' => ContentSidebar::LEFT->name
+                    'name' => ContentSidebar::LEFT->name,
                 ],
                 [
-                    'id' => ContentSidebar::RIGHT->value, 
-                    'name' => ContentSidebar::RIGHT->name
+                    'id' => ContentSidebar::RIGHT->value,
+                    'name' => ContentSidebar::RIGHT->name,
                 ],
                 [
                     'id' => ContentSidebar::BOTH->value,
-                    'name' => ContentSidebar::BOTH->name
-                ]
+                    'name' => ContentSidebar::BOTH->name,
+                ],
             ]),
         ];
     }
@@ -141,6 +143,7 @@ class ContentBlock extends Block
         if (Theme::hasView('core.blocks.content')) {
             return [Theme::getViewPath('core.blocks.content')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/content.blade.php',
         ];

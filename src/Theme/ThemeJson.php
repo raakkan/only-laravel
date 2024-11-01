@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 class ThemeJson
 {
     protected array $data;
+
     protected string $path;
 
     public function __construct(string $path)
@@ -17,17 +18,18 @@ class ThemeJson
 
     protected function load(): array
     {
-        if (!File::exists($this->path)) {
+        if (! File::exists($this->path)) {
             return [];
         }
 
         $content = File::get($this->path);
+
         return json_decode($content, true) ?? [];
     }
 
     public function isValid(): bool
     {
-        return !empty($this->data) && isset($this->data['name']);
+        return ! empty($this->data) && isset($this->data['name']);
     }
 
     public function getName(): string

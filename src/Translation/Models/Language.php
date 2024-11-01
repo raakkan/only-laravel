@@ -3,19 +3,15 @@
 namespace Raakkan\OnlyLaravel\Translation\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
 class Language extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'languages';
 
     protected $fillable = [
         'name',
         'locale',
-        'rtl',
         'is_active',
         'is_default',
     ];
@@ -23,7 +19,6 @@ class Language extends Model
     protected function casts(): array
     {
         return [
-            'rtl' => 'boolean',
             'is_active' => 'boolean',
             'is_default' => 'boolean',
         ];
@@ -47,6 +42,20 @@ class Language extends Model
     {
         return Cache::rememberForever('all_languages', function () {
             return self::all();
+        });
+    }
+
+    public static function getAllLocales()
+    {
+        return Cache::rememberForever('all_locales', function () {
+            return self::pluck('locale')->toArray();
+        });
+    }
+
+    public static function getActiveLocales()
+    {
+        return Cache::rememberForever('active_locales', function () {
+            return self::where('is_active', true)->pluck('locale')->toArray();
         });
     }
 

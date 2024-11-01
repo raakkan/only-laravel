@@ -7,6 +7,7 @@ use Raakkan\OnlyLaravel\Facades\Theme;
 class HeroBlock extends Block
 {
     protected string $name = 'hero-block';
+
     protected string $label = 'Hero Block';
 
     protected $group = 'core';
@@ -35,6 +36,7 @@ class HeroBlock extends Block
         if (Theme::hasView('core.blocks.hero')) {
             return [Theme::getViewPath('core.blocks.hero')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/hero.blade.php',
         ];

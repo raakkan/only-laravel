@@ -32,6 +32,7 @@ class DivBlock extends Block
         if (Theme::hasView('core.blocks.div')) {
             return [Theme::getViewPath('core.blocks.div')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/div.blade.php',
         ];

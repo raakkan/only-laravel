@@ -67,7 +67,7 @@ abstract class Block extends BaseBlock
                 return '';
             }
         }
-        
+
         return view($this->view, [
             'block' => $this,
         ]);

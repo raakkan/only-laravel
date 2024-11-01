@@ -78,25 +78,25 @@ class PageResource extends Resource
                 }),
                 Section::make('Featured Media')
                     ->schema([
-                       FileUpload::make('featured_image.image')
-                           ->image()
-                           ->disk('public')
-                           ->directory('pages/featured-images')
-                           ->label('Featured Image')
-                           ->columnSpanFull(),
-                       TextInput::make('featured_image.alt')
-                           ->label('Featured Image Alt Text'),
-                       Textarea::make('featured_image.caption')
-                           ->label('Featured Image Caption'),
-                   ])
+                        FileUpload::make('featured_image.image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('pages/featured-images')
+                            ->label('Featured Image')
+                            ->columnSpanFull(),
+                        TextInput::make('featured_image.alt')
+                            ->label('Featured Image Alt Text'),
+                        Textarea::make('featured_image.caption')
+                            ->label('Featured Image Caption'),
+                    ])
                     ->collapsible()
                     ->columns(2),
                 Section::make('SEO')
                     ->schema([
-                       TextInput::make('seo_title')->label('SEO Title'),
-                       TextInput::make('seo_keywords')->label('SEO Keywords'),
-                       Textarea::make('seo_description')->label('SEO Description')->columnSpanFull()->rows(7),
-                   ])
+                        TextInput::make('seo_title')->label('SEO Title'),
+                        TextInput::make('seo_keywords')->label('SEO Keywords'),
+                        Textarea::make('seo_description')->label('SEO Description')->columnSpanFull()->rows(7),
+                    ])
                     ->collapsed()->columns(2)->compact(),
             ]);
     }

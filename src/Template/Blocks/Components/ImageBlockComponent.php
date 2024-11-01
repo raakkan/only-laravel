@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Raakkan\OnlyLaravel\Facades\Theme;
 use Illuminate\Support\Facades\Storage;
+use Raakkan\OnlyLaravel\Facades\Theme;
 
 class ImageBlockComponent extends BlockComponent
 {
@@ -89,6 +89,7 @@ class ImageBlockComponent extends BlockComponent
         if (Theme::hasView('core.components.image')) {
             return [Theme::getViewPath('core.components.image')];
         }
+
         return [
             __DIR__.'/../../../../resources/views/template/components/image.blade.php',
         ];

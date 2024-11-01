@@ -10,13 +10,14 @@ return new class extends Migration
     {
         Schema::create('themes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('label');
             $table->string('version');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(false);
             $table->boolean('update_available')->default(false);
             $table->json('settings')->nullable();
+            $table->json('custom_data')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

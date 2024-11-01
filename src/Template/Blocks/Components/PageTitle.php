@@ -14,11 +14,13 @@ class PageTitle extends BlockComponent
     protected $group = 'core';
 
     protected $source = 'raakkan/only-laravel';
+
     public function render()
     {
         if (Theme::hasView('core.components.page-title')) {
             return view(Theme::getThemeView('core.components.page-title'), ['block' => $this]);
         }
+
         return Blade::render(<<<'blade'
         <h1 class="{{ $blockModel->getCustomCss() }}" style="{{ $blockModel->getCustomStyle() }}">
             {!! $blockModel->title !!}
@@ -31,6 +33,7 @@ class PageTitle extends BlockComponent
         if (Theme::hasView('core.components.page-title')) {
             return [Theme::getViewPath('core.components.page-title')];
         }
+
         return [];
     }
 }

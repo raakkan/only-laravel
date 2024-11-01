@@ -2,40 +2,40 @@
 
 namespace Raakkan\OnlyLaravel\Theme\Concerns;
 
-use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 trait HandlesThemeViews
 {
     public function registerActiveThemeViews(): void
     {
         $activeTheme = $this->getActiveTheme();
-        
-        if (!$activeTheme) {
+
+        if (! $activeTheme) {
             return;
         }
 
         $themePath = $this->getThemePath($activeTheme->name);
-        
-        if (!$themePath) {
+
+        if (! $themePath) {
             return;
         }
 
-        $viewsPath = $themePath . '/views';
+        $viewsPath = $themePath.'/views';
         if (File::exists($viewsPath)) {
             $viewFinder = view()->getFinder();
-            
+
             $directories = collect(File::directories($viewsPath))
-                ->filter(fn($dir) => basename($dir) !== 'components')
+                ->filter(fn ($dir) => basename($dir) !== 'components')
                 ->toArray();
-                
+
             $directories[] = $viewsPath;
-            
+
             $viewFinder->prependNamespace('theme', $directories);
 
-            $componentsPath = $viewsPath . '/components';
+            $componentsPath = $viewsPath.'/components';
             if (File::exists($componentsPath)) {
                 Blade::anonymousComponentPath($componentsPath, 'theme');
             }
@@ -44,7 +44,7 @@ trait HandlesThemeViews
 
     public function render(string $view, array $data = [], array $mergeData = []): View
     {
-        if (!$this->getActiveTheme()) {
+        if (! $this->getActiveTheme()) {
             throw new \RuntimeException('No active theme found');
         }
 
@@ -72,13 +72,15 @@ trait HandlesThemeViews
         }
 
         $viewPath = str_replace('.', '/', $view);
-        return $this->getThemePath($this->getActiveTheme()->name) . "/views/{$viewPath}.blade.php";
+
+        return $this->getThemePath($this->getActiveTheme()->name)."/views/{$viewPath}.blade.php";
     }
 
     public function hasComponent(string $component): bool
     {
         $component = Str::startsWith($component, 'x-') ? Str::after($component, 'x-') : $component;
         $componentPath = $this->getComponentPath($component);
+
         return File::exists($componentPath);
     }
 
@@ -86,6 +88,7 @@ trait HandlesThemeViews
     {
         $component = Str::startsWith($component, 'x-') ? Str::after($component, 'x-') : $component;
         $componentPath = str_replace('.', '/', $component);
-        return $this->getThemePath($this->getActiveTheme()->name) . "/views/components/{$componentPath}.blade.php";
+
+        return $this->getThemePath($this->getActiveTheme()->name)."/views/components/{$componentPath}.blade.php";
     }
 }

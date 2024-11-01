@@ -7,6 +7,7 @@ use Raakkan\OnlyLaravel\Facades\Theme;
 class HeaderBlock extends Block
 {
     protected string $name = 'header-block';
+
     protected string $label = 'Header Block';
 
     protected $group = 'core';
@@ -35,6 +36,7 @@ class HeaderBlock extends Block
         if (Theme::hasView('core.blocks.header')) {
             return [Theme::getViewPath('core.blocks.header')];
         }
+
         return [
             __DIR__.'/../../../resources/views/template/blocks/header.blade.php',
         ];

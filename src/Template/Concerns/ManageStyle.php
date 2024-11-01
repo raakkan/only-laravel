@@ -71,7 +71,7 @@ trait ManageStyle
                 }
             }
         }
-        
+
         $content = $this->getPageModel()->content;
         preg_match_all('/\bclass\s*=\s*(["\'])(.*?)\1|\bclass\s*=\s*\{{(.*?)\}}/', $content, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {

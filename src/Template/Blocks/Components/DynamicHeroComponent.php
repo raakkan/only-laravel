@@ -30,6 +30,7 @@ class DynamicHeroComponent extends BlockComponent
         if (Theme::hasView('core.components.dynamic-hero')) {
             return [Theme::getViewPath('core.components.dynamic-hero')];
         }
+
         return [
             __DIR__.'/../../../../resources/views/template/components/dynamic-hero.blade.php',
         ];

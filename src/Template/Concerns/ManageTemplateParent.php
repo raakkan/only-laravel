@@ -23,6 +23,7 @@ trait ManageTemplateParent
     {
         // $parentTemplate = TemplateModel::where('name', $templateName)->first() ?? null;
         $this->parentTemplate = $templateName;
+
         return $this;
     }
 
@@ -38,7 +39,7 @@ trait ManageTemplateParent
         foreach ($blocks as $blockName => $value) {
             $this->parentBlocks[$blockName] = $value;
         }
-        
+
         return $this;
     }
 

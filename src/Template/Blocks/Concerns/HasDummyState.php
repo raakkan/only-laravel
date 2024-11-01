@@ -20,6 +20,6 @@ trait HasDummyState
 
     public function isReal(): bool
     {
-        return !$this->isDummy;
+        return ! $this->isDummy;
     }
 }

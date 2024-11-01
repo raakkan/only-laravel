@@ -65,4 +65,11 @@ trait ManagePages
 
         return $this;
     }
+
+    public function getAllModels()
+    {
+        return collect($this->getPages())->map(function ($page) {
+            return $page->getModelClass();
+        })->unique()->toArray();
+    }
 }

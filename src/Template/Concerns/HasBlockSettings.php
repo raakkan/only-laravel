@@ -81,6 +81,7 @@ trait HasBlockSettings
     public function hasAnySettings()
     {
         $settingFields = array_merge($this->getSettingFields(), $this->getCustomStyleSettingFields());
+
         return count($settingFields) > 0;
     }
 
