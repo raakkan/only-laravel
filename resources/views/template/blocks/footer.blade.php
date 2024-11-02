@@ -6,7 +6,7 @@
 
     <div class="{{ $block->getTemplateModel()->getContainerCssClasses() }}">
         @foreach ($childrens as $child)
-            {{ $child->render() }}
+            {!! $child->render() !!}
         @endforeach
     </div>
 </footer>

@@ -148,6 +148,7 @@ class TextInput extends Field
                 :step="$step"
                 :min="$min"
                 :max="$max"
+                :placeholder="$placeholder"
                 wire:model="{{ $wireModel }}"
             />
         blade, [
@@ -168,6 +169,7 @@ class TextInput extends Field
             'step' => $this->step,
             'min' => $this->min,
             'max' => $this->max,
+            'placeholder' => $this->placeholder,
             'wireModel' => $this->wireModel,
         ]);
     }

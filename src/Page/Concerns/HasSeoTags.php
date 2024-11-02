@@ -12,8 +12,13 @@ trait HasSeoTags
 
         $seoTags = '';
 
-        $title = isset($this->seo_title) && $this->seo_title != '' ? $this->seo_title : $this->title;
-        $seoTags .= '<title>'.$title.' '.setting('general.title_separator', '-').' '.setting('general.site_name', 'Tools').'</title>';
+        $title = isset($this->title) && $this->title != '' ? $this->title : $this->seo_title;
+        $seoTags .= '<title>'.$title.' '.setting('general.title_separator', '-').' '.env('APP_NAME', 'Laravel').'</title>';
+        
+        if (setting('general.favicon')) {
+            $seoTags .= '<link rel="icon" type="image/x-icon" href="'.setting('general.favicon').'">';
+        }
+        
         $seoTags .= '<meta name="description" content="'.$this->seo_description.'">';
         $seoTags .= '<meta name="keywords" content="'.$this->seo_keywords.'">';
 

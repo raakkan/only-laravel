@@ -21,7 +21,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
-        $this->registerLivewireComponents();
         app('plugin-manager')->bootActivatedPlugins();
         app('page-manager')->registerPageRoutes();
         Livewire::component('only-laravel::installer.livewire.installer', \Raakkan\OnlyLaravel\Installer\Livewire\Installer::class);
@@ -59,7 +58,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             return new PluginManager(app('only-laravel'), app('page-manager'), app('menu-manager'), app('template-manager'));
         });
 
-        app('only-laravel')->loadSettingsPagesFromApp();
+        // app('only-laravel')->loadSettingsPagesFromApp();
         app('plugin-manager')->registerActivatedPlugins();
     }
 
@@ -78,12 +77,5 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             "{$configPath}/themes.php",
             'only-laravel::themes'
         );
-    }
-
-    public function registerLivewireComponents(): void
-    {
-        Livewire::component('only-laravel::menu.livewire.menu-items-component', \Raakkan\OnlyLaravel\Menu\Livewire\MenuItemsComponent::class);
-        Livewire::component('only-laravel::menu.livewire.menu-items-manage', \Raakkan\OnlyLaravel\Menu\Livewire\MenuItemsManage::class);
-        Livewire::component('only-laravel::menu.livewire.menu-item-component', \Raakkan\OnlyLaravel\Menu\Livewire\MenuItemComponent::class);
     }
 }
