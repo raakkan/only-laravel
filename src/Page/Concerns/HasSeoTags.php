@@ -22,8 +22,8 @@ trait HasSeoTags
         $seoTags .= '<meta name="description" content="'.$this->seo_description.'">';
         $seoTags .= '<meta name="keywords" content="'.$this->seo_keywords.'">';
 
-        if ($this->getFeaturedImageUrl()) {
-            $seoTags .= '<meta property="og:image" content="'.$this->getFeaturedImageUrl().'">';
+        if ($this->featured_image) {
+            $seoTags .= '<meta property="og:image" content="'.$this->featured_image.'">';
         }
 
         if ($page) {
@@ -64,7 +64,7 @@ trait HasSeoTags
         ];
 
         if ($this->featured_image) {
-            $openGraph['og:image'] = $this->getFeaturedImageUrl();
+            $openGraph['og:image'] = $this->featured_image;
         }
 
         return $openGraph;
@@ -80,7 +80,7 @@ trait HasSeoTags
         ];
 
         if ($this->featured_image) {
-            $twitter['twitter:image'] = $this->getFeaturedImageUrl();
+            $twitter['twitter:image'] = $this->featured_image;
         }
 
         return $twitter;

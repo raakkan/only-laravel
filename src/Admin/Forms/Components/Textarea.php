@@ -50,7 +50,15 @@ class Textarea extends Field
     public function render(): string
     {
         return Blade::render(<<<'blade'
-            <x-textarea :label="$label" :placeholder="$placeholder" :required="$required" :hint="$helperText" wire:model="{{$wireModel}}" :autosize="$autosize" />
+            <x-textarea 
+                :label="$label" 
+                :placeholder="$placeholder" 
+                :required="$required" 
+                :hint="$helperText" 
+                :rows="$rows"
+                wire:model="{{$wireModel}}" 
+                :autosize="$autosize"
+            />
         blade, [
             'label' => $this->label,
             'placeholder' => $this->placeholder,
@@ -58,6 +66,7 @@ class Textarea extends Field
             'helperText' => $this->helperText,
             'wireModel' => $this->wireModel,
             'autosize' => $this->autosize,
+            'rows' => $this->rows,
         ]);
     }
 }

@@ -67,15 +67,6 @@ class PageModel extends Model
         ];
     }
 
-    public function getFeaturedImageUrl(): ?string
-    {
-        if (isset($this->featured_image['image']) && File::exists(storage_path('app/public/'.$this->featured_image['image']))) {
-            return url(Storage::url($this->featured_image['image']));
-        }
-
-        return null;
-    }
-
     public function getTable(): string
     {
         return 'pages';
