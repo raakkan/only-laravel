@@ -40,6 +40,11 @@ trait HasBlockSettings
         return $this;
     }
 
+    public function getSetting($key)
+    {
+        return Arr::get($this->settings, $key, '');
+    }
+
     public function getSettingFields($all = false)
     {
         if ($all) {

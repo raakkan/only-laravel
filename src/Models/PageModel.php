@@ -3,9 +3,6 @@
 namespace Raakkan\OnlyLaravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Raakkan\OnlyLaravel\Page\Concerns\HasSeoTags;
 use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
@@ -15,7 +12,6 @@ class PageModel extends Model
 {
     use HasSeoTags;
     use HasTranslations;
-    use SoftDeletes;
 
     public $translatable = ['title', 'subtitle', 'content', 'seo_title', 'seo_description', 'seo_keywords'];
 

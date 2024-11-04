@@ -29,7 +29,8 @@ trait ManagePages
 
     public function getPages()
     {
-        return array_merge($this->pages, app('plugin-manager')->getPages());
+        // return array_merge($this->pages, app('plugin-manager')->getPages());
+        return $this->pages;
     }
 
     public function registerPages($pages)

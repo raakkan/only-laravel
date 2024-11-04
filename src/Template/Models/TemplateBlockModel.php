@@ -70,11 +70,18 @@ class TemplateBlockModel extends Model
 
     public static function reorderSiblings($template, $order, $parentId, $location)
     {
-        $siblings = $template->blocks()->where('parent_id', $parentId)->where('location', $location)->where('order', '>=', $order)->get();
-        foreach ($siblings as $sibling) {
-            $sibling->order = $sibling->order - 1;
-            $sibling->save();
-        }
+        DB::transaction(function () use ($template, $order, $parentId, $location) {
+            $siblings = $template->blocks()
+                ->where('parent_id', $parentId)
+                ->where('location', $location)
+                ->where('order', '>', $order)
+                ->orderBy('order')
+                ->get();
+
+            foreach ($siblings as $index => $sibling) {
+                $sibling->update(['order' => $order + $index]);
+            }
+        });
     }
 
     public function getPageTemplate()

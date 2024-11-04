@@ -2,155 +2,155 @@
 
 namespace Raakkan\OnlyLaravel\Plugin;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Raakkan\OnlyLaravel\Plugin\Concerns\ManageModels;
+use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 
 class PluginManager
 {
-    use ManageModels;
+    protected Collection $plugins;
 
-    protected $plugins = [];
+    protected string $pluginsPath;
 
-    protected $pluginJsonManager;
+    protected Collection $activePlugins;
 
-    protected $onlyLaravel;
-
-    protected $pageManager;
-
-    protected $menuManager;
-
-    protected $templateManager;
-
-    public function __construct($onlyLaravel, $pageManager, $menuManager, $templateManager)
+    public function __construct()
     {
-        $this->onlyLaravel = $onlyLaravel;
-        $this->pageManager = $pageManager;
-        $this->menuManager = $menuManager;
-        $this->templateManager = $templateManager;
-
-        $plugins = $this->loadPlugins();
-        $this->pluginJsonManager = new PluginJsonManager($plugins);
-        $this->plugins = $plugins;
+        $this->pluginsPath = base_path('plugins');
+        $this->plugins = new Collection;
+        $this->activePlugins = new Collection;
+        $this->loadPlugins();
     }
 
-    public function loadPlugins()
+    public function loadPlugins(): void
     {
-        $plugins = [];
+        if (! File::exists($this->pluginsPath)) {
+            File::makeDirectory($this->pluginsPath, 0755, true);
+        }
 
-        if (File::isDirectory(base_path('plugins'))) {
-            $directories = File::directories(base_path('plugins'));
+        $pluginFolders = File::directories($this->pluginsPath);
 
-            foreach ($directories as $directory) {
-                $pluginName = basename($directory);
-                $composerFile = $directory.'/plugin.json';
+        foreach ($pluginFolders as $pluginFolder) {
+            $pluginJsonPath = $pluginFolder.'/plugin.json';
+            $pluginJson = new PluginJson($pluginJsonPath);
 
-                if (File::exists($composerFile)) {
-                    $composerData = json_decode(File::get($composerFile), true);
-                    $plugin = new Plugin(
-                        $composerData['name'] ?? $pluginName,
-                        $composerData['namespace'] ?? '',
-                        $composerData['label'] ?? $pluginName,
-                        $composerData['description'] ?? '',
-                        $composerData['version'] ?? '',
-                        $directory
-                    );
-                    $plugins[$pluginName] = $plugin;
-                }
+            if ($pluginJson->isValid()) {
+                $this->plugins->put($pluginJson->getName(), [
+                    'path' => $pluginFolder,
+                    'json' => $pluginJson,
+                    'config' => $pluginJson->toArray(),
+                ]);
             }
         }
-
-        return $plugins;
     }
 
-    public function registerActivatedPlugins()
+    public function updateOrCreatePlugins(): void
     {
-        $activatedPlugins = $this->pluginJsonManager->getActivatedPlugins();
-        foreach ($activatedPlugins as $name => $activatedPlugin) {
-            $plugin = $this->getPlugin($name);
-            $plugin->register($this);
+        $this->plugins->each(function ($plugin) {
+            $existingPlugin = PluginModel::where('name', $plugin['json']->getName())->first();
+
+            if ($existingPlugin) {
+                $jsonVersion = $plugin['config']['version'] ?? '0.0.0';
+                $dbVersion = $existingPlugin->version ?? '0.0.0';
+
+                if (version_compare($jsonVersion, $dbVersion, '>')) {
+                    $existingPlugin->update(['update_available' => true]);
+                }
+            } else {
+                PluginModel::create($plugin['config']);
+            }
+        });
+    }
+
+    public function getAllPlugins(): Collection
+    {
+        return PluginModel::all();
+    }
+
+    public function getPlugin(string $name): ?PluginModel
+    {
+        return PluginModel::where('name', $name)->first();
+    }
+
+    public function getActivePlugins(): Collection
+    {
+        if ($this->activePlugins->isEmpty()) {
+            $this->activePlugins = PluginModel::activePlugins();
         }
 
-        return $this;
+        return $this->activePlugins;
     }
 
-    public function bootActivatedPlugins()
+    public function getPluginJson(string $name): ?PluginJson
     {
-        $activatedPlugins = $this->pluginJsonManager->getActivatedPlugins();
-        foreach ($activatedPlugins as $name => $activatedPlugin) {
-            $plugin = $this->getPlugin($name);
-            $plugin->boot($this);
+        $pluginPath = $this->getPluginPath($name);
+        if ($pluginPath) {
+            $pluginJsonPath = $pluginPath.'/plugin.json';
+            return new PluginJson($pluginJsonPath);
         }
 
-        return $this;
+        return null;
     }
 
-    public function activatePlugin(string $name)
+    public function activatePlugin(string $name): bool
     {
-        $this->pluginJsonManager->activatePlugin($name);
+        $plugin = $this->getPlugin($name);
 
-        return $this;
+        if (! $plugin) {
+            return false;
+        }
+
+        $activated = $plugin->activate();
+
+        if ($activated) {
+            $this->activePlugins = PluginModel::activePlugins();
+            // Register plugin specific functionality here if needed
+            $this->registerPlugin($plugin);
+        }
+
+        return $activated;
     }
 
-    public function getActivatedPlugins()
+    public function deactivatePlugin(string $name): bool
     {
-        return collect($this->loadPlugins())
-            ->map(function ($plugin) {
-                $plugin->setActivated(PluginManager::pluginIsActivated($plugin->getName()));
+        $plugin = $this->getPlugin($name);
+        
+        if (! $plugin) {
+            return false;
+        }
 
-                return $plugin;
-            })
-            ->filter(function ($plugin) {
-                return $plugin->isActivated();
-            })->toArray();
+        $deactivated = $plugin->update(['is_active' => false]);
+
+        if ($deactivated) {
+            $this->activePlugins = PluginModel::activePlugins();
+            cache()->forget('active_plugins');
+        }
+
+        return $deactivated;
     }
 
-    public function deactivatePlugin(string $name)
+    public function updatePlugin(string $name): bool
     {
-        $this->pluginJsonManager->deactivatePlugin($name);
+        $plugin = $this->getPlugin($name);
+        if (! $plugin) {
+            return false;
+        }
 
-        return $this;
+        return $plugin->updatePlugin();
     }
 
-    public function pluginIsActivated(string $name)
+    public function pluginExists(string $name): bool
     {
-        return $this->pluginJsonManager->pluginIsActivated($name);
+        return PluginModel::where('name', $name)->exists();
     }
 
-    public function getPlugin(string $name)
+    public function getPluginPath(string $name): ?string
     {
-        return $this->plugins[$name];
+        return $this->plugins->get($name)['path'] ?? null;
     }
 
-    public function getPages()
+    protected function registerPlugin(PluginModel $plugin): void
     {
-        return collect($this->plugins)
-            ->filter(function ($plugin) {
-                return $this->pluginJsonManager->pluginIsActivated($plugin->getName());
-            })
-            ->map(function ($plugin) {
-                return $plugin->getPages();
-            })
-            ->flatten()
-            ->toArray();
-    }
-
-    public function getOnlyLaravel()
-    {
-        return $this->onlyLaravel;
-    }
-
-    public function getPageManager()
-    {
-        return $this->pageManager;
-    }
-
-    public function getMenuManager()
-    {
-        return $this->menuManager;
-    }
-
-    public function getTemplateManager()
-    {
-        return $this->templateManager;
+      
     }
 }

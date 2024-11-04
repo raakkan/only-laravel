@@ -23,7 +23,6 @@ return new class extends Migration
             $table->json('settings')->nullable();
             $table->string('featured_image')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('template_id')->references('id')->on('templates')->cascadeOnDelete();
         });

@@ -3,19 +3,20 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Support\Facades\File;
-use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
-use Raakkan\OnlyLaravel\Template\Blocks\CallToActionBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\ChildTemplateBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\DynamicHeroComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
-use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
-use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\HeroBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
-use Raakkan\OnlyLaravel\Template\Blocks\HeroBlock;
-use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
+use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
+use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\CallToActionBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
+use Raakkan\OnlyLaravel\Template\Blocks\ChildTemplateBlock;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\PageContent;
+use Raakkan\OnlyLaravel\Template\Concerns\HandleDummyPageModels;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\PageFeaturedImage;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\HtmlBlockComponent;
+use Raakkan\OnlyLaravel\Template\Blocks\Components\DynamicHeroComponent;
 
 class TemplateManager
 {
@@ -38,8 +39,8 @@ class TemplateManager
 
     public function getPluginBlocksAndComponents()
     {
-        $plugins = collect(PluginManager::getActivatedPlugins());
-
+        // $plugins = collect(PluginManager::getActivatedPlugins());
+        $plugins = collect([]);
         if ($plugins->count() > 0) {
             $blocks = [];
             $components = [];
@@ -105,6 +106,7 @@ class TemplateManager
             ChildTemplateBlock::make(),
             HeroBlock::make(),
             CallToActionBlock::make(),
+            PageFeaturedImage::make(),
         ];
     }
 }

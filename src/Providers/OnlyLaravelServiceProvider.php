@@ -21,7 +21,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
-        app('plugin-manager')->bootActivatedPlugins();
+        // app('plugin-manager')->bootActivatedPlugins();
         app('page-manager')->registerPageRoutes();
         Livewire::component('only-laravel::installer.livewire.installer', \Raakkan\OnlyLaravel\Installer\Livewire\Installer::class);
     }
@@ -55,11 +55,11 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('plugin-manager', function () {
-            return new PluginManager(app('only-laravel'), app('page-manager'), app('menu-manager'), app('template-manager'));
+            return new PluginManager();
         });
 
         // app('only-laravel')->loadSettingsPagesFromApp();
-        app('plugin-manager')->registerActivatedPlugins();
+        // app('plugin-manager')->registerActivatedPlugins();
     }
 
     protected function getPath(string $path = '')

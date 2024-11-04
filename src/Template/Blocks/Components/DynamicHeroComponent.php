@@ -3,6 +3,8 @@
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
 use Raakkan\OnlyLaravel\Facades\Theme;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\ImageUpload;
 
 class DynamicHeroComponent extends BlockComponent
 {
@@ -15,6 +17,15 @@ class DynamicHeroComponent extends BlockComponent
     protected $source = 'raakkan/only-laravel';
 
     protected $view = 'only-laravel::template.components.dynamic-hero';
+
+    public function getBlockSettings()
+    {
+        return [
+            ImageUpload::make('hero.image')
+                ->label('Hero Image')
+                ->required(),
+        ];
+    }
 
     public function render()
     {

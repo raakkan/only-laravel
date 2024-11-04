@@ -23,8 +23,8 @@ class PageTemplate extends BaseTemplate
 
     public function create()
     {
-        if (TemplateModel::where('name', $this->name)->exists()) {
-            return;
+        if ($template = TemplateModel::where('name', $this->name)->first()) {
+            return $template;
         }
 
         $parentTemplate = $this->parentTemplate;
@@ -48,6 +48,8 @@ class PageTemplate extends BaseTemplate
         }
 
         // $this->buildCss();
+
+        return $template;
     }
 
     public function getDummyPageModel()
