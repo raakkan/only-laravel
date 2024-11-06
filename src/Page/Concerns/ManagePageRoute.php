@@ -4,6 +4,7 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Raakkan\OnlyLaravel\Page\DynamicPage;
 
 trait ManagePageRoute
 {
@@ -35,8 +36,13 @@ trait ManagePageRoute
 
     public function registerRoute($pageManager)
     {
-        $route = Route::get($this->getSlug(), function (Request $request) {
-            return $this->render($request->path());
+        $page = $this;
+        if ($page instanceof DynamicPage) {
+            $page->setModels($pageManager->getDynamicModel($this->getName()));
+        }
+
+        $route = Route::get($this->getSlug(), function (Request $request) use ($page) {
+            return $page->render($request->path());
         });
 
         $route->middleware(array_merge($pageManager->getGlobalMiddleware(), $this->getAllMiddleware()));

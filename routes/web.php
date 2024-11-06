@@ -14,8 +14,8 @@ Route::get('installer', Installer::class)->name('installer')
 //     return view('web-installer::success');
 // })->name('installer.success')->middleware(['web', 'redirect.if.not.installed']);
 
-Route::middleware('web')->get('/mary/toogle-sidebar', function (Request $request) {
-    if ($request->collapsed) {
-        session(['mary-sidebar-collapsed' => $request->collapsed]);
-    }
-})->name('mary.toogle-sidebar');
+// Route::middleware('web')->get('/mary/toogle-sidebar', function (Request $request) {
+//     if ($request->collapsed) {
+//         session(['mary-sidebar-collapsed' => $request->collapsed]);
+//     }
+// })->name('mary.toogle-sidebar');

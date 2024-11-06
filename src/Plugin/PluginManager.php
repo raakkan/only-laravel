@@ -4,10 +4,15 @@ namespace Raakkan\OnlyLaravel\Plugin;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
+use Raakkan\OnlyLaravel\Plugin\Traits\HandlesPluginOperations;
 
 class PluginManager
 {
+    use HandlesPluginOperations;
+
     protected Collection $plugins;
 
     protected string $pluginsPath;
@@ -59,6 +64,13 @@ class PluginManager
             } else {
                 PluginModel::create($plugin['config']);
             }
+        });
+    }
+
+    public function bootActivatedPlugins(): void
+    {
+        $this->getActivePlugins()->each(function ($plugin) {
+            $this->bootPlugin($plugin);
         });
     }
 
@@ -122,8 +134,8 @@ class PluginManager
         $deactivated = $plugin->update(['is_active' => false]);
 
         if ($deactivated) {
-            $this->activePlugins = PluginModel::activePlugins();
             cache()->forget('active_plugins');
+            $this->activePlugins = PluginModel::activePlugins();
         }
 
         return $deactivated;
@@ -149,8 +161,8 @@ class PluginManager
         return $this->plugins->get($name)['path'] ?? null;
     }
 
-    protected function registerPlugin(PluginModel $plugin): void
+    public function isPluginActive(string $name): bool
     {
-      
+        return $this->getActivePlugins()->contains('name', $name);
     }
 }

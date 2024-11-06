@@ -27,6 +27,11 @@ class PluginJson
         return json_decode($content, true) ?? [];
     }
 
+    public function getPath(): string
+    {
+        return dirname($this->path);
+    }
+
     public function isValid(): bool
     {
         return ! empty($this->data) && isset($this->data['name']);
@@ -57,6 +62,11 @@ class PluginJson
         return $this->data['settings'] ?? [];
     }
 
+    public function getNamespace(): string
+    {
+        return $this->data['namespace'] ?? '';
+    }
+
     public function toArray(): array
     {
         return [
@@ -65,6 +75,7 @@ class PluginJson
             'version' => $this->getVersion(),
             'description' => $this->getDescription(),
             'settings' => $this->getSettings(),
+            'namespace' => $this->getNamespace(),
         ];
     }
 } 

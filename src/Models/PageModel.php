@@ -75,13 +75,28 @@ class PageModel extends Model
 
     public static function findBySlug($slug)
     {
+        // Try to get from cache first
+        $cacheKey = "page_slug_{$slug}";
+        
+        // If found in cache, return immediately
+        if ($cachedPage = cache($cacheKey)) {
+            return $cachedPage;
+        }
+
         $query = static::query()->with(['template.blocks' => function ($query) {
             $query->orderBy('order', 'asc');
         }, 'template.parentTemplate.blocks' => function ($query) {
             $query->orderBy('order', 'asc');
         }]);
 
-        return $query->where('slug', $slug)->first();
+        $page = $query->where('slug', $slug)->first();
+
+        // Only cache if page is found
+        if ($page) {
+            cache()->put($cacheKey, $page, now()->addHours(24));
+        }
+
+        return $page;
     }
 
     public function getMenuGroup()

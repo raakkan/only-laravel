@@ -9,6 +9,10 @@ class TranslationLoader
 {
     public static function loadAndSave(string $langPath = 'lang'): void
     {
+        if (! File::exists(base_path($langPath))) {
+            return;
+        }
+
         $languages = File::directories(base_path($langPath));
 
         foreach ($languages as $languageDir) {

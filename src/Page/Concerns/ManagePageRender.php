@@ -2,9 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
+use Raakkan\OnlyLaravel\Page\DynamicPage;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
-use Raakkan\OnlyLaravel\Facades\Theme;
 
 trait ManagePageRender
 {
@@ -15,12 +16,28 @@ trait ManagePageRender
         if ($slug == '/') {
             $model = $this->getHomeModel();
         } else {
-            try {
-                $model = $this->modelClass::findBySlug($slug);
-            } catch (\Exception $e) {
-                $model = '';
+            if ($this instanceof DynamicPage) {
+                
+                if ($this->hasModels()) {
+                    foreach ($this->getModels() as $model) {
+                        $model = $model::findBySlug(substr($slug, strrpos($slug, '/') + 1));
+                        if ($model) {
+                            break;
+                        }
+                    }
+                } else {
+                    return abort(404);
+                }
+            } else {
+                try {
+                    $model = $this->modelClass::findBySlug($slug);
+                } catch (\Exception $e) {
+                    $model = '';
+                }
             }
         }
+        
+        // dd($model);
 
         if (! $model) {
             return abort(404);

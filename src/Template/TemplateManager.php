@@ -7,7 +7,6 @@ use Raakkan\OnlyLaravel\Template\Blocks\DivBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeroBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\FooterBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\HeaderBlock;
-use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 use Raakkan\OnlyLaravel\Template\Blocks\ContentBlock;
 use Raakkan\OnlyLaravel\Template\Blocks\CallToActionBlock;
 use Raakkan\OnlyLaravel\Template\Concerns\TemplateHandler;
@@ -39,14 +38,14 @@ class TemplateManager
 
     public function getPluginBlocksAndComponents()
     {
-        // $plugins = collect(PluginManager::getActivatedPlugins());
-        $plugins = collect([]);
+        $plugins = app('plugin-manager')->getActivePlugins();
         if ($plugins->count() > 0) {
             $blocks = [];
             $components = [];
             foreach ($plugins as $plugin) {
-                $blocks = $this->getBlocksAndComponentsFromPath($plugin->getPath().'/src/OnlyLaravel/Template/Blocks', $plugin->getNamespace().'\\OnlyLaravel\\Template\\Blocks');
-                $components = $this->getBlocksAndComponentsFromPath($plugin->getPath().'/src/OnlyLaravel/Template/Components', $plugin->getNamespace().'\\OnlyLaravel\\Template\\Components');
+                $pluginJson = $plugin->getPluginJson();
+                $blocks = $this->getBlocksAndComponentsFromPath($pluginJson->getPath().'/src/OnlyLaravel/Template/Blocks', $pluginJson->getNamespace().'\\OnlyLaravel\\Template\\Blocks');
+                $components = $this->getBlocksAndComponentsFromPath($pluginJson->getPath().'/src/OnlyLaravel/Template/Components', $pluginJson->getNamespace().'\\OnlyLaravel\\Template\\Components');
             }
 
             return array_merge($blocks, $components);

@@ -22,7 +22,7 @@ class Main extends Component
         public ?string $collapseIcon = 'o-bars-3-bottom-right',
         public ?bool $collapsible = false,
     ) {
-        $this->url = route('mary.toogle-sidebar', absolute: false);
+        $this->url = '';
     }
 
     public function render(): View|Closure|string
@@ -48,7 +48,7 @@ class Main extends Component
                                     collapseText: '{{ $collapseText }}',
                                     toggle() {
                                         this.collapsed = !this.collapsed;
-                                        fetch('{{ $url }}?collapsed=' + this.collapsed);
+                                        <!-- fetch('{{ $url }}?collapsed=' + this.collapsed); -->
                                         this.$dispatch('sidebar-toggled', this.collapsed);
                                     }
                                 }"

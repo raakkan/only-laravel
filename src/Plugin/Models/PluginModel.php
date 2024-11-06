@@ -21,6 +21,8 @@ class PluginModel extends Model
         'settings',
         'update_available',
         'custom_data',
+        'requirements_status',
+        'requirements_checked_at',
     ];
 
     protected $casts = [
@@ -28,6 +30,8 @@ class PluginModel extends Model
         'update_available' => 'boolean',
         'settings' => 'array',
         'custom_data' => 'array',
+        'requirements_status' => 'array',
+        'requirements_checked_at' => 'datetime',
     ];
 
     public function activate(): bool

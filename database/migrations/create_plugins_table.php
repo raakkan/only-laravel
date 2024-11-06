@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('update_available')->default(false);
             $table->json('settings')->nullable();
             $table->json('custom_data')->nullable();
+            $table->json('requirements_status')->nullable();
+            $table->timestamp('requirements_checked_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

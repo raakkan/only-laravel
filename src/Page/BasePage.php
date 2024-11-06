@@ -42,6 +42,10 @@ class BasePage
 
     public function create()
     {
+        if($this instanceof DynamicPage) {
+            return;
+        }
+
         $modelClass = $this->getModelClass();
 
         if ($modelClass::where('name', $this->name)->exists()) {
