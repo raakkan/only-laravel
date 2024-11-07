@@ -70,7 +70,7 @@ class PageTemplate extends BaseTemplate
                 'template' => $this,
             ]);
         }
-
+        
         return view('only-laravel::template.template', [
             'template' => $this,
         ]);

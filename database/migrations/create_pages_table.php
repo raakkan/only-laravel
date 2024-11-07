@@ -19,12 +19,15 @@ return new class extends Migration
             $table->json('seo_title')->nullable();
             $table->json('seo_description')->nullable();
             $table->json('seo_keywords')->nullable();
-            $table->unsignedBigInteger('template_id')->unique();
+            $table->unsignedBigInteger('template_id');
             $table->json('settings')->nullable();
             $table->string('featured_image')->nullable();
             $table->timestamps();
 
-            $table->foreign('template_id')->references('id')->on('templates')->cascadeOnDelete();
+            $table->foreign('template_id')
+                ->references('id')
+                ->on('templates')
+                ->onDelete('cascade');
         });
     }
 

@@ -103,8 +103,22 @@ trait HandlesPluginOperations
                             $componentRegistry = app(ComponentRegistry::class);
                             \Livewire\Livewire::component($componentRegistry->getName($className), $className);
                         } else {
+                            // Get relative path from Livewire directory
+                            $relativePath = substr($file->getPath(), strlen($path));
+                            $subfolders = trim($relativePath, '/');
+                            
+                            // Create component alias without duplicate paths
+                            $cName = str_replace(['/', '\\'], '.', strtolower($subfolders));
+                            $cName = ltrim($cName, '.');
+                            
+                            // Convert PascalCase component name to kebab-case
+                            $componentName = Str::kebab($componentName);
+                            
+                            // Combine with subfolder path if exists
+                            $componentAlias = $name . ':' . ($cName ? $cName . '.' : '') . $componentName;
+                            
                             // Register as regular component
-                            \Livewire\Livewire::component($name.'::'.$className::getComponentName(), $className);
+                            \Livewire\Livewire::component($componentAlias, $className);
                         }
                     }
                 }

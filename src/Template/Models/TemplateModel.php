@@ -3,7 +3,7 @@
 namespace Raakkan\OnlyLaravel\Template\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Models\PageModel;
 use Raakkan\OnlyLaravel\Template\PageTemplate;
 
 class TemplateModel extends Model
@@ -57,7 +57,15 @@ class TemplateModel extends Model
         return $this->hasMany(TemplateModel::class, 'parent_template_id');
     }
 
-    // return Cache::remember('template_' . $this->id, $this->cache_ttl, function () {
-    //     return TemplateManager::getTemplate($this->name)->setModel($this->load('blocks'))->render();
-    // });
+    public function childTemplatePages()
+    {
+        return $this->hasManyThrough(
+            PageModel::class,
+            TemplateModel::class,
+            'parent_template_id', // Foreign key on child templates table
+            'template_id',        // Foreign key on pages table
+            'id',                 // Local key on parent templates table
+            'id'                 // Local key on child templates table
+        );
+    }
 }

@@ -35,6 +35,15 @@ class PageModel extends Model
         'disabled' => 'boolean',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::deleted(function ($page) {
+            $page->template()->delete();
+        });
+    }
+
     public function template()
     {
         return $this->belongsTo(TemplateModel::class, 'template_id');
@@ -78,9 +87,10 @@ class PageModel extends Model
         // Try to get from cache first
         $cacheKey = "page_slug_{$slug}";
         
-        // If found in cache, return immediately
+        // If found in cache, check if disabled
         if ($cachedPage = cache($cacheKey)) {
-            return $cachedPage;
+            $page = unserialize(serialize($cachedPage));
+            return $page->disabled ? null : $page;
         }
 
         $query = static::query()->with(['template.blocks' => function ($query) {
@@ -93,10 +103,12 @@ class PageModel extends Model
 
         // Only cache if page is found
         if ($page) {
-            cache()->put($cacheKey, $page, now()->addHours(24));
+            cache()->forever($cacheKey, $page);
+            // Return null if page is disabled
+            return $page->disabled ? null : $page;
         }
 
-        return $page;
+        return null;
     }
 
     public function getMenuGroup()
