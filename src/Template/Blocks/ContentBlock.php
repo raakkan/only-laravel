@@ -26,7 +26,7 @@ class ContentBlock extends Block
 
     protected $addable = false;
 
-    public $sidebar = true;
+    public $sidebar = false;
 
     public $sidebarPosition = ContentSidebar::RIGHT;
 

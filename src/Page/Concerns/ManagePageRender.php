@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
 use Raakkan\OnlyLaravel\Facades\Theme;
+use Raakkan\OnlyLaravel\Models\Redirect;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Livewire\Features\SupportPageComponents\SupportPageComponents;
@@ -36,10 +37,12 @@ trait ManagePageRender
                 }
             }
         }
-        
-        // dd($model);
 
         if (! $model) {
+            $redirect = Redirect::where('from_path', $slug)->active()->first();
+            if ($redirect) {
+                return redirect($redirect->to_path, $redirect->status_code);
+            }
             return abort(404);
         }
 
