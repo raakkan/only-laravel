@@ -14,6 +14,12 @@ trait ManagePageRender
 
     public function render($slug = '')
     {
+        if ($slug == 'admin') {
+            return app()->make(\App\Http\Middleware\Admin::class)->handle(request(), function() {
+                return $this->renderLivewire(\App\Livewire\Admin\Dashboard::class, [], 'layouts.admin');
+            });
+        }
+
         if ($slug == '/') {
             $model = $this->getHomeModel();
         } else {
@@ -97,20 +103,20 @@ trait ManagePageRender
             ->first();
     }
 
-    public function renderLivewire($component, $componentData = [])
+    public function renderLivewire($component, $componentData = [], $layout = null)
     {
-        // if (is_subclass_of($this->view, \Livewire\Component::class)) {
-        //     return $this->renderLivewire($this->view, ['page' => $page]);
-        // }
         $html = null;
 
         $layoutConfig = SupportPageComponents::interceptTheRenderOfTheComponentAndRetreiveTheLayoutConfiguration(function () use (&$html, $component, $componentData) {
             $params = SupportPageComponents::gatherMountMethodParamsFromRouteParameters($component);
-
             $html = app('livewire')->mount($component, array_merge($params, $componentData));
         });
 
         $layoutConfig = $layoutConfig ?: new PageComponentConfig;
+
+        if ($layout) {
+            $layoutConfig->layout = $layout;
+        }
 
         $layoutConfig->normalizeViewNameAndParamsForBladeComponents();
 

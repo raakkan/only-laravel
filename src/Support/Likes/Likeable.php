@@ -21,11 +21,7 @@ trait Likeable
     {
         $userId = $userId ?? auth()->id();
 
-        if ($this->id === $userId) {
-            return;
-        }
-
-        $this->likes()->updateOrCreate(
+        return $this->likes()->updateOrCreate(
             ['user_id' => $userId],
             ['is_like' => true]
         );
@@ -35,7 +31,7 @@ trait Likeable
     {
         $userId = $userId ?? auth()->id();
 
-        $this->likes()->updateOrCreate(
+        return $this->likes()->updateOrCreate(
             ['user_id' => $userId],
             ['is_like' => false]
         );

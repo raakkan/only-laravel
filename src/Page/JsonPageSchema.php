@@ -20,11 +20,23 @@ class JsonPageSchema
             '@graph' => [
                 [
                     '@type' => 'WebPage',
+                    '@id' => url('/').'#webpage',
+                    'isPartOf' => [
+                        '@id' => url('/').'#website'
+                    ]
                 ],
                 [
                     '@type' => 'WebSite',
                     '@id' => url('/').'#website',
                     'url' => url('/'),
+                    'name' => config('app.name', ''),
+                    'description' => config('app.description', ''),
+                    'publisher' => [
+                        '@type' => 'Organization',
+                        '@id' => url('/').'#organization',
+                        'name' => config('app.name', ''),
+                        'url' => url('/')
+                    ]
                 ],
             ],
         ];

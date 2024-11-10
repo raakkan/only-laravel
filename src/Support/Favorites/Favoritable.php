@@ -22,11 +22,7 @@ trait Favoritable
     {
         $userId = $userId ?? auth()->id();
 
-        if ($this->id === $userId) {
-            return;
-        }
-
-        $this->favorites()->updateOrCreate(
+        return $this->favorites()->updateOrCreate(
             ['user_id' => $userId]
         );
     }
@@ -34,7 +30,8 @@ trait Favoritable
     public function unfavorite($userId = null)
     {
         $userId = $userId ?? auth()->id();
-        $this->favorites()->where('user_id', $userId)->delete();
+        
+        return $this->favorites()->where('user_id', $userId)->delete();
     }
 
     public function isFavoritedBy($userId = null)
