@@ -36,6 +36,10 @@ trait ManagePageRoute
 
     public function registerRoute($pageManager)
     {
+        if ($this->isRoot()) {
+            return;
+        }
+
         $page = $this;
         if ($page instanceof DynamicPage) {
             $page->setModels($pageManager->getDynamicModel($this->getName()));

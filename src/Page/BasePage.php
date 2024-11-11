@@ -35,9 +35,23 @@ class BasePage
     use ManagePageRoute;
     use ManagesMiddleware;
 
+    protected $isRoot = false;
+
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    public function isRoot()
+    {
+        return $this->isRoot;
+    }
+
+    public function root()
+    {
+        $this->isRoot = true;
+
+        return $this;
     }
 
     public function create()

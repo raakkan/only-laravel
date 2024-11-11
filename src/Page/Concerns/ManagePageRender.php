@@ -14,34 +14,46 @@ trait ManagePageRender
 
     public function render($slug = '')
     {
-        if ($slug == 'admin') {
-            return app()->make(\App\Http\Middleware\Admin::class)->handle(request(), function() {
-                return $this->renderLivewire(\App\Livewire\Admin\Dashboard::class, [], 'layouts.admin');
-            });
-        }
+        $slug = trim($slug, '/');
+        $isRootPage = app('page-manager')->isRootPage($slug);
+        
+        if ($isRootPage) {
+            // TODO: pending meddleware
+            $page = app('page-manager')->findPageBySlug($slug);
+            $modelClass = $page->getModelClass();
+            $model = $modelClass::findBySlug($slug);
+        }else {
 
-        if ($slug == '/') {
-            $model = $this->getHomeModel();
-        } else {
-            if ($this instanceof DynamicPage) {
-                
-                if ($this->hasModels()) {
-                    foreach ($this->getModels() as $model) {
-                        $model = $model::findBySlug(substr($slug, strrpos($slug, '/') + 1));
-                        if ($model) {
-                            break;
+            if ($slug == 'admin') {
+                return app()->make(\App\Http\Middleware\Admin::class)->handle(request(), function() {
+                    return $this->renderLivewire(\App\Livewire\Admin\Dashboard::class, [], 'layouts.admin');
+                });
+            }
+
+            if ($slug == '/') {
+                $model = $this->getHomeModel();
+            } else {
+                if ($this instanceof DynamicPage) {
+                    
+                    if ($this->hasModels()) {
+                        foreach ($this->getModels() as $model) {
+                            $model = $model::findBySlug(substr($slug, strrpos($slug, '/') + 1));
+                            if ($model) {
+                                break;
+                            }
                         }
+                    } else {
+                        return abort(404);
                     }
                 } else {
-                    return abort(404);
-                }
-            } else {
-                try {
-                    $model = $this->modelClass::findBySlug($slug);
-                } catch (\Exception $e) {
-                    $model = '';
+                    try {
+                        $model = $this->modelClass::findBySlug($slug);
+                    } catch (\Exception $e) {
+                        $model = '';
+                    }
                 }
             }
+
         }
 
         if (! $model) {

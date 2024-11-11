@@ -73,4 +73,15 @@ trait ManagePages
             return $page->getModelClass();
         })->unique()->toArray();
     }
+
+    public function isRootPage($slug)
+    {
+        $page = $this->findPageBySlug($slug);
+
+        if ($page) {
+            return $page->isRoot();
+        }
+
+        return false;
+    }
 }

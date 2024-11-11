@@ -52,108 +52,148 @@ trait ManageStyle
             if (File::isFile($viewPath)) {
                 $content = File::get($viewPath);
 
-                // Extract all class attributes, including those with Blade syntax
-                preg_match_all('/\bclass\s*=\s*(["\'])(.*?)\1|\bclass\s*=\s*\{{(.*?)\}}/', $content, $matches, PREG_SET_ORDER);
-
-                foreach ($matches as $match) {
-                    $classString = $match[2] ?? $match[3] ?? '';
-
-                    // Debug: Print the raw class string
-                    // \Log::info("Raw class string: " . $classString);
-
-                    // Process the class string
+                // 1. Extract regular class attributes and blade expressions
+                preg_match_all('/class\s*=\s*["\']([^"\']*(?:\{\{[^}]*\}\}[^"\']*)*)["\']/', $content, $classMatches);
+                foreach ($classMatches[1] as $classString) {
                     $processedClasses = $this->processClassString($classString);
+                    $cssClasses = $cssClasses->merge($processedClasses);
+                }
 
-                    // Debug: Print the processed classes
-                    // \Log::info("Processed classes: " . implode(', ', $processedClasses));
+                // 2. Extract classes from Blade if/else conditions
+                preg_match_all('/@if\s*\((.*?)\)(.*?)(?:@else(.*?))?@endif/s', $content, $ifMatches, PREG_SET_ORDER);
+                foreach ($ifMatches as $match) {
+                    // Process classes in the if block
+                    preg_match_all('/class\s*=\s*["\']([^"\']*)["\']/', $match[2], $ifClassMatches);
+                    foreach ($ifClassMatches[1] as $classString) {
+                        $processedClasses = $this->processClassString($classString);
+                        $cssClasses = $cssClasses->merge($processedClasses);
+                    }
 
+                    // Process classes in the else block if it exists
+                    if (!empty($match[3])) {
+                        preg_match_all('/class\s*=\s*["\']([^"\']*)["\']/', $match[3], $elseClassMatches);
+                        foreach ($elseClassMatches[1] as $classString) {
+                            $processedClasses = $this->processClassString($classString);
+                            $cssClasses = $cssClasses->merge($processedClasses);
+                        }
+                    }
+                }
+
+                // 3. Extract classes from string concatenation in class attributes
+                preg_match_all('/class\s*=\s*["\']([^"\']*\{\{[^}]*\}\}[^"\']*)["\']/', $content, $concatMatches);
+                foreach ($concatMatches[1] as $classString) {
+                    // Remove blade expressions but keep the spaces
+                    $cleanString = preg_replace('/\{\{(.*?)\}\}/', ' ', $classString);
+                    $processedClasses = $this->processClassString($cleanString);
+                    $cssClasses = $cssClasses->merge($processedClasses);
+                }
+
+                // 4. Extract dynamic classes from ternary operations in class attributes
+                preg_match_all('/class\s*=\s*["\'].*?\?\s*\'([^\']+)\'\s*:\s*\'([^\']+)\'.*?["\']/', $content, $ternaryMatches);
+                foreach ($ternaryMatches[1] as $index => $trueClasses) {
+                    $falseClasses = $ternaryMatches[2][$index];
+                    $processedTrueClasses = $this->processClassString($trueClasses);
+                    $processedFalseClasses = $this->processClassString($falseClasses);
+                    $cssClasses = $cssClasses->merge($processedTrueClasses)->merge($processedFalseClasses);
+                }
+
+                // 5. Extract transition classes
+                preg_match_all('/x-transition(?:[:.][a-zA-Z-]+)*(?:\s*=\s*["\'][^"\']*["\'])?/', $content, $transitionMatches);
+                foreach ($transitionMatches[0] as $transitionDirective) {
+                    $transitionClasses = $this->extractTransitionClasses($transitionDirective);
+                    $processedClasses = $this->processClassString($transitionClasses);
+                    $cssClasses = $cssClasses->merge($processedClasses);
+                }
+
+                // Also extract x-transition:enter/leave classes
+                preg_match_all('/x-transition(?::[a-z-]+)?\s*=\s*["\']([^"\']+)["\']/', $content, $transitionAttrMatches);
+                foreach ($transitionAttrMatches[1] as $classString) {
+                    $processedClasses = $this->processClassString($classString);
                     $cssClasses = $cssClasses->merge($processedClasses);
                 }
             }
         }
-
-        // $content = $this->getPageModel()->content;
-        // preg_match_all('/\bclass\s*=\s*(["\'])(.*?)\1|\bclass\s*=\s*\{{(.*?)\}}/', $content, $matches, PREG_SET_ORDER);
-        // foreach ($matches as $match) {
-        //     $classString = $match[2] ?? $match[3] ?? '';
-        //     $processedClasses = $this->processClassString($classString);
-        //     $cssClasses = $cssClasses->merge($processedClasses);
-        // }
-
-        // Debug: Print the final collection of classes
-        // \Log::info("Final classes: " . $cssClasses->implode(', '));
 
         return $cssClasses->unique()->implode(' ');
     }
 
     protected function processClassString($classString)
     {
-        // Handle single-line if-else statements and ternary operators
-        $classString = preg_replace_callback('/\b(if|elseif|else)\b.*?(\bendif\b|$)|\?.*?:/', function ($match) {
-            // Remove the if/elseif/else/endif keywords and ternary operators
-            $content = preg_replace('/\b(if|elseif|else|endif)\b|\?|:/', ' ', $match[0]);
-
-            // Replace any remaining non-class characters with spaces, preserving colons
-            return preg_replace('/[^a-zA-Z0-9\s_:-]/', ' ', $content);
-        }, $classString);
-
-        // Remove any remaining blade syntax and PHP variables
-        $classString = preg_replace('/(\{{|\}})|\$\w+(\-\>\w+)*/', ' ', $classString);
-
-        // Split into individual classes, preserving classes with colons and slashes
-        $classes = preg_split('/\s+(?=[^:\/]*(:|\/|$))/', $classString, -1, PREG_SPLIT_NO_EMPTY);
-
-        // Further process each class to handle cases like 'md w-1/2'
-        $processedClasses = [];
-        foreach ($classes as $class) {
-            if (preg_match('/^(\w+)\s+(.+)$/', $class, $matches)) {
-                $processedClasses[] = $matches[1].':'.$matches[2];
-            } else {
-                $processedClasses[] = $class;
-            }
-        }
-
-        // Handle x-transition directives
-        $classString = preg_replace_callback('/x-transition(?::[\w-]+)?(?:\.[\w.-]+)*/', function ($match) use (&$processedClasses) {
-            $extractedClasses = $this->extractTransitionClasses($match[0]);
-            $processedClasses = array_merge($processedClasses, explode(' ', $extractedClasses));
-
-            return ''; // Remove the x-transition directive from the class string
-        }, $classString);
-
-        // Remove duplicates and return
-        return array_unique($processedClasses);
+        // Remove blade expressions but preserve spaces
+        $classString = preg_replace('/\{\{.*?\}\}/', ' ', $classString);
+        
+        // Remove any quotes and extra whitespace
+        $classString = trim(str_replace(["'", '"'], '', $classString));
+        
+        // Split the string into individual classes
+        $classes = preg_split('/\s+/', $classString, -1, PREG_SPLIT_NO_EMPTY);
+        
+        // Clean up each class
+        $classes = array_map(function($class) {
+            $class = trim($class);
+            // Remove any PHP/Blade expressions
+            $class = preg_replace('/\$[a-zA-Z0-9_\->]+(?:\([^)]*\))?/', '', $class);
+            return $class;
+        }, $classes);
+        
+        // Filter out empty classes and expressions
+        return array_filter($classes, function($class) {
+            return $class && !str_contains($class, '{{') && !str_contains($class, '}}');
+        });
     }
 
     protected function extractTransitionClasses($transitionDirective)
     {
         $classes = [];
 
-        // Extract classes from x-transition modifiers
-        if (preg_match_all('/\.([\w-]+)/', $transitionDirective, $matches)) {
-            $classes = array_merge($classes, $matches[1]);
+        // Base transition classes
+        if (str_contains($transitionDirective, 'x-transition')) {
+            $classes = array_merge($classes, [
+                'enter', 'enter-start', 'enter-end',
+                'leave', 'leave-start', 'leave-end'
+            ]);
         }
 
-        // Handle specific transition classes
-        if (strpos($transitionDirective, ':enter') !== false) {
-            $classes[] = 'enter';
-        }
-        if (strpos($transitionDirective, ':leave') !== false) {
-            $classes[] = 'leave';
-        }
-        if (strpos($transitionDirective, ':enter-start') !== false) {
-            $classes[] = 'enter-start';
-        }
-        if (strpos($transitionDirective, ':enter-end') !== false) {
-            $classes[] = 'enter-end';
-        }
-        if (strpos($transitionDirective, ':leave-start') !== false) {
-            $classes[] = 'leave-start';
-        }
-        if (strpos($transitionDirective, ':leave-end') !== false) {
-            $classes[] = 'leave-end';
+        // Extract specific transition modifiers
+        $modifierMap = [
+            'opacity' => ['opacity-0', 'opacity-100'],
+            'scale' => ['scale-0', 'scale-90', 'scale-100'],
+            'slide-top' => ['translate-y-0', '-translate-y-full'],
+            'slide-bottom' => ['translate-y-0', 'translate-y-full'],
+            'slide-left' => ['translate-x-0', '-translate-x-full'],
+            'slide-right' => ['translate-x-0', 'translate-x-full'],
+        ];
+
+        foreach ($modifierMap as $modifier => $modifierClasses) {
+            if (str_contains($transitionDirective, $modifier)) {
+                $classes = array_merge($classes, $modifierClasses);
+            }
         }
 
-        return implode(' ', $classes);
+        // Extract duration classes
+        if (preg_match('/duration-(\d+)/', $transitionDirective, $matches)) {
+            $classes[] = 'duration-' . $matches[1];
+        }
+
+        // Extract delay classes
+        if (preg_match('/delay-(\d+)/', $transitionDirective, $matches)) {
+            $classes[] = 'delay-' . $matches[1];
+        }
+
+        // Extract ease classes
+        $easeTypes = ['linear', 'in', 'out', 'in-out'];
+        foreach ($easeTypes as $ease) {
+            if (str_contains($transitionDirective, 'ease-' . $ease)) {
+                $classes[] = 'ease-' . $ease;
+            }
+        }
+
+        // Extract custom classes from x-transition directives
+        preg_match_all('/x-transition[:](?:enter|leave)(?:-start|-end)?\s*=\s*["\']([^"\']+)["\']/', $transitionDirective, $matches);
+        foreach ($matches[1] as $customClasses) {
+            $classes = array_merge($classes, explode(' ', $customClasses));
+        }
+
+        return implode(' ', array_unique(array_filter($classes)));
     }
 }
