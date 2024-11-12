@@ -15,7 +15,8 @@
                 flex justify-center @endif
         ">
             @if ($image)
-                <img src="{{ $block->getImageUrl() }}" alt="{{ $altText }}" class="max-w-full h-auto">
+                <img src="{{ $block->getImageUrl() }}" alt="{{ $altText }}"
+                    class="max-w-full h-auto {{ $block->getCustomCss() }}">
             @else
                 <div class="placeholder-image w-full h-48 bg-gray-200 flex items-center justify-center">
                     <span class="text-gray-500">No image uploaded</span>

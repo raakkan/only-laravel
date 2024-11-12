@@ -36,6 +36,7 @@ trait HandlesPluginOperations
             $pluginClass->pages(app('page-manager'));
             $pluginClass->menus(app('menu-manager'));
             $pluginClass->templates(app('template-manager'));
+            $pluginClass->sitemap(app('sitemap-generator'));
         }
 
         $pluginPath = $this->getPluginPath($plugin->name);

@@ -3,9 +3,10 @@
 namespace Raakkan\OnlyLaravel\Plugin;
 
 use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Support\Sitemap\SitemapGenerator;
 
 abstract class BasePlugin
 {
@@ -35,6 +36,11 @@ abstract class BasePlugin
     }
 
     public function templates(TemplateManager $templateManager)
+    {
+        //
+    }
+
+    public function sitemap(SitemapGenerator $sitemapGenerator)
     {
         //
     }

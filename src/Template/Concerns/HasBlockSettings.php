@@ -67,7 +67,7 @@ trait HasBlockSettings
         }
     }
 
-    public function setSettingValue(array $settings, string $name, string|array $value)
+    public function setSettingValue(array $settings, string $name, mixed $value)
     {
         if (strpos($name, '.') !== false) {
             Arr::set($settings, $name, $value);

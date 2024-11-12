@@ -92,6 +92,18 @@ class TemplateBlockModel extends Model
         return $template;
     }
 
+    public function page()
+    {
+        return $this->hasOneThrough(
+            \Raakkan\OnlyLaravel\Models\PageModel::class,
+            TemplateModel::class,
+            'id',           // Foreign key on templates table
+            'template_id',  // Foreign key on pages table
+            'template_id',  // Local key on template_blocks table
+            'id'           // Local key on templates table
+        );
+    }
+
     public function getTable(): string
     {
         return 'template_blocks';

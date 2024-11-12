@@ -111,6 +111,52 @@ trait ManageStyle
                     $processedClasses = $this->processClassString($classString);
                     $cssClasses = $cssClasses->merge($processedClasses);
                 }
+
+                // Enhanced pattern for @if/@elseif/@else conditions in class attributes
+                preg_match_all('/class=["\'].*?@if\s*\((.*?)\)\s*(.*?)(?:@elseif\s*\((.*?)\)\s*(.*?))*(?:@else\s*(.*?))?@endif.*?["\']/', $content, $conditionalMatches, PREG_SET_ORDER);
+                foreach ($conditionalMatches as $match) {
+                    // Extract all possible class combinations
+                    foreach ($match as $condition) {
+                        // Extract background classes and other utility classes
+                        preg_match_all('/bg-[a-z]+-\d+|[a-z]+-\d+/', $condition, $utilityMatches);
+                        if (!empty($utilityMatches[0])) {
+                            $cssClasses = $cssClasses->merge($utilityMatches[0]);
+                        }
+                    }
+                }
+
+                // Additional pattern for direct class assignments
+                preg_match_all('/class=["\']([^"\']*)["\']/', $content, $directClasses);
+                foreach ($directClasses[1] as $classString) {
+                    $processedClasses = $this->processClassString($classString);
+                    $cssClasses = $cssClasses->merge($processedClasses);
+                }
+
+                // Add specific handling for dynamic background classes
+                preg_match_all('/bg-[a-z]+-\d+/', $content, $bgMatches);
+                if (!empty($bgMatches[0])) {
+                    $cssClasses = $cssClasses->merge($bgMatches[0]);
+                }
+            }
+        }
+
+        // Add new section to process Blade::render content from blocks
+        foreach ($this->blocks as $block) {
+            if (method_exists($block, 'render')) {
+                $reflection = new \ReflectionMethod($block, 'render');
+                $content = file_get_contents($reflection->getFileName());
+                
+                // Extract content between Blade::render(<<<'blade' and blade,
+                preg_match_all("/Blade::render\(<<<'blade'\s*(.*?)\s*blade,/s", $content, $bladeMatches);
+                
+                foreach ($bladeMatches[1] as $bladeContent) {
+                    // Process class attributes in the Blade content
+                    preg_match_all('/class\s*=\s*["\']([^"\']*(?:\{\{[^}]*\}\}[^"\']*)*)["\']/', $bladeContent, $classMatches);
+                    foreach ($classMatches[1] as $classString) {
+                        $processedClasses = $this->processClassString($classString);
+                        $cssClasses = $cssClasses->merge($processedClasses);
+                    }
+                }
             }
         }
 

@@ -7,6 +7,29 @@ use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
 
 trait HasBlockBuilding
 {
+    public function getBlocksWithoutParent()
+    {
+        $blocks = collect($this->model->blocks)->filter(function ($block) {
+            return $block->disabled == 0 && $block->parent_id;
+        });
+
+        $builtBlocks = [];
+
+        foreach ($blocks as $templateBlock) {
+            $themeBlock = TemplateManager::getBlockByName($templateBlock->name);
+            if (! $themeBlock) {
+                $themeBlock = NotFoundBlock::make()->setType($templateBlock->type);
+            }
+            $templateBlockChildren = $blocks->where('parent_id', $templateBlock->id)->sortBy('order');
+            $themeBlock = $this->buildBlockTree($themeBlock, $templateBlockChildren, $blocks);
+            $block = $themeBlock->setModel($templateBlock)->setPageModel($this->getPageModel())->setTemplateModel($this->getModel());
+            $this->registerBlockAssets($block);
+            $builtBlocks[] = $block;
+        }
+
+        return $builtBlocks;
+    }
+    
     public function makeBlocks($templateBlocks, $blocks)
     {
         $builtBlocks = [];

@@ -4,17 +4,18 @@ namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
 use Raakkan\OnlyLaravel\Support\Concerns\HasName;
 use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Support\Concerns\HasLabel;
+use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
+use Raakkan\OnlyLaravel\Template\Blocks\NotFoundBlock;
+use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
+use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockAssets;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockBuilding;
-use Raakkan\OnlyLaravel\Template\Concerns\HasBlocks;
 use Raakkan\OnlyLaravel\Template\Concerns\HasBlockSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
-use Raakkan\OnlyLaravel\Template\Concerns\HasPageModel;
-use Raakkan\OnlyLaravel\Template\Concerns\ManageStyle;
 use Raakkan\OnlyLaravel\Template\Concerns\ManageTemplateParent;
+use Raakkan\OnlyLaravel\Template\Concerns\HasCustomStyleSettings;
 
 abstract class BaseTemplate implements Arrayable
 {

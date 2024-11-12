@@ -2,16 +2,17 @@
 
 namespace Raakkan\OnlyLaravel\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Template\TemplateManager;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
 use Raakkan\OnlyLaravel\UI\Components\UI;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Installer\InstallManager;
+use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Support\Sitemap\SitemapGenerator;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -56,6 +57,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 
         $this->app->singleton('plugin-manager', function () {
             return new PluginManager();
+        });
+
+        $this->app->singleton('sitemap-generator', function () {
+            return new SitemapGenerator();
         });
     }
 

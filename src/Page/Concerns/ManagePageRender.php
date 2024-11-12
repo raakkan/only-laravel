@@ -34,10 +34,15 @@ trait ManagePageRender
                 $model = $this->getHomeModel();
             } else {
                 if ($this instanceof DynamicPage) {
-                    
+
                     if ($this->hasModels()) {
+                        
+                        if (str_contains($slug, '/')) {
+                            $slug = substr($slug, strrpos($slug, '/') + 1);
+                        }
+
                         foreach ($this->getModels() as $model) {
-                            $model = $model::findBySlug(substr($slug, strrpos($slug, '/') + 1));
+                            $model = $model::findBySlug($slug);
                             if ($model) {
                                 break;
                             }

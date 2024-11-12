@@ -28,8 +28,8 @@ class PageFeaturedImage extends BlockComponent
         }
 
         return Blade::render(<<<'blade'
-        <div class="{{ $block->getCustomCss() }} bg-white dark:bg-gray-800 rounded-lg overflow-hidden" style="{{ $block->getCustomStyle() }}">
-            <img src="{{ $pageModel->featured_image }}" alt="{{ $pageModel->title }}" class="w-full h-auto">
+        <div class="{{ $block->getCustomCss() }} bg-white dark:bg-gray-800 rounded-lg overflow-hidden mb-4" style="{{ $block->getCustomStyle() }}">
+            <img src="{{ $pageModel->featured_image }}" alt="{{ $pageModel->title }}" class="w-full h-auto {{ $block->getCustomCss() }}">
         </div>
         blade, ['pageModel' => $pageModel, 'block' => $this]);
     }

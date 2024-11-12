@@ -49,11 +49,6 @@ class PageModel extends Model
         return $this->belongsTo(TemplateModel::class, 'template_id');
     }
 
-    public static function getRegisteredPageTypes()
-    {
-        return self::all()->pluck('page_type')->unique()->toArray();
-    }
-
     public function getPageTemplate()
     {
         $template = PageTemplate::make($this->template->name);

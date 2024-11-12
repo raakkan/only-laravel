@@ -4,20 +4,13 @@ namespace Raakkan\OnlyLaravel;
 
 use Raakkan\OnlyLaravel\OnlyLaravel\Concerns\CollectsSettingPages;
 use Raakkan\OnlyLaravel\OnlyLaravel\Concerns\HasInstall;
-use Raakkan\OnlyLaravel\Support\SitemapGenerator;
 
 class OnlyLaravelManager
 {
     use CollectsSettingPages;
     use HasInstall;
 
-    protected $sitemapGenerator;
     protected $settingPages = [];
-
-    public function __construct()
-    {
-        $this->sitemapGenerator = new SitemapGenerator;
-    }
 
     public function loadSettingsPagesFromApp()
     {
@@ -37,10 +30,5 @@ class OnlyLaravelManager
         }
 
         return $this;
-    }
-
-    public function generateSitemap()
-    {
-        return $this->sitemapGenerator->generate();
     }
 }

@@ -56,9 +56,13 @@ trait HasBlocks
         return $views;
     }
 
-    public function getBlockViewPaths()
+    public function getBlockViewPaths($blocks = [])
     {
-        return collect($this->blocks)->flatMap(function ($block) {
+        if (count($blocks) == 0) {
+            $blocks = $this->blocks;
+        }
+
+        return collect($blocks)->flatMap(function ($block) {
             return $this->getBlockViewPathsRecursive($block);
         })->filter()->unique()->values()->all();
     }
@@ -76,9 +80,13 @@ trait HasBlocks
         return $viewPaths;
     }
 
-    public function getAllBlocksCustomCss()
+    public function getAllBlocksCustomCss($blocks = [])
     {
-        return collect($this->blocks)->map(function ($block) {
+        if (count($blocks) == 0) {
+            $blocks = $this->blocks;
+        }
+
+        return collect($blocks)->map(function ($block) {
             return $this->getBlockCustomCssRecursive($block);
         })->filter()->unique()->implode(' ');
     }
