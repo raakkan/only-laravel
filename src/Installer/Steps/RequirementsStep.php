@@ -23,20 +23,35 @@ class RequirementsStep extends Step
     {
         $requirements = [
             'php' => [
-                'openssl',
-                'pdo',
+                'bcmath',
+                'ctype',
+                'curl',
+                'dom',
+                'fileinfo',
+                'filter',
+                'hash',
+                'intl',
+                'json',
                 'mbstring',
+                'openssl',
+                'pcre',
+                'pdo',
+                'session',
                 'tokenizer',
-                'JSON',
-                'cURL',
+                'xml',
+                'xmlwriter',
             ],
-            'apache' => [
-                'mod_rewrite',
-            ],
+            // 'apache' => [
+            //     'mod_rewrite',
+            //     'mod_headers',
+            // ],
         ];
         $minPhpVersion = '8.1.0';
 
         $results = RequirementsChecker::make($requirements, $minPhpVersion);
+        
+        $results['requirements']['php']['image_library'] = extension_loaded('gd') || extension_loaded('imagick');
+        $results['requirements']['php']['allow_url_fopen'] = ini_get('allow_url_fopen');
 
         $this->requirements = $results;
         $this->phpVersion = $results['phpVersion'];
@@ -52,7 +67,13 @@ class RequirementsStep extends Step
             foreach ($requirements as $requirement => $met) {
                 if (! $met) {
                     $allRequirementsMet = false;
-                    $errors[] = "The {$requirement} {$type} requirement is not met.";
+                    $errors[] = match ($requirement) {
+                        'image_library' => 'Either GD or Imagick PHP extension is required.',
+                        'allow_url_fopen' => 'The allow_url_fopen setting must be enabled in PHP.',
+                        'mod_rewrite' => 'Apache mod_rewrite module is required for URL rewriting.',
+                        'mod_headers' => 'Apache mod_headers module is required for security headers.',
+                        default => "The {$requirement} {$type} requirement is not met.",
+                    };
                 }
             }
         }

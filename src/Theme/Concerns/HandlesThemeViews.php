@@ -91,4 +91,25 @@ trait HandlesThemeViews
 
         return $this->getThemePath($this->getActiveTheme()->name)."/views/components/{$componentPath}.blade.php";
     }
+
+    public function getViewPaths(string $view): array
+    {
+        $paths = [$this->getViewPath($view)];
+        
+        // Get the view content
+        $viewContent = File::get($this->getViewPath($view));
+        
+        // Find all component references in the view, including those with theme:: prefix
+        preg_match_all('/<x-(theme::)?([^>\s]+)/', $viewContent, $matches);
+        
+        if (isset($matches[2])) {
+            foreach ($matches[2] as $component) {
+                if ($this->hasComponent($component)) {
+                    $paths[] = $this->getComponentPath($component);
+                }
+            }
+        }
+        
+        return array_unique($paths);
+    }
 }

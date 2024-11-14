@@ -7,6 +7,7 @@ use Illuminate\View\View;
 class FolderPermissionsStep extends Step
 {
     protected array $folders;
+    protected array $files;
 
     public static function make(): self
     {
@@ -20,10 +21,14 @@ class FolderPermissionsStep extends Step
     {
         $this->folders = [
             'storage/onlylaravel' => $this->isWritable(storage_path('onlylaravel')),
-            'storage/app' => $this->isWritable(storage_path('app')),
+            'storage/app/public' => $this->isWritable(storage_path('app/public')),
             'storage/framework' => $this->isWritable(storage_path('framework')),
             'storage/logs' => $this->isWritable(storage_path('logs')),
             'bootstrap/cache' => $this->isWritable(base_path('bootstrap/cache')),
+        ];
+
+        $this->files = [
+            '.env' => $this->isWritable(base_path('.env')),
         ];
     }
 
@@ -34,21 +39,28 @@ class FolderPermissionsStep extends Step
 
     public function validate(): bool
     {
-        $allFoldersWritable = true;
+        $allWritable = true;
         $errors = [];
 
         foreach ($this->folders as $folder => $isWritable) {
             if (! $isWritable) {
-                $allFoldersWritable = false;
+                $allWritable = false;
                 $errors[] = "The {$folder} folder is not writable.";
             }
         }
 
-        if (! $allFoldersWritable) {
+        foreach ($this->files as $file => $isWritable) {
+            if (! $isWritable) {
+                $allWritable = false;
+                $errors[] = "The {$file} file is not writable.";
+            }
+        }
+
+        if (! $allWritable) {
             $this->setErrorMessage(implode(' ', $errors));
         }
 
-        return $allFoldersWritable;
+        return $allWritable;
     }
 
     public function getTitle(): string
@@ -61,6 +73,7 @@ class FolderPermissionsStep extends Step
         return view('only-laravel::installer.steps.folder-permissions', [
             'step' => $this,
             'folders' => $this->folders,
+            'files' => $this->files,
         ]);
     }
 }

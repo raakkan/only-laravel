@@ -2,9 +2,13 @@
 
 namespace Raakkan\OnlyLaravel\OnlyLaravel\Concerns;
 
+use Raakkan\OnlyLaravel\Facades\Theme;
+use Illuminate\Support\Facades\Artisan;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
 use Raakkan\OnlyLaravel\Facades\MenuManager;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Theme\Models\ThemeModel;
 use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 
 trait HasInstall
@@ -17,25 +21,15 @@ trait HasInstall
     {
         $this->runBeforeInstallCallbacks();
 
-        // $this->collectAndStoreSettingPages();
-
-        //TODO: storage link and php artisan icons:cache and artisan optimize
-        // artisan filament:cache-components
-        // $plugins = PluginManager::loadPlugins();
-        // foreach ($plugins as $plugin) {
-        //     $plugin->autoload();
-        //     $plugin->migrate();
-        //     $plugin->createMenus();
-        //     $plugin->createTemplates();
-        //     $plugin->createPages();
-        //     PluginManager::activatePlugin($plugin->getName());
-        // }
-
         MenuManager::createMenus();
         TemplateManager::createTemplates();
         PageManager::createPages();
 
         $this->runAfterInstallCallbacks();
+
+        // TODO: cahnge session to db
+        Artisan::call('config:clear');
+        Artisan::call('storage:link');
     }
 
     public function beforeInstall($callback)

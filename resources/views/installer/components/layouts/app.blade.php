@@ -11,6 +11,7 @@
     <link href="{{ asset('css/installer/installer.css') }}" rel="stylesheet">
 
     <title>{{ $title ?? config('app.name') }} - Installer</title>
+    @livewireStyles
 </head>
 
 <body
@@ -18,6 +19,7 @@
     {{ $slot }}
 
     @stack('scripts')
+    @livewireScripts
 </body>
 
 </html>

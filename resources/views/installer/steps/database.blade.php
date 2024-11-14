@@ -3,7 +3,7 @@
     <div class="space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <span class="font-medium mb-1 sm:mb-0">Database Connection</span>
-            <select id="db_connection" wire:model="dbInputs.db_connection"
+            <select id="db_connection" wire:model="inputs.db_connection"
                 class="mt-1 block w-full sm:w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md bg-white shadow-sm">
                 <option value="mysql">MySQL</option>
                 <option value="pgsql">PostgreSQL</option>

@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Providers;
 
 use Livewire\Livewire;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Raakkan\OnlyLaravel\Menu\MenuManager;
 use Raakkan\OnlyLaravel\Page\PageManager;
@@ -12,19 +13,37 @@ use Raakkan\OnlyLaravel\Theme\ThemeManager;
 use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Installer\InstallManager;
 use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Installer\Livewire\Installer;
 use Raakkan\OnlyLaravel\Support\Sitemap\SitemapGenerator;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        app('theme-manager')->registerActiveThemeViews();
+        if ($this->isDbConnected()) {
+            app('theme-manager')->registerActiveThemeViews();
+            app('plugin-manager')->bootActivatedPlugins();
+        }
+        
         UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
-        app('plugin-manager')->bootActivatedPlugins();
         app('page-manager')->registerPageRoutes();
-        Livewire::component('only-laravel::installer.livewire.installer', \Raakkan\OnlyLaravel\Installer\Livewire\Installer::class);
+        Livewire::component(Installer::class, Installer::class);
+    }
+
+    public function isDbConnected(): bool
+    {
+        try {
+            $pdo = DB::connection()->getPdo();
+            
+            $themesExist = DB::getSchemaBuilder()->hasTable('themes');
+            $pluginsExist = DB::getSchemaBuilder()->hasTable('plugins');
+            
+            return $pdo && $themesExist && $pluginsExist;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public function register(): void

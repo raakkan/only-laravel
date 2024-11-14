@@ -2,11 +2,12 @@
 
 namespace Raakkan\OnlyLaravel\Template;
 
-use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Illuminate\Support\Facades\Log;
 use Raakkan\OnlyLaravel\Facades\Theme;
-use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
 use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
+use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
 
 class PageTemplate extends BaseTemplate
 {
@@ -32,24 +33,27 @@ class PageTemplate extends BaseTemplate
             $parentTemplate = TemplateModel::where('name', $this->parentTemplate)->first();
         }
 
-        $template = TemplateModel::create([
-            'name' => $this->name,
-            'label' => $this->label ?? $this->name,
-            'is_parent' => $this->isParent,
-            'parent_block_access' => $this->parentBlocks ?? [],
-            'parent_template_id' => $parentTemplate?->id,
-        ]);
-
-        $this->setModel($template, false);
-        $this->storeDefaultSettingsToDatabase();
-
-        foreach ($this->blocks as $block) {
-            $block->create($template);
+        try {
+            $template = TemplateModel::create([
+                'name' => $this->name,
+                'label' => $this->label ?? $this->name,
+                'is_parent' => $this->isParent,
+                'parent_block_access' => $this->parentBlocks ?? [],
+                'parent_template_id' => $parentTemplate?->id,
+            ]);
+    
+            $this->setModel($template, false);
+            $this->storeDefaultSettingsToDatabase();
+    
+            foreach ($this->blocks as $block) {
+                $block->create($template);
+            }
+    
+            return $template;
+        } catch (\Throwable $th) {
+            Log::error('Failed to create template: '.$th->getMessage());
+            throw $th;
         }
-
-        // $this->buildCss();
-
-        return $template;
     }
 
     public function getDummyPageModel()
