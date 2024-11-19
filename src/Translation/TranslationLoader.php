@@ -28,22 +28,26 @@ class TranslationLoader
         }
     }
 
-    private static function saveTranslations(string $language, string $group, array $translations, string $prefix = ''): void
+    private static function saveTranslations(string $language, string $group, array|string $translations, string $prefix = ''): void
     {
+        // Handle non-array values (leaf nodes)
+        if (!is_array($translations)) {
+            LanguageLine::updateOrCreate(
+                [
+                    'group' => $group,
+                    'key' => rtrim($prefix, '.'),
+                ],
+                [
+                    'text' => [$language => $translations],
+                ]
+            );
+            return;
+        }
+
+        // Handle array values (nested nodes)
         foreach ($translations as $key => $value) {
-            if (is_array($value)) {
-                self::saveTranslations($language, $group, $value, $prefix.$key.'.');
-            } else {
-                LanguageLine::updateOrCreate(
-                    [
-                        'group' => $group,
-                        'key' => $prefix.$key,
-                    ],
-                    [
-                        'text' => [$language => $value],
-                    ]
-                );
-            }
+            $newPrefix = $prefix . $key . '.';
+            self::saveTranslations($language, $group, $value, $newPrefix);
         }
     }
 }
