@@ -94,10 +94,34 @@ trait HandlesThemeViews
 
     public function getViewPaths(string $view): array
     {
-        $paths = [$this->getViewPath($view)];
+        $paths = [];
+        $scannedViews = [];
+        
+        $this->scanViewForComponents($view, $paths, $scannedViews);
+        
+        return array_unique($paths);
+    }
+
+    protected function scanViewForComponents(string $view, array &$paths, array &$scannedViews): void
+    {
+        // Prevent infinite recursion by tracking scanned views
+        if (in_array($view, $scannedViews)) {
+            return;
+        }
+        
+        $scannedViews[] = $view;
+        
+        // Add the current view path
+        $viewPath = Str::startsWith($view, 'x-') ? $this->getComponentPath($view) : $this->getViewPath($view);
+        $paths[] = $viewPath;
+        
+        // Check if the file exists before trying to read it
+        if (!File::exists($viewPath)) {
+            return;
+        }
         
         // Get the view content
-        $viewContent = File::get($this->getViewPath($view));
+        $viewContent = File::get($viewPath);
         
         // Find all component references in the view, including those with theme:: prefix
         preg_match_all('/<x-(theme::)?([^>\s]+)/', $viewContent, $matches);
@@ -105,11 +129,10 @@ trait HandlesThemeViews
         if (isset($matches[2])) {
             foreach ($matches[2] as $component) {
                 if ($this->hasComponent($component)) {
-                    $paths[] = $this->getComponentPath($component);
+                    // Recursively scan each component
+                    $this->scanViewForComponents("x-{$component}", $paths, $scannedViews);
                 }
             }
         }
-        
-        return array_unique($paths);
     }
 }

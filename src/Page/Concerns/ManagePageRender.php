@@ -62,7 +62,8 @@ trait ManagePageRender
         }
 
         if (! $model) {
-            $redirect = Redirect::where('from_path', $slug)->active()->first();
+            $redirects = Redirect::getCachedRedirects();
+            $redirect = $redirects->where('from_path', $slug)->first();
             if ($redirect) {
                 return redirect($redirect->to_path, $redirect->status_code);
             }
