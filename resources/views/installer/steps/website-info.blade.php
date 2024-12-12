@@ -4,6 +4,7 @@
         @foreach ([
         'website_name' => 'Website Name',
         'domain' => 'Domain',
+        'purchase_code' => 'Purchase Code',
     ] as $key => $label)
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <span class="font-medium mb-1 sm:mb-0">{{ $label }}</span>

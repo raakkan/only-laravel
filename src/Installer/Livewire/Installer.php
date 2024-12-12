@@ -25,6 +25,12 @@ class Installer extends Component
 
     public function mount()
     {
+        if ($step = request()->segment(2)) {
+            if (array_key_exists($step, $this->getSteps())) {
+                $this->currentStep = $step;
+            }
+        }
+
         $cssBuilder = \Raakkan\OnlyLaravel\Template\CssBuilder::make([
             __DIR__.'/../../../resources/views/installer/components/layouts/app.blade.php',
             __DIR__.'/../../../resources/views/installer/livewire/installer.blade.php',
@@ -59,6 +65,7 @@ class Installer extends Component
 
         if ($currentIndex !== false && $currentIndex > 0) {
             $this->currentStep = $keys[$currentIndex - 1];
+            $this->updateUrl();
         }
     }
 
@@ -87,6 +94,7 @@ class Installer extends Component
 
                 if ($currentIndex !== false && $currentIndex < count($keys) - 1) {
                     $this->currentStep = $keys[$currentIndex + 1];
+                    $this->updateUrl();
                     $currentStep = $installManager->getStep($this->currentStep);
                     if ($currentStep instanceof DatabaseStep || $currentStep instanceof AdminAccountStep || $currentStep instanceof WebsiteInfoStep) {
                         $this->inputs = $currentStep->getInputs();
@@ -110,14 +118,28 @@ class Installer extends Component
 
     public function finishInstallation()
     {
-        try {
-            OnlyLaravel::install();
-            file_put_contents(storage_path('onlylaravel/installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
+        // Extend PHP execution time for installation process
+        set_time_limit(300); // 5 minutes
+        ini_set('max_execution_time', 300);
 
-            return redirect()->to('/');
-        } catch (\Exception $e) {
-            Log::error('Installation failed: '.$e->getMessage());
-            $this->addError('step', 'Installation failed: '.$e->getMessage());
+        $installManager = app('install-manager');
+        $currentStep = $installManager->getStep($this->currentStep);
+        $currentStep->setInputs($this->inputs);
+
+        $isValid = $currentStep->validate();
+
+        if ($isValid) {
+            try {
+                OnlyLaravel::install();
+                file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
+
+                return redirect()->to('/');
+            } catch (\Exception $e) {
+                Log::error('Installation failed: '.$e->getMessage());
+                $this->addError('step', 'Installation failed: '.$e->getMessage());
+            }
+        } else {
+            $this->addError('step', $currentStep->getErrorMessage() ?: 'Validation failed. Please check your inputs.');
         }
     }
 
@@ -191,5 +213,11 @@ class Installer extends Component
         } catch (\Exception $e) {
             $this->addError('theme', 'Failed to update theme: ' . $e->getMessage());
         }
+    }
+
+    protected function updateUrl()
+    {
+        $url = url("/install/{$this->currentStep}");
+        $this->dispatch('urlChanged', ['url' => $url]);
     }
 }

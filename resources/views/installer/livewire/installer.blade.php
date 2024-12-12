@@ -47,3 +47,10 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('urlChanged', (event) => {
+            history.pushState(null, '', event.url);
+        });
+    });
+</script>

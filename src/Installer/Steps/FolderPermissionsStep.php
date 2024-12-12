@@ -20,7 +20,6 @@ class FolderPermissionsStep extends Step
     public function init()
     {
         $this->folders = [
-            'storage/onlylaravel' => $this->isWritable(storage_path('onlylaravel')),
             'storage/app/public' => $this->isWritable(storage_path('app/public')),
             'storage/framework' => $this->isWritable(storage_path('framework')),
             'storage/logs' => $this->isWritable(storage_path('logs')),

@@ -7,7 +7,7 @@ use Raakkan\OnlyLaravel\Installer\Livewire\Installer;
 // Route::get('admin', Admin::class)->name('installer')
 //     ->middleware(['web']);
 
-Route::get('installer', Installer::class)->name('installer')
+Route::get('installer/{step?}', Installer::class)->name('installer')
     ->middleware(['web']);
 
 // Route::get('/installed', function () {

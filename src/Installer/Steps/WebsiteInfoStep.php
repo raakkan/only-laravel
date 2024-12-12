@@ -15,6 +15,7 @@ class WebsiteInfoStep extends Step
     protected $inputs = [
         'website_name' => '',
         'domain' => '',
+        'purchase_code' => '',
     ];
 
     public static function make(): self
@@ -30,11 +31,13 @@ class WebsiteInfoStep extends Step
         // Get existing values from env if they exist
         $appName = env('APP_NAME');
         $appUrl = env('APP_URL');
+        $purchaseCode = env('PURCHASE_CODE');
         
         if ($appName && $appUrl) {
             $this->inputs = [
                 'website_name' => $appName,
                 'domain' => str_replace(['https://', 'http://'], '', $appUrl),
+                'purchase_code' => $purchaseCode,
             ];
             return;
         }
@@ -51,6 +54,7 @@ class WebsiteInfoStep extends Step
         $this->inputs = array_merge($this->inputs, [
             'website_name' => $websiteName,
             'domain' => $domain,
+            'purchase_code' => $purchaseCode,
         ]);
     }
 
@@ -82,6 +86,7 @@ class WebsiteInfoStep extends Step
         $requiredInputs = [
             'website_name' => 'Website Name',
             'domain' => 'Domain',
+            'purchase_code' => 'Purchase Code',
         ];
 
         foreach ($requiredInputs as $field => $label) {
@@ -95,6 +100,7 @@ class WebsiteInfoStep extends Step
             $editor->set([
                 'APP_NAME' => $this->inputs['website_name'],
                 'APP_URL' => 'https://' . $this->inputs['domain'],
+                'PURCHASE_CODE' => $this->inputs['purchase_code'],
             ])->save();
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to save website information: ' . $e->getMessage());
