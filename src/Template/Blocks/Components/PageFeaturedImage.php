@@ -18,8 +18,8 @@ class PageFeaturedImage extends BlockComponent
     public function render()
     {
         $pageModel = $this->getPageModel();
-        
-        if (!$pageModel->featured_image) {
+
+        if (! $pageModel->featured_image) {
             return '';
         }
 

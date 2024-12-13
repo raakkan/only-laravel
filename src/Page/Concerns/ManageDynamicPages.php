@@ -2,8 +2,6 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Illuminate\Support\Facades\Route;
-
 trait ManageDynamicPages
 {
     protected $dynamicModels = [];
@@ -12,14 +10,14 @@ trait ManageDynamicPages
     {
         if (is_array($dynamicModel)) {
             $this->dynamicModels[$name] = array_merge(
-                $this->dynamicModels[$name] ?? [], 
+                $this->dynamicModels[$name] ?? [],
                 $dynamicModel
             );
         } else {
-            if (!isset($this->dynamicModels[$name])) {
+            if (! isset($this->dynamicModels[$name])) {
                 $this->dynamicModels[$name] = [];
             }
-            if (!in_array($dynamicModel, $this->dynamicModels[$name])) {
+            if (! in_array($dynamicModel, $this->dynamicModels[$name])) {
                 $this->dynamicModels[$name][] = $dynamicModel;
             }
         }
@@ -32,7 +30,7 @@ trait ManageDynamicPages
         foreach ($dynamicModels as $name => $dynamicModel) {
             $this->addDynamicModel($name, $dynamicModel);
         }
-        
+
         return $this;
     }
 

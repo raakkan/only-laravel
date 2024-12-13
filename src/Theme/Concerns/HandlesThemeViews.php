@@ -96,9 +96,9 @@ trait HandlesThemeViews
     {
         $paths = [];
         $scannedViews = [];
-        
+
         $this->scanViewForComponents($view, $paths, $scannedViews);
-        
+
         return array_unique($paths);
     }
 
@@ -108,24 +108,24 @@ trait HandlesThemeViews
         if (in_array($view, $scannedViews)) {
             return;
         }
-        
+
         $scannedViews[] = $view;
-        
+
         // Add the current view path
         $viewPath = Str::startsWith($view, 'x-') ? $this->getComponentPath($view) : $this->getViewPath($view);
         $paths[] = $viewPath;
-        
+
         // Check if the file exists before trying to read it
-        if (!File::exists($viewPath)) {
+        if (! File::exists($viewPath)) {
             return;
         }
-        
+
         // Get the view content
         $viewContent = File::get($viewPath);
-        
+
         // Find all component references in the view, including those with theme:: prefix
         preg_match_all('/<x-(theme::)?([^>\s]+)/', $viewContent, $matches);
-        
+
         if (isset($matches[2])) {
             foreach ($matches[2] as $component) {
                 if ($this->hasComponent($component)) {

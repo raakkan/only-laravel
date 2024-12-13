@@ -7,67 +7,69 @@ use Illuminate\Support\Facades\Blade;
 class ImageUpload extends Field
 {
     protected ?string $wireModel = '';
-    
+
     protected ?string $accept = 'image/*';
-    
+
     protected bool $multiple = false;
-    
+
     protected ?int $maxSize = null;
+
     protected ?string $previewUrl = null;
+
     protected ?string $uploadFolder = null;
-    
+
     public static function make(string $name): static
     {
         return new static($name);
     }
-    
+
     public function wireModel(string $wireModel): static
     {
         $this->wireModel = $wireModel;
-        
+
         return $this;
     }
-    
+
     public function accept(string $accept): static
     {
         $this->accept = $accept;
-        
+
         return $this;
     }
-    
+
     public function multiple(bool $multiple = true): static
     {
         $this->multiple = $multiple;
-        
+
         return $this;
     }
-    
+
     public function maxSize(int $sizeMB): static
     {
         $this->maxSize = $sizeMB;
-        
+
         return $this;
     }
 
     public function previewUrl(string $previewUrl): static
     {
         $this->previewUrl = $previewUrl;
-        
+
         return $this;
     }
 
     public function uploadFolder(string $folder): static
     {
         $this->uploadFolder = $folder;
-        
+
         return $this;
     }
 
-    public function getUploadFolder(): string|null
+    public function getUploadFolder(): ?string
     {
         return $this->uploadFolder;
     }
-    
+
     public function render(): string
     {
         return Blade::render(<<<'blade'

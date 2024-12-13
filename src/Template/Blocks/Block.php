@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks;
 
+use Illuminate\Support\Facades\Log;
 use Raakkan\OnlyLaravel\Template\Concerns\HasChildren;
 
 abstract class Block extends BaseBlock
@@ -23,11 +24,13 @@ abstract class Block extends BaseBlock
 
     public function create($template, $parent = null)
     {
-
         $order = $this->order;
         if ($parent) {
             $childCount = $template->blocks()->where('parent_id', $parent->id)->count();
-            $order = $childCount === 0 ? 0 : $childCount++;
+            $order = $childCount === 0 ? 0 : $childCount;
+        } else {
+            $childCount = $template->blocks()->whereNull('parent_id')->count();
+            $order = $childCount === 0 ? 0 : $childCount;
         }
 
         $model = $template->blocks()->create([
@@ -62,7 +65,7 @@ abstract class Block extends BaseBlock
             if (app()->environment('local')) {
                 throw new \Exception("View '{$this->view}' does not exist.");
             } else {
-                \Log::error("View '{$this->view}' does not exist.");
+                Log::error("View '{$this->view}' does not exist.");
 
                 return '';
             }

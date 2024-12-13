@@ -27,13 +27,13 @@ trait HasSeoTags
         $separator = e(setting('general.title_separator', '-'));
         $appName = e(env('APP_NAME', 'Laravel'));
         $seoTags .= "<title>{$title} {$separator} {$appName}</title>";
-        
+
         // Favicon with multiple formats support
         if ($favicon = setting('general.favicon')) {
             $seoTags .= '<link rel="icon" type="image/x-icon" href="'.e($favicon).'">';
             $seoTags .= '<link rel="apple-touch-icon" href="'.e($favicon).'">';
         }
-        
+
         // Meta description and keywords with escaping
         if ($this->seo_description) {
             $seoTags .= '<meta name="description" content="'.e($this->seo_description).'">';
@@ -121,7 +121,7 @@ trait HasSeoTags
     private function generateRobotsTag()
     {
         // If custom robots tag is set, use it directly
-        if (!empty($this->seo_robots)) {
+        if (! empty($this->seo_robots)) {
             return $this->seo_robots;
         }
 

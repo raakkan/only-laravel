@@ -38,6 +38,7 @@ class PluginModel extends Model
     {
         $activated = $this->update(['is_active' => true]);
         cache()->forget('active_plugins');
+
         return $activated;
     }
 
@@ -72,4 +73,4 @@ class PluginModel extends Model
     {
         return $this->getPluginJson()->getVersion();
     }
-} 
+}

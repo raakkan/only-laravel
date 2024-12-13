@@ -2,6 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
+use Illuminate\Support\Facades\Log;
 use Raakkan\OnlyLaravel\Template\Blocks\BaseBlock;
 
 abstract class BlockComponent extends BaseBlock
@@ -47,7 +48,7 @@ abstract class BlockComponent extends BaseBlock
             if (app()->environment('local')) {
                 throw new \Exception("View '{$this->view}' does not exist.");
             } else {
-                \Log::error("View '{$this->view}' does not exist.");
+                Log::error("View '{$this->view}' does not exist.");
 
                 return '';
             }

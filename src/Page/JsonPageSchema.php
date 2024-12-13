@@ -22,8 +22,8 @@ class JsonPageSchema
                     '@type' => 'WebPage',
                     '@id' => url('/').'#webpage',
                     'isPartOf' => [
-                        '@id' => url('/').'#website'
-                    ]
+                        '@id' => url('/').'#website',
+                    ],
                 ],
                 [
                     '@type' => 'WebSite',
@@ -35,8 +35,8 @@ class JsonPageSchema
                         '@type' => 'Organization',
                         '@id' => url('/').'#organization',
                         'name' => config('app.name', ''),
-                        'url' => url('/')
-                    ]
+                        'url' => url('/'),
+                    ],
                 ],
             ],
         ];

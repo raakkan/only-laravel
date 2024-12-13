@@ -78,4 +78,4 @@ class PluginJson
             'namespace' => $this->getNamespace(),
         ];
     }
-} 
+}

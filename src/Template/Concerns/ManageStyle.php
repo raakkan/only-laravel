@@ -70,7 +70,7 @@ trait ManageStyle
                     }
 
                     // Process classes in the else block if it exists
-                    if (!empty($match[3])) {
+                    if (! empty($match[3])) {
                         preg_match_all('/class\s*=\s*["\']([^"\']*)["\']/', $match[3], $elseClassMatches);
                         foreach ($elseClassMatches[1] as $classString) {
                             $processedClasses = $this->processClassString($classString);
@@ -119,7 +119,7 @@ trait ManageStyle
                     foreach ($match as $condition) {
                         // Extract background classes and other utility classes
                         preg_match_all('/bg-[a-z]+-\d+|[a-z]+-\d+/', $condition, $utilityMatches);
-                        if (!empty($utilityMatches[0])) {
+                        if (! empty($utilityMatches[0])) {
                             $cssClasses = $cssClasses->merge($utilityMatches[0]);
                         }
                     }
@@ -134,7 +134,7 @@ trait ManageStyle
 
                 // Add specific handling for dynamic background classes
                 preg_match_all('/bg-[a-z]+-\d+/', $content, $bgMatches);
-                if (!empty($bgMatches[0])) {
+                if (! empty($bgMatches[0])) {
                     $cssClasses = $cssClasses->merge($bgMatches[0]);
                 }
             }
@@ -145,10 +145,10 @@ trait ManageStyle
             if (method_exists($block, 'render')) {
                 $reflection = new \ReflectionMethod($block, 'render');
                 $content = file_get_contents($reflection->getFileName());
-                
+
                 // Extract content between Blade::render(<<<'blade' and blade,
                 preg_match_all("/Blade::render\(<<<'blade'\s*(.*?)\s*blade,/s", $content, $bladeMatches);
-                
+
                 foreach ($bladeMatches[1] as $bladeContent) {
                     // Process class attributes in the Blade content
                     preg_match_all('/class\s*=\s*["\']([^"\']*(?:\{\{[^}]*\}\}[^"\']*)*)["\']/', $bladeContent, $classMatches);
@@ -167,24 +167,25 @@ trait ManageStyle
     {
         // Remove blade expressions but preserve spaces
         $classString = preg_replace('/\{\{.*?\}\}/', ' ', $classString);
-        
+
         // Remove any quotes and extra whitespace
         $classString = trim(str_replace(["'", '"'], '', $classString));
-        
+
         // Split the string into individual classes
         $classes = preg_split('/\s+/', $classString, -1, PREG_SPLIT_NO_EMPTY);
-        
+
         // Clean up each class
-        $classes = array_map(function($class) {
+        $classes = array_map(function ($class) {
             $class = trim($class);
             // Remove any PHP/Blade expressions
             $class = preg_replace('/\$[a-zA-Z0-9_\->]+(?:\([^)]*\))?/', '', $class);
+
             return $class;
         }, $classes);
-        
+
         // Filter out empty classes and expressions
-        return array_filter($classes, function($class) {
-            return $class && !str_contains($class, '{{') && !str_contains($class, '}}');
+        return array_filter($classes, function ($class) {
+            return $class && ! str_contains($class, '{{') && ! str_contains($class, '}}');
         });
     }
 
@@ -196,7 +197,7 @@ trait ManageStyle
         if (str_contains($transitionDirective, 'x-transition')) {
             $classes = array_merge($classes, [
                 'enter', 'enter-start', 'enter-end',
-                'leave', 'leave-start', 'leave-end'
+                'leave', 'leave-start', 'leave-end',
             ]);
         }
 
@@ -218,19 +219,19 @@ trait ManageStyle
 
         // Extract duration classes
         if (preg_match('/duration-(\d+)/', $transitionDirective, $matches)) {
-            $classes[] = 'duration-' . $matches[1];
+            $classes[] = 'duration-'.$matches[1];
         }
 
         // Extract delay classes
         if (preg_match('/delay-(\d+)/', $transitionDirective, $matches)) {
-            $classes[] = 'delay-' . $matches[1];
+            $classes[] = 'delay-'.$matches[1];
         }
 
         // Extract ease classes
         $easeTypes = ['linear', 'in', 'out', 'in-out'];
         foreach ($easeTypes as $ease) {
-            if (str_contains($transitionDirective, 'ease-' . $ease)) {
-                $classes[] = 'ease-' . $ease;
+            if (str_contains($transitionDirective, 'ease-'.$ease)) {
+                $classes[] = 'ease-'.$ease;
             }
         }
 

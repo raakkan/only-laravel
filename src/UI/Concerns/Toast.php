@@ -2,7 +2,7 @@
 
 namespace Raakkan\OnlyLaravel\UI\Concerns;
 
-use Blade;
+use Illuminate\Support\Facades\Blade;
 
 trait Toast
 {

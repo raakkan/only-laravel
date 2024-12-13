@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Translation;
 
-use Spatie\TranslationLoader\LanguageLine;
 use Illuminate\Support\Collection;
+use Spatie\TranslationLoader\LanguageLine;
 
 class TranslationAnalyzer
 {
@@ -25,9 +25,9 @@ class TranslationAnalyzer
                     continue;
                 }
 
-                $textKey = $language . '::' . $text;
-                
-                if (!isset($textMap[$textKey])) {
+                $textKey = $language.'::'.$text;
+
+                if (! isset($textMap[$textKey])) {
                     $textMap[$textKey] = [];
                 }
 
@@ -58,7 +58,7 @@ class TranslationAnalyzer
         foreach ($duplicates as $textKey => $occurrences) {
             $language = $occurrences[0]['language'];
             $text = $occurrences[0]['text'];
-            
+
             $report[] = [
                 'text' => $text,
                 'language' => $language,
@@ -66,7 +66,7 @@ class TranslationAnalyzer
                     return [
                         'group' => $occurrence['group'],
                         'key' => $occurrence['key'],
-                        'full_key' => $occurrence['group'] . '.' . $occurrence['key'],
+                        'full_key' => $occurrence['group'].'.'.$occurrence['key'],
                     ];
                 }, $occurrences),
                 'count' => count($occurrences),
@@ -75,7 +75,7 @@ class TranslationAnalyzer
 
         return [
             'total_duplicates' => $this->getTotalDuplicates($duplicates),
-            'items' => $report
+            'items' => $report,
         ];
     }
 
@@ -87,4 +87,4 @@ class TranslationAnalyzer
             return count($occurrences) - 1;
         });
     }
-} 
+}

@@ -7,9 +7,7 @@ use Raakkan\OnlyLaravel\Theme\ThemeManager;
 
 class ThemesStep extends Step
 {
-    public function init()
-    {
-    }
+    public function init() {}
 
     public static function make(): self
     {
@@ -36,4 +34,4 @@ class ThemesStep extends Step
             'themes' => $themeManager->getAllThemes(),
         ]);
     }
-} 
+}

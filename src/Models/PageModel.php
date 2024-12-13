@@ -38,7 +38,7 @@ class PageModel extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::deleted(function ($page) {
             $page->template()->delete();
         });
@@ -81,10 +81,11 @@ class PageModel extends Model
     {
         // Try to get from cache first
         $cacheKey = "page_slug_{$slug}";
-        
+
         // If found in cache, check if disabled
         if ($cachedPage = cache($cacheKey)) {
             $page = unserialize(serialize($cachedPage));
+
             return $page->disabled ? null : $page;
         }
 
@@ -99,6 +100,7 @@ class PageModel extends Model
         // Only cache if page is found
         if ($page) {
             cache()->forever($cacheKey, $page);
+
             // Return null if page is disabled
             return $page->disabled ? null : $page;
         }

@@ -49,7 +49,7 @@ class RequirementsStep extends Step
         $minPhpVersion = '8.1.0';
 
         $results = RequirementsChecker::make($requirements, $minPhpVersion);
-        
+
         $results['requirements']['php']['image_library'] = extension_loaded('gd') || extension_loaded('imagick');
         $results['requirements']['php']['allow_url_fopen'] = ini_get('allow_url_fopen');
 

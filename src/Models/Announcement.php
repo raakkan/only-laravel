@@ -12,7 +12,7 @@ class Announcement extends Model
         'type',
         'is_active',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
     protected $casts = [

@@ -2,9 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Template\Blocks\Components;
 
-use Raakkan\OnlyLaravel\Facades\Theme;
-use Raakkan\OnlyLaravel\Admin\Forms\Components\TextInput;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\ImageUpload;
+use Raakkan\OnlyLaravel\Facades\Theme;
 
 class DynamicHeroComponent extends BlockComponent
 {

@@ -2,13 +2,13 @@
 
 namespace Raakkan\OnlyLaravel\Installer;
 
-use Raakkan\OnlyLaravel\Installer\Steps\ThemesStep;
-use Raakkan\OnlyLaravel\Installer\Steps\PluginsStep;
-use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
-use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
 use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
-use Raakkan\OnlyLaravel\Installer\Steps\RequirementsStep;
+use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
 use Raakkan\OnlyLaravel\Installer\Steps\FolderPermissionsStep;
+use Raakkan\OnlyLaravel\Installer\Steps\PluginsStep;
+use Raakkan\OnlyLaravel\Installer\Steps\RequirementsStep;
+use Raakkan\OnlyLaravel\Installer\Steps\ThemesStep;
+use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
 
 class InstallManager
 {

@@ -2,19 +2,19 @@
 
 namespace Raakkan\OnlyLaravel\Providers;
 
-use Livewire\Livewire;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Raakkan\OnlyLaravel\Menu\MenuManager;
-use Raakkan\OnlyLaravel\Page\PageManager;
-use Raakkan\OnlyLaravel\UI\Components\UI;
-use Raakkan\OnlyLaravel\OnlyLaravelManager;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Livewire\Livewire;
 use Raakkan\OnlyLaravel\Installer\InstallManager;
-use Raakkan\OnlyLaravel\Template\TemplateManager;
 use Raakkan\OnlyLaravel\Installer\Livewire\Installer;
+use Raakkan\OnlyLaravel\Menu\MenuManager;
+use Raakkan\OnlyLaravel\OnlyLaravelManager;
+use Raakkan\OnlyLaravel\Page\PageManager;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Support\Sitemap\SitemapGenerator;
+use Raakkan\OnlyLaravel\Template\TemplateManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Raakkan\OnlyLaravel\UI\Components\UI;
 
 class OnlyLaravelServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
             app('theme-manager')->registerActiveThemeViews();
             app('plugin-manager')->bootActivatedPlugins();
         }
-        
+
         UI::registerUiComponents();
         $this->loadRoutesFrom($this->getPath('routes/web.php'));
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
@@ -36,10 +36,10 @@ class OnlyLaravelServiceProvider extends ServiceProvider
     {
         try {
             $pdo = DB::connection()->getPdo();
-            
+
             $themesExist = DB::getSchemaBuilder()->hasTable('themes');
             $pluginsExist = DB::getSchemaBuilder()->hasTable('plugins');
-            
+
             return $pdo && $themesExist && $pluginsExist;
         } catch (\Exception $e) {
             return false;
@@ -75,11 +75,11 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('plugin-manager', function () {
-            return new PluginManager();
+            return new PluginManager;
         });
 
         $this->app->singleton('sitemap-generator', function () {
-            return new SitemapGenerator();
+            return new SitemapGenerator;
         });
     }
 

@@ -29,7 +29,7 @@ trait HasBlockBuilding
 
         return $builtBlocks;
     }
-    
+
     public function makeBlocks($templateBlocks, $blocks)
     {
         $builtBlocks = [];

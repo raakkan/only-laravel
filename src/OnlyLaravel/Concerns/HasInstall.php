@@ -2,14 +2,10 @@
 
 namespace Raakkan\OnlyLaravel\OnlyLaravel\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\Theme;
 use Illuminate\Support\Facades\Artisan;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
 use Raakkan\OnlyLaravel\Facades\MenuManager;
 use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Theme\Models\ThemeModel;
-use Raakkan\OnlyLaravel\Plugin\Facades\PluginManager;
 
 trait HasInstall
 {

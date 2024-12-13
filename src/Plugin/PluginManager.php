@@ -4,8 +4,6 @@ namespace Raakkan\OnlyLaravel\Plugin;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Plugin\Traits\HandlesPluginOperations;
 
@@ -98,6 +96,7 @@ class PluginManager
         $pluginPath = $this->getPluginPath($name);
         if ($pluginPath) {
             $pluginJsonPath = $pluginPath.'/plugin.json';
+
             return new PluginJson($pluginJsonPath);
         }
 
@@ -126,7 +125,7 @@ class PluginManager
     public function deactivatePlugin(string $name): bool
     {
         $plugin = $this->getPlugin($name);
-        
+
         if (! $plugin) {
             return false;
         }

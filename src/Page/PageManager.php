@@ -2,13 +2,13 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 
-use Raakkan\OnlyLaravel\Page\Concerns\ManagePages;
 use Raakkan\OnlyLaravel\Page\Concerns\ManageDynamicPages;
+use Raakkan\OnlyLaravel\Page\Concerns\ManagePages;
 
 class PageManager
 {
-    use ManagePages;
     use ManageDynamicPages;
+    use ManagePages;
 
     private $app;
 

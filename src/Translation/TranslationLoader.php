@@ -31,7 +31,7 @@ class TranslationLoader
     private static function saveTranslations(string $language, string $group, array|string $translations, string $prefix = ''): void
     {
         // Handle non-array values (leaf nodes)
-        if (!is_array($translations)) {
+        if (! is_array($translations)) {
             LanguageLine::updateOrCreate(
                 [
                     'group' => $group,
@@ -41,12 +41,13 @@ class TranslationLoader
                     'text' => [$language => $translations],
                 ]
             );
+
             return;
         }
 
         // Handle array values (nested nodes)
         foreach ($translations as $key => $value) {
-            $newPrefix = $prefix . $key . '.';
+            $newPrefix = $prefix.$key.'.';
             self::saveTranslations($language, $group, $value, $newPrefix);
         }
     }

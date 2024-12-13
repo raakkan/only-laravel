@@ -11,16 +11,12 @@ class BaseSettingPage extends Component
     protected static string $slug = '';
 
     protected static string $navigationIcon = '';
-    
+
     protected static string $navigationLabel = '';
 
     public $data = [];
 
-    public function form()
-    {
-    }
+    public function form() {}
 
-    public function save()
-    {
-    }
+    public function save() {}
 }

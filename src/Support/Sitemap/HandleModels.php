@@ -13,7 +13,7 @@ trait HandleModels
 
     public function registerModel(string $model)
     {
-        if (!in_array($model, $this->models)) {
+        if (! in_array($model, $this->models)) {
             $this->models[] = $model;
         }
     }
@@ -23,4 +23,3 @@ trait HandleModels
         $this->models = array_unique(array_merge($this->models, $models));
     }
 }
-

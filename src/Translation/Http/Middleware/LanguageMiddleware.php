@@ -60,6 +60,7 @@ class LanguageMiddleware
         try {
             $pdo = DB::connection()->getPdo();
             $languagesExist = DB::getSchemaBuilder()->hasTable('languages');
+
             return $pdo && $languagesExist;
         } catch (\Exception $e) {
             return false;

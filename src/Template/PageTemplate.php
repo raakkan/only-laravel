@@ -3,11 +3,11 @@
 namespace Raakkan\OnlyLaravel\Template;
 
 use Illuminate\Support\Facades\Log;
-use Raakkan\OnlyLaravel\Facades\Theme;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
-use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
-use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
 use Raakkan\OnlyLaravel\Admin\Forms\Components\Textarea;
+use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Facades\Theme;
+use Raakkan\OnlyLaravel\Template\Models\DummyPageModel;
+use Raakkan\OnlyLaravel\Template\Models\TemplateModel;
 
 class PageTemplate extends BaseTemplate
 {
@@ -41,14 +41,14 @@ class PageTemplate extends BaseTemplate
                 'parent_block_access' => $this->parentBlocks ?? [],
                 'parent_template_id' => $parentTemplate?->id,
             ]);
-    
+
             $this->setModel($template, false);
             $this->storeDefaultSettingsToDatabase();
-    
+
             foreach ($this->blocks as $block) {
                 $block->create($template);
             }
-    
+
             return $template;
         } catch (\Throwable $th) {
             Log::error('Failed to create template: '.$th->getMessage());
@@ -74,7 +74,7 @@ class PageTemplate extends BaseTemplate
                 'template' => $this,
             ]);
         }
-        
+
         return view('only-laravel::template.template', [
             'template' => $this,
         ]);

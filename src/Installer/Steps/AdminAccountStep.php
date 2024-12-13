@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Steps;
 
-use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class AdminAccountStep extends Step
 {
@@ -27,7 +27,7 @@ class AdminAccountStep extends Step
         if ($this->isDbConnected()) {
             $superAdmin = \App\Models\User::role('super_admin')->first();
         }
-        
+
         $this->adminInputs = [
             'name' => $superAdmin?->name ?? '',
             'email' => $superAdmin?->email ?? '',
@@ -51,30 +51,35 @@ class AdminAccountStep extends Step
     public function validate(): bool
     {
         if (\App\Models\User::role('super_admin')->exists()) {
-            if (!empty($this->adminInputs['password'])) {
+            if (! empty($this->adminInputs['password'])) {
                 if ($this->adminInputs['password'] !== $this->adminInputs['password_confirmation']) {
                     $this->setErrorMessage('Passwords do not match.');
+
                     return false;
                 }
                 $this->process();
             }
+
             return true;
         }
 
         foreach ($this->adminInputs as $key => $value) {
             if (empty($value)) {
                 $this->setErrorMessage('All fields are required.');
+
                 return false;
             }
         }
 
         if ($this->adminInputs['password'] !== $this->adminInputs['password_confirmation']) {
             $this->setErrorMessage('Passwords do not match.');
+
             return false;
         }
 
-        if (!filter_var($this->adminInputs['email'], FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($this->adminInputs['email'], FILTER_VALIDATE_EMAIL)) {
             $this->setErrorMessage('Please enter a valid email address.');
+
             return false;
         }
 
@@ -87,11 +92,12 @@ class AdminAccountStep extends Step
     {
         try {
             $superAdmin = \App\Models\User::role('super_admin')->first();
-            
-            if ($superAdmin && !empty($this->adminInputs['password'])) {
+
+            if ($superAdmin && ! empty($this->adminInputs['password'])) {
                 $superAdmin->update([
-                    'password' => bcrypt($this->adminInputs['password'])
+                    'password' => bcrypt($this->adminInputs['password']),
                 ]);
+
                 return true;
             }
 
@@ -104,13 +110,14 @@ class AdminAccountStep extends Step
                 ]
             );
 
-            if (!$user->hasRole('super_admin')) {
+            if (! $user->hasRole('super_admin')) {
                 $user->assignRole('super_admin');
             }
 
             return true;
         } catch (\Exception $e) {
-            $this->setErrorMessage('Failed to create admin account: ' . $e->getMessage());
+            $this->setErrorMessage('Failed to create admin account: '.$e->getMessage());
+
             return false;
         }
     }
@@ -134,6 +141,7 @@ class AdminAccountStep extends Step
             $pdo = DB::connection()->getPdo();
             $usersExist = DB::getSchemaBuilder()->hasTable('users');
             $rolesExist = DB::getSchemaBuilder()->hasTable('roles');
+
             return $pdo && $usersExist && $rolesExist;
         } catch (\Exception $e) {
             return false;

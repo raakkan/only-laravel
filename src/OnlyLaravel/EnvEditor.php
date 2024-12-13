@@ -5,15 +5,18 @@ namespace Raakkan\OnlyLaravel\OnlyLaravel;
 class EnvEditor
 {
     private string $envPath;
+
     private array $env = [];
+
     private bool $backup = false;
+
     private string $backupPath;
 
-    public function __construct(?string $envPath = null, bool $backup = false) 
+    public function __construct(?string $envPath = null, bool $backup = false)
     {
         $this->envPath = $envPath ?? $this->getDefaultEnvPath();
         $this->backup = $backup;
-        $this->backupPath = dirname($this->envPath) . '/backups';
+        $this->backupPath = dirname($this->envPath).'/backups';
         $this->load();
     }
 
@@ -28,7 +31,7 @@ class EnvEditor
         }
 
         // Fallback to current directory
-        return getcwd() . DIRECTORY_SEPARATOR . '.env';
+        return getcwd().DIRECTORY_SEPARATOR.'.env';
     }
 
     /**
@@ -36,7 +39,7 @@ class EnvEditor
      */
     private function load(): void
     {
-        if (!file_exists($this->envPath)) {
+        if (! file_exists($this->envPath)) {
             throw new \RuntimeException("Env file not found at: {$this->envPath}");
         }
 
@@ -56,10 +59,10 @@ class EnvEditor
 
             $key = trim($parts[0]);
             $value = trim($parts[1]);
-            
+
             // Remove quotes if present
             $value = trim($value, '"\'');
-            
+
             $this->env[$key] = $value;
         }
     }
@@ -67,7 +70,7 @@ class EnvEditor
     /**
      * Get value for a key
      */
-    public function get(string $key): ?string 
+    public function get(string $key): ?string
     {
         return $this->env[$key] ?? null;
     }
@@ -84,6 +87,7 @@ class EnvEditor
         } else {
             $this->env[$key] = $value;
         }
+
         return $this;
     }
 
@@ -93,6 +97,7 @@ class EnvEditor
     public function remove(string $key): self
     {
         unset($this->env[$key]);
+
         return $this;
     }
 
@@ -109,15 +114,15 @@ class EnvEditor
      */
     private function backup(): void
     {
-        if (!$this->backup) {
+        if (! $this->backup) {
             return;
         }
 
-        if (!is_dir($this->backupPath)) {
+        if (! is_dir($this->backupPath)) {
             mkdir($this->backupPath, 0755, true);
         }
 
-        $backupFile = $this->backupPath . '/.env.' . date('Y-m-d-His');
+        $backupFile = $this->backupPath.'/.env.'.date('Y-m-d-His');
         copy($this->envPath, $backupFile);
     }
 
@@ -134,7 +139,7 @@ class EnvEditor
         foreach ($this->env as $key => $value) {
             // Add quotes if value contains spaces
             if (str_contains($value, ' ')) {
-                $value = '"' . $value . '"';
+                $value = '"'.$value.'"';
             }
             $content .= "{$key}={$value}\n";
         }

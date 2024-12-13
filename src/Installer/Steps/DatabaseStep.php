@@ -3,9 +3,9 @@
 namespace Raakkan\OnlyLaravel\Installer\Steps;
 
 use Exception;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Raakkan\OnlyLaravel\OnlyLaravel\EnvEditor;
 
 class DatabaseStep extends Step
@@ -56,9 +56,11 @@ class DatabaseStep extends Step
         try {
             $this->checkConnection();
             Artisan::call('migrate');
+
             return true;
         } catch (Exception $e) {
-            $this->setErrorMessage('Database connection failed: ' . $e->getMessage());
+            $this->setErrorMessage('Database connection failed: '.$e->getMessage());
+
             return false;
         }
     }
@@ -75,7 +77,7 @@ class DatabaseStep extends Step
             'db_host' => 'Database Host',
             'db_port' => 'Database Port',
             'db_database' => 'Database Name',
-            'db_username' => 'Database Username'
+            'db_username' => 'Database Username',
         ];
 
         foreach ($requiredInputs as $field => $label) {
@@ -85,7 +87,7 @@ class DatabaseStep extends Step
         }
 
         try {
-            $editor = new EnvEditor();
+            $editor = new EnvEditor;
             $editor->set([
                 'DB_CONNECTION' => $this->inputs['db_connection'],
                 'DB_HOST' => $this->inputs['db_host'],
@@ -98,7 +100,7 @@ class DatabaseStep extends Step
             DB::reconnect('mysql');
             DB::connection()->getPdo();
         } catch (Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Database connection failed: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Database connection failed: '.$e->getMessage());
             throw $e;
         }
     }

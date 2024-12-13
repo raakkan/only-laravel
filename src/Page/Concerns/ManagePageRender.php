@@ -2,11 +2,11 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Livewire\Features\SupportPageComponents\PageComponentConfig;
+use Livewire\Features\SupportPageComponents\SupportPageComponents;
 use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Models\Redirect;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
-use Livewire\Features\SupportPageComponents\PageComponentConfig;
-use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
 trait ManagePageRender
 {
@@ -16,16 +16,16 @@ trait ManagePageRender
     {
         $slug = trim($slug, '/');
         $isRootPage = app('page-manager')->isRootPage($slug);
-        
+
         if ($isRootPage) {
             // TODO: pending meddleware
             $page = app('page-manager')->findPageBySlug($slug);
             $modelClass = $page->getModelClass();
             $model = $modelClass::findBySlug($slug);
-        }else {
+        } else {
 
             if ($slug == 'admin') {
-                return app()->make(\App\Http\Middleware\Admin::class)->handle(request(), function() {
+                return app()->make(\App\Http\Middleware\Admin::class)->handle(request(), function () {
                     return $this->renderLivewire(\App\Livewire\Admin\Dashboard::class, [], 'layouts.admin');
                 });
             }
@@ -36,7 +36,7 @@ trait ManagePageRender
                 if ($this instanceof DynamicPage) {
 
                     if ($this->hasModels()) {
-                        
+
                         if (str_contains($slug, '/')) {
                             $slug = substr($slug, strrpos($slug, '/') + 1);
                         }
@@ -67,6 +67,7 @@ trait ManagePageRender
             if ($redirect) {
                 return redirect($redirect->to_path, $redirect->status_code);
             }
+
             return abort(404);
         }
 

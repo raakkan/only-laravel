@@ -2,7 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Page;
 
-class DynamicPage extends BasePage {
+class DynamicPage extends BasePage
+{
     protected $models = [];
 
     public function setModels(array $models)

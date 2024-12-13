@@ -2,20 +2,15 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Artisan;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
-use Raakkan\OnlyLaravel\Facades\MenuManager;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
-use Raakkan\OnlyLaravel\Facades\PageManager;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
+use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
 use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
 use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
-use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
 
 class Installer extends Component
 {
@@ -77,7 +72,7 @@ class Installer extends Component
 
         Log::info('Moving to next step', [
             'current_step' => $this->currentStep,
-            'inputs' => $this->inputs
+            'inputs' => $this->inputs,
         ]);
 
         if ($currentStep instanceof DatabaseStep || $currentStep instanceof AdminAccountStep || $currentStep instanceof WebsiteInfoStep) {
@@ -99,6 +94,7 @@ class Installer extends Component
                     if ($currentStep instanceof DatabaseStep || $currentStep instanceof AdminAccountStep || $currentStep instanceof WebsiteInfoStep) {
                         $this->inputs = $currentStep->getInputs();
                     }
+
                     return;
                 }
             } else {
@@ -150,7 +146,7 @@ class Installer extends Component
             \Artisan::call('cache:clear');
             \Artisan::call('config:clear');
         } catch (\Exception $e) {
-            $this->addError('plugin', 'Failed to activate plugin: ' . $e->getMessage());
+            $this->addError('plugin', 'Failed to activate plugin: '.$e->getMessage());
         }
     }
 
@@ -161,7 +157,7 @@ class Installer extends Component
             \Artisan::call('cache:clear');
             \Artisan::call('config:clear');
         } catch (\Exception $e) {
-            $this->addError('plugin', 'Failed to deactivate plugin: ' . $e->getMessage());
+            $this->addError('plugin', 'Failed to deactivate plugin: '.$e->getMessage());
         }
     }
 
@@ -174,25 +170,13 @@ class Installer extends Component
                 \Artisan::call('cache:clear');
                 \Artisan::call('config:clear');
 
-                // Clear template CSS files
                 $templatesPath = public_path('css/templates');
                 if (File::exists($templatesPath)) {
                     File::deleteDirectory($templatesPath);
                 }
-
-                // Build CSS for all pages
-                try {
-                    $pages = \Raakkan\OnlyLaravel\Models\PageModel::all();
-                    foreach ($pages as $page) {
-                        $pageTemplate = $page->getPageTemplate();
-                        $pageTemplate->buildCss();
-                    }
-                } catch (\Exception $e) {
-                    Log::error('Failed to build CSS: ' . $e->getMessage());
-                }
             }
         } catch (\Exception $e) {
-            $this->addError('theme', 'Failed to activate theme: ' . $e->getMessage());
+            $this->addError('theme', 'Failed to activate theme: '.$e->getMessage());
         }
     }
 
@@ -211,7 +195,7 @@ class Installer extends Component
                 }
             }
         } catch (\Exception $e) {
-            $this->addError('theme', 'Failed to update theme: ' . $e->getMessage());
+            $this->addError('theme', 'Failed to update theme: '.$e->getMessage());
         }
     }
 

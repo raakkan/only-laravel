@@ -7,9 +7,7 @@ use Raakkan\OnlyLaravel\Plugin\PluginManager;
 
 class PluginsStep extends Step
 {
-    public function init()
-    {
-    }
+    public function init() {}
 
     public static function make(): self
     {
@@ -36,4 +34,4 @@ class PluginsStep extends Step
             'plugins' => $pluginManager->getAllPlugins(),
         ]);
     }
-} 
+}

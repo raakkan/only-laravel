@@ -4,11 +4,7 @@ namespace Raakkan\OnlyLaravel\Installer\Steps;
 
 use Exception;
 use Illuminate\View\View;
-use Raakkan\OnlyLaravel\Facades\MenuManager;
-use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
-use Raakkan\OnlyLaravel\Facades\PageManager;
 use Raakkan\OnlyLaravel\OnlyLaravel\EnvEditor;
-use Raakkan\OnlyLaravel\Facades\TemplateManager;
 
 class WebsiteInfoStep extends Step
 {
@@ -32,24 +28,25 @@ class WebsiteInfoStep extends Step
         $appName = env('APP_NAME');
         $appUrl = env('APP_URL');
         $purchaseCode = env('PURCHASE_CODE');
-        
+
         if ($appName && $appUrl) {
             $this->inputs = [
                 'website_name' => $appName,
                 'domain' => str_replace(['https://', 'http://'], '', $appUrl),
                 'purchase_code' => $purchaseCode,
             ];
+
             return;
         }
 
         // Fall back to generating from request URL if env values don't exist
         $url = request()->getHost();
         $domain = $url;
-        
+
         // Convert domain to website name (e.g., example-site.com -> Example Site)
         $websiteName = str_replace(['-', '.'], ' ', parse_url($url, PHP_URL_HOST) ?? $url);
         $websiteName = ucwords(preg_replace('/\.(com|net|org|etc)$/i', '', $websiteName));
-        
+
         // Set the initial values
         $this->inputs = array_merge($this->inputs, [
             'website_name' => $websiteName,
@@ -74,9 +71,11 @@ class WebsiteInfoStep extends Step
     {
         try {
             $this->saveWebsiteInfo();
+
             return true;
         } catch (Exception $e) {
-            $this->setErrorMessage('Failed to save website information: ' . $e->getMessage());
+            $this->setErrorMessage('Failed to save website information: '.$e->getMessage());
+
             return false;
         }
     }
@@ -96,14 +95,14 @@ class WebsiteInfoStep extends Step
         }
 
         try {
-            $editor = new EnvEditor();
+            $editor = new EnvEditor;
             $editor->set([
                 'APP_NAME' => $this->inputs['website_name'],
-                'APP_URL' => 'https://' . $this->inputs['domain'],
+                'APP_URL' => 'https://'.$this->inputs['domain'],
                 'PURCHASE_CODE' => $this->inputs['purchase_code'],
             ])->save();
         } catch (Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Failed to save website information: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Failed to save website information: '.$e->getMessage());
             throw $e;
         }
     }

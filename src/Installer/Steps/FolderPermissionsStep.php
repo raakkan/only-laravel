@@ -7,6 +7,7 @@ use Illuminate\View\View;
 class FolderPermissionsStep extends Step
 {
     protected array $folders;
+
     protected array $files;
 
     public static function make(): self

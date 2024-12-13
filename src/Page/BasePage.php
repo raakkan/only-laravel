@@ -3,19 +3,19 @@
 namespace Raakkan\OnlyLaravel\Page;
 
 use Illuminate\Support\Facades\Log;
-use Raakkan\OnlyLaravel\Page\Concerns\HasSlug;
-use Raakkan\OnlyLaravel\Support\Concerns\HasName;
-use Raakkan\OnlyLaravel\Support\Concerns\Makable;
-use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
-use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
-use Raakkan\OnlyLaravel\Page\Concerns\HasPageModel;
 use Raakkan\OnlyLaravel\Page\Concerns\HasJsonSchema;
-use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
 use Raakkan\OnlyLaravel\Page\Concerns\HasPageEditable;
-use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRoute;
-use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
+use Raakkan\OnlyLaravel\Page\Concerns\HasPageModel;
+use Raakkan\OnlyLaravel\Page\Concerns\HasSlug;
+use Raakkan\OnlyLaravel\Page\Concerns\HasTemplate;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRender;
+use Raakkan\OnlyLaravel\Page\Concerns\ManagePageRoute;
 use Raakkan\OnlyLaravel\Page\Concerns\ManagesMiddleware;
+use Raakkan\OnlyLaravel\Support\Concerns\HasName;
+use Raakkan\OnlyLaravel\Support\Concerns\HasTitle;
+use Raakkan\OnlyLaravel\Support\Concerns\Makable;
+use Raakkan\OnlyLaravel\Template\Concerns\Deletable;
+use Raakkan\OnlyLaravel\Template\Concerns\Disableable;
 
 // add option for disable some translation pages ex: en, ta
 // for example, if we have a page with name "Home" and we want to disable it for some languages, we can do it by
@@ -57,7 +57,7 @@ class BasePage
 
     public function create()
     {
-        if($this instanceof DynamicPage) {
+        if ($this instanceof DynamicPage) {
             return;
         }
 
@@ -97,6 +97,6 @@ class BasePage
             Log::error('Failed to create page: '.$th->getMessage());
             throw $th;
         }
-        
+
     }
 }
