@@ -2,15 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Livewire;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
 use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
-use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
 use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
 use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
 
 class Installer extends Component
 {
@@ -20,26 +21,27 @@ class Installer extends Component
 
     public function mount()
     {
-        if ($step = request()->segment(2)) {
-            if (array_key_exists($step, $this->getSteps())) {
-                $this->currentStep = $step;
-            }
-        }
+        // if ($step = request()->segment(2)) {
+        //     if (array_key_exists($step, $this->getSteps())) {
+        //         $this->currentStep = $step;
+        //     }
+        // }
 
-        $cssBuilder = \Raakkan\OnlyLaravel\Template\CssBuilder::make([
-            __DIR__.'/../../../resources/views/installer/components/layouts/app.blade.php',
-            __DIR__.'/../../../resources/views/installer/livewire/installer.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/requirements.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/folder-permissions.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/database.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/admin-account.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/plugins.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/themes.blade.php',
-            __DIR__.'/../../../resources/views/installer/steps/website-info.blade.php',
-        ]);
-        $cssBuilder->setFileName('installer');
-        $cssBuilder->setFolderName('installer');
-        $cssBuilder->saveCssToFile();
+        // $cssBuilder = \Raakkan\OnlyLaravel\Template\CssBuilder::make([
+        //     __DIR__.'/../../../resources/views/installer/components/layouts/app.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/livewire/installer.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/requirements.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/folder-permissions.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/database.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/admin-account.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/plugins.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/themes.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/website-info.blade.php',
+        //     __DIR__.'/../../../resources/views/installer/steps/completion.blade.php',
+        // ]);
+        // $cssBuilder->setFileName('installer');
+        // $cssBuilder->setFolderName('installer');
+        // $cssBuilder->saveCssToFile();
 
         // if (file_exists(storage_path('onlylaravel/installed'))) {
         //     return redirect()->to('/');
@@ -128,8 +130,12 @@ class Installer extends Component
             try {
                 OnlyLaravel::install();
                 file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
-
-                return redirect()->to('/');
+                
+                // Move to completion step instead of redirecting
+                $this->currentStep = 'completion';
+                $this->updateUrl();
+                
+                return;
             } catch (\Exception $e) {
                 Log::error('Installation failed: '.$e->getMessage());
                 $this->addError('step', 'Installation failed: '.$e->getMessage());
@@ -143,8 +149,8 @@ class Installer extends Component
     {
         try {
             app(PluginManager::class)->activatePlugin($name);
-            \Artisan::call('cache:clear');
-            \Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
         } catch (\Exception $e) {
             $this->addError('plugin', 'Failed to activate plugin: '.$e->getMessage());
         }
@@ -154,8 +160,8 @@ class Installer extends Component
     {
         try {
             app(PluginManager::class)->deactivatePlugin($name);
-            \Artisan::call('cache:clear');
-            \Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
         } catch (\Exception $e) {
             $this->addError('plugin', 'Failed to deactivate plugin: '.$e->getMessage());
         }
@@ -166,9 +172,9 @@ class Installer extends Component
         try {
             $themeManager = app(ThemeManager::class);
             if ($themeManager->activateTheme($name)) {
-                \Artisan::call('view:clear');
-                \Artisan::call('cache:clear');
-                \Artisan::call('config:clear');
+                Artisan::call('view:clear');
+                Artisan::call('cache:clear');
+                Artisan::call('config:clear');
 
                 $templatesPath = public_path('css/templates');
                 if (File::exists($templatesPath)) {
@@ -185,9 +191,9 @@ class Installer extends Component
         try {
             $themeManager = app(ThemeManager::class);
             if ($themeManager->updateTheme($name)) {
-                \Artisan::call('view:clear');
-                \Artisan::call('cache:clear');
-                \Artisan::call('config:clear');
+                Artisan::call('view:clear');
+                Artisan::call('cache:clear');
+                Artisan::call('config:clear');
 
                 $templatesPath = public_path('css/templates');
                 if (File::exists($templatesPath)) {
