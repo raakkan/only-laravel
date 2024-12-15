@@ -2,12 +2,13 @@
 
 namespace Raakkan\OnlyLaravel\Plugin\Traits;
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Mechanisms\ComponentRegistry;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
 use Raakkan\OnlyLaravel\Translation\TranslationLoader;
@@ -132,6 +133,10 @@ trait HandlesPluginOperations
         if ($this->isPluginClassExists($plugin->name)) {
             $this->autoload($plugin->name);
             $this->loadMigrations($plugin->name);
+            
+            // Add seeder execution after migrations
+            $this->runDatabaseSeeds($plugin->name);
+            
             if ($this->checkRequirements($plugin->name)) {
                 $pluginClass = $this->getPluginClass($plugin->name);
 
@@ -154,13 +159,10 @@ trait HandlesPluginOperations
                 $plugin->update(['is_active' => false]);
                 cache()->forget('active_plugins');
                 $this->unload($plugin->name);
-                \Log::error("Plugin requirements not met for {$plugin->name}");
+                Log::error("Plugin requirements not met for {$plugin->name}");
                 throw new \Exception("Plugin requirements not met for {$plugin->name}");
             }
         }
-
-        $langPath = 'plugins/'.basename($this->getPluginPath($plugin->name)).'/lang';
-        TranslationLoader::loadAndSave($langPath);
     }
 
     protected function getPluginClass(string $name)
@@ -255,15 +257,15 @@ trait HandlesPluginOperations
 
                     if (! $ranMigrations->contains($migrationName)) {
                         $migrator->run([$file]);
-                        \Log::info('Ran migration: '.$migrationName.' for plugin: '.$name);
+                        Log::info('Ran migration: '.$migrationName.' for plugin: '.$name);
                     }
                 }
 
                 Artisan::call('optimize:clear');
 
             } catch (\Exception $e) {
-                \Log::error("Failed to run migrations for plugin {$name}: ".$e->getMessage());
-                \Log::error($e->getTraceAsString());
+                Log::error("Failed to run migrations for plugin {$name}: ".$e->getMessage());
+                Log::error($e->getTraceAsString());
             }
         }
     }
@@ -280,13 +282,13 @@ trait HandlesPluginOperations
             ];
 
             if (! File::exists($requirementsPath)) {
-                \Log::info("No requirements file found for plugin: {$name}");
+                Log::info("No requirements file found for plugin: {$name}");
                 $this->updateRequirementsStatus($plugin, $status);
 
                 return true;
             }
 
-            \Log::info("Checking requirements for plugin: {$name}");
+            Log::info("Checking requirements for plugin: {$name}");
             $status['has_requirements_file'] = true;
             $requirements = json_decode(File::get($requirementsPath), true);
 
@@ -300,7 +302,7 @@ trait HandlesPluginOperations
                     'passed' => $passed,
                 ];
 
-                \Log::info("PHP version check for {$name}", [
+                Log::info("PHP version check for {$name}", [
                     'required' => $phpVersion,
                     'current' => PHP_VERSION,
                     'passed' => $passed,
@@ -308,7 +310,7 @@ trait HandlesPluginOperations
 
                 if (! $passed) {
                     $status['passed'] = false;
-                    \Log::error("PHP version check failed for {$name}");
+                    Log::error("PHP version check failed for {$name}");
 
                     return false;
                 }
@@ -324,7 +326,7 @@ trait HandlesPluginOperations
                     'passed' => $passed,
                 ];
 
-                \Log::info("Laravel version check for {$name}", [
+                Log::info("Laravel version check for {$name}", [
                     'required' => $laravelVersion,
                     'current' => app()->version(),
                     'passed' => $passed,
@@ -332,7 +334,7 @@ trait HandlesPluginOperations
 
                 if (! $passed) {
                     $status['passed'] = false;
-                    \Log::error("Laravel version check failed for {$name}");
+                    Log::error("Laravel version check failed for {$name}");
 
                     return false;
                 }
@@ -345,14 +347,14 @@ trait HandlesPluginOperations
                     $exists = Schema::hasTable($table);
                     $tableChecks[$table] = $exists;
 
-                    \Log::info("Database table check for {$name}", [
+                    Log::info("Database table check for {$name}", [
                         'table' => $table,
                         'exists' => $exists,
                     ]);
 
                     if (! $exists) {
                         $status['passed'] = false;
-                        \Log::error("Required table '{$table}' missing for plugin {$name}");
+                        Log::error("Required table '{$table}' missing for plugin {$name}");
 
                         return false;
                     }
@@ -360,7 +362,7 @@ trait HandlesPluginOperations
                 $status['checks']['database_tables'] = $tableChecks;
             }
 
-            \Log::info("Requirements check completed for {$name}", [
+            Log::info("Requirements check completed for {$name}", [
                 'status' => $status,
             ]);
 
@@ -411,15 +413,44 @@ trait HandlesPluginOperations
                     $file = $migrationPath.'/'.$migration.'.php';
                     if (File::exists($file)) {
                         $migrator->rollback([$file]);
-                        \Log::info('Rolled back migration: '.$migration.' for plugin: '.$name);
+                        Log::info('Rolled back migration: '.$migration.' for plugin: '.$name);
                     }
                 }
 
                 Artisan::call('optimize:clear');
 
             } catch (\Exception $e) {
-                \Log::error("Failed to rollback migrations for plugin {$name}: ".$e->getMessage());
-                \Log::error($e->getTraceAsString());
+                Log::error("Failed to rollback migrations for plugin {$name}: ".$e->getMessage());
+                Log::error($e->getTraceAsString());
+            }
+        }
+    }
+
+    // Add new method to handle database seeds
+    protected function runDatabaseSeeds(string $name): void
+    {
+        $pluginPath = $this->getPluginPath($name);
+        $seederPath = $pluginPath . '/database/seeders';
+
+        if (File::exists($seederPath)) {
+            try {
+                $seederFiles = File::glob($seederPath . '/*.php');
+
+                foreach ($seederFiles as $file) {
+                    // Include the seeder file first
+                    require_once $file;
+                    
+                    $seederClass = $this->getPluginJson($name)->getNamespace() . '\\Database\\Seeders\\' . basename($file, '.php');
+
+                    if (class_exists($seederClass)) {
+                        $seeder = new $seederClass();
+                        $seeder->run();
+                        Log::info("Ran seeder: " . basename($file) . " for plugin: " . $name);
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error("Failed to run seeders for plugin {$name}: " . $e->getMessage());
+                Log::error($e->getTraceAsString());
             }
         }
     }

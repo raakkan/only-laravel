@@ -3,6 +3,7 @@
 namespace Raakkan\OnlyLaravel\Support\Sitemap;
 
 use Illuminate\Support\Facades\File;
+use Raakkan\OnlyLaravel\Models\PageModel;
 
 class SitemapGenerator
 {
@@ -10,8 +11,9 @@ class SitemapGenerator
 
     public function generate()
     {
+        $models = array_merge($this->models, [PageModel::class]);
         $this->generateSitemapIndex();
-        foreach ($this->models as $model) {
+        foreach ($models as $model) {
             $this->generateModelSitemap($model);
         }
     }

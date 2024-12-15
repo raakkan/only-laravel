@@ -98,7 +98,7 @@ class WebsiteInfoStep extends Step
             $editor = new EnvEditor;
             $editor->set([
                 'APP_NAME' => $this->inputs['website_name'],
-                'APP_URL' => 'https://'.$this->inputs['domain'],
+                'APP_URL' => $this->inputs['domain'],
                 'PURCHASE_CODE' => $this->inputs['purchase_code'],
             ])->save();
         } catch (Exception $e) {
