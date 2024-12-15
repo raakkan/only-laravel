@@ -59,6 +59,13 @@ class Language extends Model
         });
     }
 
+    public static function getDefaultLocale()
+    {
+        return Cache::rememberForever('default_locale', function () {
+            return self::where('is_default', true)->first()->locale;
+        });
+    }
+
     public function getIconAttribute()
     {
         $iconPath = __DIR__.'/../../../resources/svg/'.$this->locale.'.svg';

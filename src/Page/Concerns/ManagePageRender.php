@@ -2,11 +2,12 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Livewire\Features\SupportPageComponents\PageComponentConfig;
-use Livewire\Features\SupportPageComponents\SupportPageComponents;
 use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Models\Redirect;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
+use Raakkan\OnlyLaravel\Translation\Models\Language;
+use Livewire\Features\SupportPageComponents\PageComponentConfig;
+use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
 trait ManagePageRender
 {
@@ -15,6 +16,20 @@ trait ManagePageRender
     public function render($slug = '')
     {
         $slug = trim($slug, '/');
+        
+        // Remove locale prefix if present
+        $supportedLocales = Language::getActiveLocales();
+        foreach ($supportedLocales as $supportedLocale) {
+            if ($slug == $supportedLocale) {
+                $slug = '/';
+                break;
+            }
+            if (str_starts_with($slug, $supportedLocale . '/')) {
+                $slug = substr($slug, strlen($supportedLocale) + 1);
+                break;
+            }
+        }
+        
         $isRootPage = app('page-manager')->isRootPage($slug);
 
         if ($isRootPage) {

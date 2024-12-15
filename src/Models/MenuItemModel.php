@@ -73,11 +73,17 @@ class MenuItemModel extends Model
 
     public static function reorderSiblings($menu, $order, $parentId = null)
     {
-        $siblings = $menu->items()->where('parent_id', $parentId)->where('order', '>=', $order)->get();
-        foreach ($siblings as $sibling) {
-            $sibling->order = $sibling->order - 1;
-            $sibling->save();
-        }
+        DB::transaction(function () use ($menu, $order, $parentId) {
+            $siblings = $menu->items()
+                ->where('parent_id', $parentId)
+                ->where('order', '>', $order)
+                ->orderBy('order')
+                ->get();
+
+            foreach ($siblings as $index => $sibling) {
+                $sibling->update(['order' => $order + $index]);
+            }
+        });
     }
 
     public function getTable(): string

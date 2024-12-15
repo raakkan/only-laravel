@@ -5,6 +5,7 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
+use Raakkan\OnlyLaravel\Translation\Models\Language;
 
 trait ManagePageRoute
 {
@@ -12,7 +13,7 @@ trait ManagePageRoute
 
     public function getRouteName()
     {
-        return $this->routeName;
+        return $this->routeName ?? $this->getName();
     }
 
     public function setRouteName($routeName)
@@ -45,12 +46,17 @@ trait ManagePageRoute
             $page->setModels($pageManager->getDynamicModel($this->getName()));
         }
 
-        $route = Route::get($this->getSlug(), function (Request $request) use ($page) {
-            return $page->render($request->path());
-        });
+        Route::localized(function () use ($pageManager, $page) {
+            $route = Route::get($this->getSlug(), function (Request $request) use ($page) {
+                return $page->render($request->path());
+            });
 
-        $route->middleware(array_merge($pageManager->getGlobalMiddleware(), $this->getAllMiddleware()));
+            $route->middleware(array_merge($pageManager->getGlobalMiddleware(), $this->getAllMiddleware()));
 
-        $route->name($this->getRouteName());
+            $route->name($this->getRouteName());
+        }, [
+            'supported_locales' => Language::getActiveLocales(),
+            'omitted_locale' => Language::getDefaultLocale(),
+        ]);
     }
 }
