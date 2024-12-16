@@ -21,5 +21,7 @@ trait HandleModels
     public function registerModels(array $models)
     {
         $this->models = array_unique(array_merge($this->models, $models));
+
+        return $this;
     }
 }

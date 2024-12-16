@@ -9,6 +9,8 @@ class SitemapGenerator
 {
     use HandleModels;
 
+    protected $indexFolderUrl = '/sitemaps/';
+
     public function generate()
     {
         $models = array_merge($this->models, [PageModel::class]);
@@ -20,12 +22,13 @@ class SitemapGenerator
 
     protected function generateSitemapIndex(): string
     {
+        $models = array_merge($this->models, [PageModel::class]);
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
         $xml .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'.PHP_EOL;
 
-        foreach ($this->models as $model) {
+        foreach ($models as $model) {
             $xml .= "\t<sitemap>".PHP_EOL;
-            $xml .= "\t\t<loc>".url("/sitemaps/{$this->getModelName($model)}.xml").'</loc>'.PHP_EOL;
+            $xml .= "\t\t<loc>".url($this->indexFolderUrl."{$this->getModelName($model)}.xml").'</loc>'.PHP_EOL;
             $xml .= "\t\t<lastmod>".now()->toW3cString().'</lastmod>'.PHP_EOL;
             $xml .= "\t</sitemap>".PHP_EOL;
         }
@@ -69,6 +72,22 @@ class SitemapGenerator
 
     protected function getModelName(string $model): string
     {
+        if (method_exists($model, 'getSitemapName')) {
+            return $model::getSitemapName();
+        }
+
         return strtolower(class_basename($model));
+    }
+
+    protected function getIndexFolderUrl(): string
+    {
+        return $this->indexFolderUrl;
+    }
+
+    public function setIndexFolderUrl(string $url): self
+    {
+        $this->indexFolderUrl = $url;
+
+        return $this;
     }
 }

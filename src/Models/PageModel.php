@@ -117,4 +117,9 @@ class PageModel extends Model
     {
         return url($this->slug);
     }
+
+    public static function getSitemapName()
+    {
+        return 'pages';
+    }
 }
