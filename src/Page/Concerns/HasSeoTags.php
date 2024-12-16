@@ -27,26 +27,26 @@ trait HasSeoTags
         $languages = \Raakkan\OnlyLaravel\Translation\Models\Language::getActiveLanguages();
 
         // Add hreflang tags for all active languages
-        foreach ($languages as $language) {
-            if ($page) {
-                if ($language->locale == \Raakkan\OnlyLaravel\Translation\Models\Language::getDefaultLocale()) {
-                    $translatedUrl = $page->generateUrl($this->slug);
-                } else {
-                    $translatedUrl = $page->generateUrl($this->slug, $language->locale);
-                }
-            } else {
-                $translatedUrl = Route::localizedUrl($language->locale);
-            }
-            $seoTags .= '<link rel="alternate" hreflang="' . e($language->locale) . '" href="' . e($translatedUrl) . '">';
-        }
+        // foreach ($languages as $language) {
+        //     if ($page) {
+        //         if ($language->locale == \Raakkan\OnlyLaravel\Translation\Models\Language::getDefaultLocale()) {
+        //             $translatedUrl = $page->generateUrl($this->slug);
+        //         } else {
+        //             $translatedUrl = $page->generateUrl($this->slug, $language->locale);
+        //         }
+        //     } else {
+        //         $translatedUrl = Route::localizedUrl($language->locale);
+        //     }
+        //     $seoTags .= '<link rel="alternate" hreflang="' . e($language->locale) . '" href="' . e($translatedUrl) . '">';
+        // }
 
-        // Add x-default hreflang
-        if ($page) {
-            $defaultUrl = $page->generateUrl($this->slug, config('app.fallback_locale'));
-        } else {
-            $defaultUrl = url('/');
-        }
-        $seoTags .= '<link rel="alternate" hreflang="x-default" href="' . e($defaultUrl) . '">';
+        // // Add x-default hreflang
+        // if ($page) {
+        //     $defaultUrl = $page->generateUrl($this->slug, config('app.fallback_locale'));
+        // } else {
+        //     $defaultUrl = url('/');
+        // }
+        // $seoTags .= '<link rel="alternate" hreflang="x-default" href="' . e($defaultUrl) . '">';
 
         // Escape and fallback for title
         $title = e($this->title ?? $this->seo_title ?? env('APP_NAME', 'Laravel'));
@@ -84,12 +84,12 @@ trait HasSeoTags
         }
 
         $seoTags .= '<link rel="canonical" href="'.$slugUrl.'">';
-        $seoTags .= '<meta property="og:locale" content="' . str_replace('_', '-', app()->getLocale()) . '">';
-        foreach ($languages as $language) {
-            if ($language->locale !== app()->getLocale()) {
-                $seoTags .= '<meta property="og:locale:alternate" content="' . str_replace('_', '-', $language->locale) . '">';
-            }
-        }
+        // $seoTags .= '<meta property="og:locale" content="' . str_replace('_', '-', app()->getLocale()) . '">';
+        // foreach ($languages as $language) {
+        //     if ($language->locale !== app()->getLocale()) {
+        //         $seoTags .= '<meta property="og:locale:alternate" content="' . str_replace('_', '-', $language->locale) . '">';
+        //     }
+        // }
 
         if ($page) {
             $jsonLd = $page->generateJsonLd($this, $page);

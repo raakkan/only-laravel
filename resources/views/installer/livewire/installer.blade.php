@@ -31,19 +31,12 @@
                 </div>
 
                 <div class="flex-1 order-1 sm:order-2 mb-4 sm:mb-0">
-                    @if ($currentStep !== array_key_last($this->getSteps()))
-                        <button wire:click="nextStep" wire:loading.attr="disabled"
-                            class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 w-full disabled:opacity-50">
-                            <span wire:loading.remove wire:target="nextStep">Next →</span>
-                            <span wire:loading wire:target="nextStep">Loading...</span>
-                        </button>
-                    @else
-                        <button wire:click="finishInstallation" wire:loading.attr="disabled"
-                            class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 w-full disabled:opacity-50">
-                            <span wire:loading.remove wire:target="finishInstallation">Complete Installation ✨</span>
-                            <span wire:loading wire:target="finishInstallation">Installing...</span>
-                        </button>
-                    @endif
+                    <button wire:click="nextStep" wire:loading.attr="disabled"
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1 w-full disabled:opacity-50">
+                        <span wire:loading.remove
+                            wire:target="nextStep">{{ $currentStep === 'website-info' ? 'Complete Installation' : 'Next →' }}</span>
+                        <span wire:loading wire:target="nextStep">Loading...</span>
+                    </button>
                 </div>
             </div>
         @endif

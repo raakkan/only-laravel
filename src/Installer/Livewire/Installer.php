@@ -91,13 +91,10 @@ class Installer extends Component
 
                 if ($currentIndex !== false && $currentIndex < count($keys) - 1) {
                     $this->currentStep = $keys[$currentIndex + 1];
-                    $this->updateUrl();
                     $currentStep = $installManager->getStep($this->currentStep);
                     if ($currentStep instanceof DatabaseStep || $currentStep instanceof AdminAccountStep || $currentStep instanceof WebsiteInfoStep) {
                         $this->inputs = $currentStep->getInputs();
                     }
-
-                    return;
                 }
             } else {
                 $this->addError('step', $currentStep->getErrorMessage() ?: 'Validation failed. Please check your inputs.');
@@ -112,37 +109,6 @@ class Installer extends Component
 
         return view('only-laravel::installer.livewire.installer')
             ->layout('only-laravel::installer.components.layouts.app', ['title' => $title]);
-    }
-
-    public function finishInstallation()
-    {
-        // Extend PHP execution time for installation process
-        set_time_limit(300); // 5 minutes
-        ini_set('max_execution_time', 300);
-
-        $installManager = app('install-manager');
-        $currentStep = $installManager->getStep($this->currentStep);
-        $currentStep->setInputs($this->inputs);
-
-        $isValid = $currentStep->validate();
-
-        if ($isValid) {
-            try {
-                OnlyLaravel::install();
-                file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
-                
-                // Move to completion step instead of redirecting
-                $this->currentStep = 'completion';
-                $this->updateUrl();
-                
-                return;
-            } catch (\Exception $e) {
-                Log::error('Installation failed: '.$e->getMessage());
-                $this->addError('step', 'Installation failed: '.$e->getMessage());
-            }
-        } else {
-            $this->addError('step', $currentStep->getErrorMessage() ?: 'Validation failed. Please check your inputs.');
-        }
     }
 
     public function activatePlugin(string $name)
@@ -203,11 +169,5 @@ class Installer extends Component
         } catch (\Exception $e) {
             $this->addError('theme', 'Failed to update theme: '.$e->getMessage());
         }
-    }
-
-    protected function updateUrl()
-    {
-        $url = url("/install/{$this->currentStep}");
-        $this->dispatch('urlChanged', ['url' => $url]);
     }
 }

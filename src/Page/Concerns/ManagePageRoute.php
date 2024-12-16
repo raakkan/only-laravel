@@ -46,17 +46,12 @@ trait ManagePageRoute
             $page->setModels($pageManager->getDynamicModel($this->getName()));
         }
 
-        Route::localized(function () use ($pageManager, $page) {
-            $route = Route::get($this->getSlug(), function (Request $request) use ($page) {
-                return $page->render($request->path());
-            });
+        $route = Route::get($this->getSlug(), function (Request $request) use ($page) {
+            return $page->render($request->path());
+        });
 
-            $route->middleware(array_merge($pageManager->getGlobalMiddleware(), $this->getAllMiddleware()));
+        $route->middleware(array_merge($pageManager->getGlobalMiddleware(), $this->getAllMiddleware()));
 
-            $route->name($this->getRouteName());
-        }, [
-            'supported_locales' => Language::getActiveLocales(),
-            'omitted_locale' => Language::getDefaultLocale(),
-        ]);
+        $route->name($this->getRouteName());
     }
 }

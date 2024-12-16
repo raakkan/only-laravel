@@ -4,6 +4,7 @@ namespace Raakkan\OnlyLaravel\Installer\Steps;
 
 use Exception;
 use Illuminate\View\View;
+use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
 use Raakkan\OnlyLaravel\OnlyLaravel\EnvEditor;
 
 class WebsiteInfoStep extends Step
@@ -82,6 +83,9 @@ class WebsiteInfoStep extends Step
 
     protected function saveWebsiteInfo(): void
     {
+        set_time_limit(300); // 5 minutes
+        ini_set('max_execution_time', 300);
+
         $requiredInputs = [
             'website_name' => 'Website Name',
             'domain' => 'Domain',
@@ -101,6 +105,10 @@ class WebsiteInfoStep extends Step
                 'APP_URL' => $this->inputs['domain'],
                 'PURCHASE_CODE' => $this->inputs['purchase_code'],
             ])->save();
+
+            OnlyLaravel::install();
+            file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
+                
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to save website information: '.$e->getMessage());
             throw $e;

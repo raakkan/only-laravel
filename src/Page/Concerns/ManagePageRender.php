@@ -17,19 +17,6 @@ trait ManagePageRender
     {
         $slug = trim($slug, '/');
         
-        // Remove locale prefix if present
-        $supportedLocales = Language::getActiveLocales();
-        foreach ($supportedLocales as $supportedLocale) {
-            if ($slug == $supportedLocale) {
-                $slug = '/';
-                break;
-            }
-            if (str_starts_with($slug, $supportedLocale . '/')) {
-                $slug = substr($slug, strlen($supportedLocale) + 1);
-                break;
-            }
-        }
-        
         $isRootPage = app('page-manager')->isRootPage($slug);
 
         if ($isRootPage) {
