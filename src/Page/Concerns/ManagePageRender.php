@@ -32,7 +32,7 @@ trait ManagePageRender
                 });
             }
 
-            if ($slug == '/') {
+            if ($slug == '') {
                 $model = $this->getHomeModel();
             } else {
                 if ($this instanceof DynamicPage) {
@@ -115,13 +115,23 @@ trait ManagePageRender
 
     public function getHomeModel()
     {
-        return $this->modelClass::where('name', 'home-page')
+        $cacheKey = "page_slug_home";
+        if ($cachedPage = cache($cacheKey)) {
+            $page = unserialize(serialize($cachedPage));
+            return $page;
+        }
+
+        $page = $this->modelClass::where('name', 'home-page')
             ->with(['template.blocks' => function ($query) {
                 $query->orderBy('order', 'asc');
             }, 'template.parentTemplate.blocks' => function ($query) {
                 $query->orderBy('order', 'asc');
             }])
             ->first();
+
+        cache()->forever($cacheKey, $page);
+
+        return $page;
     }
 
     public function renderLivewire($component, $componentData = [], $layout = null)
