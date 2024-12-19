@@ -23,35 +23,64 @@ class RequirementsStep extends Step
     {
         $requirements = [
             'php' => [
-                'bcmath',
                 'ctype',
                 'curl',
-                'dom',
                 'fileinfo',
-                'filter',
-                'hash',
-                'intl',
                 'json',
                 'mbstring',
                 'openssl',
-                'pcre',
                 'pdo',
-                'session',
+                'pdo_mysql',
                 'tokenizer',
                 'xml',
-                'xmlwriter',
             ],
-            // 'apache' => [
-            //     'mod_rewrite',
-            //     'mod_headers',
-            // ],
+            'server' => [
+                'mod_rewrite' => false,
+                'mod_headers' => false,
+            ],
+            'database' => [
+                'mysql' => false,
+            ]
         ];
-        $minPhpVersion = '8.1.0';
+        $minPhpVersion = '8.3.0';
 
         $results = RequirementsChecker::make($requirements, $minPhpVersion);
 
         $results['requirements']['php']['image_library'] = extension_loaded('gd') || extension_loaded('imagick');
         $results['requirements']['php']['allow_url_fopen'] = ini_get('allow_url_fopen');
+
+        if (extension_loaded('pdo_mysql')) {
+            try {
+                $pdo = new \PDO('mysql:host=' . config('database.connections.mysql.host'), 
+                    config('database.connections.mysql.username'),
+                    config('database.connections.mysql.password')
+                );
+                $version = $pdo->query('SELECT VERSION()')->fetchColumn();
+                $results['requirements']['database']['mysql'] = 
+                    version_compare($version, '5.7.0', '>=') || 
+                    (str_contains(strtolower($version), 'mariadb') && version_compare($version, '10.3.0', '>='));
+            } catch (\Exception $e) {
+                $results['requirements']['database']['mysql'] = false;
+            }
+        }
+
+        if (!isset($results['requirements']['server'])) {
+            $results['requirements']['server'] = [
+                'mod_rewrite' => false,
+                'mod_headers' => false,
+            ];
+        }
+
+        if (function_exists('apache_get_modules')) {
+            $results['requirements']['server']['mod_rewrite'] = in_array('mod_rewrite', apache_get_modules());
+            $results['requirements']['server']['mod_headers'] = in_array('mod_headers', apache_get_modules());
+        } elseif (strpos($_SERVER['SERVER_SOFTWARE'] ?? '', 'nginx') !== false) {
+            $results['requirements']['server']['mod_rewrite'] = true;
+            $results['requirements']['server']['mod_headers'] = true;
+        } else {
+            $results['requirements']['server']['mod_rewrite'] = isset($_SERVER['REDIRECT_URL']) || isset($_SERVER['REDIRECT_STATUS']);
+            $results['requirements']['server']['mod_headers'] = function_exists('header');
+        }
 
         $this->requirements = $results;
         $this->phpVersion = $results['phpVersion'];
@@ -62,7 +91,6 @@ class RequirementsStep extends Step
         $allRequirementsMet = true;
         $errors = [];
 
-        // Check PHP extensions and Apache modules
         foreach ($this->requirements['requirements'] as $type => $requirements) {
             foreach ($requirements as $requirement => $met) {
                 if (! $met) {
@@ -70,19 +98,19 @@ class RequirementsStep extends Step
                     $errors[] = match ($requirement) {
                         'image_library' => 'Either GD or Imagick PHP extension is required.',
                         'allow_url_fopen' => 'The allow_url_fopen setting must be enabled in PHP.',
-                        'mod_rewrite' => 'Apache mod_rewrite module is required for URL rewriting.',
-                        'mod_headers' => 'Apache mod_headers module is required for security headers.',
+                        'mod_rewrite' => 'Web server rewrite module is required (mod_rewrite for Apache or ngx_http_rewrite_module for Nginx).',
+                        'mod_headers' => 'Web server headers module is required (mod_headers for Apache or ngx_http_headers_module for Nginx).',
+                        'mysql' => 'MySQL 5.7+ or MariaDB 10.3+ is required.',
                         default => "The {$requirement} {$type} requirement is not met.",
                     };
                 }
             }
         }
 
-        // Check PHP version
         $phpVersionSupported = $this->requirements['phpVersion']['supported'];
         if (! $phpVersionSupported) {
             $allRequirementsMet = false;
-            $errors[] = 'The PHP version requirement is not met.';
+            $errors[] = 'PHP 8.3 or higher is required.';
         }
 
         if (! $allRequirementsMet) {

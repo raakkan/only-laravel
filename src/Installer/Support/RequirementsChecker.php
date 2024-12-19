@@ -17,13 +17,13 @@ class RequirementsChecker
         $results = [];
         $mapMethod = [
             'php' => 'checkPhpExtensions',
-            'apache' => 'checkApacheModules',
+            'server' => 'checkServerRequirements',
+            'database' => 'checkDatabaseRequirements',
         ];
 
         foreach ($allRequirements as $type => $requirements) {
             if ($method = $mapMethod[$type] ?? null) {
-                $results['requirements'][$type]
-                    = $this->{$method}($requirements);
+                $results['requirements'][$type] = $this->{$method}($requirements);
             }
         }
 
@@ -40,14 +40,40 @@ class RequirementsChecker
         return $results;
     }
 
-    public function checkApacheModules(array $requirements): array
+    public function checkServerRequirements(array $requirements): array
     {
         $results = [];
-        foreach ($requirements as $requirement) {
-            $results[$requirement] = function_exists('apache_get_modules')
-                && in_array($requirement, apache_get_modules());
+        
+        if (function_exists('apache_get_modules')) {
+            // Apache server
+            foreach ($requirements as $module => $value) {
+                $results[$module] = in_array($module, apache_get_modules());
+            }
+        } elseif (strpos($_SERVER['SERVER_SOFTWARE'] ?? '', 'nginx') !== false) {
+            // Nginx server - assume modules are available
+            foreach ($requirements as $module => $value) {
+                $results[$module] = true;
+            }
+        } else {
+            // Unknown server - try to detect features
+            foreach ($requirements as $module => $value) {
+                $results[$module] = match ($module) {
+                    'mod_rewrite' => isset($_SERVER['REDIRECT_URL']) || isset($_SERVER['REDIRECT_STATUS']),
+                    'mod_headers' => function_exists('header'),
+                    default => false,
+                };
+            }
         }
 
+        return $results;
+    }
+
+    public function checkDatabaseRequirements(array $requirements): array
+    {
+        $results = [];
+        foreach ($requirements as $requirement => $value) {
+            $results[$requirement] = false; // Default to false, will be updated in RequirementsStep
+        }
         return $results;
     }
 
@@ -70,8 +96,7 @@ class RequirementsChecker
     {
         $currentPhpVersion = $this->getPhpVersionInfo();
         $minVersionPhp = $minPhpVersion ?? $this->getMinPhpVersion();
-        $supported = version_compare($currentPhpVersion['version'],
-            $minVersionPhp) >= 0;
+        $supported = version_compare($currentPhpVersion['version'], $minVersionPhp) >= 0;
 
         return [
             'full' => $currentPhpVersion['full'],
@@ -98,8 +123,6 @@ class RequirementsChecker
 
     /**
      * Get minimum PHP version.
-     *
-     * @return string minPhpVersion
      */
     protected function getMinPhpVersion(): string
     {

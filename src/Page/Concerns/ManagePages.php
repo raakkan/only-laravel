@@ -69,9 +69,20 @@ trait ManagePages
 
     public function getAllModels()
     {
-        return collect($this->getPages())->map(function ($page) {
-            return $page->getModelClass();
-        })->unique()->toArray();
+        $models = collect($this->getPages())->map(function ($page) {
+            return $page->getModelClass(); 
+        })->filter()->values();
+
+        $dynamicModels = collect($this->getDynamicModels())
+            ->flatten()
+            ->filter();
+
+        $models = $models->merge($dynamicModels)
+            ->unique()
+            ->values()
+            ->toArray();
+
+        return $models;
     }
 
     public function isRootPage($slug)

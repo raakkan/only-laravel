@@ -62,7 +62,6 @@ class Installer extends Component
 
         if ($currentIndex !== false && $currentIndex > 0) {
             $this->currentStep = $keys[$currentIndex - 1];
-            $this->updateUrl();
         }
     }
 
