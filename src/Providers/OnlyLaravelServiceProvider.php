@@ -20,7 +20,7 @@ class OnlyLaravelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        if ($this->isDbConnected()) {
+        if (file_exists(storage_path('only-laravel/installed'))) {
             app('theme-manager')->registerActiveThemeViews();
             app('plugin-manager')->bootActivatedPlugins();
         }
@@ -30,20 +30,6 @@ class OnlyLaravelServiceProvider extends ServiceProvider
         $this->loadViewsFrom($this->getPath('resources/views'), 'only-laravel');
         app('page-manager')->registerPageRoutes();
         Livewire::component(Installer::class, Installer::class);
-    }
-
-    public function isDbConnected(): bool
-    {
-        try {
-            $pdo = DB::connection()->getPdo();
-
-            $themesExist = DB::getSchemaBuilder()->hasTable('themes');
-            $pluginsExist = DB::getSchemaBuilder()->hasTable('plugins');
-
-            return $pdo && $themesExist && $pluginsExist;
-        } catch (\Exception $e) {
-            return false;
-        }
     }
 
     public function register(): void

@@ -41,7 +41,14 @@ class DatabaseStep extends Step
 
     public function setInputs(array $inputs): self
     {
-        $this->inputs = array_merge($this->inputs, $inputs);
+        $this->inputs = [
+            'db_connection' => $inputs['db_connection'] ?? 'mysql',
+            'db_host' => $inputs['db_host'] ?? '',
+            'db_port' => $inputs['db_port'] ?? '',
+            'db_database' => $inputs['db_database'] ?? '',
+            'db_username' => $inputs['db_username'] ?? '',
+            'db_password' => $inputs['db_password'] ?? '',
+        ];
 
         return $this;
     }
@@ -97,7 +104,21 @@ class DatabaseStep extends Step
                 'DB_PASSWORD' => $this->inputs['db_password'],
             ])->save();
 
-            DB::reconnect('mysql');
+            // Clear configuration cache and reload
+            Artisan::call('config:clear');
+            
+            // Update the runtime configuration
+            config([
+                'database.connections.'.$this->inputs['db_connection'].'.host' => $this->inputs['db_host'],
+                'database.connections.'.$this->inputs['db_connection'].'.port' => $this->inputs['db_port'],
+                'database.connections.'.$this->inputs['db_connection'].'.database' => $this->inputs['db_database'],
+                'database.connections.'.$this->inputs['db_connection'].'.username' => $this->inputs['db_username'],
+                'database.connections.'.$this->inputs['db_connection'].'.password' => $this->inputs['db_password'],
+            ]);
+
+            // Purge the existing connection and reconnect
+            DB::purge($this->inputs['db_connection']);
+            DB::reconnect($this->inputs['db_connection']);
             DB::connection()->getPdo();
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Database connection failed: '.$e->getMessage());

@@ -33,7 +33,7 @@ class WebsiteInfoStep extends Step
         if ($appName && $appUrl) {
             $this->inputs = [
                 'website_name' => $appName,
-                'domain' => str_replace(['https://', 'http://'], '', $appUrl),
+                'domain' => $appUrl,
                 'purchase_code' => $purchaseCode,
             ];
 
@@ -107,7 +107,7 @@ class WebsiteInfoStep extends Step
             ])->save();
 
             OnlyLaravel::install();
-            file_put_contents(storage_path('installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
+            file_put_contents(storage_path('only-laravel/installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
                 
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to save website information: '.$e->getMessage());

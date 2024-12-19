@@ -38,4 +38,9 @@ class InstallManager
     {
         return $this->steps[$step] ?? null;
     }
+
+    public function isInstalled()
+    {
+        return file_exists(storage_path('only-laravel/installed'));
+    }
 }

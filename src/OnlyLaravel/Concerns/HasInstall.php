@@ -25,7 +25,6 @@ trait HasInstall
 
         // TODO: cahnge session to db
         Artisan::call('config:clear');
-        Artisan::call('storage:link');
     }
 
     public function beforeInstall($callback)

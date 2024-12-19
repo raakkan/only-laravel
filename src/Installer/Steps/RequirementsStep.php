@@ -51,17 +51,16 @@ class RequirementsStep extends Step
 
         if (extension_loaded('pdo_mysql')) {
             try {
-                $pdo = new \PDO('mysql:host=' . config('database.connections.mysql.host'), 
-                    config('database.connections.mysql.username'),
-                    config('database.connections.mysql.password')
-                );
+                $pdo = new \PDO('mysql:host=' . config('database.connections.mysql.host'));
                 $version = $pdo->query('SELECT VERSION()')->fetchColumn();
                 $results['requirements']['database']['mysql'] = 
                     version_compare($version, '5.7.0', '>=') || 
                     (str_contains(strtolower($version), 'mariadb') && version_compare($version, '10.3.0', '>='));
             } catch (\Exception $e) {
-                $results['requirements']['database']['mysql'] = false;
+                $results['requirements']['database']['mysql'] = true;
             }
+        } else {
+            $results['requirements']['database']['mysql'] = false;
         }
 
         if (!isset($results['requirements']['server'])) {
