@@ -2,12 +2,11 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
+use Livewire\Features\SupportPageComponents\PageComponentConfig;
+use Livewire\Features\SupportPageComponents\SupportPageComponents;
 use Raakkan\OnlyLaravel\Facades\Theme;
 use Raakkan\OnlyLaravel\Models\Redirect;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
-use Raakkan\OnlyLaravel\Translation\Models\Language;
-use Livewire\Features\SupportPageComponents\PageComponentConfig;
-use Livewire\Features\SupportPageComponents\SupportPageComponents;
 
 trait ManagePageRender
 {
@@ -16,7 +15,7 @@ trait ManagePageRender
     public function render($slug = '')
     {
         $slug = trim($slug, '/');
-        
+
         $isRootPage = app('page-manager')->isRootPage($slug);
 
         if ($isRootPage) {
@@ -115,9 +114,10 @@ trait ManagePageRender
 
     public function getHomeModel()
     {
-        $cacheKey = "page_slug_home";
+        $cacheKey = 'page_slug_home';
         if ($cachedPage = cache($cacheKey)) {
             $page = unserialize(serialize($cachedPage));
+
             return $page;
         }
 

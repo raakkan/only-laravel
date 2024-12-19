@@ -19,9 +19,10 @@ class ThemesStep extends Step
         $themeManager = app(ThemeManager::class);
         $activeThemes = $themeManager->getAllThemes()
             ->filter(fn ($theme) => $theme->active);
-        
+
         if ($activeThemes->isEmpty()) {
             $this->setErrorMessage('Please activate at least one theme before proceeding.');
+
             return false;
         }
 

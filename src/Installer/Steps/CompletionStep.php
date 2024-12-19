@@ -27,4 +27,4 @@ class CompletionStep extends Step
     {
         return view('only-laravel::installer.steps.completion');
     }
-} 
+}

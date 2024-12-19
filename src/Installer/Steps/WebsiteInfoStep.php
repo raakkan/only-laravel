@@ -108,7 +108,7 @@ class WebsiteInfoStep extends Step
 
             OnlyLaravel::install();
             file_put_contents(storage_path('only-laravel/installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
-                
+
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to save website information: '.$e->getMessage());
             throw $e;

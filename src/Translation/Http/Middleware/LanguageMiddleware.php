@@ -4,7 +4,6 @@ namespace Raakkan\OnlyLaravel\Translation\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Raakkan\OnlyLaravel\Translation\Models\Language;
 
 class LanguageMiddleware

@@ -40,7 +40,7 @@ class RequirementsStep extends Step
             ],
             'database' => [
                 'mysql' => false,
-            ]
+            ],
         ];
         $minPhpVersion = '8.3.0';
 
@@ -51,10 +51,10 @@ class RequirementsStep extends Step
 
         if (extension_loaded('pdo_mysql')) {
             try {
-                $pdo = new \PDO('mysql:host=' . config('database.connections.mysql.host'));
+                $pdo = new \PDO('mysql:host='.config('database.connections.mysql.host'));
                 $version = $pdo->query('SELECT VERSION()')->fetchColumn();
-                $results['requirements']['database']['mysql'] = 
-                    version_compare($version, '5.7.0', '>=') || 
+                $results['requirements']['database']['mysql'] =
+                    version_compare($version, '5.7.0', '>=') ||
                     (str_contains(strtolower($version), 'mariadb') && version_compare($version, '10.3.0', '>='));
             } catch (\Exception $e) {
                 $results['requirements']['database']['mysql'] = true;
@@ -63,7 +63,7 @@ class RequirementsStep extends Step
             $results['requirements']['database']['mysql'] = false;
         }
 
-        if (!isset($results['requirements']['server'])) {
+        if (! isset($results['requirements']['server'])) {
             $results['requirements']['server'] = [
                 'mod_rewrite' => false,
                 'mod_headers' => false,

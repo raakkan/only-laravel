@@ -106,7 +106,7 @@ class DatabaseStep extends Step
 
             // Clear configuration cache and reload
             Artisan::call('config:clear');
-            
+
             // Update the runtime configuration
             config([
                 'database.connections.'.$this->inputs['db_connection'].'.host' => $this->inputs['db_host'],

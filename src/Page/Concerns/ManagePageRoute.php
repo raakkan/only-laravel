@@ -5,7 +5,6 @@ namespace Raakkan\OnlyLaravel\Page\Concerns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Raakkan\OnlyLaravel\Page\DynamicPage;
-use Raakkan\OnlyLaravel\Translation\Models\Language;
 
 trait ManagePageRoute
 {

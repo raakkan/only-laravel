@@ -2,16 +2,15 @@
 
 namespace Raakkan\OnlyLaravel\Plugin\Traits;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Livewire\Mechanisms\ComponentRegistry;
 use Raakkan\OnlyLaravel\Plugin\Models\PluginModel;
-use Raakkan\OnlyLaravel\Translation\TranslationLoader;
 
 //TODO: Add plugin deletion and uninstallation
 trait HandlesPluginOperations
@@ -133,10 +132,10 @@ trait HandlesPluginOperations
         if ($this->isPluginClassExists($plugin->name)) {
             $this->autoload($plugin->name);
             $this->loadMigrations($plugin->name);
-            
+
             // Add seeder execution after migrations
             $this->runDatabaseSeeds($plugin->name);
-            
+
             if ($this->checkRequirements($plugin->name)) {
                 $pluginClass = $this->getPluginClass($plugin->name);
 
@@ -430,26 +429,26 @@ trait HandlesPluginOperations
     protected function runDatabaseSeeds(string $name): void
     {
         $pluginPath = $this->getPluginPath($name);
-        $seederPath = $pluginPath . '/database/seeders';
+        $seederPath = $pluginPath.'/database/seeders';
 
         if (File::exists($seederPath)) {
             try {
-                $seederFiles = File::glob($seederPath . '/*.php');
+                $seederFiles = File::glob($seederPath.'/*.php');
 
                 foreach ($seederFiles as $file) {
                     // Include the seeder file first
                     require_once $file;
-                    
-                    $seederClass = $this->getPluginJson($name)->getNamespace() . '\\Database\\Seeders\\' . basename($file, '.php');
+
+                    $seederClass = $this->getPluginJson($name)->getNamespace().'\\Database\\Seeders\\'.basename($file, '.php');
 
                     if (class_exists($seederClass)) {
-                        $seeder = new $seederClass();
+                        $seeder = new $seederClass;
                         $seeder->run();
-                        Log::info("Ran seeder: " . basename($file) . " for plugin: " . $name);
+                        Log::info('Ran seeder: '.basename($file).' for plugin: '.$name);
                     }
                 }
             } catch (\Exception $e) {
-                Log::error("Failed to run seeders for plugin {$name}: " . $e->getMessage());
+                Log::error("Failed to run seeders for plugin {$name}: ".$e->getMessage());
                 Log::error($e->getTraceAsString());
             }
         }

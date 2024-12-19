@@ -70,7 +70,7 @@ trait ManagePages
     public function getAllModels()
     {
         $models = collect($this->getPages())->map(function ($page) {
-            return $page->getModelClass(); 
+            return $page->getModelClass();
         })->filter()->values();
 
         $dynamicModels = collect($this->getDynamicModels())

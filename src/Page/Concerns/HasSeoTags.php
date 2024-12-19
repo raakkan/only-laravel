@@ -2,8 +2,8 @@
 
 namespace Raakkan\OnlyLaravel\Page\Concerns;
 
-use Raakkan\OnlyLaravel\Facades\PageManager;
 use Illuminate\Support\Facades\Route;
+use Raakkan\OnlyLaravel\Facades\PageManager;
 
 trait HasSeoTags
 {

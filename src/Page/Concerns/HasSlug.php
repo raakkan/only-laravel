@@ -28,8 +28,8 @@ trait HasSlug
         return $this->setSlug($slug);
     }
 
-    public function generateUrl(string|array $slug, string $locale = null): string
+    public function generateUrl(string|array $slug, ?string $locale = null): string
     {
-        return url($locale ? $locale . '/' . $slug : $slug);
+        return url($locale ? $locale.'/'.$slug : $slug);
     }
 }

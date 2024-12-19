@@ -2,16 +2,16 @@
 
 namespace Raakkan\OnlyLaravel\Installer\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
-use Raakkan\OnlyLaravel\Theme\ThemeManager;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 use Raakkan\OnlyLaravel\Facades\OnlyLaravel;
-use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
 use Raakkan\OnlyLaravel\Installer\Steps\DatabaseStep;
 use Raakkan\OnlyLaravel\Installer\Steps\WebsiteInfoStep;
-use Raakkan\OnlyLaravel\Installer\Steps\AdminAccountStep;
+use Raakkan\OnlyLaravel\Plugin\PluginManager;
+use Raakkan\OnlyLaravel\Theme\ThemeManager;
 
 class Installer extends Component
 {

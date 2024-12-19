@@ -2,7 +2,6 @@
 
 namespace Raakkan\OnlyLaravel\Providers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Raakkan\OnlyLaravel\Installer\InstallManager;

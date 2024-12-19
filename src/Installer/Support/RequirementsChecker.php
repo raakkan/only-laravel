@@ -43,7 +43,7 @@ class RequirementsChecker
     public function checkServerRequirements(array $requirements): array
     {
         $results = [];
-        
+
         if (function_exists('apache_get_modules')) {
             // Apache server
             foreach ($requirements as $module => $value) {
@@ -74,6 +74,7 @@ class RequirementsChecker
         foreach ($requirements as $requirement => $value) {
             $results[$requirement] = false; // Default to false, will be updated in RequirementsStep
         }
+
         return $results;
     }
 
