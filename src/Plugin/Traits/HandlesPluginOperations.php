@@ -27,6 +27,21 @@ trait HandlesPluginOperations
             $templates = $pluginClass->getTemplates();
             $pages = $pluginClass->getPages();
 
+            $serviceProviders = $pluginClass->serviceProviders;
+            foreach ($serviceProviders as $serviceProvider) {
+                if (!class_exists($serviceProvider)) {
+                    Log::warning("Service provider class not found: {$serviceProvider}");
+                    continue;
+                }
+
+                if (!is_subclass_of($serviceProvider, \Illuminate\Support\ServiceProvider::class)) {
+                    Log::warning("Invalid service provider class: {$serviceProvider}");
+                    continue;
+                }
+
+                app()->register($serviceProvider);
+            }
+
             app('menu-manager')->registerMenus($menus);
             app('template-manager')->registerTemplates($templates);
             app('page-manager')->registerPages($pages);
@@ -133,7 +148,6 @@ trait HandlesPluginOperations
             $this->autoload($plugin->name);
             $this->loadMigrations($plugin->name);
 
-            // Add seeder execution after migrations
             $this->runDatabaseSeeds($plugin->name);
 
             if ($this->checkRequirements($plugin->name)) {

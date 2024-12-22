@@ -10,10 +10,7 @@ use Raakkan\OnlyLaravel\Template\TemplateManager;
 
 abstract class BasePlugin
 {
-    public function register(PluginManager $pluginManager)
-    {
-        //
-    }
+    public $serviceProviders = [];
 
     public function boot(PluginManager $pluginManager)
     {
