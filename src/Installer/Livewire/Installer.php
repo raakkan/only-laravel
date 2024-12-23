@@ -42,10 +42,6 @@ class Installer extends Component
         // $cssBuilder->setFileName('installer');
         // $cssBuilder->setFolderName('installer');
         // $cssBuilder->saveCssToFile();
-
-        // if (file_exists(storage_path('onlylaravel/installed'))) {
-        //     return redirect()->to('/');
-        // }
     }
 
     public function getSteps()

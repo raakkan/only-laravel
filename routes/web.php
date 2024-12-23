@@ -3,12 +3,13 @@
 use App\Livewire\Admin\Admin;
 use Illuminate\Support\Facades\Route;
 use Raakkan\OnlyLaravel\Installer\Livewire\Installer;
+use Raakkan\OnlyLaravel\Installer\Http\Middleware\InstallationMiddleware;
 
 // Route::get('admin', Admin::class)->name('installer')
 //     ->middleware(['web']);
 
 Route::get('installer/{step?}', Installer::class)->name('installer')
-    ->middleware(['web']);
+    ->middleware(['web', InstallationMiddleware::class]);
 
 // Route::get('/installed', function () {
 //     return view('web-installer::success');

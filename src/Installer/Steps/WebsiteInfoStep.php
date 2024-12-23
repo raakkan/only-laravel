@@ -99,12 +99,19 @@ class WebsiteInfoStep extends Step
         }
 
         try {
+            $key = 'base64:' . base64_encode(
+                \Illuminate\Encryption\Encrypter::generateKey(config('app.cipher'))
+            );
+
             $editor = new EnvEditor;
             $editor->set([
                 'APP_NAME' => $this->inputs['website_name'],
                 'APP_URL' => $this->inputs['domain'],
                 'PURCHASE_CODE' => $this->inputs['purchase_code'],
+                'APP_KEY' => $key
             ])->save();
+
+            \Illuminate\Support\Facades\Artisan::call('config:clear');
 
             OnlyLaravel::install();
             file_put_contents(storage_path('only-laravel/installed'), 'Installation completed on '.date('Y-m-d H:i:s'));
