@@ -23,7 +23,9 @@ trait HasInstall
 
         $this->runAfterInstallCallbacks();
 
-        // TODO: cahnge session to db
+        app('sitemap-generator')->generate();
+        
+        Artisan::call('cache:clear');
         Artisan::call('config:clear');
     }
 

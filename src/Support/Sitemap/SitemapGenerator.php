@@ -20,6 +20,22 @@ class SitemapGenerator
         }
     }
 
+    public function regenerate()
+    {
+        // Delete existing sitemap files
+        if (File::exists(public_path('sitemap.xml'))) {
+            File::delete(public_path('sitemap.xml'));
+        }
+
+        $sitemapsPath = public_path('sitemaps');
+        if (File::exists($sitemapsPath)) {
+            File::deleteDirectory($sitemapsPath);
+        }
+
+        // Generate new sitemaps
+        $this->generate();
+    }
+
     protected function generateSitemapIndex(): string
     {
         $models = array_merge($this->models, [PageModel::class]);

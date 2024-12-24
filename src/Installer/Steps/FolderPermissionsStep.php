@@ -26,6 +26,7 @@ class FolderPermissionsStep extends Step
             'storage/logs' => $this->isWritable(storage_path('logs')),
             'bootstrap/cache' => $this->isWritable(base_path('bootstrap/cache')),
             'storage/only-laravel' => $this->isWritable(storage_path('only-laravel')),
+            'public' => $this->isWritable(public_path()),
         ];
 
         $this->files = [
